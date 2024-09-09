@@ -1,0 +1,1 @@
+# adama-core
