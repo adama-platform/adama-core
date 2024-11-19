@@ -1,0 +1,60 @@
+{
+  "types" : {
+    "__Root" : {
+      "nature" : "reactive_record",
+      "name" : "Root",
+      "fields" : {
+        "pub_x" : {
+          "type" : {
+            "nature" : "reactive_value",
+            "type" : "int"
+          },
+          "computed" : false,
+          "privacy" : "public"
+        },
+        "pri_x" : {
+          "type" : {
+            "nature" : "reactive_value",
+            "type" : "int"
+          },
+          "computed" : false,
+          "privacy" : "private"
+        },
+        "adm_x" : {
+          "type" : {
+            "nature" : "reactive_value",
+            "type" : "int"
+          },
+          "computed" : false,
+          "privacy" : [ "is_admin" ]
+        },
+        "ju_x" : {
+          "type" : {
+            "nature" : "reactive_value",
+            "type" : "int"
+          },
+          "computed" : false,
+          "privacy" : [ "just_user" ]
+        },
+        "bub_x" : {
+          "type" : {
+            "nature" : "native_value",
+            "type" : "int"
+          },
+          "computed" : true,
+          "privacy" : "bubble"
+        }
+      }
+    },
+    "__ViewerType" : {
+      "nature" : "native_message",
+      "name" : "__ViewerType",
+      "anonymous" : true,
+      "fields" : { }
+    }
+  },
+  "channels" : { },
+  "channels-privacy" : { },
+  "constructors" : [ ],
+  "labels" : [ ]
+}

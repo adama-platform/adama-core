@@ -1,0 +1,8 @@
+record R {
+  bubble x = 1;
+  bubble x = 2;
+  bubble x = 1;
+  bubble y = 1;
+  bubble y = 1;
+}
+

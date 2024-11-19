@@ -1,0 +1,15 @@
+@web get / "path.js" {
+  return {json:{error:true}};
+}
+
+@web get / "badboy" {
+  return {error:"Missing something..."};
+}
+
+@web get / "redirect" /nope {
+  return {redirect:"/foop"};
+}
+
+@web get / "forward"/ yep {
+  return {forward:"/foop"};
+}

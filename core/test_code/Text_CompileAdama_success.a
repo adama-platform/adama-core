@@ -1,0 +1,14 @@
+@static {
+  create {
+    return true;
+  }
+}
+
+public text document;
+public formula document_str = document.get();
+
+@construct {
+  if (("[{\"clientID\":\"zzztop\",\"changes\":[[0,\"public string x = 123;\"]]}]").to_dyn() as a) {
+    document.append(0, a);
+  }
+}

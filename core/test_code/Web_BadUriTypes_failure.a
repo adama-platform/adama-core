@@ -1,0 +1,13 @@
+@web get /xyz/$z : complex {
+
+}
+
+message M { int x; }
+
+@web put /xyz/$z : complex (M m) {
+
+}
+
+@web options /xyz/$z : complex {
+
+}

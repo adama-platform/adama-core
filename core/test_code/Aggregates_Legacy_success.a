@@ -1,0 +1,40 @@
+record X {
+  int z;
+  int v;
+  bool b;
+  principal c;
+}
+
+table<X> zzz;
+table<X> zzz2;
+int count;
+int count_after;
+
+int vkzsum = 0;
+
+@construct {
+  transition #setup;
+}
+
+#setup {
+  zzz <- {z:2,b:false};
+  zzz <- {z:42,b:false};
+  zzz2 <- {z:2,b:false};
+  foreach( z in iterate zzz) {
+    z.z = 1000;
+  }
+  ((iterate zzz).z++)++;
+  ++ (iterate zzz).z;
+  !((iterate zzz).b);
+  foreach (kz in -(iterate zzz).z) {
+    vkzsum += kz;
+  }
+  (iterate zzz).z += 100;
+  (iterate zzz).z *= 3;
+  (iterate zzz).z ++;
+  (iterate zzz).v = 123;
+  count = (iterate zzz2).size();
+  (iterate zzz2).delete();
+  count_after = (iterate zzz2).size();
+  let lstc = (iterate zzz).c;
+}

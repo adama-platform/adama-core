@@ -1,0 +1,8 @@
+record One {
+  public int x;
+  public E y;
+
+  index nofound;
+  index x;
+  index x;
+}

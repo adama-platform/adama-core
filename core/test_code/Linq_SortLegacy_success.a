@@ -1,0 +1,38 @@
+record X {
+  maybe<int> i;
+  maybe<string> s;
+  maybe<bool> b;
+  maybe<double> d;
+  formula mi = @maybe(123);
+  int i1 = 123;
+  formula i2 = i1 + 42;
+  string ss;
+}
+
+table<X> tbl;
+
+auto l1 = iterate tbl order by i;
+auto l2 = iterate tbl order by s;
+auto l3 = iterate tbl order by b;
+auto l4 = iterate tbl order by d;
+auto l5 = iterate tbl order by mi;
+auto l6 = iterate tbl order by i1;
+auto l7 = iterate tbl order by i2;
+auto l8 = iterate tbl order by ss;
+
+@construct {
+  tbl <- {i:4};
+  tbl <- {d:3.14};
+  tbl <- {b:true};
+  tbl <- {s:"Hi"};
+
+  tbl <- {i:8};
+  tbl <- {d:2.71};
+  tbl <- {b:false};
+  tbl <- {s:"Joe"};
+
+  foreach (x in l1) {}
+  foreach (x in l2) {}
+  foreach (x in l3) {}
+  foreach (x in l4) {}
+}

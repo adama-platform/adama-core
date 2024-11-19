@@ -1,0 +1,14 @@
+function foo(dynamic d) -> json {
+  return d.to_json();
+}
+
+@construct {
+  if (Json.parse("{}") as j1) {
+    json j2 = j1;
+  }
+}
+
+public formula pj = Json.parse("{\"x\":123}");
+public formula pj_x = Json.parse("{\"x\":123}").x;
+public formula npj = Json.parsen("[42]");
+public formula npj_0 = Json.parsen("[42]")[0];

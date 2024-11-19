@@ -1,0 +1,90 @@
+/*
+* Adama Platform and Language
+* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+* 
+* This program is free software for non-commercial purposes: 
+* you can redistribute it and/or modify it under the terms of the 
+* GNU Affero General Public License as published by the Free Software Foundation,
+* either version 3 of the License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+package ape.runtime.remote.replication;
+
+import ape.common.NamedRunnable;
+import ape.common.SimpleExecutor;
+import org.junit.Assert;
+
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+
+public class SequencedTestExecutor implements SimpleExecutor {
+
+  private final ArrayList<NamedRunnable> runnables;
+
+  public void next() {
+    Assert.assertTrue(runnables.size() > 0);
+    runnables.remove(0).run();
+  }
+
+  public void swap() {
+    Assert.assertTrue(runnables.size() > 1);
+    NamedRunnable first = runnables.remove(0);
+    runnables.add(first);
+  }
+
+  public void wave() {
+    int n = runnables.size();
+    while (n > 0) {
+      next();
+      n--;
+    }
+  }
+
+  public NamedRunnable extract() {
+    Assert.assertTrue(runnables.size() > 0);
+    return runnables.remove(0);
+  }
+
+  public void drain() {
+    while (runnables.size() > 0) {
+      next();
+    }
+  }
+
+  public void assertEmpty() {
+    Assert.assertEquals(0, runnables.size());
+  }
+
+  public SequencedTestExecutor() {
+    this.runnables = new ArrayList<>();
+  }
+
+  @Override
+  public void execute(NamedRunnable command) {
+    this.runnables.add(command);
+  }
+
+  @Override
+  public Runnable schedule(NamedRunnable command, long milliseconds) {
+    this.runnables.add(command);
+    return command;
+  }
+
+  @Override
+  public Runnable scheduleNano(NamedRunnable command, long nanoseconds) {
+    this.runnables.add(command);
+    return command;
+  }
+
+  @Override
+  public CountDownLatch shutdown() {
+    return new CountDownLatch(0);
+  }
+}

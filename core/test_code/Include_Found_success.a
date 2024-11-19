@@ -1,0 +1,2 @@
+@include std;
+@include std/foo;

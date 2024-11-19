@@ -1,0 +1,44 @@
+@web get / {
+  return {html:"root"};
+}
+
+@web get /xyz {
+  return {html:"Hi"};
+}
+
+@web get /xyz / path0 {
+  return {html:"HiPath0"};
+}
+
+@web get /xyz/$id : string/$val : double {
+  return {html:"Hi there" + id};
+}
+
+message M {
+  int x;
+}
+
+@web options / {
+  return {cors:true};
+}
+
+@web put / (M m) {
+  return {html:"Put Root"};
+}
+
+
+@web options /xyz {
+  return {cors:true};
+}
+
+@web put /xyz (M m) {
+  return {html:"Hi XYZ"};
+}
+
+@web options /xyz/uv {
+  return {cors:true};
+}
+
+@web put /xyz/uv (M m) {
+  return {html:"PUT UV"};
+}

@@ -1,0 +1,90 @@
+/*
+* Adama Platform and Language
+* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+* 
+* This program is free software for non-commercial purposes: 
+* you can redistribute it and/or modify it under the terms of the 
+* GNU Affero General Public License as published by the Free Software Foundation,
+* either version 3 of the License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+package ape.translator.tree.expressions.linq;
+
+import ape.translator.env.Environment;
+import ape.translator.env.FreeEnvironment;
+import ape.translator.parser.token.Token;
+import ape.translator.parser.Formatter;
+import ape.translator.tree.expressions.Expression;
+import ape.translator.tree.types.TyType;
+import ape.translator.tree.types.TypeBehavior;
+import ape.translator.tree.types.natives.TyNativeString;
+import ape.translator.tree.types.reactive.TyReactiveRecord;
+import ape.translator.tree.types.traits.details.DetailContainsAnEmbeddedType;
+
+import java.util.function.Consumer;
+
+/** order the given sql expression result by a string containing dynamic compare instructions */
+public class OrderDyn extends LinqExpression {
+  public final Token dynOrderToken;
+  private TyReactiveRecord elementType;
+  private final Expression expr;
+
+  public OrderDyn(final Expression sql, final Token dynOrderToken, final Expression expr) {
+    super(sql);
+    this.dynOrderToken = dynOrderToken;
+    this.expr = expr;
+    ingest(sql);
+    ingest(expr);
+  }
+
+  @Override
+  public void emit(Consumer<Token> yielder) {
+    sql.emit(yielder);
+    yielder.accept(dynOrderToken);
+    expr.emit(yielder);
+  }
+
+  @Override
+  public void format(Formatter formatter) {
+    sql.format(formatter);
+    expr.format(formatter);
+  }
+
+  @Override
+  protected TyType typingInternal(Environment environment, TyType suggestion) {
+    TyType base = sql.typing(environment, suggestion);
+    TyType str = expr.typing(environment, new TyNativeString(TypeBehavior.ReadWriteWithSetGet, null, dynOrderToken));
+    environment.rules.IsString(str, false);
+    if (environment.rules.IsNativeListOfStructure(base, false)) {
+      TyType embedType = ((DetailContainsAnEmbeddedType) base).getEmbeddedType(environment);
+      if (embedType instanceof TyReactiveRecord) {
+        elementType = (TyReactiveRecord) embedType;
+      } else {
+        environment.document.createError(this, "order_dyn requires the list to contain reactive records");
+      }
+      return base;
+    }
+    return null;
+  }
+
+  @Override
+  public void free(FreeEnvironment environment) {
+    sql.free(environment);
+    expr.free(environment);
+  }
+
+  @Override
+  public void writeJava(StringBuilder sb, Environment environment) {
+    sql.writeJava(sb, environment);
+    sb.append(".orderBy(").append(intermediateExpression ? "false" : "true").append(",new DynCmp_RTx").append(elementType.name).append("(");
+    expr.writeJava(sb, environment);
+    sb.append("))");
+  }
+}

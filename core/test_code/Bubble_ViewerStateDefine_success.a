@@ -1,0 +1,4 @@
+view string name;
+string str;
+
+bubble cake = @viewer.name + str;

@@ -1,0 +1,19 @@
+principal owner;
+
+@construct {
+  owner = @who;
+}
+
+message M {
+  int x;
+}
+
+int v;
+
+@construct (M m1) {
+  v += m1.x;
+}
+
+@construct (M m3) {
+  v += m3.x;
+}

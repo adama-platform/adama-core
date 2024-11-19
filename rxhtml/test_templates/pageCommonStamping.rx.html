@@ -1,0 +1,19 @@
+<forest>
+    <template name="t">
+        XYZ
+    </template>
+    <common-page uri:prefix="/f" init:foo="foo" init:show="showing" template:use="t" template:tag="dog" />
+    <page uri="/foo" init:show="keep-me">
+        Yo
+    </page>
+    <page uri="/foody">
+        Food?
+    </page>
+    <page uri="/g">
+        Yo
+    </page>
+    <common-page uri:prefix="/auth" authenticate="some_id" bundle="giggy" />
+    <page uri="/auth/me/yo">
+        Yo
+    </page>
+</forest>

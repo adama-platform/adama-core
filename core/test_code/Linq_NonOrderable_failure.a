@@ -1,0 +1,13 @@
+record X {
+}
+
+record Y {
+  X x;
+}
+
+table<Y> t;
+
+test PrimaryTest {
+  let z1 = (iterate t order by x);
+  let z2 = (iterate t order by z);
+}

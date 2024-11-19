@@ -1,0 +1,5 @@
+record M {
+  bubble x = 1;
+}
+
+bubble y = 2;

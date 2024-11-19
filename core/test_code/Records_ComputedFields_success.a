@@ -1,0 +1,5 @@
+bubble cake1 = 1;
+
+@connected {
+  return @who == @no_one;
+}

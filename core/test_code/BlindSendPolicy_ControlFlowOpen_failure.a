@@ -1,0 +1,7 @@
+@static {
+  send {
+    if (1 == 2) {
+      return false;
+    }
+  }
+}

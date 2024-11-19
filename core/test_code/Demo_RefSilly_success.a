@@ -1,0 +1,71 @@
+// 1/7: Yet another schema l
+
+public principal owner;
+public string name;
+public string description;
+public int viewers;
+
+// 2/7: With tables as the primary collection
+
+record AddOn {
+  public string name;
+  public string description;
+}
+
+table<AddOn> _addons;
+
+// 3/7: create documents with constructors
+
+@static {
+  // anyone can create
+  create { return true; }
+}
+
+message Arg {
+  string name;
+  string description;
+}
+
+@construct(Arg arg) {
+  owner = @who;
+  name = arg.name;
+  description = arg.description;
+}
+
+// 4/7: connecting users
+
+@connected {
+  viewers++;
+  return true;
+}
+
+@disconnected {
+  viewers--;
+}
+
+// 5/7: manipulate the document via messages
+
+message AddAddOn {
+  string name;
+  string description;
+}
+
+channel create_new_add_on(AddAddOn arg) {
+  _addons <- arg;
+}
+
+// 6/7: deletes are handled within document
+
+message Nothing {
+}
+
+channel delete(Nothing arg) {
+  if (owner == @who) {
+    Document.destroy();
+  }
+}
+
+// 7/7: reactive formulas
+
+public formula addons = iterate _addons order by name asc;
+public formula name_uppercase = name.upper();

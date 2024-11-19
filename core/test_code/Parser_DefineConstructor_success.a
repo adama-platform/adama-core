@@ -1,0 +1,7 @@
+@construct {
+}
+
+message M {}
+
+@construct (M m1) {
+}

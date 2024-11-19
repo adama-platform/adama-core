@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ape</groupId>
+    <artifactId>base</artifactId>
+    <version>MAIN</version>
+    <inceptionYear>2020</inceptionYear>
+    <packaging>pom</packaging>
+    <url>http://www.adama-platform.com/</url>
+    <modules>
+        <module>core</module>
+        <module>web</module>
+        <module>errors</module>
+        <module>common</module>
+        <module>data-caravan</module>
+        <module>rxhtml</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+        <jdk.version>17</jdk.version>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.release>17</maven.compiler.release>
+    </properties>
+</project>

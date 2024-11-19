@@ -1,0 +1,20 @@
+@connected {
+  return true;
+}
+
+policy foo {
+  return true;
+}
+
+record R {
+  use_policy<foo> int x;
+}
+
+table<R> r;
+
+use_policy<foo> int z2;
+
+@construct {
+  r <- {x:1};
+}
+

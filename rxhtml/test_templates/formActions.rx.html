@@ -1,0 +1,98 @@
+<forest>
+    <page uri="/">
+        Simple Page
+        <form rx:action="adama:sign-in" rx:failure-variable="faied_to_signin" rx:forward="/yes">
+            <input name="email" type="email" />
+            <input name="password" type="password" />
+            <input name="remember" type="checkbox" />
+            <input type="submit" />
+        </form>
+        <form rx:action="document:sign-in" rx:failure-variable="docnope" rx:forward="/w00t">
+            <input type="hidden" name="space" value="s "/>
+            <input type="hidden" name="key" value="k" />
+            <input name="username" type="username" />
+            <input name="password" type="password" />
+            <input name="remember" type="checkbox" />
+            <input type="submit" />
+        </form>
+        <form rx:action="document:sign-in-reset" rx:failure-variable="docnope" rx:forward="/w00t">
+            <input type="hidden" name="space" value="s "/>
+            <input type="hidden" name="key" value="k" />
+            <input name="username" type="username" />
+            <input name="password" type="password" />
+            <input name="new_password" type="password" />
+            <input name="remember" type="checkbox" />
+            <input type="submit" />
+        </form>
+        <form rx:action="domain:sign-in" rx:failure-variable="docnope1" rx:forward="/w00t">
+            <input name="username" type="username" />
+            <input name="password" type="password" />
+            <input name="remember" type="checkbox" />
+            <input type="submit" />
+        </form>
+        <form rx:action="domain:sign-in-reset" rx:failure-variable="docnope2" rx:forward="/w00t">
+            <input name="username" type="username" />
+            <input name="password" type="password" />
+            <input name="new_password" type="password" />
+            <input name="remember" type="checkbox" />
+            <input type="submit" />
+        </form>
+        <form rx:action="document:put" rx:failure="raise:fail te:msg">
+            <input type="submit" />
+        </form>
+        <form rx:action="document:put" rx:failure="raise:fail te:view:msg">
+            <input type="submit" />
+        </form>
+        <form rx:action="document:put" rx:failure="raise:fail te:data:msg">
+            <input type="submit" />
+        </form>
+        <form rx:action="custom:foo">
+            <input type="submit" />
+        </form>
+        <form rx:action="adama:sign-up">
+            <input name="email" type="email"/>
+            <input type="submit" />
+        </form>
+        <form rx:action="adama:set-password">
+            <input name="email" type="email" />
+            <input name="password" type="password" />
+            <input name="code" />
+            <input type="submit" />
+        </form>
+        <form rx:action="send:channel">
+            <input name="param" />
+            <input type="submit" />
+        </form>
+        <form rx:action="send-once:channel">
+            <input name="param" />
+            <input type="submit" />
+        </form>
+        <form rx:action="copy:xyz">
+            <input name="param" />
+            <input type="submit" />
+        </form>
+        <form rx:action="adama:upload-asset">
+            <input name="space" />
+            <input name="key" />
+            <input name="files" />
+            <input type="submit" />
+        </form>
+
+        <form rx:action="domain:upload-asset">
+            <input name="files" />
+            <input type="submit" />
+        </form>
+
+        <form rx:action="adama:upload-asset" rx:success="reset">
+            <input name="space" />
+            <input name="key" />
+            <input name="files" />
+            <input type="submit" />
+        </form>
+
+        <form rx:action="dynamic:send" rx:success="reset">
+            <input name="__channel" value="the_channel" type="hidden" />
+            <input type="submit" />
+        </form>
+    </page>
+</forest>

@@ -1,0 +1,44 @@
+enum Z { A, B, C }
+function x() -> map<int, int> {
+  map<int, int> m;
+  m[1] = 2;
+  m[2] = 3;
+  return m;
+}
+
+function goo(readonly map<int, int> m) -> int {
+  return m.size();
+}
+
+public formula zoop = x();
+
+int z = 100;
+int count = 0;
+int count_after_delete;
+public int rv;
+@construct {
+  map<int, int> foo;
+  foo[123] = 42;
+  z = 0;
+  if (foo[123] as x) {
+    z = x;
+  }
+  map<int, int> g1 = foo;
+  map<int, int> g2;
+  g2 = foo;
+  transition #nice;
+  foo[42] = 13;
+  g2[500] = 100;
+  foo.insert(g2).insert(g1);
+  count = foo.size();
+  foo[123].delete();
+  count_after_delete = foo.size();
+  if (g2.remove(500) as vvv) {
+    rv = vvv;
+  }
+}
+
+#nice {
+  map<Z, int> g;
+  g[Z::A] = 123;
+}

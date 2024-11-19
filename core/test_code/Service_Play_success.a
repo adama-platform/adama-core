@@ -1,0 +1,13 @@
+message SendRequest {
+  string phone;
+  string message;
+}
+
+message SendResponse {
+}
+
+service sms {
+  internal = "twilio.com";
+
+  method<SendRequest, SendResponse> send;
+}

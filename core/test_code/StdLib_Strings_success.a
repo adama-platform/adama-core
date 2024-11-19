@@ -1,0 +1,71 @@
+public string x1;
+public string x2;
+public string x3;
+public string x4;
+public string x5;
+public string x6;
+public string x7;
+public string x8;
+public string x9;
+public string x10;
+
+public bool checkF;
+public bool checkT;
+public int cp;
+
+public string y1;
+public string y2;
+public string y3;
+public string y4;
+public formula y4_cp = y4.codepoints();
+public formula r2023 = (2023).to_roman();
+public maybe<string> join_maybe;
+public formula zzz1 = "Justice of Doom".initialsOf(false);
+public formula zzz2 = "Justice of Doom".initialsOf(true);
+public formula zzz3 = @maybe("Justice of Doom").initialsOf(false);
+public formula zzz4 = @maybe("Justice of Doom").initialsOf(true);
+public formula zzz5 = @maybe<string>.initialsOf(false);
+public formula sug1 = "CreditCard".camelject(" ");
+public formula sug2 = "CreditCard".camelject("_").lower();
+
+record S {
+  maybe<string> item;
+}
+table<S> _s;
+
+@construct {
+  x1 = "123".reverse();
+  x2 = "m".multiply(4);
+  x3 = (x2 + "z").multiply(2);
+  x4 = x3.left(2).getOrDefaultTo("");
+  x5 = "54321".left(1000).right(2).reverse().multiply(3).right(4).multiply(3).reverse().getOrDefaultTo("NOPE");
+  x6 = "OK".left(-1).reverse().right(1).getOrDefaultTo("NOPE");
+  x7 = "OK".right(-1).multiply(3).left(1).getOrDefaultTo("NOPE");
+  x8 = "OKOK".right(3).left(2).getOrDefaultTo("Noooooo");
+  x9 = " abc ".trim().mid(2, 1).getOrDefaultTo("Noooooo");
+  x10 = "abcdefg".substr(1, 4).getOrDefaultTo("Noooooo").upper();
+  string x11 = "secret".passwordHash();
+  checkF = x11.passwordCheck("nope");
+  checkT = x11.passwordCheck("secret");
+  cp = "猿も木から落ちる".codepointAt(0).getOrDefaultTo(-1);
+  y1 = "ABCDEFABCDEFABCDEF".removeAll("DEF");
+  y2 = "ABCDEFABCDEFABCDEF".replaceAll("DEF", "XYZ");
+  y3 = ["X", "Y"].concat();
+  y4 = ["X", "Y"].join(", ");
+  _s <- {item:@maybe<string>};
+  _s <- {item:@maybe<string>};
+  _s <- {item:"x"};
+  _s <- {item:@maybe<string>};
+  _s <- {item:"y"};
+  _s <- {item:"z"};
+  join_maybe = (iterate _s).item.join(", ");
+}
+
+function cleanup(string x) -> string {
+  map<string, string> r;
+  r["xyz"] = "abc";
+  r["abc"] = "xyz";
+  return x.bulkReplaceAll("!!", r);
+}
+
+public formula bulk_replace = cleanup("hi [!!xyz!!], it's [!!abc!!]");

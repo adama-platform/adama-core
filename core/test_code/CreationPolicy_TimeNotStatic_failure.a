@@ -1,0 +1,6 @@
+@static {
+  create {
+    let x = Time.now();
+    return false;
+  }
+}

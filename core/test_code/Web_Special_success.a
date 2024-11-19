@@ -1,0 +1,22 @@
+@web get / {
+  return {json:{x:@parameters}};
+}
+
+@web get /path {
+  if (@headers["content"] as c) {
+    return {json:{x:"Hi"}};
+  }
+  return {json:{error:true}};
+}
+
+@web get /sign {
+  return {sign:"" + 1};
+}
+
+@web get /id {
+  return {identity:"anonymous:alice"};
+}
+
+@web get /csv {
+  return { csv: "" };
+}

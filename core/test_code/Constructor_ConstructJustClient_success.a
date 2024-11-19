@@ -1,0 +1,5 @@
+principal owner;
+
+@construct {
+  owner = @who;
+}

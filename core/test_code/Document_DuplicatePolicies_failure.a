@@ -1,0 +1,7 @@
+policy foo {
+  return true;
+}
+
+policy foo {
+  return true;
+}

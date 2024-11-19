@@ -1,0 +1,9 @@
+record X {
+  int id;
+}
+
+table<X> tbl;
+
+@construct {
+  tbl <- {id:500};
+}

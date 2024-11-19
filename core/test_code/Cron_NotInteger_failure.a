@@ -1,0 +1,3 @@
+@cron foo daily 8:x {
+
+}

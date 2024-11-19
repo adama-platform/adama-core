@@ -1,0 +1,14 @@
+record X {
+  int x;
+  int y;
+}
+
+table<X> tbl;
+
+@construct {
+  int z1;
+  if (true) {
+    tbl <- {x:1, y:2} as z1;
+    z1 = 42;
+  }
+}

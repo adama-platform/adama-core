@@ -1,0 +1,35 @@
+message X {
+  int x;
+  int y;
+}
+
+channel<X> chan;
+
+principal person;
+
+@construct {
+  person = @who;
+  transition #ask;
+}
+
+public int z;
+
+#ask {
+  let r = chan.fetchTimed(person, 0.25).await();
+  if (r as v) {
+    z  = v.x + v.y;
+  } else {
+    z = -1;
+  }
+}
+
+test drive_it {
+  assert !(@blocked);
+  @step;
+  assert @blocked;
+  @step;
+  @pump {x:4, y:8} into chan;
+  @step;
+  assert !(@blocked);
+  assert z == 12;
+}

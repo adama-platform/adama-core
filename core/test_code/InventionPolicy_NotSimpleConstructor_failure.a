@@ -1,0 +1,11 @@
+@static {
+  invent {
+    return true;
+  }
+}
+
+message X {}
+
+@construct (X arg) {
+
+}

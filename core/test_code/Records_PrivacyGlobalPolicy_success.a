@@ -1,0 +1,23 @@
+@connected {
+  return @who == @no_one;
+}
+
+private principal owner = @no_one;
+
+policy saneG {
+  return @who == @no_one;
+}
+
+record X {
+  use_policy<saneL> int x;
+  use_policy<saneG> int y;
+
+  policy saneL {
+    return x < y;
+  }
+
+  require saneL;
+  require saneG;
+}
+
+

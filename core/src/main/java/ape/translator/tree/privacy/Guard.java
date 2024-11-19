@@ -1,0 +1,73 @@
+/*
+* Adama Platform and Language
+* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+* 
+* This program is free software for non-commercial purposes: 
+* you can redistribute it and/or modify it under the terms of the 
+* GNU Affero General Public License as published by the Free Software Foundation,
+* either version 3 of the License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+package ape.translator.tree.privacy;
+
+import ape.runtime.json.JsonStreamWriter;
+import ape.translator.parser.token.Token;
+import ape.translator.tree.common.DocumentPosition;
+import ape.translator.parser.Formatter;
+import ape.translator.tree.common.TokenizedItem;
+
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+/** a way to indicate that a bubble is protected by data */
+public class Guard extends DocumentPosition {
+  public final Token open;
+  public final ArrayList<TokenizedItem<String>> policies;
+  public final Token switchToFilter;
+  public final ArrayList<TokenizedItem<String>> filters;
+  public final Token close;
+
+  public Guard(Token open, ArrayList<TokenizedItem<String>> policies, Token switchToFilter, ArrayList<TokenizedItem<String>> filters, Token close) {
+    this.open = open;
+    this.policies = policies;
+    this.switchToFilter = switchToFilter;
+    this.filters = filters;
+    this.close = close;
+    ingest(open);
+    ingest(close);
+  }
+
+  public void emit(final Consumer<Token> yielder) {
+    yielder.accept(open);
+    for (TokenizedItem<String> policy : policies) {
+      policy.emitBefore(yielder);
+      policy.emitAfter(yielder);
+    }
+    if (switchToFilter != null) {
+      yielder.accept(switchToFilter);
+      for (TokenizedItem<String> policy : filters) {
+        policy.emitBefore(yielder);
+        policy.emitAfter(yielder);
+      }
+    }
+    yielder.accept(close);
+  }
+
+  public void format(Formatter formatter) {
+  }
+
+  public void writeReflect(JsonStreamWriter writer) {
+    writer.beginArray();
+    for (TokenizedItem<String> policy : policies) {
+      writer.writeString(policy.item);
+    }
+    writer.endArray();
+  }
+}

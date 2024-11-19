@@ -1,0 +1,5 @@
+@static {
+  invent {
+    return true;
+  }
+}

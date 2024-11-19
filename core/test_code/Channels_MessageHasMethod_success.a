@@ -1,0 +1,12 @@
+message X {
+  int val;
+  method succ() -> int {
+    return val + 1;
+  }
+}
+
+public dynamic z;
+
+@construct {
+  z = @convert<X>({val:32}).to_dynamic();
+}
