@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator.parser;
 
 import ape.translator.env2.Scope;
@@ -27,6 +33,10 @@ import ape.translator.parser.token.TokenEngine;
 import ape.translator.tree.SymbolIndex;
 import ape.translator.tree.common.TokenizedItem;
 import ape.translator.tree.definitions.*;
+import ape.translator.tree.definitions.client.Endpoint;
+import ape.translator.tree.definitions.client.Group;
+import ape.translator.tree.definitions.client.Header;
+import ape.translator.tree.definitions.client.Method;
 import ape.translator.tree.expressions.*;
 import ape.translator.tree.expressions.constants.*;
 import ape.translator.tree.expressions.linq.*;
@@ -38,35 +48,23 @@ import ape.translator.tree.statements.testing.*;
 import ape.translator.tree.types.natives.*;
 import ape.translator.tree.types.reactive.*;
 import ape.translator.tree.types.structures.*;
-import ape.translator.tree.definitions.*;
 import ape.translator.tree.definitions.config.DefineDocumentEvent;
 import ape.translator.tree.definitions.config.DocumentConfig;
 import ape.translator.tree.definitions.config.StaticPiece;
 import ape.translator.tree.definitions.web.Uri;
 import ape.translator.tree.definitions.web.WebGuard;
-import ape.translator.tree.expressions.*;
-import ape.translator.tree.expressions.constants.*;
-import ape.translator.tree.expressions.linq.*;
-import ape.translator.tree.expressions.operators.*;
 import ape.translator.tree.expressions.testing.EnvLookupName;
 import ape.translator.tree.expressions.testing.EnvStatus;
-import ape.translator.tree.privacy.*;
-import ape.translator.tree.statements.*;
-import ape.translator.tree.statements.control.*;
 import ape.translator.tree.statements.loops.DoWhile;
 import ape.translator.tree.statements.loops.For;
 import ape.translator.tree.statements.loops.ForEach;
 import ape.translator.tree.statements.loops.While;
-import ape.translator.tree.statements.testing.*;
 import ape.translator.tree.types.TyTablePtr;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeAnnotation;
 import ape.translator.tree.types.TypeBehavior;
-import ape.translator.tree.types.natives.*;
 import ape.translator.tree.types.natives.functions.FunctionPaint;
-import ape.translator.tree.types.reactive.*;
 import ape.translator.tree.types.shared.EnumStorage;
-import ape.translator.tree.types.structures.*;
 import ape.translator.tree.types.traits.CanBeNativeArray;
 
 import java.time.ZonedDateTime;
@@ -800,6 +798,121 @@ public class Parser {
     return (doc) -> doc.add(link, rootScope);
   }
 
+  private void throw_invalid_http(Token t) throws AdamaLangException {
+    if (t == null) {
+      throw new ParseException("Expected http verb, header, secret_header, or {; got end of stream", tokens.getLastTokenIfAvailable());
+    }
+    throw new ParseException("Expected http verb, header, secret_header, or {; got '%s'".formatted(t.text), t);
+  }
+
+  private Token str_uri() throws AdamaLangException {
+    Token token = tokens.pop();
+    if (token == null) {
+      throw new ParseException("expected a string literal as a uri, got end of stream instead", tokens.getLastTokenIfAvailable());
+    }
+    if (!token.isStringLiteral()) {
+      throw new ParseException("expected a string literal as a uri, got '%s'".formatted(token.text), token);
+    }
+    return token;
+  }
+
+  public Group client_group(Token open, Group parent) throws AdamaLangException {
+    Group group = new Group(parent, open);
+    Token nextOrClose = tokens.pop();
+    if (nextOrClose == null) {
+      throw_invalid_http(nextOrClose);
+    }
+    while (!nextOrClose.isSymbolWithTextEq("}")) {
+      if (nextOrClose.isIdentifier("get", "head")) {
+        Token uri = str_uri();
+        Token openTypes = tokens.popIf((t) -> t.isSymbolWithTextEq("<"));
+        Token queryType = null;
+        Token closeTypes = null;
+        if (openTypes != null) {
+          queryType = id();
+          closeTypes = consumeExpectedSymbol(">");
+        }
+        Token name = id();
+        Token arrow = tokens.popNextAdjSymbolPairIf(t -> t.isSymbolWithTextEq("->"));
+        Token returnType = null;
+        if (arrow != null) {
+          returnType = id();
+        }
+        Token semicolon = consumeExpectedSymbol(";");
+        group.add(new Method(nextOrClose, uri, openTypes, queryType, null, null, closeTypes, name, arrow, returnType, semicolon));
+      } else if (nextOrClose.isIdentifier("put", "post", "delete")) {
+        Token uri = str_uri();
+        Token openTypes = tokens.popIf((t) -> t.isSymbolWithTextEq("<"));
+        Token queryType = null;
+        Token comma = null;
+        Token bodyType = null;
+        Token closeTypes = null;
+        if (openTypes != null) {
+          queryType = id();
+          comma = tokens.popIf((t) -> t.isSymbolWithTextEq(","));
+          if (comma != null) {
+            bodyType = id();
+          }
+          closeTypes = consumeExpectedSymbol(">");
+        }
+        Token name = id();
+        Token arrow = tokens.popNextAdjSymbolPairIf(t -> t.isSymbolWithTextEq("->"));
+        Token returnType = null;
+        if (arrow != null) {
+          returnType = id();
+        }
+        Token semicolon = consumeExpectedSymbol(";");
+        group.add(new Method(nextOrClose, uri, openTypes, queryType, comma, bodyType, closeTypes, name, arrow, returnType, semicolon));
+      } else if (nextOrClose.isIdentifier("header", "secret_header", "secret")) {
+        boolean secret = nextOrClose.isIdentifier("secret_header", "secret");
+        Token name = id();
+        Token equals = consumeExpectedSymbol("=");
+        Token value = tokens.pop();
+        if (value == null) {
+          throw new ParseException("Parser was expecting a string literal after '=', but got end of stream instead.", equals);
+        }
+        if (!value.isStringLiteral()) {
+          throw new ParseException("Parse was expecting a string literal, but got '%s'".formatted(value.text), value);
+        }
+        Token semicolon = consumeExpectedSymbol(";");
+        group.add(new Header(nextOrClose, secret, name, equals, value, semicolon));
+      } else if (nextOrClose.isIdentifier("endpoint")) {
+        Token begin = tokens.popIf((t) -> t.isSymbolWithTextEq("["));
+        Token version = null;
+        Token end = null;
+        if (begin != null) {
+          version = tokens.popIf((t) -> t.isIdentifier("dev", "beta", "prod"));
+          if (version == null) {
+            throw new ParseException("Unable to recognize the version of the endpoint; must be either dev, beta, or prod", tokens.getLastTokenIfAvailable());
+          }
+          end = consumeExpectedSymbol("]");
+        }
+        Token endpoint = str_uri();
+        Token semicolon = consumeExpectedSymbol(";");
+        group.add(new Endpoint(nextOrClose, begin, version, end, endpoint, semicolon));
+      } else if (nextOrClose.isSymbolWithTextEq("{")) {
+        Group child = client_group(nextOrClose, group);
+        group.add(child);
+      } else {
+        throw_invalid_http(nextOrClose);
+      }
+      nextOrClose = tokens.pop();
+      if (nextOrClose == null) {
+        throw_invalid_http(nextOrClose);
+      }
+    }
+    group.end(nextOrClose);
+    return group;
+  }
+
+  public Consumer<TopLevelDocumentHandler> define_client(Token client) throws AdamaLangException {
+    Token name = id();
+    Token open = consumeExpectedSymbol("{");
+    Group root = client_group(open, null);
+    DefineClientService dhs = new DefineClientService(client, name, root);
+    return (doc) -> doc.add(dhs);
+  }
+
   public Consumer<TopLevelDocumentHandler> define_service(Token serviceToken) throws AdamaLangException {
     Token name = id();
     Token open = consumeExpectedSymbol("{");
@@ -867,7 +980,7 @@ public class Parser {
     }
     op = tokens.popIf(t -> t.isKeyword("enum", "@construct", "@connected", "@authorization", "@authorize", "@password", "@disconnected", "@delete", "@attached", "@static", "@can_attach", "@web", "@include", "@import", "@link", "@load", "@cron", "@traffic"));
     if (op == null) {
-      op = tokens.popIf(t -> t.isIdentifier("record", "message", "channel", "rpc", "function", "procedure", "test", "import", "view", "policy", "filter", "bubble", "dispatch", "service", "replication", "metric", "assoc", "join", "template"));
+      op = tokens.popIf(t -> t.isIdentifier("record", "message", "channel", "rpc", "function", "procedure", "test", "import", "view", "policy", "filter", "bubble", "dispatch", "service", "client", "replication", "metric", "assoc", "join", "template"));
     }
     if (op != null) {
       switch (op.text) {
@@ -924,6 +1037,8 @@ public class Parser {
           return define_traffic(op);
         case "service":
           return define_service(op);
+        case "client":
+          return define_client(op);
         case "view": {
           final var ntype = native_type(false);
           final var name = id();
@@ -1932,7 +2047,6 @@ public class Parser {
     switch (token.text) {
       case "bool":
         return new TyNativeBoolean(behavior, readonlyToken, token);
-      case "client":
       case "principal":
         return new TyNativePrincipal(behavior, readonlyToken, token);
       case "secure": {
@@ -2098,7 +2212,6 @@ public class Parser {
     switch (token.text) {
       case "bool":
         return new TyReactiveBoolean(readonly, token);
-      case "client":
       case "principal":
         return new TyReactivePrincipal(readonly, token);
       case "asset":
@@ -2343,7 +2456,6 @@ public class Parser {
   public boolean is_token_native_declare(Token token) {
     switch (token.text) {
       case "bool":
-      case "client":
       case "secure":
       case "principal":
       case "dynamic":

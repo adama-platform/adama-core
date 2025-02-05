@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime.async;
 
 import ape.runtime.natives.NtMaybe;
@@ -45,8 +51,10 @@ public class Sink<T> {
   public SimpleFuture<T> dequeue(final NtPrincipal who) {
     final var queue = queueFor(who);
     T value = null;
-    if (queue.queue.size() > 0) {
-      value = queue.queue.remove(0).item;
+    if (!queue.queue.isEmpty()) {
+      ClientChannelQueuePair pair = queue.queue.remove(0);
+      pair.task.markUsed();
+      value = pair.item;
     }
     return new SimpleFuture<>(channel, who, value);
   }
@@ -66,10 +74,11 @@ public class Sink<T> {
   public SimpleFuture<T> dequeueIf(final NtPrincipal who, long timestampLimit) {
     final var queue = queueFor(who);
     T value = null;
-    if (queue.queue.size() > 0) {
+    if (!queue.queue.isEmpty()) {
       ClientChannelQueuePair pair = queue.queue.get(0);
-      if (pair.timestamp <= timestampLimit) {
+      if (pair.task.timestamp <= timestampLimit) {
         queue.queue.remove(0);
+        pair.task.markUsed();
         value = pair.item;
       }
     }
@@ -80,24 +89,26 @@ public class Sink<T> {
   public SimpleFuture<NtMaybe<T>> dequeueMaybe(final NtPrincipal who) {
     final var queue = queueFor(who);
     NtMaybe<T> value = null;
-    if (queue.queue.size() > 0) {
-      value = new NtMaybe<>(queue.queue.remove(0).item);
+    if (!queue.queue.isEmpty()) {
+      ClientChannelQueuePair pair = queue.queue.remove(0);
+      value = new NtMaybe<>(pair.item);
+      pair.task.markUsed();
     }
     return new SimpleFuture<>(channel, who, value);
   }
 
   /** enqueue the given task and message; the task has the user in it */
   public void enqueue(final AsyncTask task, final T message) {
-    queueFor(task.who).queue.add(new ClientChannelQueuePair(message, task.timestamp));
+    queueFor(task.who).queue.add(new ClientChannelQueuePair(message, task));
   }
 
   private class ClientChannelQueuePair {
     public final T item;
-    public final long timestamp;
+    public final AsyncTask task;
 
-    public ClientChannelQueuePair(T item, long timestamp) {
+    public ClientChannelQueuePair(T item, AsyncTask task) {
       this.item = item;
-      this.timestamp = timestamp;
+      this.task = task;
     }
   }
 

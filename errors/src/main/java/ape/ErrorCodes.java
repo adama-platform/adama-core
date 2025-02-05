@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape;
 
 /** centralized listing of all error codes */
@@ -566,6 +572,8 @@ public class ErrorCodes {
   public static final int WEB_VOID_CALLBACK_NOT_200 = 931015;
   public static final int WEB_STRING_CALLBACK_NOT_200 = 979143;
   public static final int WEB_BYTEARRAY_CALLBACK_NOT_200 = 924928;
+  public static final int WEB_CALLBACK_NOT_SUCCESS_NOR_REDIRECT = 979144;
+  public static final int WEB_CALLBACK_REDIRECT_WITHOUT_LOCATION = 979141;
 
   public static final int UPLOAD_SCAN_FILE_FAILURE = 903364;
   public static final int BACKUP_FILE_FAILURE = 998599;
@@ -660,9 +668,7 @@ public class ErrorCodes {
   public static final int SERVICE_CONFIG_BAD_ENCRYPT_STRING_NO_KEYID_ETC = 786441;
   public static final int SERVICE_CONFIG_BAD_ENCRYPT_STRING_KEYID_INVALID = 716812;
   public static final int SERVICE_CONFIG_BAD_PRIVATE_KEY_BUNDLE = 785601;
-  public static final int SERVICE_CONFIG_BAD_ENCRYPT_STRING_FAILED_SECRET_KEY_LOOKUP = 791567;
   public static final int SERVICE_CONFIG_BAD_ENCRYPT_STRING_FAILED_DECRYPTION = 782348;
-  public static final int MYSQL_FAILED_FINDING_SECRET_KEY = 786436;
   public static final int MYSQL_FAILED_FINDING_SENTINEL_ASPECT = 790704;
   public static final int MYSQL_FAILED_FINDING_SENTINEL_COUNT = 775372;
 
@@ -674,8 +680,12 @@ public class ErrorCodes {
   public static final int NET_CONNECT_FAILED_TO_CONNECT = 724001;
   public static final int NET_FINDER_GAVE_UP = 705583;
   public static final int NET_FINDER_FAILED_PICK_HOST = 776396;
-  public static final int NET_FINDER_ROUTER_REGION_NOT_EXPECTED = 724012;
-  public static final int NET_FINDER_ROUTER_NULL_MACHINE = 783395;
+
+
+  public static final int HEADER_DECRYPTOR_INVALID_SECRET_FORMAT = 791567;
+  public static final int HEADER_DECRYPTOR_BUNDLE_NOT_FOUND = 786436;
+  public static final int HEADER_DECRYPTOR_INVALID_BUNDLE_ID = 724012;
+  public static final int HEADER_DECRYPTOR_FAILED_DECRYPTION = 783395;
 
   public static final int ADAMA_NET_PING_TIMEOUT = 773152;
   public static final int ADAMA_NET_PING_REJECTED = 786466;
@@ -810,18 +820,16 @@ public class ErrorCodes {
    * 768831 782143 723775 798520 756543 725823 786239 724799 718652 774963 737075 711475 762673
    * 718640 728880 750384 705329 796464 774967 773943 770869 787250 770895 774991 779084 739148
    * 790342 741184 783187 793425 771948 705400 786296 788351 794488 721791 786303 724860 746364
-   * 789360 796531 787315 799628 789390 783247 798600 773007 712591 788361 774028 725900 790403
+   * 789360 796531 787315 799628 789390 783247 798600 773007 788361 774028 725900 790403
    * 787331 799640 782239 770991 705452 724908 787361 790462 789433 784316 757683 753587 721841
    * 786359 787404 797644 732107 791501 782280 753608 774088 741320 792527 753615 745423 785358
    * 784334 786382 795594 721868 735180 781260 779212 720835 787397 791493 790471 721856 786375
    * 789441 709575 794562 792515 749508 720859 787423 779231 705503 798683 753628 737244 712659
    * 783313 734160 795601 799725 788463 736239 779247 742383 784367 723951 705517 770028 705507
-   * 720867 717792 720871 799714 726011 796668 717816 740351
+   * 720867 717792 720871 799714 726011 796668 717816
    */
 
   // TODO: nuke prior WAL implementation
-  public static final int CARAVAN_KEY_NOT_LOADED_PATCH = 707675;
-  public static final int CARAVAN_KEY_NOT_LOADED_COMPUTE = 790622;
   public static final int CARAVAN_KEY_NOT_LOADED_SNAPSHOT = 790623;
 
   public static final int GRPC_HANDLER_EXCEPTION = 734211;
@@ -843,12 +851,6 @@ public class ErrorCodes {
   public static final int DISK_PATCH_IO_EXCEPTION = 777244;
   public static final int DISK_UNABLE_TO_DELETE = 769042;
   public static final int DISK_UNABLE_TO_COMPACT_FILE_NOT_FOUND = 784401;
-  public static final int DISK_UNABLE_TO_COMPACT_NON_POSITIVE_HISTORY = 777259;
-  public static final int DISK_COMPACT_READ_IO_EXCEPTION = 736272;
-  public static final int DISK_COMPACT_WRITE_IO_EXCEPTION = 739351;
-  public static final int DISK_UNABLE_TO_COMPUTE_FILE_NOT_FOUND = 790544;
-
-  public static final int DISK_COMPUTE_HEADPATCH_NOTHING_TO_DO = 725039;
 
   public static final int VAPID_NOT_FOUND_FOR_DOMAIN = 792643;
   public static final int CONFIG_NOT_FOUND_FOR_DOMAIN = 736243;
@@ -884,4 +886,15 @@ public class ErrorCodes {
   public static final int APEX_DOMAIN_CLAIM_NOT_DEVELOPER = 753651;
 
   public static final int MYSQL_WAKE_EXCEPTION = 901104;
+
+  public static final int OVERLORD_FAILED_LOG_KEY_EXTRACTION = 712591;
+  public static final int OVERLORD_FAILED_EXECUTE_CURRENT_JOB = 740351;
+  public static final int OVERLORD_FAILED_WRITE_INTENT = 725039;
+  public static final int OVERLORD_FAILED_LOG_DELETE = 790544;
+  public static final int OVERLORD_FAILED_BACKUP_DELETE = 739351;
+  public static final int OVERLORD_FAILED_BACKUP_KEY_EXTRACTION = 736272;
+  public static final int OVERLORD_FAILED_LIST_SPACES = 777259;
+
+  public static final int GENERIC_CLIENT_NOT_AVAILABLE = 790622;
+  public static final int GENERIC_CLIENT_FAILED_PARSING = 707675;
 }

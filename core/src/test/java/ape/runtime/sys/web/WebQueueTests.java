@@ -1,26 +1,33 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime.sys.web;
 
 import ape.common.Callback;
 import ape.common.ErrorCodeException;
 import ape.common.Json;
 import ape.runtime.async.EphemeralFuture;
+import ape.runtime.async.IdHistoryLog;
 import ape.runtime.data.Key;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
@@ -48,7 +55,7 @@ public class WebQueueTests {
   public void coverage_cancel() {
     MockLivingDocument doc = new MockLivingDocument();
     MockDeliverer deliverer = new MockDeliverer();
-    ServiceRegistry registry = new ServiceRegistry();
+    ServiceRegistry registry = new ServiceRegistry("space");
     doc.__lateBind("space", "key", deliverer, registry);
     DelayParent delay = new DelayParent();
     RxCache cache = new RxCache(doc, delay);
@@ -67,7 +74,7 @@ public class WebQueueTests {
       Json.parseJsonObject("{" + writer.toString() + "}");
     }
 
-    queue.queue(context, new WebPut(context, "/uri", new TreeMap<>(), new NtDynamic("{}"), "{\"body\":123}"), fut, cache, delay);
+    queue.queue(context, new WebPut(context, "/uri", new TreeMap<>(), new NtDynamic("{}"), "{\"body\":123}"), fut, cache, new IdHistoryLog(), delay);
     queue.dirty();
 
     {
@@ -97,7 +104,7 @@ public class WebQueueTests {
   public void coverage_delivery_put() {
     MockLivingDocument doc = new MockLivingDocument();
     MockDeliverer deliverer = new MockDeliverer();
-    ServiceRegistry registry = new ServiceRegistry();
+    ServiceRegistry registry = new ServiceRegistry("space");
     doc.__lateBind("space", "key", deliverer, registry);
     DelayParent delay = new DelayParent();
     RxCache cache = new RxCache(doc, delay);
@@ -119,7 +126,7 @@ public class WebQueueTests {
       Json.parseJsonObject("{" + writer.toString() + "}");
       System.err.println("{" + writer.toString() + "}");
     }
-    queue.queue(context, new WebPut(context, "/uri", new TreeMap<>(), new NtDynamic("{}"), "{\"body\":123}"), fut, cache, delay);
+    queue.queue(context, new WebPut(context, "/uri", new TreeMap<>(), new NtDynamic("{}"), "{\"body\":123}"), fut, cache, new IdHistoryLog(), delay);
     queue.dirty();
     {
       JsonStreamWriter writer = new JsonStreamWriter();
@@ -187,7 +194,7 @@ public class WebQueueTests {
   public void coverage_delivery_instant() {
     MockLivingDocument doc = new MockLivingDocument();
     MockDeliverer deliverer = new MockDeliverer();
-    ServiceRegistry registry = new ServiceRegistry();
+    ServiceRegistry registry = new ServiceRegistry("space");
     doc.__lateBind("space", "key", deliverer, registry);
     DelayParent delay = new DelayParent();
     RxCache cache = new RxCache(doc, delay);
@@ -206,7 +213,7 @@ public class WebQueueTests {
       Json.parseJsonObject("{" + writer.toString() + "}");
       System.err.println("{" + writer.toString() + "}");
     }
-    queue.queue(context, new WebPut(context, "/uri", new TreeMap<>(), new NtDynamic("{}"), "{\"body\":123}"), fut, cache, delay);
+    queue.queue(context, new WebPut(context, "/uri", new TreeMap<>(), new NtDynamic("{}"), "{\"body\":123}"), fut, cache, new IdHistoryLog(), delay);
     queue.dirty();
     {
       JsonStreamWriter writer = new JsonStreamWriter();
@@ -254,7 +261,7 @@ public class WebQueueTests {
   public void coverage_delivery_delete() {
     MockLivingDocument doc = new MockLivingDocument();
     MockDeliverer deliverer = new MockDeliverer();
-    ServiceRegistry registry = new ServiceRegistry();
+    ServiceRegistry registry = new ServiceRegistry("space");
     doc.__lateBind("space", "key", deliverer, registry);
     DelayParent delay = new DelayParent();
     RxCache cache = new RxCache(doc, delay);
@@ -276,7 +283,7 @@ public class WebQueueTests {
       Json.parseJsonObject("{" + writer.toString() + "}");
       System.err.println("{" + writer.toString() + "}");
     }
-    queue.queue(context, new WebDelete(context, "/uri", new TreeMap<>(), new NtDynamic("{}")), fut, cache, delay);
+    queue.queue(context, new WebDelete(context, "/uri", new TreeMap<>(), new NtDynamic("{}")), fut, cache, new IdHistoryLog(), delay);
     queue.dirty();
     {
       JsonStreamWriter writer = new JsonStreamWriter();

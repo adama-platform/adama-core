@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator;
 
 import org.junit.Test;
@@ -102,6 +108,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -216,6 +223,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -302,6 +312,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -395,7 +408,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    max_db_seq.__revert();");
     gold.append("\n    /* root */");
@@ -634,6 +646,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -812,25 +825,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"max_db_seq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"NotifyWrite\":{\"nature\":\"native_message\",\"name\":\"NotifyWrite\",\"anonymous\":false,\"fields\":{\"db_seq\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"notify\":\"NotifyWrite\"},\"channels-privacy\":{\"notify\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:2608");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"max_db_seq\":0},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"max_db_seq\":0},\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -951,6 +964,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -1075,6 +1089,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -1161,6 +1178,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -1254,7 +1274,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    _publishes.__revert();");
     gold.append("\n    /* root */");
@@ -1892,6 +1911,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -2115,25 +2135,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"_publishes\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Publish\"},\"computed\":false,\"privacy\":\"private\"},\"publishes\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Publish\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Publish\":{\"nature\":\"reactive_record\",\"name\":\"Publish\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"who\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"payload\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"PublishMessage\":{\"nature\":\"native_message\",\"name\":\"PublishMessage\",\"anonymous\":false,\"fields\":{\"payload\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"payload\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"who\":{\"type\":{\"nature\":\"native_value\",\"type\":\"secure<principal>\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"publish\":\"PublishMessage\"},\"channels-privacy\":{\"publish\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4900");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -2240,6 +2260,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -2360,6 +2381,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -2449,6 +2473,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -2545,7 +2572,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    x.__revert();");
     gold.append("\n    k.__revert();");
@@ -2692,6 +2718,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -2880,22 +2907,22 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"k\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[\"game_setup\",\"tick\",\"tock\",\"end\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"tick\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1,\"x\":\"Initializing Device\"} need:true in:25");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__state\":\"tock\",\"__next_time\":\"525\",\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\",\"x\":\"Tick\"} need:true in:500");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"tick\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1,\"x\":\"Initializing Device\"} need:true in:25");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__state\":\"tock\",\"__next_time\":\"525\",\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\",\"x\":\"Tick\"} need:true in:500");
     gold.append("\nCPU:9");
     gold.append("\nMEMORY:2680");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"275\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"275\"} need:true in:250");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"275\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"275\"} need:true in:250");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"x\":\"Tick\"},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"400\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__connection_id\":1,\"__time\":\"400\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null,\"__entropy\":\"7848011421992302230\"} need:true in:125");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"400\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__connection_id\":1,\"__time\":\"400\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__entropy\":\"7848011421992302230\"} need:true in:125");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"462\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"-8929183248358367000\",\"__time\":\"462\"} need:true in:63");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"462\"}-->{\"__seq\":6,\"__entropy\":\"-8929183248358367000\",\"__time\":\"462\"} need:true in:63");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"x\":\"Tick\"},\"seq\":6}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"493\"}-->{\"__messages\":null,\"__seq\":7,\"__entropy\":\"488730542833106255\",\"__time\":\"493\"} need:true in:32");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"493\"}-->{\"__seq\":7,\"__entropy\":\"488730542833106255\",\"__time\":\"493\"} need:true in:32");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":7}");
     gold.append("\n+ RANDO DELTA:{\"seq\":7}");
@@ -3022,6 +3049,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -3149,6 +3177,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -3235,6 +3266,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -3328,7 +3362,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    _chat.__revert();");
     gold.append("\n    /* root */");
@@ -4068,6 +4101,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -4326,25 +4360,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"_chat\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Line\"},\"computed\":false,\"privacy\":\"private\"},\"chat\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Line\"}},\"computed\":true,\"privacy\":\"bubble\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{\"ordering\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"private\"}}},\"Line\":{\"nature\":\"reactive_record\",\"name\":\"Line\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"who\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"what\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"}}},\"Say\":{\"nature\":\"native_message\",\"name\":\"Say\",\"anonymous\":false,\"fields\":{\"what\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"Flux\":{\"nature\":\"native_message\",\"name\":\"Flux\",\"anonymous\":false,\"fields\":{}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"what\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"who\":{\"type\":{\"nature\":\"native_value\",\"type\":\"secure<principal>\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"flux\":\"Flux\",\"say\":\"Say\"},\"channels-privacy\":{\"say\":{\"open\":false,\"privacy\":[]},\"flux\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4914");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -4611,6 +4645,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -4869,6 +4904,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -5000,6 +5038,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -5138,7 +5179,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    name.__revert();");
     gold.append("\n    x.__revert();");
@@ -7161,6 +7201,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -7690,22 +7731,22 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"bank_balance\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"pvalue1\":{\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Pv\"},\"computed\":false,\"privacy\":\"public\"},\"pvalue2\":{\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Pv\"},\"computed\":false,\"privacy\":\"public\"},\"deck\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Card\"},\"computed\":false,\"privacy\":\"private\"},\"value\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"cards_left\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"cards_available\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"public\"},\"recs\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"R\"},\"computed\":false,\"privacy\":\"private\"},\"all\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"countdown\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"current_player\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"active\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"finished\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"latest_profile_picture\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"asset\"},\"computed\":false,\"privacy\":\"private\"},\"_resources\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Resource\"},\"computed\":false,\"privacy\":\"private\"},\"hand\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"bubble\"},\"yours\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"bubble\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Pv\":{\"nature\":\"reactive_record\",\"name\":\"Pv\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"Card\":{\"nature\":\"reactive_record\",\"name\":\"Card\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"value\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"ordering\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"Payload\":{\"nature\":\"native_message\",\"name\":\"Payload\",\"anonymous\":false,\"fields\":{\"value\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"DrawCard\":{\"nature\":\"native_message\",\"name\":\"DrawCard\",\"anonymous\":false,\"fields\":{\"count\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"super_secret_data\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":[\"see\"]}}},\"Move\":{\"nature\":\"native_message\",\"name\":\"Move\",\"anonymous\":false,\"fields\":{\"piece\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{\"name\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"Resource\":{\"nature\":\"reactive_record\",\"name\":\"Resource\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"resource\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"asset\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_6\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_6\",\"anonymous\":true,\"fields\":{\"owner\":{\"type\":{\"nature\":\"native_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"value\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_7\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_7\",\"anonymous\":true,\"fields\":{\"html\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_9\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_9\",\"anonymous\":true,\"fields\":{\"asset\":{\"type\":{\"nature\":\"native_value\",\"type\":\"asset\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"set_value\":\"Payload\",\"ask_move\":\"Move\",\"draw_card\":\"DrawCard\"},\"channels-privacy\":{\"set_value\":{\"open\":false,\"privacy\":[]},\"draw_card\":{\"open\":false,\"privacy\":[]},\"ask_move\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"bump\",\"play\",\"done\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"bump\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":52,\"deck\":{\"1\":{\"id\":1,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":13},\"2\":{\"id\":2,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":31},\"3\":{\"id\":3,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":38},\"4\":{\"id\":4,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"5\":{\"id\":5,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":4},\"6\":{\"id\":6,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":46},\"7\":{\"id\":7,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":16},\"8\":{\"id\":8,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":14},\"9\":{\"id\":9,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":11},\"10\":{\"id\":10,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":5},\"11\":{\"id\":11,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":17},\"12\":{\"id\":12,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":44},\"13\":{\"id\":13,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":27},\"14\":{\"id\":14,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":18},\"15\":{\"id\":15,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":45},\"16\":{\"id\":16,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":49},\"17\":{\"id\":17,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":8},\"18\":{\"id\":18,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":35},\"19\":{\"id\":19,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":23},\"20\":{\"id\":20,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":34},\"21\":{\"id\":21,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":21},\"22\":{\"id\":22,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":19},\"23\":{\"id\":23,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":43},\"24\":{\"id\":24,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":36},\"25\":{\"id\":25,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":26},\"26\":{\"id\":26,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":39},\"27\":{\"id\":27,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":3},\"28\":{\"id\":28,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":1},\"29\":{\"id\":29,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":30},\"30\":{\"id\":30,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":41},\"31\":{\"id\":31,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":47},\"32\":{\"id\":32,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":15},\"33\":{\"id\":33,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":7},\"34\":{\"id\":34,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":12},\"35\":{\"id\":35,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":25},\"36\":{\"id\":36,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":6},\"37\":{\"id\":37,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":37},\"38\":{\"id\":38,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":22},\"39\":{\"id\":39,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":42},\"40\":{\"id\":40,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":28},\"41\":{\"id\":41,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":20},\"42\":{\"id\":42,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":10},\"43\":{\"id\":43,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":2},\"44\":{\"id\":44,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":9},\"45\":{\"id\":45,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":51},\"46\":{\"id\":46,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":50},\"47\":{\"id\":47,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":32},\"48\":{\"id\":48,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":29},\"49\":{\"id\":49,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":33},\"50\":{\"id\":50,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":40},\"51\":{\"id\":51,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":48},\"52\":{\"id\":52,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":24}},\"countdown\":9,\"__messages\":null,\"__next_time\":\"60000\",\"__seq\":1} need:true in:60000");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"30000\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"30000\"} need:true in:30000");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"bump\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":52,\"deck\":{\"1\":{\"id\":1,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":13},\"2\":{\"id\":2,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":31},\"3\":{\"id\":3,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":38},\"4\":{\"id\":4,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"5\":{\"id\":5,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":4},\"6\":{\"id\":6,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":46},\"7\":{\"id\":7,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":16},\"8\":{\"id\":8,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":14},\"9\":{\"id\":9,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":11},\"10\":{\"id\":10,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":5},\"11\":{\"id\":11,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":17},\"12\":{\"id\":12,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":44},\"13\":{\"id\":13,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":27},\"14\":{\"id\":14,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":18},\"15\":{\"id\":15,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":45},\"16\":{\"id\":16,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":49},\"17\":{\"id\":17,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":8},\"18\":{\"id\":18,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":35},\"19\":{\"id\":19,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":23},\"20\":{\"id\":20,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":34},\"21\":{\"id\":21,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":21},\"22\":{\"id\":22,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":19},\"23\":{\"id\":23,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":43},\"24\":{\"id\":24,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":36},\"25\":{\"id\":25,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":26},\"26\":{\"id\":26,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":39},\"27\":{\"id\":27,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":3},\"28\":{\"id\":28,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":1},\"29\":{\"id\":29,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":30},\"30\":{\"id\":30,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":41},\"31\":{\"id\":31,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":47},\"32\":{\"id\":32,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":15},\"33\":{\"id\":33,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":7},\"34\":{\"id\":34,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":12},\"35\":{\"id\":35,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":25},\"36\":{\"id\":36,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":6},\"37\":{\"id\":37,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":37},\"38\":{\"id\":38,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":22},\"39\":{\"id\":39,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":42},\"40\":{\"id\":40,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":28},\"41\":{\"id\":41,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":20},\"42\":{\"id\":42,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":10},\"43\":{\"id\":43,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":2},\"44\":{\"id\":44,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":9},\"45\":{\"id\":45,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":51},\"46\":{\"id\":46,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":50},\"47\":{\"id\":47,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":32},\"48\":{\"id\":48,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":29},\"49\":{\"id\":49,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":33},\"50\":{\"id\":50,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":40},\"51\":{\"id\":51,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":48},\"52\":{\"id\":52,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":24}},\"countdown\":9,\"__next_time\":\"60000\",\"__seq\":1} need:true in:60000");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"30000\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"30000\"} need:true in:30000");
     gold.append("\nCPU:328");
     gold.append("\nMEMORY:24890");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"45000\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"45000\"} need:true in:15000");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"45000\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"45000\"} need:true in:15000");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"name\":\"\",\"x\":0,\"y\":0,\"value\":0,\"current_player\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"active\":0,\"finished\":false,\"cards_left\":52,\"cards_available\":true,\"hand\":{\"1\":{\"id\":1,\"value\":0,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":13},\"2\":{\"id\":2,\"value\":1,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":31},\"3\":{\"id\":3,\"value\":2,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":38},\"4\":{\"id\":4,\"value\":3,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"5\":{\"id\":5,\"value\":4,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":4},\"6\":{\"id\":6,\"value\":5,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":46},\"7\":{\"id\":7,\"value\":6,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":16},\"8\":{\"id\":8,\"value\":7,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":14},\"9\":{\"id\":9,\"value\":8,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":11},\"10\":{\"id\":10,\"value\":9,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":5},\"11\":{\"id\":11,\"value\":10,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":17},\"12\":{\"id\":12,\"value\":11,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":44},\"13\":{\"id\":13,\"value\":12,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":27},\"14\":{\"id\":14,\"value\":13,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":18},\"15\":{\"id\":15,\"value\":14,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":45},\"16\":{\"id\":16,\"value\":15,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":49},\"17\":{\"id\":17,\"value\":16,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":8},\"18\":{\"id\":18,\"value\":17,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":35},\"19\":{\"id\":19,\"value\":18,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":23},\"20\":{\"id\":20,\"value\":19,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":34},\"21\":{\"id\":21,\"value\":20,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":21},\"22\":{\"id\":22,\"value\":21,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":19},\"23\":{\"id\":23,\"value\":22,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":43},\"24\":{\"id\":24,\"value\":23,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":36},\"25\":{\"id\":25,\"value\":24,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":26},\"26\":{\"id\":26,\"value\":25,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":39},\"27\":{\"id\":27,\"value\":26,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":3},\"28\":{\"id\":28,\"value\":27,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":1},\"29\":{\"id\":29,\"value\":28,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":30},\"30\":{\"id\":30,\"value\":29,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":41},\"31\":{\"id\":31,\"value\":30,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":47},\"32\":{\"id\":32,\"value\":31,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":15},\"33\":{\"id\":33,\"value\":32,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":7},\"34\":{\"id\":34,\"value\":33,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":12},\"35\":{\"id\":35,\"value\":34,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":25},\"36\":{\"id\":36,\"value\":35,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":6},\"37\":{\"id\":37,\"value\":36,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":37},\"38\":{\"id\":38,\"value\":37,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":22},\"39\":{\"id\":39,\"value\":38,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":42},\"40\":{\"id\":40,\"value\":39,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":28},\"41\":{\"id\":41,\"value\":40,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":20},\"42\":{\"id\":42,\"value\":41,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":10},\"43\":{\"id\":43,\"value\":42,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":2},\"44\":{\"id\":44,\"value\":43,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":9},\"45\":{\"id\":45,\"value\":44,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":51},\"46\":{\"id\":46,\"value\":45,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":50},\"47\":{\"id\":47,\"value\":46,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":32},\"48\":{\"id\":48,\"value\":47,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":29},\"49\":{\"id\":49,\"value\":48,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":33},\"50\":{\"id\":50,\"value\":49,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":40},\"51\":{\"id\":51,\"value\":50,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":48},\"52\":{\"id\":52,\"value\":51,\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":24},\"@o\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52]}},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"52500\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__connection_id\":1,\"__time\":\"52500\",\"active\":1,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null,\"__entropy\":\"7848011421992302230\"} need:true in:7500");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"52500\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__connection_id\":1,\"__time\":\"52500\",\"active\":1,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__entropy\":\"7848011421992302230\"} need:true in:7500");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"active\":1},\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"56250\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"-8929183248358367000\",\"__time\":\"56250\"} need:true in:3750");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"56250\"}-->{\"__seq\":6,\"__entropy\":\"-8929183248358367000\",\"__time\":\"56250\"} need:true in:3750");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"name\":\"\",\"x\":0,\"y\":0,\"value\":0,\"current_player\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"active\":1,\"finished\":false,\"cards_left\":52,\"cards_available\":true},\"seq\":6}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"58125\"}-->{\"__messages\":null,\"__seq\":7,\"__entropy\":\"488730542833106255\",\"__time\":\"58125\"} need:true in:1875");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"58125\"}-->{\"__seq\":7,\"__entropy\":\"488730542833106255\",\"__time\":\"58125\"} need:true in:1875");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":7}");
     gold.append("\n+ RANDO DELTA:{\"seq\":7}");
@@ -7716,7 +7757,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n{}");
     gold.append("\n--METRIC RESULTS-----------------------------------");
     gold.append("\n{\"__snapshot\":\"0/0\",\"name\":\"\",\"x\":0,\"y\":0,\"bank_balance\":0,\"pvalue1\":{\"id\":0,\"x\":0,\"y\":0},\"pvalue2\":{\"id\":0,\"x\":0,\"y\":0},\"deck\":{\"1\":{\"id\":1,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":13},\"2\":{\"id\":2,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":31},\"3\":{\"id\":3,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":38},\"4\":{\"id\":4,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"5\":{\"id\":5,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":4},\"6\":{\"id\":6,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":46},\"7\":{\"id\":7,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":16},\"8\":{\"id\":8,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":14},\"9\":{\"id\":9,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":11},\"10\":{\"id\":10,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":5},\"11\":{\"id\":11,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":17},\"12\":{\"id\":12,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":44},\"13\":{\"id\":13,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":27},\"14\":{\"id\":14,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":18},\"15\":{\"id\":15,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":45},\"16\":{\"id\":16,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":49},\"17\":{\"id\":17,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":8},\"18\":{\"id\":18,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":35},\"19\":{\"id\":19,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":23},\"20\":{\"id\":20,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":34},\"21\":{\"id\":21,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":21},\"22\":{\"id\":22,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":19},\"23\":{\"id\":23,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":43},\"24\":{\"id\":24,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":36},\"25\":{\"id\":25,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":26},\"26\":{\"id\":26,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":39},\"27\":{\"id\":27,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":3},\"28\":{\"id\":28,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":1},\"29\":{\"id\":29,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":30},\"30\":{\"id\":30,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":41},\"31\":{\"id\":31,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":47},\"32\":{\"id\":32,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":15},\"33\":{\"id\":33,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":7},\"34\":{\"id\":34,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":12},\"35\":{\"id\":35,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":25},\"36\":{\"id\":36,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":6},\"37\":{\"id\":37,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":37},\"38\":{\"id\":38,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":22},\"39\":{\"id\":39,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":42},\"40\":{\"id\":40,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":28},\"41\":{\"id\":41,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":20},\"42\":{\"id\":42,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":10},\"43\":{\"id\":43,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":2},\"44\":{\"id\":44,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":9},\"45\":{\"id\":45,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":51},\"46\":{\"id\":46,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":50},\"47\":{\"id\":47,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":32},\"48\":{\"id\":48,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":29},\"49\":{\"id\":49,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":33},\"50\":{\"id\":50,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":40},\"51\":{\"id\":51,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":48},\"52\":{\"id\":52,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":24}},\"value\":0,\"recs\":{},\"countdown\":9,\"current_player\":{\"agent\":\"?\",\"authority\":\"?\"},\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"active\":1,\"finished\":false,\"latest_profile_picture\":{\"id\":\"\",\"size\":\"0\",\"name\":\"\",\"type\":\"\",\"md5\":\"\",\"sha384\":\"\",\"@gc\":\"@yes\"},\"_resources\":{},\"__state\":\"bump\",\"__constructed\":true,\"__next_time\":\"60000\",\"__last_expire_time\":\"0\",\"__blocked\":false,\"__seq\":7,\"__entropy\":\"488730542833106255\",\"__auto_future_id\":0,\"__connection_id\":1,\"__message_id\":0,\"__time\":\"58125\",\"__timezone\":\"UTC\",\"__auto_table_row_id\":52,\"__auto_gen\":0,\"__auto_cache_id\":0,\"__cache\":{},\"__webTaskId\":0,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__webqueue\":{},\"__replication\":{}}");
-    gold.append("\n{\"command\":\"load\",\"timestamp\":\"59062\",\"reason\":\"create\"}-->{\"__seq\":9,\"__time\":\"59062\",\"__auto_table_row_id\":104,\"deck\":{\"53\":{\"id\":53,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"54\":{\"id\":54,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"55\":{\"id\":55,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"56\":{\"id\":56,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"57\":{\"id\":57,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"58\":{\"id\":58,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"59\":{\"id\":59,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"60\":{\"id\":60,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"61\":{\"id\":61,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"62\":{\"id\":62,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"63\":{\"id\":63,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"64\":{\"id\":64,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"65\":{\"id\":65,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"66\":{\"id\":66,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"67\":{\"id\":67,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"68\":{\"id\":68,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"69\":{\"id\":69,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"70\":{\"id\":70,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"71\":{\"id\":71,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"72\":{\"id\":72,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"73\":{\"id\":73,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"74\":{\"id\":74,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"75\":{\"id\":75,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"76\":{\"id\":76,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"77\":{\"id\":77,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"78\":{\"id\":78,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"79\":{\"id\":79,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"80\":{\"id\":80,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"81\":{\"id\":81,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"82\":{\"id\":82,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"83\":{\"id\":83,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"84\":{\"id\":84,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"85\":{\"id\":85,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"86\":{\"id\":86,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"87\":{\"id\":87,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"88\":{\"id\":88,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"89\":{\"id\":89,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"90\":{\"id\":90,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"91\":{\"id\":91,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"92\":{\"id\":92,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"93\":{\"id\":93,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"94\":{\"id\":94,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"95\":{\"id\":95,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"96\":{\"id\":96,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"97\":{\"id\":97,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"98\":{\"id\":98,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"99\":{\"id\":99,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"100\":{\"id\":100,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"101\":{\"id\":101,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"102\":{\"id\":102,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"103\":{\"id\":103,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"104\":{\"id\":104,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0}},\"__messages\":null,\"__entropy\":\"5082315122564986995\"} need:true in:938");
+    gold.append("\n{\"command\":\"load\",\"timestamp\":\"59062\",\"reason\":\"create\"}-->{\"__seq\":9,\"__time\":\"59062\",\"__auto_table_row_id\":104,\"deck\":{\"53\":{\"id\":53,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"54\":{\"id\":54,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"55\":{\"id\":55,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"56\":{\"id\":56,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"57\":{\"id\":57,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"58\":{\"id\":58,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"59\":{\"id\":59,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"60\":{\"id\":60,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"61\":{\"id\":61,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"62\":{\"id\":62,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"63\":{\"id\":63,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"64\":{\"id\":64,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"65\":{\"id\":65,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"66\":{\"id\":66,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"67\":{\"id\":67,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"68\":{\"id\":68,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"69\":{\"id\":69,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"70\":{\"id\":70,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"71\":{\"id\":71,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"72\":{\"id\":72,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"73\":{\"id\":73,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"74\":{\"id\":74,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"75\":{\"id\":75,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"76\":{\"id\":76,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"77\":{\"id\":77,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"78\":{\"id\":78,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"79\":{\"id\":79,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"80\":{\"id\":80,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"81\":{\"id\":81,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"82\":{\"id\":82,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"83\":{\"id\":83,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"84\":{\"id\":84,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"85\":{\"id\":85,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"86\":{\"id\":86,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"87\":{\"id\":87,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"88\":{\"id\":88,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"89\":{\"id\":89,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"90\":{\"id\":90,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"91\":{\"id\":91,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"92\":{\"id\":92,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"93\":{\"id\":93,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"94\":{\"id\":94,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"95\":{\"id\":95,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"96\":{\"id\":96,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"97\":{\"id\":97,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"98\":{\"id\":98,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"99\":{\"id\":99,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"100\":{\"id\":100,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"101\":{\"id\":101,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"102\":{\"id\":102,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"103\":{\"id\":103,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"104\":{\"id\":104,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0}},\"__entropy\":\"5082315122564986995\"} need:true in:938");
     gold.append("\n{\"__snapshot\":\"0/0\",\"name\":\"\",\"x\":0,\"y\":0,\"bank_balance\":0,\"pvalue1\":{\"id\":0,\"x\":0,\"y\":0},\"pvalue2\":{\"id\":0,\"x\":0,\"y\":0},\"deck\":{\"1\":{\"id\":1,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":13},\"2\":{\"id\":2,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":31},\"3\":{\"id\":3,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":38},\"4\":{\"id\":4,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"5\":{\"id\":5,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":4},\"6\":{\"id\":6,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":46},\"7\":{\"id\":7,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":16},\"8\":{\"id\":8,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":14},\"9\":{\"id\":9,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":11},\"10\":{\"id\":10,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":5},\"11\":{\"id\":11,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":17},\"12\":{\"id\":12,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":44},\"13\":{\"id\":13,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":27},\"14\":{\"id\":14,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":18},\"15\":{\"id\":15,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":45},\"16\":{\"id\":16,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":49},\"17\":{\"id\":17,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":8},\"18\":{\"id\":18,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":35},\"19\":{\"id\":19,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":23},\"20\":{\"id\":20,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":34},\"21\":{\"id\":21,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":21},\"22\":{\"id\":22,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":19},\"23\":{\"id\":23,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":43},\"24\":{\"id\":24,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":36},\"25\":{\"id\":25,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":26},\"26\":{\"id\":26,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":39},\"27\":{\"id\":27,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":3},\"28\":{\"id\":28,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":1},\"29\":{\"id\":29,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":30},\"30\":{\"id\":30,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":41},\"31\":{\"id\":31,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":47},\"32\":{\"id\":32,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":15},\"33\":{\"id\":33,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":7},\"34\":{\"id\":34,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":12},\"35\":{\"id\":35,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":25},\"36\":{\"id\":36,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":6},\"37\":{\"id\":37,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":37},\"38\":{\"id\":38,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":22},\"39\":{\"id\":39,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":42},\"40\":{\"id\":40,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":28},\"41\":{\"id\":41,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":20},\"42\":{\"id\":42,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":10},\"43\":{\"id\":43,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":2},\"44\":{\"id\":44,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":9},\"45\":{\"id\":45,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":51},\"46\":{\"id\":46,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":50},\"47\":{\"id\":47,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":32},\"48\":{\"id\":48,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":29},\"49\":{\"id\":49,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":33},\"50\":{\"id\":50,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":40},\"51\":{\"id\":51,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":48},\"52\":{\"id\":52,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":24},\"53\":{\"id\":53,\"value\":0,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"54\":{\"id\":54,\"value\":1,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"55\":{\"id\":55,\"value\":2,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"56\":{\"id\":56,\"value\":3,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"57\":{\"id\":57,\"value\":4,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"58\":{\"id\":58,\"value\":5,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"59\":{\"id\":59,\"value\":6,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"60\":{\"id\":60,\"value\":7,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"61\":{\"id\":61,\"value\":8,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"62\":{\"id\":62,\"value\":9,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"63\":{\"id\":63,\"value\":10,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"64\":{\"id\":64,\"value\":11,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"65\":{\"id\":65,\"value\":12,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"66\":{\"id\":66,\"value\":13,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"67\":{\"id\":67,\"value\":14,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"68\":{\"id\":68,\"value\":15,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"69\":{\"id\":69,\"value\":16,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"70\":{\"id\":70,\"value\":17,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"71\":{\"id\":71,\"value\":18,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"72\":{\"id\":72,\"value\":19,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"73\":{\"id\":73,\"value\":20,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"74\":{\"id\":74,\"value\":21,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"75\":{\"id\":75,\"value\":22,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"76\":{\"id\":76,\"value\":23,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"77\":{\"id\":77,\"value\":24,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"78\":{\"id\":78,\"value\":25,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"79\":{\"id\":79,\"value\":26,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"80\":{\"id\":80,\"value\":27,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"81\":{\"id\":81,\"value\":28,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"82\":{\"id\":82,\"value\":29,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"83\":{\"id\":83,\"value\":30,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"84\":{\"id\":84,\"value\":31,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"85\":{\"id\":85,\"value\":32,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"86\":{\"id\":86,\"value\":33,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"87\":{\"id\":87,\"value\":34,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"88\":{\"id\":88,\"value\":35,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"89\":{\"id\":89,\"value\":36,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"90\":{\"id\":90,\"value\":37,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"91\":{\"id\":91,\"value\":38,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"92\":{\"id\":92,\"value\":39,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"93\":{\"id\":93,\"value\":40,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"94\":{\"id\":94,\"value\":41,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"95\":{\"id\":95,\"value\":42,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"96\":{\"id\":96,\"value\":43,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"97\":{\"id\":97,\"value\":44,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"98\":{\"id\":98,\"value\":45,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"99\":{\"id\":99,\"value\":46,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"100\":{\"id\":100,\"value\":47,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"101\":{\"id\":101,\"value\":48,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"102\":{\"id\":102,\"value\":49,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"103\":{\"id\":103,\"value\":50,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0},\"104\":{\"id\":104,\"value\":51,\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"ordering\":0}},\"value\":0,\"recs\":{},\"countdown\":9,\"current_player\":{\"agent\":\"?\",\"authority\":\"?\"},\"owner\":{\"agent\":\"?\",\"authority\":\"?\"},\"active\":1,\"finished\":false,\"latest_profile_picture\":{\"id\":\"\",\"size\":\"0\",\"name\":\"\",\"type\":\"\",\"md5\":\"\",\"sha384\":\"\",\"@gc\":\"@yes\"},\"_resources\":{},\"__state\":\"bump\",\"__constructed\":true,\"__next_time\":\"60000\",\"__last_expire_time\":\"0\",\"__blocked\":false,\"__seq\":9,\"__entropy\":\"5082315122564986995\",\"__auto_future_id\":0,\"__connection_id\":1,\"__message_id\":0,\"__time\":\"59062\",\"__timezone\":\"UTC\",\"__auto_table_row_id\":104,\"__auto_gen\":0,\"__auto_cache_id\":0,\"__cache\":{},\"__webTaskId\":0,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__webqueue\":{},\"__replication\":{}}");
     gold.append("\nSKIPPING JSON COMPARE AS A LOAD WAS DETECTED");
     gold.append("\n--JAVA TEST RESULTS--------------------------------");
@@ -8223,6 +8264,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -8494,6 +8536,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -8622,6 +8667,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -8757,7 +8805,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    deck.__revert();");
     gold.append("\n    owner.__revert();");
@@ -10522,6 +10569,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -12169,11 +12217,11 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"deck\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Card\"},\"computed\":false,\"privacy\":\"private\"},\"hand\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"players\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Player\"},\"computed\":false,\"privacy\":\"private\"},\"players_connected\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"observers_connected\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"people\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Player\"}},\"computed\":true,\"privacy\":\"public\"},\"players_ordered\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Player\"}},\"computed\":true,\"privacy\":\"public\"},\"ready\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"public\"},\"playing\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"passing_mode\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"PassingMode\",\"options\":{\"values\":{\"Across\":0,\"ToLeft\":1,\"ToRight\":2,\"None\":3},\"names\":{\"0\":\"Across\",\"1\":\"ToLeft\",\"2\":\"ToRight\",\"3\":\"None\"},\"default\":\"Across\"}},\"computed\":false,\"privacy\":\"public\"},\"player1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"player2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"player3\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"player4\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"current\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"played\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"suit_in_play\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"computed\":false,\"privacy\":\"public\"},\"points_played\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"in_play\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"public\"},\"last_winner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"points_awarded\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"my_take\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"bubble\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Suit\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"Rank\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Rank\",\"options\":{\"values\":{\"Two\":2,\"Three\":3,\"Four\":4,\"Five\":5,\"Six\":6,\"Seven\":7,\"Eight\":8,\"Nine\":9,\"Ten\":10,\"Jack\":11,\"Queen\":12,\"King\":13,\"Ace\":14},\"names\":{\"2\":\"Two\",\"3\":\"Three\",\"4\":\"Four\",\"5\":\"Five\",\"6\":\"Six\",\"7\":\"Seven\",\"8\":\"Eight\",\"9\":\"Nine\",\"10\":\"Ten\",\"11\":\"Jack\",\"12\":\"Queen\",\"13\":\"King\",\"14\":\"Ace\"},\"default\":\"Two\"}},\"Place\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Place\",\"options\":{\"values\":{\"Deck\":1,\"Hand\":2,\"InPlay\":3,\"Taken\":4},\"names\":{\"1\":\"Deck\",\"2\":\"Hand\",\"3\":\"InPlay\",\"4\":\"Taken\"},\"default\":\"Deck\"}},\"Card\":{\"nature\":\"reactive_record\",\"name\":\"Card\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"suit\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"computed\":false,\"privacy\":\"public\"},\"rank\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Rank\",\"options\":{\"values\":{\"Two\":2,\"Three\":3,\"Four\":4,\"Five\":5,\"Six\":6,\"Seven\":7,\"Eight\":8,\"Nine\":9,\"Ten\":10,\"Jack\":11,\"Queen\":12,\"King\":13,\"Ace\":14},\"names\":{\"2\":\"Two\",\"3\":\"Three\",\"4\":\"Four\",\"5\":\"Five\",\"6\":\"Six\",\"7\":\"Seven\",\"8\":\"Eight\",\"9\":\"Nine\",\"10\":\"Ten\",\"11\":\"Jack\",\"12\":\"Queen\",\"13\":\"King\",\"14\":\"Ace\"},\"default\":\"Two\"}},\"computed\":false,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"ordering\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"place\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Place\",\"options\":{\"values\":{\"Deck\":1,\"Hand\":2,\"InPlay\":3,\"Taken\":4},\"names\":{\"1\":\"Deck\",\"2\":\"Hand\",\"3\":\"InPlay\",\"4\":\"Taken\"},\"default\":\"Deck\"}},\"computed\":false,\"privacy\":\"private\"},\"points\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"private\"}}},\"Empty\":{\"nature\":\"native_message\",\"name\":\"Empty\",\"anonymous\":false,\"fields\":{}},\"Player\":{\"nature\":\"reactive_record\",\"name\":\"Player\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"link\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"playing\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"private\"},\"points\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"leader\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"viewer_is\"},\"play_order\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"viewer_is\"}}},\"LeaderAction\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"LeaderAction\",\"options\":{\"values\":{\"PromoteObserver\":1,\"DemotePlayer\":2,\"ShufflePlayers\":3,\"Begin\":10},\"names\":{\"1\":\"PromoteObserver\",\"2\":\"DemotePlayer\",\"3\":\"ShufflePlayers\",\"10\":\"Begin\"},\"default\":\"PromoteObserver\"}},\"LeaderActionMessage\":{\"nature\":\"native_message\",\"name\":\"LeaderActionMessage\",\"anonymous\":false,\"fields\":{\"id\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"action\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"LeaderAction\",\"options\":{\"values\":{\"PromoteObserver\":1,\"DemotePlayer\":2,\"ShufflePlayers\":3,\"Begin\":10},\"names\":{\"1\":\"PromoteObserver\",\"2\":\"DemotePlayer\",\"3\":\"ShufflePlayers\",\"10\":\"Begin\"},\"default\":\"PromoteObserver\"}},\"computed\":false,\"privacy\":\"public\"}}},\"PassingMode\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"PassingMode\",\"options\":{\"values\":{\"Across\":0,\"ToLeft\":1,\"ToRight\":2,\"None\":3},\"names\":{\"0\":\"Across\",\"1\":\"ToLeft\",\"2\":\"ToRight\",\"3\":\"None\"},\"default\":\"Across\"}},\"CardDecision\":{\"nature\":\"native_message\",\"name\":\"CardDecision\",\"anonymous\":false,\"fields\":{\"id\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"leader\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"link\":{\"type\":{\"nature\":\"native_value\",\"type\":\"secure<principal>\"},\"computed\":false,\"privacy\":\"public\"},\"play_order\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"playing\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"points\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_2\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_2\",\"anonymous\":true,\"fields\":{\"place\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Place\",\"options\":{\"values\":{\"Deck\":1,\"Hand\":2,\"InPlay\":3,\"Taken\":4},\"names\":{\"1\":\"Deck\",\"2\":\"Hand\",\"3\":\"InPlay\",\"4\":\"Taken\"},\"default\":\"Deck\"}},\"computed\":false,\"privacy\":\"public\"},\"rank\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Rank\",\"options\":{\"values\":{\"Two\":2,\"Three\":3,\"Four\":4,\"Five\":5,\"Six\":6,\"Seven\":7,\"Eight\":8,\"Nine\":9,\"Ten\":10,\"Jack\":11,\"Queen\":12,\"King\":13,\"Ace\":14},\"names\":{\"2\":\"Two\",\"3\":\"Three\",\"4\":\"Four\",\"5\":\"Five\",\"6\":\"Six\",\"7\":\"Seven\",\"8\":\"Eight\",\"9\":\"Nine\",\"10\":\"Ten\",\"11\":\"Jack\",\"12\":\"Queen\",\"13\":\"King\",\"14\":\"Ace\"},\"default\":\"Two\"}},\"computed\":false,\"privacy\":\"public\"},\"suit\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"leader\":\"LeaderActionMessage\",\"pass_channel\":\"CardDecision\",\"single_play\":\"CardDecision\"},\"channels-privacy\":{\"leader\":{\"open\":false,\"privacy\":[]},\"pass_channel\":{\"open\":false,\"privacy\":[]},\"single_play\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"lobby\",\"setup\",\"shuffle_and_distribute\",\"pass\",\"start_play\",\"play\",\"score\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:8850");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"playing\":false,\"passing_mode\":0,\"played\":0,\"suit_in_play\":1,\"points_played\":false,\"last_winner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"points_awarded\":0,\"players_connected\":0,\"observers_connected\":0,\"ready\":false},\"seq\":3}");
     gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__state\":\"lobby\",\"__next_time\":\"75\",\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__connection_id\":1,\"__time\":\"75\",\"__auto_table_row_id\":1,\"players\":{\"1\":{\"id\":1,\"link\":{\"agent\":\"?\",\"authority\":\"?\"},\"playing\":true,\"points\":0,\"leader\":true,\"play_order\":0}},\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:true in:0");
@@ -12325,6 +12373,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -12478,6 +12527,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -12576,6 +12628,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -12681,7 +12736,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    owner.__revert();");
     gold.append("\n    name.__revert();");
@@ -13392,6 +13446,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -13627,25 +13682,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"description\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"viewers\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"_addons\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"AddOn\"},\"computed\":false,\"privacy\":\"private\"},\"addons\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"AddOn\"}},\"computed\":true,\"privacy\":\"public\"},\"name_uppercase\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"AddOn\":{\"nature\":\"reactive_record\",\"name\":\"AddOn\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"description\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"Arg\":{\"nature\":\"native_message\",\"name\":\"Arg\",\"anonymous\":false,\"fields\":{\"name\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"description\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"AddAddOn\":{\"nature\":\"native_message\",\"name\":\"AddAddOn\",\"anonymous\":false,\"fields\":{\"name\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"description\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"Nothing\":{\"nature\":\"native_message\",\"name\":\"Nothing\",\"anonymous\":false,\"fields\":{}}},\"channels\":{\"create_new_add_on\":\"AddAddOn\",\"delete\":\"Nothing\"},\"channels-privacy\":{\"create_new_add_on\":{\"open\":false,\"privacy\":[]},\"delete\":{\"open\":false,\"privacy\":[]}},\"constructors\":[\"arg\"],\"constructor\":\"Arg\",\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:4");
     gold.append("\nMEMORY:5158");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"name\":\"\",\"description\":\"\",\"viewers\":0,\"name_uppercase\":\"\"},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"viewers\":1,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"viewers\":1,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"viewers\":1},\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"owner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"name\":\"\",\"description\":\"\",\"viewers\":1,\"name_uppercase\":\"\"},\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"viewers\":2,\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"viewers\":2,\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"viewers\":2},\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"viewers\":2},\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -13792,6 +13847,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -13978,6 +14034,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -14079,6 +14138,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -14187,7 +14249,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    m.__revert();");
     gold.append("\n    deck.__revert();");
@@ -15407,6 +15468,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -15605,20 +15667,20 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"m\":{\"type\":{\"nature\":\"reactive_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"string\"},\"range\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":false,\"privacy\":\"private\"},\"deck\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Card\"},\"computed\":false,\"privacy\":\"private\"},\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Rec\"},\"computed\":false,\"privacy\":\"private\"},\"pointdb\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Point\"},\"computed\":false,\"privacy\":\"private\"},\"by_x\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"points_by_x\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_ref\",\"ref\":\"Point\"}}},\"computed\":true,\"privacy\":\"public\"},\"points_by_x2\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Point\"}}},\"computed\":true,\"privacy\":\"public\"},\"by_x_2\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}}},\"computed\":true,\"privacy\":\"public\"},\"named_points\":{\"type\":{\"nature\":\"reactive_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"string\"},\"range\":{\"nature\":\"reactive_ref\",\"ref\":\"Point\"}},\"computed\":false,\"privacy\":\"private\"},\"index_points\":{\"type\":{\"nature\":\"reactive_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"reactive_ref\",\"ref\":\"Point\"}},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"Card\":{\"nature\":\"reactive_record\",\"name\":\"Card\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"value\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"ordering\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"Rec\":{\"nature\":\"reactive_record\",\"name\":\"Rec\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"Point\":{\"nature\":\"reactive_record\",\"name\":\"Point\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:13292");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -15743,6 +15805,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -15863,6 +15926,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -15952,6 +16018,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -16048,7 +16117,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    creator.__revert();");
     gold.append("\n    x.__revert();");
@@ -16448,6 +16516,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -16680,22 +16749,22 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"creator\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"ConsXYZ\":{\"nature\":\"native_message\",\"name\":\"ConsXYZ\",\"anonymous\":false,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"Nothing\":{\"nature\":\"native_message\",\"name\":\"Nothing\",\"anonymous\":false,\"fields\":{}},\"Param\":{\"nature\":\"native_message\",\"name\":\"Param\",\"anonymous\":false,\"fields\":{\"z\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"zero\":\"Nothing\",\"add\":\"Param\",\"square\":\"Nothing\",\"kill\":\"Nothing\"},\"channels-privacy\":{\"square\":{\"open\":false,\"privacy\":[]},\"zero\":{\"open\":false,\"privacy\":[]},\"add\":{\"open\":false,\"privacy\":[]},\"kill\":{\"open\":false,\"privacy\":[]}},\"constructors\":[\"c\"],\"constructor\":\"ConsXYZ\",\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:3");
     gold.append("\nMEMORY:2672");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"creator\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"x\":0},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"creator\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"x\":0},\"seq\":6}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"125\"}-->{\"__messages\":null,\"__seq\":7,\"__entropy\":\"5082315122564986995\",\"__time\":\"125\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"125\"}-->{\"__seq\":7,\"__entropy\":\"5082315122564986995\",\"__time\":\"125\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":7}");
     gold.append("\n+ RANDO DELTA:{\"seq\":7}");
@@ -16790,6 +16859,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -16904,6 +16974,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -16990,6 +17063,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -17083,7 +17159,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    x.__revert();");
     gold.append("\n    /* root */");
@@ -17322,6 +17397,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -17493,25 +17569,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{\"dx\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"change\":\"M\"},\"channels-privacy\":{\"change\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"x\":123,\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"x\":123,\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:2");
     gold.append("\nMEMORY:2608");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"x\":123},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"x\":123},\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -17634,6 +17710,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -17829,6 +17906,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -17936,6 +18016,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -18050,7 +18133,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    x.__revert();");
     gold.append("\n    y.__revert();");
@@ -18197,6 +18279,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -18386,20 +18469,20 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"d\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"private\"},\"b\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"private\"},\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"private\"},\"z\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"private\"},\"z2\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"private\"},\"namex2\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":true,\"privacy\":\"private\"},\"name_len\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"private\"},\"bz\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"private\"},\"baz\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"private\"},\"baz2\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"private\"},\"c1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"private\"},\"c2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"private\"},\"s\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[\"next\",\"end\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"end\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"x\":5,\"y\":10,\"d\":3.14,\"b\":false,\"name\":\"12345678901234567890123456789012345678901234567890 x \",\"__messages\":null,\"__seq\":1} need:true in:25");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__state\":\"\",\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\",\"x\":0,\"y\":1,\"d\":3.14,\"b\":false,\"c1\":0.0,\"c2\":3.14,\"s\":1} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"end\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"x\":5,\"y\":10,\"d\":3.14,\"b\":false,\"name\":\"12345678901234567890123456789012345678901234567890 x \",\"__seq\":1} need:true in:25");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__state\":\"\",\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\",\"x\":0,\"y\":1,\"d\":3.14,\"b\":false,\"c1\":0.0,\"c2\":3.14,\"s\":1} need:false in:0");
     gold.append("\nCPU:23");
     gold.append("\nMEMORY:3462");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -18596,6 +18679,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -18784,6 +18868,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -18888,6 +18975,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -18999,7 +19089,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    playerX.__revert();");
     gold.append("\n    playerO.__revert();");
@@ -19766,6 +19855,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -20225,25 +20315,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"playerX\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"playerO\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"current\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"wins_X\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"wins_O\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"stalemates\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"_squares\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Square\"},\"computed\":false,\"privacy\":\"private\"},\"board\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Square\"}},\"computed\":true,\"privacy\":\"public\"},\"your_role\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":true,\"privacy\":\"bubble\"},\"your_turn\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"bubble\"},\"your_wins\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"bubble\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"SquareState\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"SquareState\",\"options\":{\"values\":{\"Open\":0,\"X\":1,\"O\":2},\"names\":{\"0\":\"Open\",\"1\":\"X\",\"2\":\"O\"},\"default\":\"Open\"}},\"Square\":{\"nature\":\"reactive_record\",\"name\":\"Square\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"state\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"SquareState\",\"options\":{\"values\":{\"Open\":0,\"X\":1,\"O\":2},\"names\":{\"0\":\"Open\",\"1\":\"X\",\"2\":\"O\"},\"default\":\"Open\"}},\"computed\":false,\"privacy\":\"public\"}}},\"Play\":{\"nature\":\"native_message\",\"name\":\"Play\",\"anonymous\":false,\"fields\":{\"id\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_1\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_1\",\"anonymous\":true,\"fields\":{\"state\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"SquareState\",\"options\":{\"values\":{\"Open\":0,\"X\":1,\"O\":2},\"names\":{\"0\":\"Open\",\"1\":\"X\",\"2\":\"O\"},\"default\":\"Open\"}},\"computed\":false,\"privacy\":\"public\"},\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"play\":\"Play\"},\"channels-privacy\":{\"play\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"initiate\",\"turn\",\"end\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":9,\"_squares\":{\"1\":{\"id\":1,\"x\":0,\"y\":0,\"state\":0},\"2\":{\"id\":2,\"x\":1,\"y\":0,\"state\":0},\"3\":{\"id\":3,\"x\":2,\"y\":0,\"state\":0},\"4\":{\"id\":4,\"x\":0,\"y\":1,\"state\":0},\"5\":{\"id\":5,\"x\":1,\"y\":1,\"state\":0},\"6\":{\"id\":6,\"x\":2,\"y\":1,\"state\":0},\"7\":{\"id\":7,\"x\":0,\"y\":2,\"state\":0},\"8\":{\"id\":8,\"x\":1,\"y\":2,\"state\":0},\"9\":{\"id\":9,\"x\":2,\"y\":2,\"state\":0}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":9,\"_squares\":{\"1\":{\"id\":1,\"x\":0,\"y\":0,\"state\":0},\"2\":{\"id\":2,\"x\":1,\"y\":0,\"state\":0},\"3\":{\"id\":3,\"x\":2,\"y\":0,\"state\":0},\"4\":{\"id\":4,\"x\":0,\"y\":1,\"state\":0},\"5\":{\"id\":5,\"x\":1,\"y\":1,\"state\":0},\"6\":{\"id\":6,\"x\":2,\"y\":1,\"state\":0},\"7\":{\"id\":7,\"x\":0,\"y\":2,\"state\":0},\"8\":{\"id\":8,\"x\":1,\"y\":2,\"state\":0},\"9\":{\"id\":9,\"x\":2,\"y\":2,\"state\":0}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:65");
     gold.append("\nMEMORY:7710");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"current\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"wins_X\":0,\"wins_O\":0,\"stalemates\":0,\"board\":{\"1\":{\"id\":1,\"x\":0,\"y\":0,\"state\":0},\"2\":{\"id\":2,\"x\":1,\"y\":0,\"state\":0},\"3\":{\"id\":3,\"x\":2,\"y\":0,\"state\":0},\"4\":{\"id\":4,\"x\":0,\"y\":1,\"state\":0},\"5\":{\"id\":5,\"x\":1,\"y\":1,\"state\":0},\"6\":{\"id\":6,\"x\":2,\"y\":1,\"state\":0},\"7\":{\"id\":7,\"x\":0,\"y\":2,\"state\":0},\"8\":{\"id\":8,\"x\":1,\"y\":2,\"state\":0},\"9\":{\"id\":9,\"x\":2,\"y\":2,\"state\":0},\"@o\":[1,2,3,4,5,6,7,8,9]},\"your_role\":\"X\",\"your_turn\":true,\"your_wins\":0},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"current\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"wins_X\":0,\"wins_O\":0,\"stalemates\":0,\"board\":{\"1\":{\"id\":1,\"x\":0,\"y\":0,\"state\":0},\"2\":{\"id\":2,\"x\":1,\"y\":0,\"state\":0},\"3\":{\"id\":3,\"x\":2,\"y\":0,\"state\":0},\"4\":{\"id\":4,\"x\":0,\"y\":1,\"state\":0},\"5\":{\"id\":5,\"x\":1,\"y\":1,\"state\":0},\"6\":{\"id\":6,\"x\":2,\"y\":1,\"state\":0},\"7\":{\"id\":7,\"x\":0,\"y\":2,\"state\":0},\"8\":{\"id\":8,\"x\":1,\"y\":2,\"state\":0},\"9\":{\"id\":9,\"x\":2,\"y\":2,\"state\":0},\"@o\":[1,2,3,4,5,6,7,8,9]},\"your_role\":\"Observer\",\"your_turn\":false,\"your_wins\":0},\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"playerX\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"playerX\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"your_role\":\"O\"},\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"your_role\":\"X\"},\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -20363,6 +20453,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -20487,6 +20578,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -20573,6 +20667,9 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -20666,7 +20763,6 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    _chat.__revert();");
     gold.append("\n    /* root */");
@@ -21304,6 +21400,7 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -21514,25 +21611,25 @@ public class GeneratedDemoTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"_chat\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Line\"},\"computed\":false,\"privacy\":\"private\"},\"chat\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Line\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Line\":{\"nature\":\"reactive_record\",\"name\":\"Line\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"who\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"what\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"}}},\"Say\":{\"nature\":\"native_message\",\"name\":\"Say\",\"anonymous\":false,\"fields\":{\"what\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"what\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"who\":{\"type\":{\"nature\":\"native_value\",\"type\":\"secure<principal>\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"say\":\"Say\"},\"channels-privacy\":{\"say\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4890");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");

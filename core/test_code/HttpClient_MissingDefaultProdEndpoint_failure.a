@@ -1,0 +1,4 @@
+client me {
+  endpoint[dev] "http://192.168.1.42";
+  endpoint[beta] "https://www.beta.adama.good.yaz";
+}

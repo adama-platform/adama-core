@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime.async;
 
 import ape.runtime.contracts.AsyncAction;
@@ -41,9 +47,11 @@ public class AsyncTask {
   public final String ip;
   private boolean aborted;
   private AsyncAction action;
+  public final IdHistoryLog log;
+  private boolean used;
 
   /** Construct the task around a message */
-  public AsyncTask(final int messageId, final int docSeq, final NtPrincipal who, final Integer viewId, final String channel, final long timestamp, final String origin, String ip, final Object message) {
+  public AsyncTask(final int messageId, final int docSeq, final NtPrincipal who, final Integer viewId, final String channel, final long timestamp, final String origin, String ip, final Object message, IdHistoryLog log) {
     this.messageId = messageId;
     this.docSeq = docSeq;
     this.who = who;
@@ -53,8 +61,10 @@ public class AsyncTask {
     this.origin = origin;
     this.ip = ip;
     this.message = message;
+    this.log = log;
     action = null;
     aborted = false;
+    used = false;
   }
 
   public CoreRequestContext context(String key) {
@@ -87,21 +97,45 @@ public class AsyncTask {
       }
       writer.endArray();
     }
+    if (log.has()) {
+      writer.writeObjectFieldIntro("log");
+      log.dump(writer);
+    }
     writer.endObject();
   }
 
   /** execute the task */
-  public void execute() throws RetryProgressException {
+  public boolean execute() throws RetryProgressException {
     // we must have either an action and not be aborted
     if (action != null && !aborted) {
       try {
         action.execute(); // compute
+        markUsed();
+        return true;
       } catch (final AbortMessageException aborted) {
         // this did not go so well
         this.aborted = true;
+        this.used = true;
         throw new RetryProgressException(this);
       }
     }
+    return false;
+  }
+
+  /** the underlying message has been consumed */
+  public void markUsed() {
+    used = true;
+  }
+
+  /** the usage was reverted */
+  public void resetUsed() {
+    if (!aborted) {
+      used = false;
+    }
+  }
+
+  public boolean isUsed() {
+    return used;
   }
 
   /**

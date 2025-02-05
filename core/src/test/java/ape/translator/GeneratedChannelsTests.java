@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator;
 
 import org.junit.Test;
@@ -132,6 +138,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -246,6 +253,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -332,6 +342,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -425,7 +438,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    status.__revert();");
     gold.append("\n    /* root */");
@@ -674,6 +686,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -1073,6 +1086,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -1181,6 +1195,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -1264,6 +1281,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -1354,7 +1374,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -1910,6 +1929,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -2056,20 +2076,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Strange\":{\"nature\":\"native_message\",\"name\":\"Strange\",\"anonymous\":false,\"fields\":{\"miarr\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_array\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}}},\"computed\":false,\"privacy\":\"public\"},\"li\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}},\"computed\":false,\"privacy\":\"public\"},\"mii\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_value\",\"type\":\"int\"}},\"computed\":false,\"privacy\":\"public\"},\"miiarr\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_array\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}}},\"computed\":false,\"privacy\":\"public\"},\"mls\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"long\"},\"range\":{\"nature\":\"native_value\",\"type\":\"string\"}},\"computed\":false,\"privacy\":\"public\"},\"mss\":{\"type\":{\"nature\":\"native_map\",\"domain\":{\"nature\":\"native_value\",\"type\":\"string\"},\"range\":{\"nature\":\"native_value\",\"type\":\"string\"}},\"computed\":false,\"privacy\":\"public\"},\"recur\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_ref\",\"ref\":\"Strange\"}},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[\"wut\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:2560");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -2165,6 +2185,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -2273,6 +2294,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -2356,6 +2380,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -2446,7 +2473,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -2694,6 +2720,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -2878,20 +2905,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"chan2\":\"M\",\"chan1\":\"M\"},\"channels-privacy\":{\"chan1\":{\"open\":false,\"privacy\":[]},\"chan2\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"setup\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:2");
     gold.append("\nMEMORY:2560");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -2981,6 +3008,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -3101,6 +3129,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -3190,6 +3221,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -3286,7 +3320,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    last_origin.__revert();");
     gold.append("\n    last_ip.__revert();");
@@ -3500,6 +3533,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -3659,20 +3693,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"last_origin\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"last_ip\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{}}},\"channels\":{\"foo\":\"M\"},\"channels-privacy\":{\"foo\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:2672");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"last_origin\":\"\",\"last_ip\":\"\"},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"last_origin\":\"\",\"last_ip\":\"\"},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -3769,6 +3803,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -3877,6 +3912,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -3960,6 +3998,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -4050,7 +4091,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -4411,6 +4451,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -4573,20 +4614,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"E\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"X\":{\"nature\":\"native_message\",\"annotations\":[{\"X\":\"This is a X\"}],\"name\":\"X\",\"anonymous\":false,\"fields\":{\"e\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"computed\":false,\"privacy\":\"public\"}}},\"Y\":{\"nature\":\"native_message\",\"annotations\":[{\"X\":\"This is a Y\"}],\"name\":\"Y\",\"anonymous\":false,\"fields\":{\"e\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"goo\":\"X\",\"foo\":\"X\",\"zoo\":\"X\"},\"channels-privacy\":{\"foo\":{\"open\":false,\"privacy\":[]},\"goo\":{\"open\":false,\"privacy\":[]},\"zoo\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:2560");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -4678,6 +4719,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -4792,6 +4834,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -4878,6 +4923,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -4971,7 +5019,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    z.__revert();");
     gold.append("\n    /* root */");
@@ -5213,6 +5260,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -5349,20 +5397,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"dynamic\"},\"computed\":false,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"native_message\",\"name\":\"X\",\"anonymous\":false,\"fields\":{\"val\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"z\":{\"val\":32},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"z\":{\"val\":32},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:2");
     gold.append("\nMEMORY:2656");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"z\":{\"val\":32}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"z\":{\"val\":32}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -5533,6 +5581,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -5641,6 +5690,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -5724,6 +5776,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -5814,7 +5869,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -6015,6 +6069,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -6184,20 +6239,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{}}},\"channels\":{\"chan\":\"M\"},\"channels-privacy\":{\"chan\":{\"open\":true,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"setup\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:2");
     gold.append("\nMEMORY:2560");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -6292,6 +6347,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -6400,6 +6456,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -6483,6 +6542,9 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -6573,7 +6635,6 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -6774,6 +6835,7 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -6976,20 +7038,20 @@ public class GeneratedChannelsTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{}}},\"channels\":{\"chan3\":\"M\",\"chan2\":\"M\",\"chan1\":\"M\"},\"channels-privacy\":{\"chan1\":{\"open\":true,\"privacy\":[]},\"chan2\":{\"open\":true,\"privacy\":[]},\"chan3\":{\"open\":true,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"setup\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__state\":\"\",\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:2");
     gold.append("\nMEMORY:2560");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");

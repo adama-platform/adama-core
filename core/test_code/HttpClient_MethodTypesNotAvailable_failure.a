@@ -1,0 +1,7 @@
+client me {
+  endpoint "https://localhost:9998";
+  get "/foo/$xyz" <Q> f1;
+  put "/foo/$xyz" <Q,B> f2;
+  get "/foo/$xyz" <Q> f3 -> R;
+  put "/foo/$xyz" <Q,B> f4 -> R;
+}

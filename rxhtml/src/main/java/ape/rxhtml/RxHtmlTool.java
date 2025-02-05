@@ -1,22 +1,30 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.rxhtml;
 
+import ape.rxhtml.server.ServerPageShell;
+import ape.rxhtml.server.ServerSideTargetBuilder;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import ape.common.Json;
 import ape.common.template.Parser;
@@ -78,6 +86,23 @@ public class RxHtmlTool {
       if (location != null) {
         table.add(Instructions.parse(uri), createRedirectRule(status, location));
       }
+    }
+    ServerPageShell serverPageShell = ServerPageShell.of(document, config.feedback, config.environment);
+
+    String redirectPathNoAuth = null;
+    for (Element element : document.getElementsByTag("server-page")) {
+      if (element.hasAttr("default-redirect-source") && element.hasAttr("uri")) {
+        redirectPathNoAuth = element.attr("uri");
+      }
+    }
+
+    for (Element element : document.getElementsByTag("server-page")) {
+      String uri = element.attr("uri");
+      String redirectPathIfNoPrinciple = null;
+      if (element.hasAttr("authenticate")) {
+        redirectPathIfNoPrinciple = redirectPathNoAuth;
+      }
+      table.add(Instructions.parse(uri), ServerSideTargetBuilder.build(serverPageShell, element, redirectPathIfNoPrinciple));
     }
     Diagnostics diagnostics = new Diagnostics(env.getCssFreq(), env.tasks, vb.results, javascript.length());
     return new RxHtmlBundle(javascript, style, shell, diagnostics, table);

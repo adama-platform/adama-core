@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime.sys;
 
 import ape.common.Callback;
@@ -174,15 +180,15 @@ public class ServiceTemporalTests {
       }
 
       latch.run();
-      dataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__messages\":null,\"__seq\":1}");
+      dataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__seq\":1}");
       dataService.assertLogAt(1, "LOAD:space/key");
-      dataService.assertLogAt(2, "PATCH:space/key:2-3->{\"__seq\":3,\"__entropy\":\"-6153234687710755147\",\"__connection_id\":1,\"x\":42,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null}");
-      dataService.assertLogAt(3, "PATCH:space/key:4-4->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"6497997367891420869\"}");
-      dataService.assertLogAt(4, "PATCH:space/key:5-6->{\"__seq\":6,\"__entropy\":\"-7509292263826677178\",\"__clients\":{\"0\":null},\"__messages\":null}");
+      dataService.assertLogAt(2, "PATCH:space/key:2-3->{\"__seq\":3,\"__entropy\":\"-6153234687710755147\",\"__connection_id\":1,\"x\":42,\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}}");
+      dataService.assertLogAt(3, "PATCH:space/key:4-4->{\"__seq\":4,\"__entropy\":\"6497997367891420869\"}");
+      dataService.assertLogAt(4, "PATCH:space/key:5-6->{\"__seq\":6,\"__entropy\":\"-7509292263826677178\",\"__clients\":{\"0\":null}}");
       dataService.assertLogAt(5, "CLOSE:space/key");
       dataService.assertLogAt(6, "LOAD:space/key");
-      dataService.assertLogAt(7, "PATCH:space/key:7-8->{\"__seq\":8,\"__entropy\":\"-3276852164016475938\",\"__connection_id\":2,\"__clients\":{\"1\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null}");
-      dataService.assertLogAt(8, "PATCH:space/key:9-9->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"3155693776702036113\"}");
+      dataService.assertLogAt(7, "PATCH:space/key:7-8->{\"__seq\":8,\"__entropy\":\"-3276852164016475938\",\"__connection_id\":2,\"__clients\":{\"1\":{\"agent\":\"?\",\"authority\":\"?\"}}}");
+      dataService.assertLogAt(8, "PATCH:space/key:9-9->{\"__seq\":9,\"__entropy\":\"3155693776702036113\"}");
     } finally {
       service.shutdown();
     }

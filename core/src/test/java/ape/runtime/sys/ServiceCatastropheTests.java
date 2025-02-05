@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime.sys;
 
 import ape.common.TimeSource;
@@ -74,7 +80,7 @@ public class ServiceCatastropheTests {
       service.connect(ContextSupport.WRAP(NtPrincipal.NO_ONE), KEY, "{}", ConnectionMode.Full, streamback2);
       streamback2.await_began();
       latch.run();
-      realDataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__messages\":null,\"__seq\":1}");
+      realDataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__seq\":1}");
       realDataService.assertLogAt(1, "LOAD:space/key");
     } finally {
       service.shutdown();
@@ -122,10 +128,10 @@ public class ServiceCatastropheTests {
       service.connect(ContextSupport.WRAP(BOB), KEY, "{}", ConnectionMode.Full, streamback2);
       streamback2.await_failure(625676);
       latch.run();
-      realDataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__messages\":null,\"__seq\":1}");
+      realDataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__seq\":1}");
       realDataService.assertLogAt(1, "LOAD:space/key");
-      realDataService.assertLogAt(2, "PATCH:space/key:2-3->{\"__seq\":3,\"__entropy\":\"-6153234687710755147\",\"__connection_id\":1,\"x\":1,\"__clients\":{\"0\":{\"agent\":\"alice\",\"authority\":\"test\"}},\"__messages\":null}");
-      realDataService.assertLogAt(3, "PATCH:space/key:4-4->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"6497997367891420869\"}");
+      realDataService.assertLogAt(2, "PATCH:space/key:2-3->{\"__seq\":3,\"__entropy\":\"-6153234687710755147\",\"__connection_id\":1,\"x\":1,\"__clients\":{\"0\":{\"agent\":\"alice\",\"authority\":\"test\"}}}");
+      realDataService.assertLogAt(3, "PATCH:space/key:4-4->{\"__seq\":4,\"__entropy\":\"6497997367891420869\"}");
       realDataService.assertLogAt(4, "DELETE:space/key");
     } finally {
       service.shutdown();
@@ -178,15 +184,15 @@ public class ServiceCatastropheTests {
       Assert.assertEquals("{\"data\":{\"x\":2},\"seq\":7}", streamback2.get(1));
       Assert.assertEquals("{\"data\":{\"x\":1},\"seq\":9}", streamback2.get(2));
       latch.run();
-      realDataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__messages\":null,\"__seq\":1}");
+      realDataService.assertLogAt(0, "INIT:space/key:1->{\"__constructed\":true,\"__entropy\":\"-4964420948893066024\",\"__seq\":1}");
       realDataService.assertLogAt(1, "LOAD:space/key");
-      realDataService.assertLogAt(2, "PATCH:space/key:2-3->{\"__seq\":3,\"__entropy\":\"-6153234687710755147\",\"__connection_id\":1,\"x\":1,\"__clients\":{\"0\":{\"agent\":\"alice\",\"authority\":\"test\"}},\"__messages\":null}");
-      realDataService.assertLogAt(3, "PATCH:space/key:4-4->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"6497997367891420869\"}");
+      realDataService.assertLogAt(2, "PATCH:space/key:2-3->{\"__seq\":3,\"__entropy\":\"-6153234687710755147\",\"__connection_id\":1,\"x\":1,\"__clients\":{\"0\":{\"agent\":\"alice\",\"authority\":\"test\"}}}");
+      realDataService.assertLogAt(3, "PATCH:space/key:4-4->{\"__seq\":4,\"__entropy\":\"6497997367891420869\"}");
       realDataService.assertLogAt(4, "CLOSE:space/key");
       realDataService.assertLogAt(5, "LOAD:space/key");
-      realDataService.assertLogAt(6, "PATCH:space/key:5-6->{\"__seq\":6,\"__entropy\":\"-7509292263826677178\",\"__connection_id\":2,\"x\":2,\"__clients\":{\"1\":{\"agent\":\"bob\",\"authority\":\"test\"}},\"__messages\":null}");
-      realDataService.assertLogAt(7, "PATCH:space/key:7-7->{\"__messages\":null,\"__seq\":7,\"__entropy\":\"3749908817274402468\"}");
-      realDataService.assertLogAt(8, "PATCH:space/key:8-9->{\"__seq\":9,\"__entropy\":\"3155693776702036113\",\"x\":1,\"__clients\":{\"0\":null},\"__messages\":null}");
+      realDataService.assertLogAt(6, "PATCH:space/key:5-6->{\"__seq\":6,\"__entropy\":\"-7509292263826677178\",\"__connection_id\":2,\"x\":2,\"__clients\":{\"1\":{\"agent\":\"bob\",\"authority\":\"test\"}}}");
+      realDataService.assertLogAt(7, "PATCH:space/key:7-7->{\"__seq\":7,\"__entropy\":\"3749908817274402468\"}");
+      realDataService.assertLogAt(8, "PATCH:space/key:8-9->{\"__seq\":9,\"__entropy\":\"3155693776702036113\",\"x\":1,\"__clients\":{\"0\":null}}");
     } finally {
       service.shutdown();
     }

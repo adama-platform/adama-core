@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator;
 
 import org.junit.Test;
@@ -519,6 +525,7 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -790,6 +797,9 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -918,6 +928,9 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -1053,7 +1066,6 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    deck.__revert();");
     gold.append("\n    owner.__revert();");
@@ -2868,6 +2880,7 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -4515,11 +4528,11 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"deck\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Card\"},\"computed\":false,\"privacy\":\"private\"},\"hand\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"players\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Player\"},\"computed\":false,\"privacy\":\"private\"},\"players_connected\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"observers_connected\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"people\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Player\"}},\"computed\":true,\"privacy\":\"public\"},\"players_ordered\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Player\"}},\"computed\":true,\"privacy\":\"public\"},\"ready\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":true,\"privacy\":\"public\"},\"playing\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"passing_mode\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"PassingMode\",\"options\":{\"values\":{\"Across\":0,\"ToLeft\":1,\"ToRight\":2,\"None\":3},\"names\":{\"0\":\"Across\",\"1\":\"ToLeft\",\"2\":\"ToRight\",\"3\":\"None\"},\"default\":\"Across\"}},\"computed\":false,\"privacy\":\"public\"},\"player1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"player2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"player3\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"player4\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"current\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"played\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"suit_in_play\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"computed\":false,\"privacy\":\"public\"},\"points_played\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"in_play\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"public\"},\"last_winner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"points_awarded\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"my_take\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Card\"}},\"computed\":true,\"privacy\":\"bubble\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Suit\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"Rank\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Rank\",\"options\":{\"values\":{\"Two\":2,\"Three\":3,\"Four\":4,\"Five\":5,\"Six\":6,\"Seven\":7,\"Eight\":8,\"Nine\":9,\"Ten\":10,\"Jack\":11,\"Queen\":12,\"King\":13,\"Ace\":14},\"names\":{\"2\":\"Two\",\"3\":\"Three\",\"4\":\"Four\",\"5\":\"Five\",\"6\":\"Six\",\"7\":\"Seven\",\"8\":\"Eight\",\"9\":\"Nine\",\"10\":\"Ten\",\"11\":\"Jack\",\"12\":\"Queen\",\"13\":\"King\",\"14\":\"Ace\"},\"default\":\"Two\"}},\"Place\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Place\",\"options\":{\"values\":{\"Deck\":1,\"Hand\":2,\"InPlay\":3,\"Taken\":4},\"names\":{\"1\":\"Deck\",\"2\":\"Hand\",\"3\":\"InPlay\",\"4\":\"Taken\"},\"default\":\"Deck\"}},\"Card\":{\"nature\":\"reactive_record\",\"name\":\"Card\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"suit\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"computed\":false,\"privacy\":\"public\"},\"rank\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Rank\",\"options\":{\"values\":{\"Two\":2,\"Three\":3,\"Four\":4,\"Five\":5,\"Six\":6,\"Seven\":7,\"Eight\":8,\"Nine\":9,\"Ten\":10,\"Jack\":11,\"Queen\":12,\"King\":13,\"Ace\":14},\"names\":{\"2\":\"Two\",\"3\":\"Three\",\"4\":\"Four\",\"5\":\"Five\",\"6\":\"Six\",\"7\":\"Seven\",\"8\":\"Eight\",\"9\":\"Nine\",\"10\":\"Ten\",\"11\":\"Jack\",\"12\":\"Queen\",\"13\":\"King\",\"14\":\"Ace\"},\"default\":\"Two\"}},\"computed\":false,\"privacy\":\"public\"},\"owner\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"private\"},\"ordering\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"place\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"Place\",\"options\":{\"values\":{\"Deck\":1,\"Hand\":2,\"InPlay\":3,\"Taken\":4},\"names\":{\"1\":\"Deck\",\"2\":\"Hand\",\"3\":\"InPlay\",\"4\":\"Taken\"},\"default\":\"Deck\"}},\"computed\":false,\"privacy\":\"private\"},\"points\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"private\"}}},\"Empty\":{\"nature\":\"native_message\",\"name\":\"Empty\",\"anonymous\":false,\"fields\":{}},\"Player\":{\"nature\":\"reactive_record\",\"name\":\"Player\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"link\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"playing\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"private\"},\"points\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"leader\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"viewer_is\"},\"play_order\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"viewer_is\"}}},\"LeaderAction\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"LeaderAction\",\"options\":{\"values\":{\"PromoteObserver\":1,\"DemotePlayer\":2,\"ShufflePlayers\":3,\"Begin\":10},\"names\":{\"1\":\"PromoteObserver\",\"2\":\"DemotePlayer\",\"3\":\"ShufflePlayers\",\"10\":\"Begin\"},\"default\":\"PromoteObserver\"}},\"LeaderActionMessage\":{\"nature\":\"native_message\",\"name\":\"LeaderActionMessage\",\"anonymous\":false,\"fields\":{\"id\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"action\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"LeaderAction\",\"options\":{\"values\":{\"PromoteObserver\":1,\"DemotePlayer\":2,\"ShufflePlayers\":3,\"Begin\":10},\"names\":{\"1\":\"PromoteObserver\",\"2\":\"DemotePlayer\",\"3\":\"ShufflePlayers\",\"10\":\"Begin\"},\"default\":\"PromoteObserver\"}},\"computed\":false,\"privacy\":\"public\"}}},\"PassingMode\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"PassingMode\",\"options\":{\"values\":{\"Across\":0,\"ToLeft\":1,\"ToRight\":2,\"None\":3},\"names\":{\"0\":\"Across\",\"1\":\"ToLeft\",\"2\":\"ToRight\",\"3\":\"None\"},\"default\":\"Across\"}},\"CardDecision\":{\"nature\":\"native_message\",\"name\":\"CardDecision\",\"anonymous\":false,\"fields\":{\"id\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"leader\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"link\":{\"type\":{\"nature\":\"native_value\",\"type\":\"secure<principal>\"},\"computed\":false,\"privacy\":\"public\"},\"play_order\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"playing\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"},\"points\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_2\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_2\",\"anonymous\":true,\"fields\":{\"place\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Place\",\"options\":{\"values\":{\"Deck\":1,\"Hand\":2,\"InPlay\":3,\"Taken\":4},\"names\":{\"1\":\"Deck\",\"2\":\"Hand\",\"3\":\"InPlay\",\"4\":\"Taken\"},\"default\":\"Deck\"}},\"computed\":false,\"privacy\":\"public\"},\"rank\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Rank\",\"options\":{\"values\":{\"Two\":2,\"Three\":3,\"Four\":4,\"Five\":5,\"Six\":6,\"Seven\":7,\"Eight\":8,\"Nine\":9,\"Ten\":10,\"Jack\":11,\"Queen\":12,\"King\":13,\"Ace\":14},\"names\":{\"2\":\"Two\",\"3\":\"Three\",\"4\":\"Four\",\"5\":\"Five\",\"6\":\"Six\",\"7\":\"Seven\",\"8\":\"Eight\",\"9\":\"Nine\",\"10\":\"Ten\",\"11\":\"Jack\",\"12\":\"Queen\",\"13\":\"King\",\"14\":\"Ace\"},\"default\":\"Two\"}},\"computed\":false,\"privacy\":\"public\"},\"suit\":{\"type\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"Suit\",\"options\":{\"values\":{\"Clubs\":1,\"Hearts\":2,\"Spades\":3,\"Diamonds\":4},\"names\":{\"1\":\"Clubs\",\"2\":\"Hearts\",\"3\":\"Spades\",\"4\":\"Diamonds\"},\"default\":\"Clubs\"}},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"leader\":\"LeaderActionMessage\",\"pass_channel\":\"CardDecision\",\"single_play\":\"CardDecision\"},\"channels-privacy\":{\"leader\":{\"open\":false,\"privacy\":[]},\"pass_channel\":{\"open\":false,\"privacy\":[]},\"single_play\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[\"lobby\",\"setup\",\"shuffle_and_distribute\",\"pass\",\"start_play\",\"play\",\"score\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:8850");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"playing\":false,\"passing_mode\":0,\"played\":0,\"suit_in_play\":1,\"points_played\":false,\"last_winner\":{\"@t\":1,\"agent\":\"?\",\"authority\":\"?\"},\"points_awarded\":0,\"players_connected\":0,\"observers_connected\":0,\"ready\":false},\"seq\":3}");
     gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__state\":\"lobby\",\"__next_time\":\"75\",\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__connection_id\":1,\"__time\":\"75\",\"__auto_table_row_id\":1,\"players\":{\"1\":{\"id\":1,\"link\":{\"agent\":\"?\",\"authority\":\"?\"},\"playing\":true,\"points\":0,\"leader\":true,\"play_order\":0}},\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:true in:0");
@@ -4672,6 +4685,7 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -4796,6 +4810,9 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -4882,6 +4899,9 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -4975,7 +4995,6 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    _chat.__revert();");
     gold.append("\n    /* root */");
@@ -5941,6 +5960,7 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -6199,25 +6219,25 @@ public class GeneratedDemoInstrumentedTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"_chat\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Line\"},\"computed\":false,\"privacy\":\"private\"},\"chat\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Line\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Line\":{\"nature\":\"reactive_record\",\"name\":\"Line\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"who\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"},\"what\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"}}},\"Say\":{\"nature\":\"native_message\",\"name\":\"Say\",\"anonymous\":false,\"fields\":{\"what\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"_AnonObjConvert_2\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_2\",\"anonymous\":true,\"fields\":{\"what\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"when\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"who\":{\"type\":{\"nature\":\"native_value\",\"type\":\"secure<principal>\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_4\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_4\",\"anonymous\":true,\"fields\":{\"html\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{\"say\":\"Say\"},\"channels-privacy\":{\"say\":{\"open\":false,\"privacy\":[]}},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4890");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");

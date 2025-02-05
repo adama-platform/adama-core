@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape;
 
 import java.util.HashMap;
@@ -666,6 +672,10 @@ public class ErrorTable {
     descriptions.put(979143, "no description of error (yet)");
     names.put(924928, "WEB_BYTEARRAY_CALLBACK_NOT_200");
     descriptions.put(924928, "no description of error (yet)");
+    names.put(979144, "WEB_CALLBACK_NOT_SUCCESS_NOR_REDIRECT");
+    descriptions.put(979144, "no description of error (yet)");
+    names.put(979141, "WEB_CALLBACK_REDIRECT_WITHOUT_LOCATION");
+    descriptions.put(979141, "no description of error (yet)");
     names.put(903364, "UPLOAD_SCAN_FILE_FAILURE");
     descriptions.put(903364, "no description of error (yet)");
     names.put(998599, "BACKUP_FILE_FAILURE");
@@ -767,12 +777,8 @@ public class ErrorTable {
     descriptions.put(716812, "no description of error (yet)");
     names.put(785601, "SERVICE_CONFIG_BAD_PRIVATE_KEY_BUNDLE");
     descriptions.put(785601, "no description of error (yet)");
-    names.put(791567, "SERVICE_CONFIG_BAD_ENCRYPT_STRING_FAILED_SECRET_KEY_LOOKUP");
-    descriptions.put(791567, "no description of error (yet)");
     names.put(782348, "SERVICE_CONFIG_BAD_ENCRYPT_STRING_FAILED_DECRYPTION");
     descriptions.put(782348, "no description of error (yet)");
-    names.put(786436, "MYSQL_FAILED_FINDING_SECRET_KEY");
-    descriptions.put(786436, "no description of error (yet)");
     names.put(790704, "MYSQL_FAILED_FINDING_SENTINEL_ASPECT");
     descriptions.put(790704, "no description of error (yet)");
     names.put(775372, "MYSQL_FAILED_FINDING_SENTINEL_COUNT");
@@ -791,9 +797,13 @@ public class ErrorTable {
     descriptions.put(705583, "no description of error (yet)");
     names.put(776396, "NET_FINDER_FAILED_PICK_HOST");
     descriptions.put(776396, "no description of error (yet)");
-    names.put(724012, "NET_FINDER_ROUTER_REGION_NOT_EXPECTED");
+    names.put(791567, "HEADER_DECRYPTOR_INVALID_SECRET_FORMAT");
+    descriptions.put(791567, "no description of error (yet)");
+    names.put(786436, "HEADER_DECRYPTOR_BUNDLE_NOT_FOUND");
+    descriptions.put(786436, "no description of error (yet)");
+    names.put(724012, "HEADER_DECRYPTOR_INVALID_BUNDLE_ID");
     descriptions.put(724012, "no description of error (yet)");
-    names.put(783395, "NET_FINDER_ROUTER_NULL_MACHINE");
+    names.put(783395, "HEADER_DECRYPTOR_FAILED_DECRYPTION");
     descriptions.put(783395, "no description of error (yet)");
     names.put(773152, "ADAMA_NET_PING_TIMEOUT");
     descriptions.put(773152, "no description of error (yet)");
@@ -976,10 +986,6 @@ public class ErrorTable {
     descriptions.put(716993, "no description of error (yet)");
     names.put(781507, "REPLICATION_NOT_AVAILABLE");
     descriptions.put(781507, "no description of error (yet)");
-    names.put(707675, "CARAVAN_KEY_NOT_LOADED_PATCH");
-    descriptions.put(707675, "no description of error (yet)");
-    names.put(790622, "CARAVAN_KEY_NOT_LOADED_COMPUTE");
-    descriptions.put(790622, "no description of error (yet)");
     names.put(790623, "CARAVAN_KEY_NOT_LOADED_SNAPSHOT");
     descriptions.put(790623, "no description of error (yet)");
     names.put(734211, "GRPC_HANDLER_EXCEPTION");
@@ -1012,16 +1018,6 @@ public class ErrorTable {
     descriptions.put(769042, "no description of error (yet)");
     names.put(784401, "DISK_UNABLE_TO_COMPACT_FILE_NOT_FOUND");
     descriptions.put(784401, "no description of error (yet)");
-    names.put(777259, "DISK_UNABLE_TO_COMPACT_NON_POSITIVE_HISTORY");
-    descriptions.put(777259, "no description of error (yet)");
-    names.put(736272, "DISK_COMPACT_READ_IO_EXCEPTION");
-    descriptions.put(736272, "no description of error (yet)");
-    names.put(739351, "DISK_COMPACT_WRITE_IO_EXCEPTION");
-    descriptions.put(739351, "no description of error (yet)");
-    names.put(790544, "DISK_UNABLE_TO_COMPUTE_FILE_NOT_FOUND");
-    descriptions.put(790544, "no description of error (yet)");
-    names.put(725039, "DISK_COMPUTE_HEADPATCH_NOTHING_TO_DO");
-    descriptions.put(725039, "no description of error (yet)");
     names.put(792643, "VAPID_NOT_FOUND_FOR_DOMAIN");
     descriptions.put(792643, "no description of error (yet)");
     names.put(736243, "CONFIG_NOT_FOUND_FOR_DOMAIN");
@@ -1068,5 +1064,23 @@ public class ErrorTable {
     descriptions.put(753651, "no description of error (yet)");
     names.put(901104, "MYSQL_WAKE_EXCEPTION");
     descriptions.put(901104, "no description of error (yet)");
+    names.put(712591, "OVERLORD_FAILED_LOG_KEY_EXTRACTION");
+    descriptions.put(712591, "no description of error (yet)");
+    names.put(740351, "OVERLORD_FAILED_EXECUTE_CURRENT_JOB");
+    descriptions.put(740351, "no description of error (yet)");
+    names.put(725039, "OVERLORD_FAILED_WRITE_INTENT");
+    descriptions.put(725039, "no description of error (yet)");
+    names.put(790544, "OVERLORD_FAILED_LOG_DELETE");
+    descriptions.put(790544, "no description of error (yet)");
+    names.put(739351, "OVERLORD_FAILED_BACKUP_DELETE");
+    descriptions.put(739351, "no description of error (yet)");
+    names.put(736272, "OVERLORD_FAILED_BACKUP_KEY_EXTRACTION");
+    descriptions.put(736272, "no description of error (yet)");
+    names.put(777259, "OVERLORD_FAILED_LIST_SPACES");
+    descriptions.put(777259, "no description of error (yet)");
+    names.put(790622, "GENERIC_CLIENT_NOT_AVAILABLE");
+    descriptions.put(790622, "no description of error (yet)");
+    names.put(707675, "GENERIC_CLIENT_FAILED_PARSING");
+    descriptions.put(707675, "no description of error (yet)");
   }
 }

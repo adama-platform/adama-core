@@ -1,0 +1,9 @@
+message M { int xyz; }
+message V { int n; }
+
+client me {
+  endpoint "https://localhost:9998";
+  header Authorization = "Bearer Happy";
+  header Authorization = "Bearer Happy";
+  header Authorization = "Bearer Happy";
+}

@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator.jvm;
 
 import ape.common.ErrorCodeException;
@@ -34,7 +40,7 @@ public class LivingDocumentFactoryTests {
         new LivingDocumentFactory(SyncCompiler.compile(
             "Space",
             "Foo",
-            "import java.util.HashMap; \nimport ape.runtime.contracts.DocumentMonitor;import ape.runtime.natives.*;import ape.runtime.sys.*;\n public class Foo { public Foo(DocumentMonitor dm) {} public static boolean __onCanCreate(CoreRequestContext who) { return false; } public static boolean __onCanInvent(CoreRequestContext who) { return false; } public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { return false; } public static HashMap<String, Object> __config() { return new HashMap<>(); } public static HashMap<String, HashMap<String, Object>> __services() { return new HashMap<>(); } } ",
+            "import java.util.HashMap; \nimport ape.runtime.contracts.DocumentMonitor;import ape.runtime.remote.client.*; import ape.runtime.remote.*;import ape.runtime.natives.*;import ape.runtime.sys.*;\n public class Foo { public Foo(DocumentMonitor dm) {} public static boolean __onCanCreate(CoreRequestContext who) { return false; } public static boolean __onCanInvent(CoreRequestContext who) { return false; } public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { return false; } public static HashMap<String, Object> __config() { return new HashMap<>(); } public static HashMap<String, HashMap<String, Object>> __services() { return new HashMap<>(); } public static void __create_generic_clients(ServiceRegistry s, HeaderDecryptor h) {} } ",
             "{}"), Deliverer.FAILURE, new TreeMap<>());
     var success = false;
     try {
@@ -68,7 +74,7 @@ public class LivingDocumentFactoryTests {
         new LivingDocumentFactory(SyncCompiler.compile(
             "Space",
             "Foo",
-            "import java.util.HashMap; \nimport ape.runtime.contracts.DocumentMonitor;import ape.runtime.natives.*; import ape.runtime.sys.*;\n public class Foo { public Foo(DocumentMonitor dm) {} public static boolean __onCanCreate(CoreRequestContext who) { return false; }  public static boolean __onCanInvent(CoreRequestContext who) { return false; } public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { return false; } public static HashMap<String, Object> __config() { return new HashMap<>(); } public static HashMap<String, HashMap<String, Object>> __services() { return new HashMap<>(); } }",
+            "import java.util.HashMap; \nimport ape.runtime.contracts.DocumentMonitor;import ape.runtime.natives.*; import ape.runtime.remote.client.*; import ape.runtime.remote.*; import ape.runtime.sys.*;\n public class Foo { public Foo(DocumentMonitor dm) {} public static boolean __onCanCreate(CoreRequestContext who) { return false; }  public static boolean __onCanInvent(CoreRequestContext who) { return false; } public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { return false; } public static HashMap<String, Object> __config() { return new HashMap<>(); } public static HashMap<String, HashMap<String, Object>> __services() { return new HashMap<>(); } public static void __create_generic_clients(ServiceRegistry s, HeaderDecryptor h) {} }",
             "{}"), Deliverer.FAILURE, new TreeMap<>());
     var success = false;
     try {
@@ -108,7 +114,7 @@ public class LivingDocumentFactoryTests {
     LivingDocumentFactory factory = new LivingDocumentFactory(SyncCompiler.compile(
         "Space",
         "Foo",
-        "import ape.runtime.contracts.DocumentMonitor; import ape.runtime.sys.*;" +
+        "import ape.runtime.contracts.DocumentMonitor; import ape.runtime.sys.*; import ape.runtime.remote.client.*; import ape.runtime.remote.*;" +
             "import java.util.HashMap; import ape.runtime.natives.*; public class Foo {" +
             "public Foo(final DocumentMonitor __monitor) { }" +
             "public static boolean __onCanCreate(CoreRequestContext who) { throw new NullPointerException(); }" +
@@ -116,6 +122,8 @@ public class LivingDocumentFactoryTests {
             "public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { throw new NullPointerException(); }" +
             "public static HashMap<String, HashMap<String, Object>> __services() { return new HashMap<>(); }" +
             "public static HashMap<String, Object> __config() { return new HashMap<>(); }" +
+            "public static void __create_generic_clients(ServiceRegistry s, HeaderDecryptor h) {}" +
+
             "}",
         "{}"), Deliverer.FAILURE, new TreeMap<>());
 
@@ -145,7 +153,7 @@ public class LivingDocumentFactoryTests {
     LivingDocumentFactory factory = new LivingDocumentFactory(SyncCompiler.compile(
         "Space",
         "Foo",
-        "import ape.runtime.contracts.DocumentMonitor; import ape.runtime.sys.*;" +
+        "import ape.runtime.contracts.DocumentMonitor; import ape.runtime.sys.*; import ape.runtime.remote.client.*; import ape.runtime.remote.*;" +
             "import java.util.HashMap; import ape.runtime.natives.*; public class Foo {" +
             "public Foo(final DocumentMonitor __monitor) { }" +
             "public static boolean __onCanCreate(CoreRequestContext who) { throw new NullPointerException(); }" +
@@ -153,6 +161,7 @@ public class LivingDocumentFactoryTests {
             "public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { throw new NullPointerException(); }" +
             "public static HashMap<String, Object> __config() { HashMap<String, Object> map = new HashMap<>(); map.put(\"maximum_history\", 150); return map; }" +
             "public static HashMap<String, HashMap<String, Object>> __services() { return new HashMap<>(); }" +
+            "public static void __create_generic_clients(ServiceRegistry s, HeaderDecryptor h) {}" +
             "}",
         "{}"), Deliverer.FAILURE, new TreeMap<>());
     Assert.assertEquals(150, factory.maximum_history);
@@ -163,7 +172,7 @@ public class LivingDocumentFactoryTests {
     LivingDocumentFactory factory = new LivingDocumentFactory(SyncCompiler.compile(
         "Space",
         "Foo",
-        "import ape.runtime.contracts.DocumentMonitor; import ape.runtime.sys.*;" +
+        "import ape.runtime.contracts.DocumentMonitor; import ape.runtime.sys.*; import ape.runtime.remote.client.*; import ape.runtime.remote.*;" +
             "import java.util.HashMap; import ape.runtime.natives.*; public class Foo {" +
             "public Foo(final DocumentMonitor __monitor) { }" +
             "public static boolean __onCanCreate(CoreRequestContext who) { throw new NullPointerException(); }" +
@@ -171,6 +180,7 @@ public class LivingDocumentFactoryTests {
             "public static boolean __onCanSendWhileDisconnected(CoreRequestContext who) { throw new NullPointerException(); }" +
             "public static HashMap<String, Object> __config() { HashMap<String, Object> map = new HashMap<>(); map.put(\"maximum_history\", 150); return map; }" +
             "public static HashMap<String, HashMap<String, Object>> __services() { HashMap<String, HashMap<String, Object>> map = new HashMap<>(); map.put(\"test\", new HashMap<>()); return map; }" +
+            "public static void __create_generic_clients(ServiceRegistry s, HeaderDecryptor h) {}" +
             "}",
         "{}"), Deliverer.FAILURE, new TreeMap<>());
     Assert.assertTrue(factory.registry.contains("test"));

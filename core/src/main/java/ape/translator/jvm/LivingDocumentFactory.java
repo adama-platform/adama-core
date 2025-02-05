@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator.jvm;
 
 import ape.ErrorCodes;
@@ -30,6 +36,7 @@ import ape.runtime.ops.TestMockUniverse;
 import ape.runtime.ops.TestReportBuilder;
 import ape.runtime.remote.Deliverer;
 import ape.runtime.remote.ServiceRegistry;
+import ape.runtime.remote.client.HeaderDecryptor;
 import ape.runtime.sys.CoreRequestContext;
 import ape.runtime.sys.LivingDocument;
 import org.slf4j.Logger;
@@ -44,6 +51,7 @@ import java.util.TreeMap;
 public class LivingDocumentFactory {
   private static final Logger LOG = LoggerFactory.getLogger(LivingDocumentFactory.class);
   private static final ExceptionLogger LOGGER = ExceptionLogger.FOR(LOG);
+  public final String space;
   public final String reflection;
   private final Constructor<?> constructor;
   private final Method creationPolicyMethod;
@@ -61,6 +69,7 @@ public class LivingDocumentFactory {
 
   public LivingDocumentFactory(CachedByteCode code, Deliverer deliverer, TreeMap<Integer, PrivateKeyBundle> keys) throws ErrorCodeException {
     try {
+      this.space = code.spaceName;
       this.deliverer = deliverer;
       long _memory = 0;
       for (byte[] bytes : code.classBytes.values()) {
@@ -82,8 +91,9 @@ public class LivingDocumentFactory {
       appMode = freq > 0;
       appDelay = freq;
       this.reflection = code.reflection;
-      this.registry = new ServiceRegistry();
-      this.registry.resolve(code.spaceName, (HashMap<String, HashMap<String, Object>>) (clazz.getMethod("__services").invoke(null)), keys);
+      this.registry = new ServiceRegistry(code.spaceName);
+      this.registry.resolve((HashMap<String, HashMap<String, Object>>) (clazz.getMethod("__services").invoke(null)), keys);
+      clazz.getMethod("__create_generic_clients", ServiceRegistry.class, HeaderDecryptor.class).invoke(null, this.registry, new HeaderDecryptor(keys));
       this.temporalResolutionMilliseconds = extractTemporalResolution(config);
     } catch (final Exception ex) {
       throw new ErrorCodeException(ErrorCodes.FACTORY_CANT_BIND_JAVA_CODE, ex);
@@ -171,7 +181,7 @@ public class LivingDocumentFactory {
 
   private LivingDocument prepareTestCandidate(final DocumentMonitor monitor, final String entropy) throws Exception {
     final var candidate = create(monitor);
-    TestMockUniverse tmu = new TestMockUniverse(candidate);
+    TestMockUniverse tmu = new TestMockUniverse(space, candidate);
     candidate.__lateBind("space", "key", tmu, tmu);
     JsonStreamWriter writer = new JsonStreamWriter();
     writer.beginObject();

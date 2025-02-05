@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator;
 
 import org.junit.Test;
@@ -173,6 +179,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -288,6 +295,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -374,6 +384,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -467,7 +480,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    tbl.__revert();");
     gold.append("\n    /* root */");
@@ -826,6 +838,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -991,20 +1004,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"S\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"S\":{\"nature\":\"reactive_record\",\"name\":\"S\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"s\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"private\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[\"code\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4782");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -1135,6 +1148,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -1268,6 +1282,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -1354,6 +1371,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -1447,7 +1467,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    instances.__revert();");
     gold.append("\n    /* root */");
@@ -1895,6 +1914,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -2069,20 +2089,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"instances\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Instance\"},\"computed\":false,\"privacy\":\"private\"},\"at_date\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Instance\"}},\"computed\":true,\"privacy\":\"public\"},\"at_time\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Instance\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"Instance\":{\"nature\":\"reactive_record\",\"name\":\"Instance\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"the_date\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"date\"},\"computed\":false,\"privacy\":\"public\"},\"the_time\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"time\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:5194");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -2185,6 +2205,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -2323,6 +2344,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -2421,6 +2445,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -2526,7 +2553,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    countEq.__revert();");
     gold.append("\n    countLEq.__revert();");
@@ -2763,6 +2789,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -3025,20 +3052,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"countEq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countLEq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countL\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countGEq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countG\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"countEq\":1,\"countLEq\":2,\"countL\":1,\"countGEq\":2,\"countG\":1,\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"countEq\":1,\"countLEq\":2,\"countL\":1,\"countGEq\":2,\"countG\":1,\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:32");
     gold.append("\nMEMORY:2800");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -3140,6 +3167,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -3278,6 +3306,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -3376,6 +3407,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -3481,7 +3515,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    countEq.__revert();");
     gold.append("\n    countLEq.__revert();");
@@ -3718,6 +3751,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -3970,20 +4004,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"countEq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countLEq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countL\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countGEq\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"countG\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"M\":{\"nature\":\"native_message\",\"name\":\"M\",\"anonymous\":false,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"countEq\":1,\"countLEq\":2,\"countL\":1,\"countGEq\":2,\"countG\":1,\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"countEq\":1,\"countLEq\":2,\"countL\":1,\"countGEq\":2,\"countG\":1,\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:32");
     gold.append("\nMEMORY:2800");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -4073,6 +4107,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -4188,6 +4223,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -4274,6 +4312,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -4367,7 +4408,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    tbl.__revert();");
     gold.append("\n    /* root */");
@@ -4726,6 +4766,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -4893,20 +4934,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"S\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"S\":{\"nature\":\"reactive_record\",\"name\":\"S\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"s\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"private\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[\"code\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4782");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -5027,6 +5068,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -5142,6 +5184,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -5228,6 +5273,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -5321,7 +5369,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    itbl.__revert();");
     gold.append("\n    /* root */");
@@ -6656,6 +6703,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -6864,20 +6912,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"itbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Issues\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"E\":{\"nature\":\"native_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"One\":{\"nature\":\"reactive_record\",\"name\":\"One\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"}}},\"Two\":{\"nature\":\"reactive_record\",\"name\":\"Two\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"}}},\"Issues\":{\"nature\":\"reactive_record\",\"name\":\"Issues\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"u\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"Three\":{\"nature\":\"reactive_record\",\"name\":\"Three\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"enum\",\"enum\":\"E\",\"options\":{\"values\":{\"A\":0,\"B\":1},\"names\":{\"0\":\"A\",\"1\":\"B\"},\"default\":\"A\"}},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"principal\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[\"code\"]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:4848");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -7023,6 +7071,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -7156,6 +7205,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -7242,6 +7294,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -7335,7 +7390,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    tbl.__revert();");
     gold.append("\n    /* root */");
@@ -7853,6 +7907,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -8030,22 +8085,22 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"list_1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"list_2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":3,\"tbl\":{\"1\":{\"id\":1,\"x\":1,\"y\":3},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"3\":{\"id\":3,\"x\":3,\"y\":1}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":3,\"tbl\":{\"1\":{\"id\":1,\"x\":1,\"y\":3},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"3\":{\"id\":3,\"x\":3,\"y\":1}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:13");
     gold.append("\nMEMORY:5672");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"list_1\":{\"@o\":[2,3,1]},\"list_2\":{\"@o\":[1,3,2]}},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"list_1\":{\"@o\":[2,3,1]},\"list_2\":{\"@o\":[1,3,2]}},\"seq\":6}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"125\"}-->{\"__messages\":null,\"__seq\":7,\"__entropy\":\"5082315122564986995\",\"__time\":\"125\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"125\"}-->{\"__seq\":7,\"__entropy\":\"5082315122564986995\",\"__time\":\"125\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":7}");
     gold.append("\n+ RANDO DELTA:{\"seq\":7}");
@@ -8201,6 +8256,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -8441,6 +8497,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -8551,6 +8610,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -8668,7 +8730,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    z0.__revert();");
     gold.append("\n    z1.__revert();");
@@ -9351,6 +9412,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -9749,20 +9811,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"z0\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Z\"},\"computed\":false,\"privacy\":\"private\"},\"z1\":{\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Z\"},\"computed\":false,\"privacy\":\"private\"},\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"count1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"count2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"count3\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"tbl2\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"tbl3\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"list_w\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w3\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w4\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w5\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w6\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w7\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"list_w8\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"count_tbl2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"Z\":{\"nature\":\"reactive_record\",\"name\":\"Z\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":16,\"tbl\":{\"1\":{\"id\":1,\"x\":1,\"y\":3},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"3\":{\"id\":3,\"x\":3,\"y\":1}},\"count1\":3,\"count2\":1,\"count3\":2,\"tbl2\":{\"4\":{\"id\":4,\"x\":100,\"y\":3},\"5\":{\"id\":5,\"x\":2,\"y\":2},\"6\":{\"id\":6,\"x\":2,\"y\":2},\"7\":{\"id\":7,\"x\":100,\"y\":1},\"8\":{\"id\":8,\"x\":4,\"y\":2},\"10\":{\"id\":10,\"x\":1,\"y\":2}},\"tbl3\":{\"11\":{\"id\":11,\"x\":100,\"y\":3},\"12\":{\"id\":12,\"x\":2,\"y\":2},\"13\":{\"id\":13,\"x\":2,\"y\":2},\"14\":{\"id\":14,\"x\":100,\"y\":1},\"15\":{\"id\":15,\"x\":4,\"y\":2},\"16\":{\"id\":16,\"x\":1,\"y\":2}},\"count_tbl2\":7,\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":16,\"tbl\":{\"1\":{\"id\":1,\"x\":1,\"y\":3},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"3\":{\"id\":3,\"x\":3,\"y\":1}},\"count1\":3,\"count2\":1,\"count3\":2,\"tbl2\":{\"4\":{\"id\":4,\"x\":100,\"y\":3},\"5\":{\"id\":5,\"x\":2,\"y\":2},\"6\":{\"id\":6,\"x\":2,\"y\":2},\"7\":{\"id\":7,\"x\":100,\"y\":1},\"8\":{\"id\":8,\"x\":4,\"y\":2},\"10\":{\"id\":10,\"x\":1,\"y\":2}},\"tbl3\":{\"11\":{\"id\":11,\"x\":100,\"y\":3},\"12\":{\"id\":12,\"x\":2,\"y\":2},\"13\":{\"id\":13,\"x\":2,\"y\":2},\"14\":{\"id\":14,\"x\":100,\"y\":1},\"15\":{\"id\":15,\"x\":4,\"y\":2},\"16\":{\"id\":16,\"x\":1,\"y\":2}},\"count_tbl2\":7,\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:116");
     gold.append("\nMEMORY:18068");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -9920,6 +9982,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -10107,6 +10170,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -10196,6 +10262,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -10292,7 +10361,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    tbl.__revert();");
     gold.append("\n    assocs.__revert();");
@@ -11295,6 +11363,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -11555,20 +11624,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"R\"},\"computed\":false,\"privacy\":\"private\"},\"all\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"all_sqr_explicit\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}},\"computed\":true,\"privacy\":\"public\"},\"all_sqr_anonymous\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}},\"computed\":true,\"privacy\":\"public\"},\"assocs\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"Assoc\"},\"computed\":false,\"privacy\":\"private\"},\"dumb_join_explicit\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_ref\",\"ref\":\"Assoc\"}}},\"computed\":true,\"privacy\":\"public\"},\"dumb_join_annoy1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Assoc\"}}},\"computed\":true,\"privacy\":\"public\"},\"dumb_join_annoy2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Assoc\"}}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"Assoc\":{\"nature\":\"reactive_record\",\"name\":\"Assoc\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_2\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_2\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_4\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_4\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":3,\"tbl\":{\"1\":{\"id\":1,\"x\":1,\"y\":2},\"2\":{\"id\":2,\"x\":3,\"y\":3}},\"assocs\":{\"3\":{\"id\":3,\"x\":1,\"z\":42}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":3,\"tbl\":{\"1\":{\"id\":1,\"x\":1,\"y\":2},\"2\":{\"id\":2,\"x\":3,\"y\":3}},\"assocs\":{\"3\":{\"id\":3,\"x\":1,\"z\":42}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:13");
     gold.append("\nMEMORY:8764");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"all\":{\"1\":{\"x\":1,\"y\":2},\"2\":{\"x\":3,\"y\":3},\"@o\":[1,2]},\"all_sqr_explicit\":{\"0\":5,\"1\":18,\"@s\":2},\"all_sqr_anonymous\":{\"0\":5,\"1\":18,\"@s\":2},\"dumb_join_explicit\":{\"0\":{\"3\":{\"x\":1,\"z\":42},\"@o\":[3]},\"@s\":2},\"dumb_join_annoy1\":{\"0\":{\"3\":{\"x\":1,\"z\":42},\"@o\":[3]},\"@s\":2},\"dumb_join_annoy2\":{\"0\":{\"3\":{\"x\":1,\"z\":42},\"@o\":[3]},\"@s\":2}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"all\":{\"1\":{\"x\":1,\"y\":2},\"2\":{\"x\":3,\"y\":3},\"@o\":[1,2]},\"all_sqr_explicit\":{\"0\":5,\"1\":18,\"@s\":2},\"all_sqr_anonymous\":{\"0\":5,\"1\":18,\"@s\":2},\"dumb_join_explicit\":{\"0\":{\"3\":{\"x\":1,\"z\":42},\"@o\":[3]},\"@s\":2},\"dumb_join_annoy1\":{\"0\":{\"3\":{\"x\":1,\"z\":42},\"@o\":[3]},\"@s\":2},\"dumb_join_annoy2\":{\"0\":{\"3\":{\"x\":1,\"z\":42},\"@o\":[3]},\"@s\":2}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -11665,6 +11734,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -11773,6 +11843,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -11856,6 +11929,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -11946,7 +12022,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -12242,6 +12317,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -12418,20 +12494,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"native_message\",\"name\":\"X\",\"anonymous\":false,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"datetime\"},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"ss\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"b\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:7");
     gold.append("\nMEMORY:2560");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -12634,6 +12710,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -12821,6 +12898,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -12907,6 +12987,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -13000,7 +13083,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    tbl.__revert();");
     gold.append("\n    /* root */");
@@ -13836,6 +13918,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -14099,20 +14182,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"l1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l3\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l4\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l5\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l6\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l7\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"},\"l8\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"i\":{\"type\":{\"nature\":\"reactive_maybe\",\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"}},\"computed\":false,\"privacy\":\"private\"},\"s\":{\"type\":{\"nature\":\"reactive_maybe\",\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"}},\"computed\":false,\"privacy\":\"private\"},\"b\":{\"type\":{\"nature\":\"reactive_maybe\",\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"}},\"computed\":false,\"privacy\":\"private\"},\"d\":{\"type\":{\"nature\":\"reactive_maybe\",\"type\":{\"nature\":\"reactive_value\",\"type\":\"double\"}},\"computed\":false,\"privacy\":\"private\"},\"mi\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"int\"}},\"computed\":true,\"privacy\":\"private\"},\"i1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"i2\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"private\"},\"ss\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"private\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"i\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_1\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_1\",\"anonymous\":true,\"fields\":{\"d\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_2\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_2\",\"anonymous\":true,\"fields\":{\"b\":{\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_3\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_3\",\"anonymous\":true,\"fields\":{\"s\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":8,\"tbl\":{\"1\":{\"id\":1,\"i\":4,\"s\":null,\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"},\"2\":{\"id\":2,\"i\":null,\"s\":null,\"b\":null,\"d\":3.14,\"i1\":123,\"ss\":\"\"},\"3\":{\"id\":3,\"i\":null,\"s\":null,\"b\":true,\"d\":null,\"i1\":123,\"ss\":\"\"},\"4\":{\"id\":4,\"i\":null,\"s\":\"Hi\",\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"},\"5\":{\"id\":5,\"i\":8,\"s\":null,\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"},\"6\":{\"id\":6,\"i\":null,\"s\":null,\"b\":null,\"d\":2.71,\"i1\":123,\"ss\":\"\"},\"7\":{\"id\":7,\"i\":null,\"s\":null,\"b\":false,\"d\":null,\"i1\":123,\"ss\":\"\"},\"8\":{\"id\":8,\"i\":null,\"s\":\"Joe\",\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":8,\"tbl\":{\"1\":{\"id\":1,\"i\":4,\"s\":null,\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"},\"2\":{\"id\":2,\"i\":null,\"s\":null,\"b\":null,\"d\":3.14,\"i1\":123,\"ss\":\"\"},\"3\":{\"id\":3,\"i\":null,\"s\":null,\"b\":true,\"d\":null,\"i1\":123,\"ss\":\"\"},\"4\":{\"id\":4,\"i\":null,\"s\":\"Hi\",\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"},\"5\":{\"id\":5,\"i\":8,\"s\":null,\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"},\"6\":{\"id\":6,\"i\":null,\"s\":null,\"b\":null,\"d\":2.71,\"i1\":123,\"ss\":\"\"},\"7\":{\"id\":7,\"i\":null,\"s\":null,\"b\":false,\"d\":null,\"i1\":123,\"ss\":\"\"},\"8\":{\"id\":8,\"i\":null,\"s\":\"Joe\",\"b\":null,\"d\":null,\"i1\":123,\"ss\":\"\"}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:61");
     gold.append("\nMEMORY:11310");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -14237,6 +14320,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -14514,6 +14598,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -14600,6 +14687,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -14693,7 +14783,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    t.__revert();");
     gold.append("\n    /* root */");
@@ -15623,6 +15712,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -16138,25 +16228,25 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"t\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"R\"},\"computed\":false,\"privacy\":\"private\"},\"i0\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i0b1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i1b1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i2b1\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i0b2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i1b2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i2b2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i0as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i1as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i2as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i0b1as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i1b1as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i2b1as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i0b2as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i1b2as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"i2b2as\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":3,\"t\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"3\":{\"id\":3,\"x\":3,\"y\":3}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":3,\"t\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"3\":{\"id\":3,\"x\":3,\"y\":3}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:13");
     gold.append("\nMEMORY:8724");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"i0\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i0b1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i1b1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i2b1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i0b2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i1b2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i2b2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i0as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i0b1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i1b1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i2b1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i0b2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i1b2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i2b2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]}},\"seq\":3}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"75\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__connection_id\":1,\"__time\":\"75\",\"__clients\":{\"0\":{\"agent\":\"?\",\"authority\":\"?\"}}} need:false in:0");
     gold.append("\nNO_ONE|SUCCESS:4");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":6,\"__entropy\":\"488730542833106255\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":6}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"i0\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i0b1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i1b1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i2b1\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i0b2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i1b2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i2b2\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i0as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"@o\":[1]},\"i0b1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i1b1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i2b1as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"2\":{\"id\":2,\"x\":2,\"y\":2},\"@o\":[1,2]},\"i0b2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i1b2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]},\"i2b2as\":{\"1\":{\"id\":1,\"x\":1,\"y\":1},\"3\":{\"id\":3,\"x\":3,\"y\":3},\"@o\":[1,3]}},\"seq\":6}");
-    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}},\"__messages\":null} need:false in:0");
+    gold.append("\n{\"command\":\"connect\",\"timestamp\":\"125\",\"who\":{\"agent\":\"rando\",\"authority\":\"random-place\"},\"key\":\"key\",\"origin\":\"phase\",\"ip\":\"ip\"}-->{\"__seq\":8,\"__entropy\":\"-4023469995120514721\",\"__connection_id\":2,\"__time\":\"125\",\"__clients\":{\"1\":{\"agent\":\"rando\",\"authority\":\"random-place\"}}} need:false in:0");
     gold.append("\nRANDO|SUCCESS:7");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":8}");
     gold.append("\n+ RANDO DELTA:{\"seq\":8}");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__messages\":null,\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"150\"}-->{\"__seq\":9,\"__entropy\":\"-652523483647487500\",\"__time\":\"150\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:9");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":9}");
     gold.append("\n+ RANDO DELTA:{\"seq\":9}");
@@ -16252,6 +16342,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -16367,6 +16458,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -16453,6 +16547,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -16546,7 +16643,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    t.__revert();");
     gold.append("\n    /* root */");
@@ -16993,6 +17089,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -17194,20 +17291,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"t\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"_AnonObjConvert_2\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_2\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":1,\"t\":{\"1\":{\"id\":1,\"x\":2}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":1,\"t\":{\"1\":{\"id\":1,\"x\":2}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:9");
     gold.append("\nMEMORY:4872");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -17297,6 +17394,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -17412,6 +17510,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -17498,6 +17599,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -17591,7 +17695,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    t.__revert();");
     gold.append("\n    /* root */");
@@ -18028,6 +18131,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -18203,20 +18307,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"t\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":1,\"t\":{\"1\":{\"id\":1,\"x\":0}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":1,\"t\":{\"1\":{\"id\":1,\"x\":0}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:17");
     gold.append("\nMEMORY:4872");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -18333,6 +18437,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -18511,6 +18616,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -18597,6 +18705,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -18690,7 +18801,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    t.__revert();");
     gold.append("\n    /* root */");
@@ -19523,6 +19633,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -19811,20 +19922,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"t\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"all\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"just_x\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"just_mx\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"just_y\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"just_my\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"just_z\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"just_mz\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"date\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_3\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_3\",\"anonymous\":true,\"fields\":{\"x\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"y\":{\"type\":{\"nature\":\"native_value\",\"type\":\"string\"},\"computed\":false,\"privacy\":\"public\"},\"z\":{\"type\":{\"nature\":\"native_value\",\"type\":\"date\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":4,\"t\":{\"1\":{\"id\":1,\"x\":1,\"y\":\"x1\",\"z\":\"1-01-01\"},\"2\":{\"id\":2,\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"3\":{\"id\":3,\"x\":3,\"y\":\"x3\",\"z\":\"1-01-01\"},\"4\":{\"id\":4,\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":4,\"t\":{\"1\":{\"id\":1,\"x\":1,\"y\":\"x1\",\"z\":\"1-01-01\"},\"2\":{\"id\":2,\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"3\":{\"id\":3,\"x\":3,\"y\":\"x3\",\"z\":\"1-01-01\"},\"4\":{\"id\":4,\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:18");
     gold.append("\nMEMORY:7826");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"all\":{\"1\":{\"x\":1,\"y\":\"x1\",\"z\":\"1-01-01\"},\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"3\":{\"x\":3,\"y\":\"x3\",\"z\":\"1-01-01\"},\"4\":{\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"},\"@o\":[1,2,3,4]},\"just_x\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_mx\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_y\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_my\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_z\":{\"4\":{\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"},\"@o\":[4]},\"just_mz\":{\"4\":{\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"},\"@o\":[4]}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"all\":{\"1\":{\"x\":1,\"y\":\"x1\",\"z\":\"1-01-01\"},\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"3\":{\"x\":3,\"y\":\"x3\",\"z\":\"1-01-01\"},\"4\":{\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"},\"@o\":[1,2,3,4]},\"just_x\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_mx\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_y\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_my\":{\"2\":{\"x\":2,\"y\":\"x2\",\"z\":\"1-01-01\"},\"@o\":[2]},\"just_z\":{\"4\":{\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"},\"@o\":[4]},\"just_mz\":{\"4\":{\"x\":4,\"y\":\"x4\",\"z\":\"2012-05-10\"},\"@o\":[4]}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -19923,6 +20034,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -20083,6 +20195,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -20169,6 +20284,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -20262,7 +20380,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    t.__revert();");
     gold.append("\n    /* root */");
@@ -20836,6 +20953,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -21084,20 +21202,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"t\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"},\"t_less\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"t_lesseq\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"t_eq\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"t_greateq\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"},\"t_great\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"X\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"z\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":100,\"t\":{\"1\":{\"id\":1,\"z\":0},\"2\":{\"id\":2,\"z\":1},\"3\":{\"id\":3,\"z\":2},\"4\":{\"id\":4,\"z\":3},\"5\":{\"id\":5,\"z\":4},\"6\":{\"id\":6,\"z\":5},\"7\":{\"id\":7,\"z\":6},\"8\":{\"id\":8,\"z\":7},\"9\":{\"id\":9,\"z\":8},\"10\":{\"id\":10,\"z\":9},\"11\":{\"id\":11,\"z\":10},\"12\":{\"id\":12,\"z\":11},\"13\":{\"id\":13,\"z\":12},\"14\":{\"id\":14,\"z\":13},\"15\":{\"id\":15,\"z\":14},\"16\":{\"id\":16,\"z\":15},\"17\":{\"id\":17,\"z\":16},\"18\":{\"id\":18,\"z\":17},\"19\":{\"id\":19,\"z\":18},\"20\":{\"id\":20,\"z\":19},\"21\":{\"id\":21,\"z\":20},\"22\":{\"id\":22,\"z\":21},\"23\":{\"id\":23,\"z\":22},\"24\":{\"id\":24,\"z\":23},\"25\":{\"id\":25,\"z\":24},\"26\":{\"id\":26,\"z\":25},\"27\":{\"id\":27,\"z\":26},\"28\":{\"id\":28,\"z\":27},\"29\":{\"id\":29,\"z\":28},\"30\":{\"id\":30,\"z\":29},\"31\":{\"id\":31,\"z\":30},\"32\":{\"id\":32,\"z\":31},\"33\":{\"id\":33,\"z\":32},\"34\":{\"id\":34,\"z\":33},\"35\":{\"id\":35,\"z\":34},\"36\":{\"id\":36,\"z\":35},\"37\":{\"id\":37,\"z\":36},\"38\":{\"id\":38,\"z\":37},\"39\":{\"id\":39,\"z\":38},\"40\":{\"id\":40,\"z\":39},\"41\":{\"id\":41,\"z\":40},\"42\":{\"id\":42,\"z\":41},\"43\":{\"id\":43,\"z\":42},\"44\":{\"id\":44,\"z\":43},\"45\":{\"id\":45,\"z\":44},\"46\":{\"id\":46,\"z\":45},\"47\":{\"id\":47,\"z\":46},\"48\":{\"id\":48,\"z\":47},\"49\":{\"id\":49,\"z\":48},\"50\":{\"id\":50,\"z\":49},\"51\":{\"id\":51,\"z\":50},\"52\":{\"id\":52,\"z\":51},\"53\":{\"id\":53,\"z\":52},\"54\":{\"id\":54,\"z\":53},\"55\":{\"id\":55,\"z\":54},\"56\":{\"id\":56,\"z\":55},\"57\":{\"id\":57,\"z\":56},\"58\":{\"id\":58,\"z\":57},\"59\":{\"id\":59,\"z\":58},\"60\":{\"id\":60,\"z\":59},\"61\":{\"id\":61,\"z\":60},\"62\":{\"id\":62,\"z\":61},\"63\":{\"id\":63,\"z\":62},\"64\":{\"id\":64,\"z\":63},\"65\":{\"id\":65,\"z\":64},\"66\":{\"id\":66,\"z\":65},\"67\":{\"id\":67,\"z\":66},\"68\":{\"id\":68,\"z\":67},\"69\":{\"id\":69,\"z\":68},\"70\":{\"id\":70,\"z\":69},\"71\":{\"id\":71,\"z\":70},\"72\":{\"id\":72,\"z\":71},\"73\":{\"id\":73,\"z\":72},\"74\":{\"id\":74,\"z\":73},\"75\":{\"id\":75,\"z\":74},\"76\":{\"id\":76,\"z\":75},\"77\":{\"id\":77,\"z\":76},\"78\":{\"id\":78,\"z\":77},\"79\":{\"id\":79,\"z\":78},\"80\":{\"id\":80,\"z\":79},\"81\":{\"id\":81,\"z\":80},\"82\":{\"id\":82,\"z\":81},\"83\":{\"id\":83,\"z\":82},\"84\":{\"id\":84,\"z\":83},\"85\":{\"id\":85,\"z\":84},\"86\":{\"id\":86,\"z\":85},\"87\":{\"id\":87,\"z\":86},\"88\":{\"id\":88,\"z\":87},\"89\":{\"id\":89,\"z\":88},\"90\":{\"id\":90,\"z\":89},\"91\":{\"id\":91,\"z\":90},\"92\":{\"id\":92,\"z\":91},\"93\":{\"id\":93,\"z\":92},\"94\":{\"id\":94,\"z\":93},\"95\":{\"id\":95,\"z\":94},\"96\":{\"id\":96,\"z\":95},\"97\":{\"id\":97,\"z\":96},\"98\":{\"id\":98,\"z\":97},\"99\":{\"id\":99,\"z\":98},\"100\":{\"id\":100,\"z\":99}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":100,\"t\":{\"1\":{\"id\":1,\"z\":0},\"2\":{\"id\":2,\"z\":1},\"3\":{\"id\":3,\"z\":2},\"4\":{\"id\":4,\"z\":3},\"5\":{\"id\":5,\"z\":4},\"6\":{\"id\":6,\"z\":5},\"7\":{\"id\":7,\"z\":6},\"8\":{\"id\":8,\"z\":7},\"9\":{\"id\":9,\"z\":8},\"10\":{\"id\":10,\"z\":9},\"11\":{\"id\":11,\"z\":10},\"12\":{\"id\":12,\"z\":11},\"13\":{\"id\":13,\"z\":12},\"14\":{\"id\":14,\"z\":13},\"15\":{\"id\":15,\"z\":14},\"16\":{\"id\":16,\"z\":15},\"17\":{\"id\":17,\"z\":16},\"18\":{\"id\":18,\"z\":17},\"19\":{\"id\":19,\"z\":18},\"20\":{\"id\":20,\"z\":19},\"21\":{\"id\":21,\"z\":20},\"22\":{\"id\":22,\"z\":21},\"23\":{\"id\":23,\"z\":22},\"24\":{\"id\":24,\"z\":23},\"25\":{\"id\":25,\"z\":24},\"26\":{\"id\":26,\"z\":25},\"27\":{\"id\":27,\"z\":26},\"28\":{\"id\":28,\"z\":27},\"29\":{\"id\":29,\"z\":28},\"30\":{\"id\":30,\"z\":29},\"31\":{\"id\":31,\"z\":30},\"32\":{\"id\":32,\"z\":31},\"33\":{\"id\":33,\"z\":32},\"34\":{\"id\":34,\"z\":33},\"35\":{\"id\":35,\"z\":34},\"36\":{\"id\":36,\"z\":35},\"37\":{\"id\":37,\"z\":36},\"38\":{\"id\":38,\"z\":37},\"39\":{\"id\":39,\"z\":38},\"40\":{\"id\":40,\"z\":39},\"41\":{\"id\":41,\"z\":40},\"42\":{\"id\":42,\"z\":41},\"43\":{\"id\":43,\"z\":42},\"44\":{\"id\":44,\"z\":43},\"45\":{\"id\":45,\"z\":44},\"46\":{\"id\":46,\"z\":45},\"47\":{\"id\":47,\"z\":46},\"48\":{\"id\":48,\"z\":47},\"49\":{\"id\":49,\"z\":48},\"50\":{\"id\":50,\"z\":49},\"51\":{\"id\":51,\"z\":50},\"52\":{\"id\":52,\"z\":51},\"53\":{\"id\":53,\"z\":52},\"54\":{\"id\":54,\"z\":53},\"55\":{\"id\":55,\"z\":54},\"56\":{\"id\":56,\"z\":55},\"57\":{\"id\":57,\"z\":56},\"58\":{\"id\":58,\"z\":57},\"59\":{\"id\":59,\"z\":58},\"60\":{\"id\":60,\"z\":59},\"61\":{\"id\":61,\"z\":60},\"62\":{\"id\":62,\"z\":61},\"63\":{\"id\":63,\"z\":62},\"64\":{\"id\":64,\"z\":63},\"65\":{\"id\":65,\"z\":64},\"66\":{\"id\":66,\"z\":65},\"67\":{\"id\":67,\"z\":66},\"68\":{\"id\":68,\"z\":67},\"69\":{\"id\":69,\"z\":68},\"70\":{\"id\":70,\"z\":69},\"71\":{\"id\":71,\"z\":70},\"72\":{\"id\":72,\"z\":71},\"73\":{\"id\":73,\"z\":72},\"74\":{\"id\":74,\"z\":73},\"75\":{\"id\":75,\"z\":74},\"76\":{\"id\":76,\"z\":75},\"77\":{\"id\":77,\"z\":76},\"78\":{\"id\":78,\"z\":77},\"79\":{\"id\":79,\"z\":78},\"80\":{\"id\":80,\"z\":79},\"81\":{\"id\":81,\"z\":80},\"82\":{\"id\":82,\"z\":81},\"83\":{\"id\":83,\"z\":82},\"84\":{\"id\":84,\"z\":83},\"85\":{\"id\":85,\"z\":84},\"86\":{\"id\":86,\"z\":85},\"87\":{\"id\":87,\"z\":86},\"88\":{\"id\":88,\"z\":87},\"89\":{\"id\":89,\"z\":88},\"90\":{\"id\":90,\"z\":89},\"91\":{\"id\":91,\"z\":90},\"92\":{\"id\":92,\"z\":91},\"93\":{\"id\":93,\"z\":92},\"94\":{\"id\":94,\"z\":93},\"95\":{\"id\":95,\"z\":94},\"96\":{\"id\":96,\"z\":95},\"97\":{\"id\":97,\"z\":96},\"98\":{\"id\":98,\"z\":97},\"99\":{\"id\":99,\"z\":98},\"100\":{\"id\":100,\"z\":99}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:402");
     gold.append("\nMEMORY:25418");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"t_less\":{\"1\":{\"z\":0},\"2\":{\"z\":1},\"3\":{\"z\":2},\"4\":{\"z\":3},\"5\":{\"z\":4},\"6\":{\"z\":5},\"7\":{\"z\":6},\"8\":{\"z\":7},\"9\":{\"z\":8},\"10\":{\"z\":9},\"11\":{\"z\":10},\"12\":{\"z\":11},\"13\":{\"z\":12},\"14\":{\"z\":13},\"15\":{\"z\":14},\"16\":{\"z\":15},\"17\":{\"z\":16},\"18\":{\"z\":17},\"19\":{\"z\":18},\"20\":{\"z\":19},\"21\":{\"z\":20},\"22\":{\"z\":21},\"23\":{\"z\":22},\"24\":{\"z\":23},\"25\":{\"z\":24},\"26\":{\"z\":25},\"27\":{\"z\":26},\"28\":{\"z\":27},\"29\":{\"z\":28},\"30\":{\"z\":29},\"31\":{\"z\":30},\"32\":{\"z\":31},\"33\":{\"z\":32},\"34\":{\"z\":33},\"35\":{\"z\":34},\"36\":{\"z\":35},\"37\":{\"z\":36},\"38\":{\"z\":37},\"39\":{\"z\":38},\"40\":{\"z\":39},\"41\":{\"z\":40},\"42\":{\"z\":41},\"43\":{\"z\":42},\"44\":{\"z\":43},\"45\":{\"z\":44},\"46\":{\"z\":45},\"47\":{\"z\":46},\"48\":{\"z\":47},\"49\":{\"z\":48},\"50\":{\"z\":49},\"@o\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]},\"t_lesseq\":{\"1\":{\"z\":0},\"2\":{\"z\":1},\"3\":{\"z\":2},\"4\":{\"z\":3},\"5\":{\"z\":4},\"6\":{\"z\":5},\"7\":{\"z\":6},\"8\":{\"z\":7},\"9\":{\"z\":8},\"10\":{\"z\":9},\"11\":{\"z\":10},\"12\":{\"z\":11},\"13\":{\"z\":12},\"14\":{\"z\":13},\"15\":{\"z\":14},\"16\":{\"z\":15},\"17\":{\"z\":16},\"18\":{\"z\":17},\"19\":{\"z\":18},\"20\":{\"z\":19},\"21\":{\"z\":20},\"22\":{\"z\":21},\"23\":{\"z\":22},\"24\":{\"z\":23},\"25\":{\"z\":24},\"26\":{\"z\":25},\"27\":{\"z\":26},\"28\":{\"z\":27},\"29\":{\"z\":28},\"30\":{\"z\":29},\"31\":{\"z\":30},\"32\":{\"z\":31},\"33\":{\"z\":32},\"34\":{\"z\":33},\"35\":{\"z\":34},\"36\":{\"z\":35},\"37\":{\"z\":36},\"38\":{\"z\":37},\"39\":{\"z\":38},\"40\":{\"z\":39},\"41\":{\"z\":40},\"42\":{\"z\":41},\"43\":{\"z\":42},\"44\":{\"z\":43},\"45\":{\"z\":44},\"46\":{\"z\":45},\"47\":{\"z\":46},\"48\":{\"z\":47},\"49\":{\"z\":48},\"50\":{\"z\":49},\"51\":{\"z\":50},\"@o\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51]},\"t_eq\":{\"51\":{\"z\":50},\"@o\":[51]},\"t_greateq\":{\"51\":{\"z\":50},\"52\":{\"z\":51},\"53\":{\"z\":52},\"54\":{\"z\":53},\"55\":{\"z\":54},\"56\":{\"z\":55},\"57\":{\"z\":56},\"58\":{\"z\":57},\"59\":{\"z\":58},\"60\":{\"z\":59},\"61\":{\"z\":60},\"62\":{\"z\":61},\"63\":{\"z\":62},\"64\":{\"z\":63},\"65\":{\"z\":64},\"66\":{\"z\":65},\"67\":{\"z\":66},\"68\":{\"z\":67},\"69\":{\"z\":68},\"70\":{\"z\":69},\"71\":{\"z\":70},\"72\":{\"z\":71},\"73\":{\"z\":72},\"74\":{\"z\":73},\"75\":{\"z\":74},\"76\":{\"z\":75},\"77\":{\"z\":76},\"78\":{\"z\":77},\"79\":{\"z\":78},\"80\":{\"z\":79},\"81\":{\"z\":80},\"82\":{\"z\":81},\"83\":{\"z\":82},\"84\":{\"z\":83},\"85\":{\"z\":84},\"86\":{\"z\":85},\"87\":{\"z\":86},\"88\":{\"z\":87},\"89\":{\"z\":88},\"90\":{\"z\":89},\"91\":{\"z\":90},\"92\":{\"z\":91},\"93\":{\"z\":92},\"94\":{\"z\":93},\"95\":{\"z\":94},\"96\":{\"z\":95},\"97\":{\"z\":96},\"98\":{\"z\":97},\"99\":{\"z\":98},\"100\":{\"z\":99},\"@o\":[51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]},\"t_great\":{\"52\":{\"z\":51},\"53\":{\"z\":52},\"54\":{\"z\":53},\"55\":{\"z\":54},\"56\":{\"z\":55},\"57\":{\"z\":56},\"58\":{\"z\":57},\"59\":{\"z\":58},\"60\":{\"z\":59},\"61\":{\"z\":60},\"62\":{\"z\":61},\"63\":{\"z\":62},\"64\":{\"z\":63},\"65\":{\"z\":64},\"66\":{\"z\":65},\"67\":{\"z\":66},\"68\":{\"z\":67},\"69\":{\"z\":68},\"70\":{\"z\":69},\"71\":{\"z\":70},\"72\":{\"z\":71},\"73\":{\"z\":72},\"74\":{\"z\":73},\"75\":{\"z\":74},\"76\":{\"z\":75},\"77\":{\"z\":76},\"78\":{\"z\":77},\"79\":{\"z\":78},\"80\":{\"z\":79},\"81\":{\"z\":80},\"82\":{\"z\":81},\"83\":{\"z\":82},\"84\":{\"z\":83},\"85\":{\"z\":84},\"86\":{\"z\":85},\"87\":{\"z\":86},\"88\":{\"z\":87},\"89\":{\"z\":88},\"90\":{\"z\":89},\"91\":{\"z\":90},\"92\":{\"z\":91},\"93\":{\"z\":92},\"94\":{\"z\":93},\"95\":{\"z\":94},\"96\":{\"z\":95},\"97\":{\"z\":96},\"98\":{\"z\":97},\"99\":{\"z\":98},\"100\":{\"z\":99},\"@o\":[52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"t_less\":{\"1\":{\"z\":0},\"2\":{\"z\":1},\"3\":{\"z\":2},\"4\":{\"z\":3},\"5\":{\"z\":4},\"6\":{\"z\":5},\"7\":{\"z\":6},\"8\":{\"z\":7},\"9\":{\"z\":8},\"10\":{\"z\":9},\"11\":{\"z\":10},\"12\":{\"z\":11},\"13\":{\"z\":12},\"14\":{\"z\":13},\"15\":{\"z\":14},\"16\":{\"z\":15},\"17\":{\"z\":16},\"18\":{\"z\":17},\"19\":{\"z\":18},\"20\":{\"z\":19},\"21\":{\"z\":20},\"22\":{\"z\":21},\"23\":{\"z\":22},\"24\":{\"z\":23},\"25\":{\"z\":24},\"26\":{\"z\":25},\"27\":{\"z\":26},\"28\":{\"z\":27},\"29\":{\"z\":28},\"30\":{\"z\":29},\"31\":{\"z\":30},\"32\":{\"z\":31},\"33\":{\"z\":32},\"34\":{\"z\":33},\"35\":{\"z\":34},\"36\":{\"z\":35},\"37\":{\"z\":36},\"38\":{\"z\":37},\"39\":{\"z\":38},\"40\":{\"z\":39},\"41\":{\"z\":40},\"42\":{\"z\":41},\"43\":{\"z\":42},\"44\":{\"z\":43},\"45\":{\"z\":44},\"46\":{\"z\":45},\"47\":{\"z\":46},\"48\":{\"z\":47},\"49\":{\"z\":48},\"50\":{\"z\":49},\"@o\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]},\"t_lesseq\":{\"1\":{\"z\":0},\"2\":{\"z\":1},\"3\":{\"z\":2},\"4\":{\"z\":3},\"5\":{\"z\":4},\"6\":{\"z\":5},\"7\":{\"z\":6},\"8\":{\"z\":7},\"9\":{\"z\":8},\"10\":{\"z\":9},\"11\":{\"z\":10},\"12\":{\"z\":11},\"13\":{\"z\":12},\"14\":{\"z\":13},\"15\":{\"z\":14},\"16\":{\"z\":15},\"17\":{\"z\":16},\"18\":{\"z\":17},\"19\":{\"z\":18},\"20\":{\"z\":19},\"21\":{\"z\":20},\"22\":{\"z\":21},\"23\":{\"z\":22},\"24\":{\"z\":23},\"25\":{\"z\":24},\"26\":{\"z\":25},\"27\":{\"z\":26},\"28\":{\"z\":27},\"29\":{\"z\":28},\"30\":{\"z\":29},\"31\":{\"z\":30},\"32\":{\"z\":31},\"33\":{\"z\":32},\"34\":{\"z\":33},\"35\":{\"z\":34},\"36\":{\"z\":35},\"37\":{\"z\":36},\"38\":{\"z\":37},\"39\":{\"z\":38},\"40\":{\"z\":39},\"41\":{\"z\":40},\"42\":{\"z\":41},\"43\":{\"z\":42},\"44\":{\"z\":43},\"45\":{\"z\":44},\"46\":{\"z\":45},\"47\":{\"z\":46},\"48\":{\"z\":47},\"49\":{\"z\":48},\"50\":{\"z\":49},\"51\":{\"z\":50},\"@o\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51]},\"t_eq\":{\"51\":{\"z\":50},\"@o\":[51]},\"t_greateq\":{\"51\":{\"z\":50},\"52\":{\"z\":51},\"53\":{\"z\":52},\"54\":{\"z\":53},\"55\":{\"z\":54},\"56\":{\"z\":55},\"57\":{\"z\":56},\"58\":{\"z\":57},\"59\":{\"z\":58},\"60\":{\"z\":59},\"61\":{\"z\":60},\"62\":{\"z\":61},\"63\":{\"z\":62},\"64\":{\"z\":63},\"65\":{\"z\":64},\"66\":{\"z\":65},\"67\":{\"z\":66},\"68\":{\"z\":67},\"69\":{\"z\":68},\"70\":{\"z\":69},\"71\":{\"z\":70},\"72\":{\"z\":71},\"73\":{\"z\":72},\"74\":{\"z\":73},\"75\":{\"z\":74},\"76\":{\"z\":75},\"77\":{\"z\":76},\"78\":{\"z\":77},\"79\":{\"z\":78},\"80\":{\"z\":79},\"81\":{\"z\":80},\"82\":{\"z\":81},\"83\":{\"z\":82},\"84\":{\"z\":83},\"85\":{\"z\":84},\"86\":{\"z\":85},\"87\":{\"z\":86},\"88\":{\"z\":87},\"89\":{\"z\":88},\"90\":{\"z\":89},\"91\":{\"z\":90},\"92\":{\"z\":91},\"93\":{\"z\":92},\"94\":{\"z\":93},\"95\":{\"z\":94},\"96\":{\"z\":95},\"97\":{\"z\":96},\"98\":{\"z\":97},\"99\":{\"z\":98},\"100\":{\"z\":99},\"@o\":[51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]},\"t_great\":{\"52\":{\"z\":51},\"53\":{\"z\":52},\"54\":{\"z\":53},\"55\":{\"z\":54},\"56\":{\"z\":55},\"57\":{\"z\":56},\"58\":{\"z\":57},\"59\":{\"z\":58},\"60\":{\"z\":59},\"61\":{\"z\":60},\"62\":{\"z\":61},\"63\":{\"z\":62},\"64\":{\"z\":63},\"65\":{\"z\":64},\"66\":{\"z\":65},\"67\":{\"z\":66},\"68\":{\"z\":67},\"69\":{\"z\":68},\"70\":{\"z\":69},\"71\":{\"z\":70},\"72\":{\"z\":71},\"73\":{\"z\":72},\"74\":{\"z\":73},\"75\":{\"z\":74},\"76\":{\"z\":75},\"77\":{\"z\":76},\"78\":{\"z\":77},\"79\":{\"z\":78},\"80\":{\"z\":79},\"81\":{\"z\":80},\"82\":{\"z\":81},\"83\":{\"z\":82},\"84\":{\"z\":83},\"85\":{\"z\":84},\"86\":{\"z\":85},\"87\":{\"z\":86},\"88\":{\"z\":87},\"89\":{\"z\":88},\"90\":{\"z\":89},\"91\":{\"z\":90},\"92\":{\"z\":91},\"93\":{\"z\":92},\"94\":{\"z\":93},\"95\":{\"z\":94},\"96\":{\"z\":95},\"97\":{\"z\":96},\"98\":{\"z\":97},\"99\":{\"z\":98},\"100\":{\"z\":99},\"@o\":[52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -21198,6 +21316,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -21313,6 +21432,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -21399,6 +21521,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -21492,7 +21617,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    t.__revert();");
     gold.append("\n    /* root */");
@@ -21836,6 +21960,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -22191,20 +22316,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"t\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"X\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"X\":{\"nature\":\"reactive_record\",\"name\":\"X\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"z\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:13");
     gold.append("\nMEMORY:4714");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -22294,6 +22419,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -22434,6 +22560,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -22523,6 +22652,9 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -22619,7 +22751,6 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    id.__revert();");
     gold.append("\n    tbl.__revert();");
@@ -23016,6 +23147,7 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -23190,20 +23322,20 @@ public class GeneratedLinqTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"R\"},\"computed\":false,\"privacy\":\"private\"},\"odd\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"},\"odd2\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"R\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"r_id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:5102");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"id\":0},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"id\":0},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");

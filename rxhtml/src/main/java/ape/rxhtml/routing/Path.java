@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.rxhtml.routing;
 
 import java.util.ArrayList;
@@ -29,7 +35,7 @@ public class Path {
   private final ArrayList<Path> numbers;
   private final ArrayList<Path> texts;
   private Path suffix;
-  private Target target;
+  private Pathable target;
 
   public Path(String name) {
     this.name = name;
@@ -93,7 +99,7 @@ public class Path {
     return suffix;
   }
 
-  public boolean set(Target target) {
+  public boolean set(Pathable target) {
     if (this.target == null) {
       this.target = target;
       return true;
@@ -101,7 +107,7 @@ public class Path {
     return false;
   }
 
-  public Target route(int at, String[] parts, TreeMap<String, String> capture) {
+  public Pathable route(int at, String[] parts, TreeMap<String, String> capture) {
     if (at == parts.length) {
       return target;
     }
@@ -112,7 +118,7 @@ public class Path {
         Double.parseDouble(part);
         for (Path path : numbers) {
           capture.put(path.name, part);
-          Target found = path.route(at + 1, parts, capture);
+          Pathable found = path.route(at + 1, parts, capture);
           if (found != null) {
             return found;
           }
@@ -124,7 +130,7 @@ public class Path {
       // Text
       for (Path path : texts) {
         capture.put(path.name, part);
-        Target found = path.route(at + 1, parts, capture);
+        Pathable found = path.route(at + 1, parts, capture);
         if (found != null) {
           return found;
         }
@@ -133,7 +139,7 @@ public class Path {
       // Fixed Values
       Path fix = fixed.get(part);
       if (fix != null) {
-        Target found = fix.route(at + 1, parts, capture);
+        Pathable found = fix.route(at + 1, parts, capture);
         if (found != null) {
           return found;
         }

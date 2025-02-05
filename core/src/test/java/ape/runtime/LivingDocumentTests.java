@@ -1,25 +1,32 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime;
 
 import ape.common.Callback;
 import ape.common.ErrorCodeException;
 import ape.common.Json;
+import ape.runtime.async.IdHistoryLog;
 import ape.runtime.data.Key;
 import ape.runtime.contracts.Perspective;
 import ape.runtime.deploy.SyncCompiler;
@@ -74,7 +81,7 @@ public class LivingDocumentTests {
     opts.packageName = "P";
     final var options = opts.noCost().make();
     final var globals = GlobalObjectPool.createPoolWithStdLib(RuntimeEnvironment.Tooling);
-    final var state = new EnvironmentState(globals, options);
+    final var state = new EnvironmentState(globals, options, RuntimeEnvironment.Tooling);
     final var document = new Document();
     document.setClassName("MeCode");
     final var tokenEngine = new TokenEngine("<direct code>", code.codePoints().iterator());
@@ -287,8 +294,100 @@ public class LivingDocumentTests {
 
       Assert.assertEquals(3, list.size());
       Assert.assertEquals("{\"data\":{\"x\":123},\"seq\":4}", list.get(0));
-      Assert.assertEquals("{\"data\":{\"x\":223},\"outstanding\":[{\"id\":1,\"channel\":\"aq\",\"array\":false},{\"id\":2,\"channel\":\"aq\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":5}", list.get(1));
-      Assert.assertEquals("{\"data\":{\"x\":10323},\"outstanding\":[],\"blockers\":[],\"seq\":8}", list.get(2));
+      Assert.assertEquals("{\"data\":{\"x\":223},\"outstanding\":[{\"id\":1,\"channel\":\"aq\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":5}", list.get(1));
+      Assert.assertEquals("{\"data\":{\"x\":10323},\"outstanding\":[],\"blockers\":[],\"seq\":9}", list.get(2));
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      Assert.fail();
+    }
+  }
+
+  @Test
+  public void partial_messages_interwieving() throws Exception{
+    try {
+      RealDocumentSetup setup = new RealDocumentSetup(
+          "@connected { return true; }" + //
+              "message M { int x; }" + //
+              "channel<M> aq1;" + //
+              "channel<M> aq2;" + //
+              "public int x = 0;" + //
+              "channel foo(M m) {" + //
+              "  x += aq1.fetch(@no_one).await().x;" + //
+              "  x += aq2.fetch(@no_one).await().x;" + //
+              "}" + //
+              "", //
+          null);
+      RealDocumentSetup.GotView gv = new RealDocumentSetup.GotView();
+      ArrayList<String> list = new ArrayList<>();
+      Perspective linked =
+          new Perspective() {
+            @Override
+            public void data(String data) {
+              list.add(data);
+            }
+
+            @Override
+            public void disconnect() {}
+          };
+      setup.document.connect(ContextSupport.WRAP(NtPrincipal.NO_ONE), new RealDocumentSetup.AssertInt(2));
+      setup.document.createPrivateView(NtPrincipal.NO_ONE, linked, new JsonStreamReader("{}"), gv);
+
+      setup.document.send(
+          ContextSupport.WRAP(NtPrincipal.NO_ONE),
+          null,
+          null,
+          "foo",
+          "{}",
+          new RealDocumentSetup.AssertInt(5));
+
+      setup.document.send(
+          ContextSupport.WRAP(NtPrincipal.NO_ONE),
+          null,
+          null,
+          "aq1",
+          "{\"x\":1000}",
+          new RealDocumentSetup.AssertInt(7));
+
+      setup.document.send(
+          ContextSupport.WRAP(NtPrincipal.NO_ONE),
+          null,
+          null,
+          "foo",
+          "{}",
+          new RealDocumentSetup.AssertInt(9));
+
+      setup.document.send(
+          ContextSupport.WRAP(NtPrincipal.NO_ONE),
+          null,
+          null,
+          "aq1",
+          "{\"x\":10000}",
+          new RealDocumentSetup.AssertInt(11));
+
+      setup.document.send(
+          ContextSupport.WRAP(NtPrincipal.NO_ONE),
+          null,
+          null,
+          "aq2",
+          "{\"x\":500}",
+          new RealDocumentSetup.AssertInt(13));
+
+      setup.document.send(
+          ContextSupport.WRAP(NtPrincipal.NO_ONE),
+          null,
+          null,
+          "aq2",
+          "{\"x\":50000}",
+          new RealDocumentSetup.AssertInt(16));
+
+      Assert.assertEquals(7, list.size());
+      Assert.assertEquals("{\"data\":{\"x\":0},\"seq\":4}", list.get(0));
+      Assert.assertEquals("{\"outstanding\":[{\"id\":1,\"channel\":\"aq1\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":5}", list.get(1));
+      Assert.assertEquals("{\"data\":{\"x\":1000},\"outstanding\":[{\"id\":2,\"channel\":\"aq2\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":7}", list.get(2));
+      Assert.assertEquals("{\"seq\":9}", list.get(3));
+      Assert.assertEquals("{\"seq\":11}", list.get(4));
+      Assert.assertEquals("{\"data\":{\"x\":11500},\"outstanding\":[{\"id\":4,\"channel\":\"aq2\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":14}", list.get(5));
+      Assert.assertEquals("{\"data\":{\"x\":61500},\"outstanding\":[],\"blockers\":[],\"seq\":18}", list.get(6));
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail();
@@ -303,13 +402,13 @@ public class LivingDocumentTests {
               "message M { int x; }" + //
               "channel<M> aq;" + //
               "public int sss = 0;" + //
+
               "channel foo(M m) {" + //
               "  sss = Document.seq();" + //
               "  aq.fetch(@no_one).await();" + //
               "  sss = Document.seq();" + //
               "}" + //
-              "", //
-          null);
+              "", null);
       RealDocumentSetup.GotView gv = new RealDocumentSetup.GotView();
       ArrayList<String> list = new ArrayList<>();
       Perspective linked =
@@ -343,8 +442,8 @@ public class LivingDocumentTests {
 
       Assert.assertEquals(3, list.size());
       Assert.assertEquals("{\"data\":{\"sss\":0},\"seq\":4}", list.get(0));
-      Assert.assertEquals("{\"data\":{\"sss\":4},\"outstanding\":[{\"id\":1,\"channel\":\"aq\",\"array\":false},{\"id\":2,\"channel\":\"aq\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":5}", list.get(1));
-      Assert.assertEquals("{\"outstanding\":[],\"blockers\":[],\"seq\":8}", list.get(2));
+      Assert.assertEquals("{\"data\":{\"sss\":4},\"outstanding\":[{\"id\":1,\"channel\":\"aq\",\"array\":false}],\"blockers\":[{\"agent\":\"?\",\"authority\":\"?\"}],\"seq\":5}", list.get(1));
+      Assert.assertEquals("{\"outstanding\":[],\"blockers\":[],\"seq\":9}", list.get(2));
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail();
@@ -1909,9 +2008,9 @@ public class LivingDocumentTests {
     setup.document.invalidate(new RealDocumentSetup.AssertInt(3));
     Assert.assertEquals("123", ((HashMap<String, Object>) new JsonStreamReader(setup.document.json()).readJavaTree()).get("t").toString());
     setup.time.time = 1803189536059L; // ~ 2pm, only fire due to being the first
-    setup.document.invalidate(new RealDocumentSetup.AssertInt(5));
-    Assert.assertEquals("123", ((HashMap<String, Object>) new JsonStreamReader(setup.document.json()).readJavaTree()).get("t").toString());
     setup.document.invalidate(new RealDocumentSetup.AssertInt(6));
+    Assert.assertEquals("123", ((HashMap<String, Object>) new JsonStreamReader(setup.document.json()).readJavaTree()).get("t").toString());
+    setup.document.invalidate(new RealDocumentSetup.AssertInt(7));
     Assert.assertEquals("246", ((HashMap<String, Object>) new JsonStreamReader(setup.document.json()).readJavaTree()).get("t").toString());
   }
 

@@ -1,28 +1,36 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator.env;
 
 import ape.translator.tree.Document;
 import ape.translator.tree.common.DocumentPosition;
+import ape.translator.tree.definitions.DefineClientService;
 import ape.translator.tree.definitions.DefineService;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeBehavior;
 import ape.translator.tree.types.checking.Rules;
+import ape.translator.tree.types.natives.TyNativeClientService;
 import ape.translator.tree.types.natives.TyNativeDate;
 import ape.translator.tree.types.natives.TyNativeLazyWrap;
 import ape.translator.tree.types.natives.TyNativeService;
@@ -231,6 +239,12 @@ public class Environment {
     DefineService ds = document.services.get(name);
     if (ds != null) {
       return lookup_return(name, new TyNativeService(ds).withPosition(position));
+    }
+
+    // maybe a web service
+    DefineClientService dcs = document.clientServices.get(name);
+    if (dcs != null) {
+      return lookup_return(name, new TyNativeClientService(dcs).withPosition(position));
     }
 
     if ("__time".equals(name)) {

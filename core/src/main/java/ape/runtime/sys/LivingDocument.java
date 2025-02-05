@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.runtime.sys;
 
 import ape.ErrorCodes;
@@ -31,24 +37,17 @@ import ape.runtime.remote.RemoteResult;
 import ape.runtime.remote.RxCache;
 import ape.runtime.remote.ServiceRegistry;
 import ape.runtime.sys.web.*;
-import ape.runtime.async.*;
-import ape.runtime.contracts.*;
 import ape.runtime.data.Key;
 import ape.runtime.data.RemoteDocumentUpdate;
 import ape.runtime.data.UpdateType;
-import ape.runtime.exceptions.*;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.json.PrivateView;
 import ape.runtime.json.TrivialPrivateView;
-import ape.runtime.natives.*;
 import ape.runtime.ops.AssertionStats;
 import ape.runtime.ops.TestMockUniverse;
 import ape.runtime.ops.TestReportBuilder;
-import ape.runtime.reactives.*;
-import ape.runtime.remote.*;
 import ape.runtime.remote.replication.ReplicationEngine;
-import ape.runtime.sys.web.*;
 import ape.runtime.sys.web.partial.WebDeletePartial;
 import ape.runtime.sys.web.partial.WebPutPartial;
 import ape.translator.jvm.LivingDocumentFactory;
@@ -116,6 +115,8 @@ public abstract class LivingDocument implements RxParent, Caller {
   private TestMockUniverse __mock_universe;
   private Integer __seq_message;
   protected long __graphMemory;
+  private IdHistoryLog __currentLog;
+  private IdHistoryLog __stateMachineLog;
 
   public LivingDocument(final DocumentMonitor __monitor) {
     this.__monitor = __monitor;
@@ -185,6 +186,8 @@ public abstract class LivingDocument implements RxParent, Caller {
     __enqueued = new EnqueuedTaskManager();
     __mock_universe = null;
     __graphMemory = 0L;
+    __currentLog = null;
+    __stateMachineLog = null;
   }
 
   /** exposed: get the document's timestamp as a date */
@@ -312,7 +315,9 @@ public abstract class LivingDocument implements RxParent, Caller {
 
   /** generate a new auto key for a table; all tables share the space id space */
   public int __genNextAutoKey() {
-    // TODO: see if a message has a history of id generation
+    if (__currentLog != null) {
+      return __currentLog.next(__auto_table_row_id);
+    }
     return __auto_table_row_id.bumpUpPre();
   }
 
@@ -381,6 +386,46 @@ public abstract class LivingDocument implements RxParent, Caller {
     __replication.commit(forward, reverse);
     __enqueued.commit(forward, reverse);
     __graphMemory = __computeGraphs();
+    boolean needMessagesOpen = true;
+
+    Iterator<AsyncTask> it = __queue.iterator();
+    while (it.hasNext()) {
+      AsyncTask task = it.next();
+      if (task.isUsed()) {
+        JsonStreamWriter dumped = new JsonStreamWriter();
+        task.dump(dumped);
+        it.remove();
+        if (needMessagesOpen) {
+          forward.writeObjectFieldIntro("__messages");
+          forward.beginObject();
+          reverse.writeObjectFieldIntro("__messages");
+          reverse.beginObject();
+          needMessagesOpen = false;
+        }
+        forward.writeObjectFieldIntro(task.messageId);
+        forward.writeNull();
+        reverse.writeObjectFieldIntro(task.messageId);
+        task.dump(reverse);
+      } else if (task.log.resetDirtyGetPriorDirty()) {
+        if (needMessagesOpen) {
+          forward.writeObjectFieldIntro("__messages");
+          forward.beginObject();
+          reverse.writeObjectFieldIntro("__messages");
+          reverse.beginObject();
+          needMessagesOpen = false;
+        }
+        forward.writeObjectFieldIntro(task.messageId);
+        forward.beginObject();
+        forward.writeObjectFieldIntro("log");
+        task.log.dump(forward);
+        forward.endObject();
+      }
+    }
+    if (!needMessagesOpen) {
+      forward.endObject();
+      reverse.endObject();
+      __reset_future_queues();
+    }
   }
 
   private boolean __again(boolean hasTimeouts) {
@@ -401,17 +446,20 @@ public abstract class LivingDocument implements RxParent, Caller {
     final var forward = new JsonStreamWriter();
     final var reverse = new JsonStreamWriter();
     forward.beginObject();
-    forward.writeObjectFieldIntro("__messages");
-    forward.writeNull();
     reverse.beginObject();
     __timeouts.nuke(forward, reverse);
-    __dumpMessages(reverse);
     __blocked.set(false);
     __seq.bumpUpPre();
     __entropy.set(Long.toString(__random.nextLong()));
     __futures.commit();
-    __queue.clear();
     __cache.clear();
+    if (__stateMachineLog != null) {
+      if (__stateMachineLog.has()) {
+        forward.writeObjectFieldIntro("__log");
+        forward.writeNull();
+      }
+      __stateMachineLog = null;
+    }
     __reset_future_queues();
     __internalCommit(forward, reverse);
     boolean hasTimeouts = __timeouts.needsInvalidationAndUpdateNext(__next_time);
@@ -439,7 +487,7 @@ public abstract class LivingDocument implements RxParent, Caller {
 
   private LivingDocumentChange __invalidation_queue_transfer(NtPrincipal who, long timestamp, final String request) {
     EnqueuedTask enqueuedTask = __enqueued.transfer();
-    AsyncTask asyncLiveTask = new AsyncTask(enqueuedTask.messageId, __seq.get(), enqueuedTask.who, enqueuedTask.viewId, enqueuedTask.channel, timestamp, "adama", "0.0.0.0", __parse_message(enqueuedTask.channel, new JsonStreamReader(enqueuedTask.message.json)));
+    AsyncTask asyncLiveTask = new AsyncTask(enqueuedTask.messageId, __seq.get(), enqueuedTask.who, enqueuedTask.viewId, enqueuedTask.channel, timestamp, "adama", "0.0.0.0", __parse_message(enqueuedTask.channel, new JsonStreamReader(enqueuedTask.message.json)), new IdHistoryLog());
     __queue.add(asyncLiveTask);
 
     final var forward = new JsonStreamWriter();
@@ -499,6 +547,22 @@ public abstract class LivingDocument implements RxParent, Caller {
     List<LivingDocumentChange.Broadcast> broadcasts = __buildBroadcastListGameMode();
     RemoteDocumentUpdate update = new RemoteDocumentUpdate(__seq.get(), __seq.get(), who, request, forward.toString(), reverse.toString(), __again(hasTimeouts), __deltaTime(), assetBytes, UpdateType.AddUserData);
     return new LivingDocumentChange(update, broadcasts, response, shouldSignalBroadcast(BroadcastPathway.Other, who));
+  }
+
+  private LivingDocumentChange __queue_progress_commit(NtPrincipal who, final String request) {
+    final var forward = new JsonStreamWriter();
+    final var reverse = new JsonStreamWriter();
+    forward.beginObject();
+    reverse.beginObject();
+    __futures.commit();
+    __blocked.set(true);
+    __seq.bumpUpPre();
+    __commit(null, forward, reverse);
+    __internalCommit(forward, reverse);
+    forward.endObject();
+    reverse.endObject();
+    RemoteDocumentUpdate update = new RemoteDocumentUpdate(__seq.get(), __seq.get(), who, request, forward.toString(), reverse.toString(), true, 0, 0L, UpdateType.AddUserData);
+    return new LivingDocumentChange(update, null, null, false);
   }
 
   public Integer __computeRequiresInvalidateMilliseconds() {
@@ -917,7 +981,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       if (__monitor != null) {
         __monitor.goodwillFailureAt(startLine, startPosition, endLine, endLinePosition);
       }
-      __revert();
+      __execute__revert(true);
       throw new GoodwillExhaustedException(startLine, startPosition, endLine, endLinePosition);
     }
     return true;
@@ -925,6 +989,18 @@ public abstract class LivingDocument implements RxParent, Caller {
 
   /** code generated: revert the tree, all changes revert back */
   public abstract void __revert();
+
+  private void __execute__revert(boolean ephemeral) {
+    if (__currentLog != null) {
+      __currentLog.revert();
+      __currentLog = null;
+    }
+    __revert();
+  }
+
+  protected void __hydrateLog(final JsonStreamReader reader) {
+    __stateMachineLog = IdHistoryLog.read(reader);
+  }
 
   protected void __hydrateDeduper(final JsonStreamReader reader) {
     if (reader.startObject()) {
@@ -990,6 +1066,7 @@ public abstract class LivingDocument implements RxParent, Caller {
               String ip = null;
               var timestamp = 0L;
               int seq = 0;
+              IdHistoryLog log = null;
               while (reader.notEndOfObject()) {
                 final var f = reader.fieldName();
                 switch (f) {
@@ -1014,11 +1091,17 @@ public abstract class LivingDocument implements RxParent, Caller {
                   case "message":
                     message = __parse_message(channel, reader);
                     break;
+                  case "log":
+                    log = IdHistoryLog.read(reader);
+                    break;
                   default:
                     reader.skipValue();
                 }
               }
-              final var task = new AsyncTask(msgId, seq, who, null, channel, timestamp, origin, ip, message);
+              if (log == null) {
+                log = new IdHistoryLog();
+              }
+              final var task = new AsyncTask(msgId, seq, who, null, channel, timestamp, origin, ip, message, log);
               tasks.put(msgId, task);
             }
           } else {
@@ -1086,7 +1169,7 @@ public abstract class LivingDocument implements RxParent, Caller {
   public String __authorize(CoreRequestContext __context, String username, String password) {
     __time.set(System.currentTimeMillis());
     String result = __auth(__context, username, password);
-    __revert();
+    __execute__revert(true);
     return result;
   }
 
@@ -1099,7 +1182,7 @@ public abstract class LivingDocument implements RxParent, Caller {
     try {
       return __authpipe(__context, message);
     } finally {
-      __revert();
+      __execute__revert(true);
     }
   }
 
@@ -1233,7 +1316,7 @@ public abstract class LivingDocument implements RxParent, Caller {
    */
   protected void __rewindDocument(int seq) {
     // restore the document state
-    __revert();
+    __execute__revert(true);
     throw new PerformDocumentRewindException(seq);
   }
 
@@ -1323,7 +1406,7 @@ public abstract class LivingDocument implements RxParent, Caller {
   }
 
   protected void __test_send(final String channel, NtPrincipal __who, final Object message) throws AbortMessageException {
-    AsyncTask task = new AsyncTask(__message_id.bumpUpPre(), __seq.get(), __who, 0, channel, __time.get(), "origin", "127.0.0.1", message);
+    AsyncTask task = new AsyncTask(__message_id.bumpUpPre(), __seq.get(), __who, 0, channel, __time.get(), "origin", "127.0.0.1", message, new IdHistoryLog());
     __queue.add(task);
   }
 
@@ -1356,12 +1439,12 @@ public abstract class LivingDocument implements RxParent, Caller {
       __reset_future_queues();
       __commit(null, new JsonStreamWriter(), new JsonStreamWriter());
     } catch (final ComputeBlockedException cbe) {
-      __revert();
+      __execute__revert(false);
       __futures.restore();
       __reset_future_queues();
       __blocked.set(true);
     } catch (final RetryProgressException cbe) {
-      __revert();
+      __execute__revert(false);
       __futures.restore();
       __reset_future_queues();
       __blocked.set(true);
@@ -1716,7 +1799,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       return new LivingDocumentChange(update, null, null, false);
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -1738,7 +1821,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       return __simple_commit(context.who, "{\"password\":\"private\"}", null, 0L);
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -1758,26 +1841,30 @@ public abstract class LivingDocument implements RxParent, Caller {
       __randomizeOutOfBand();
       DelayParent delay = new DelayParent();
       RxCache cache = new RxCache(this, delay);
+      IdHistoryLog putLog = new IdHistoryLog();
       try {
         __currentWebCache = cache;
+        __currentLog = putLog;
         WebResponse response = __put_internal(put.context.toCoreRequestContext(new Key(__space, __key)), put);
+        __currentLog = null;
         exception = false;
         return __simple_commit(put.context.who, request, response, 0L);
       } catch (ComputeBlockedException cbe) {
-        __revert();
+        __execute__revert(false);
+        __reset_future_queues();
         exception = false;
         EphemeralFuture<WebResponse> future = new EphemeralFuture<>();
         __seq.bumpUpPre();
-        __webQueue.queue(put.context, put, future, cache, delay);
+        __webQueue.queue(put.context, put, future, cache, putLog, delay);
         return __simple_commit(put.context.who, request, future, 0L);
       } catch (AbortMessageException ame) {
-        __revert();
+        __execute__revert(true);
         exception = false;
         throw new ErrorCodeException(ErrorCodes.DOCUMENT_WEB_PUT_ABORT);
       }
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -1797,26 +1884,29 @@ public abstract class LivingDocument implements RxParent, Caller {
       __randomizeOutOfBand();
       DelayParent delay = new DelayParent();
       RxCache cache = new RxCache(this, delay);
+      IdHistoryLog delLog = new IdHistoryLog();
       try {
         __currentWebCache = cache;
+        __currentLog = delLog;
         WebResponse response = __delete_internal(del.context.toCoreRequestContext(new Key(__space, __key)), del);
+        __currentLog = null;
         exception = false;
         return __simple_commit(del.context.who, request, response, 0L);
       } catch (ComputeBlockedException cbe) {
-        __revert();
+        __execute__revert(false);
         exception = false;
         EphemeralFuture<WebResponse> future = new EphemeralFuture<>();
         __seq.bumpUpPre();
-        __webQueue.queue(del.context, del, future, cache, delay);
+        __webQueue.queue(del.context, del, future, cache, delLog, delay);
         return __simple_commit(del.context.who, request, future, 0L);
       } catch (AbortMessageException ame) {
-        __revert();
+        __execute__revert(true);
         exception = false;
         throw new ErrorCodeException(ErrorCodes.DOCUMENT_WEB_DELETE_ABORT);
       }
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -1853,7 +1943,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       return __simple_commit(context.who, request, null, asset.size);
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -1908,7 +1998,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       }
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -1933,7 +2023,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       }
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -2015,7 +2105,7 @@ public abstract class LivingDocument implements RxParent, Caller {
       return new LivingDocumentChange(result, null, null, false);
     } finally {
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);
@@ -2064,9 +2154,11 @@ public abstract class LivingDocument implements RxParent, Caller {
       boolean workDone = false;
       // channel messages that have blocked the system
       for (final AsyncTask task : __queue) {
+        task.resetUsed();
         __route(task);
       }
       Runnable taskPerf = __perf.measure("tasks");
+      boolean exception = true;
       try {
         for (final AsyncTask task : __queue) {
           __time.set(task.timestamp);
@@ -2076,15 +2168,28 @@ public abstract class LivingDocument implements RxParent, Caller {
           } else {
             __currentViewId = -1;
           }
+          boolean executedTask = false;
           try {
-            task.execute();
+            __currentLog = task.log;
+            if (task.execute()) {
+              executedTask = true;
+            }
+            __currentLog = null;
           } finally {
             __currentViewId = -1;
             __seq_message = null;
           }
-          workDone = true;
+          if (executedTask) {
+            return __queue_progress_commit(who, request);
+          }
         }
+        exception = false;
       } finally {
+        if (exception) {
+          for (final AsyncTask task : __queue) {
+            task.resetUsed();
+          }
+        }
         taskPerf.run();
       }
       __time.set(timeBackup);
@@ -2092,8 +2197,29 @@ public abstract class LivingDocument implements RxParent, Caller {
       if (__state.has() && __next_time.get() <= __time.get()) {
         final var stateToExecute = __state.get();
         __state.set("");
-        __invoke_label(stateToExecute);
+        boolean failedTransition = true;
+        try {
+          boolean createdLog = false;
+          if (__stateMachineLog == null) {
+            __stateMachineLog = new IdHistoryLog();
+            createdLog = true;
+          }
+          __currentLog = __stateMachineLog;
+          __invoke_label(stateToExecute);
+          __currentLog = null;
+          if (createdLog) {
+            __stateMachineLog = null;
+          }
+          failedTransition = false;
+        } finally {
+          if (failedTransition) {
+            for (AsyncTask task : __queue) {
+              task.resetUsed();
+            }
+          }
+        }
         workDone = true;
+        // TODO: custom transition here
       }
       int dirtyLeft = 0;
       if (!workDone) {
@@ -2107,6 +2233,7 @@ public abstract class LivingDocument implements RxParent, Caller {
             __random = new Random(seedUsed);
             if (item.item instanceof WebPut) {
               __currentWebCache = item.cache;
+              __currentLog = item.log;
               try {
                 WebResponse response = __put_internal(item.context.toCoreRequestContext(new Key(__space, __key)), (WebPut) item.item);
                 if (item.future != null) {
@@ -2117,8 +2244,10 @@ public abstract class LivingDocument implements RxParent, Caller {
                   item.future.abort(ErrorCodes.DOCUMENT_WEB_PUT_ABORT);
                 }
               }
+              __currentLog = null;
             } else if (item.item instanceof WebDelete) {
               __currentWebCache = item.cache;
+              __currentLog = item.log;
               try {
                 WebResponse response = __delete_internal(item.context.toCoreRequestContext(new Key(__space, __key)), (WebDelete) item.item);
                 if (item.future != null) {
@@ -2129,14 +2258,26 @@ public abstract class LivingDocument implements RxParent, Caller {
                   item.future.abort(ErrorCodes.DOCUMENT_WEB_DELETE_ABORT);
                 }
               }
+              __currentLog = null;
             }
             item.state = WebQueueState.Remove;
             __webQueue.dirty();
             __drive_webget_queue();
             return __transaction_invalidate_cron(who, request, timeBackup, true, dirtyLeft > 0);
           } catch (ComputeBlockedException cbe) {
-            __revert();
+            __execute__revert(false);
             __time.set(timeBackup);
+            boolean taskUsed = false;
+            for (final AsyncTask task : __queue) {
+              if (task.isUsed()) {
+                task.resetUsed();
+                taskUsed = true;
+              }
+            }
+            if (taskUsed) {
+              // since we are mixing the two systems, we are unable to make progress on other PUTs/DELETEs until the operation is over.
+              throw cbe;
+            }
             // the web request got blocked, so we let the future delivery invalidate the system so
             // we are not polling until the message arrives. We also signal that work was done (because it was to drive the queue)
             // so we don't perform any other actions. This is why workDone = true
@@ -2153,7 +2294,7 @@ public abstract class LivingDocument implements RxParent, Caller {
         return __transaction_invalidate_cron(who, request, timeBackup, true, false);
       } else {
         List<LivingDocumentChange.Broadcast> broadcasts = __buildBroadcastListGameMode();
-        __revert();
+        __execute__revert(false);
         __futures.restore();
         __reset_future_queues();
         __blocked.set(true);
@@ -2166,6 +2307,13 @@ public abstract class LivingDocument implements RxParent, Caller {
           forward.writeObjectFieldIntro("__blocked_on");
           forward.writeFastString(blockedOn.channel);
         }
+        if (__stateMachineLog != null) {
+          if (__stateMachineLog.has()) {
+            forward.writeObjectFieldIntro("__log");
+            __stateMachineLog.dump(forward);
+          }
+          __currentLog = null;
+        }
         __internalCommit(forward, reverse);
         __commit(null, forward, reverse);
         forward.endObject();
@@ -2175,7 +2323,7 @@ public abstract class LivingDocument implements RxParent, Caller {
     } catch (final RetryProgressException rpe) {
       __futures.restore();
       __reset_future_queues();
-      __revert();
+      __execute__revert(true);
       final var forward = new JsonStreamWriter();
       final var reverse = new JsonStreamWriter();
       forward.beginObject();
@@ -2296,7 +2444,7 @@ public abstract class LivingDocument implements RxParent, Caller {
     return new LivingDocumentChange(update, broadcasts, null, shouldSignalBroadcast(BroadcastPathway.Send, who));
   }
 
-  private LivingDocumentChange __transaction_send_enqueue(final String request, final int viewId, final String dedupeKey, final CoreRequestContext context, final String marker, final String channel, final long timestamp, final Object message, final LivingDocumentFactory factory) throws ErrorCodeException {
+  private LivingDocumentChange __transaction_send_enqueue(final String request, final int viewId, final String dedupeKey, final CoreRequestContext context, final String marker, final String channel, final long timestamp, final Object message, final IdHistoryLog log, final LivingDocumentFactory factory) throws ErrorCodeException {
     // create the delta
     final var forward = new JsonStreamWriter();
     final var reverse = new JsonStreamWriter();
@@ -2315,7 +2463,8 @@ public abstract class LivingDocument implements RxParent, Caller {
     forward.writeObjectFieldIntro("__messages");
     forward.beginObject();
     forward.writeObjectFieldIntro(msgId);
-    final var task = new AsyncTask(msgId, __seq.get(), context.who, viewId, channel, timestamp, context.origin, context.ip, message);
+    __futures.restore();
+    final var task = new AsyncTask(msgId, __seq.get(), context.who, viewId, channel, timestamp, context.origin, context.ip, message, log);
     task.dump(forward);
     forward.endObject();
     reverse.beginObject();
@@ -2366,6 +2515,7 @@ public abstract class LivingDocument implements RxParent, Caller {
         perfValidate.run();
       }
       LivingDocumentChange change;
+      IdHistoryLog logForMessage = new IdHistoryLog();
       if (__is_direct_channel(channel)) {
         Runnable perf = __perf.measure("sd_" + channel);
         try {
@@ -2384,8 +2534,10 @@ public abstract class LivingDocument implements RxParent, Caller {
           }
           __random = new Random(Long.parseLong(__entropy.get()) + timestamp);
           Runnable perfExec = __perf.measure("ex_" + channel);
+          __currentLog = logForMessage;
           try {
             __handle_direct(context, channel, message);
+            __currentLog = null;
           } finally {
             perfExec.run();
           }
@@ -2396,16 +2548,17 @@ public abstract class LivingDocument implements RxParent, Caller {
             perfCommit.run();
           }
         } catch (AbortMessageException ame) {
+          __currentLog = null;
           throw new ErrorCodeException(ame.policyFailure != null ? ErrorCodes.LIVING_DOCUMENT_TRANSACTION_MESSAGE_DIRECT_ABORT_POLICY : ErrorCodes.LIVING_DOCUMENT_TRANSACTION_MESSAGE_DIRECT_ABORT);
         } catch (ComputeBlockedException cbe) {
-          __revert();
-          change = __transaction_send_enqueue(request, viewId, dedupeKey, context, marker, channel, timestamp, message, factory);
+          __execute__revert(false);
+          change = __transaction_send_enqueue(request, viewId, dedupeKey, context, marker, channel, timestamp, message, logForMessage, factory);
         } finally {
           perf.run();
         }
       } else {
         Runnable perf = __perf.measure("qu_" + channel);
-        change = __transaction_send_enqueue(request, viewId, dedupeKey, context, marker, channel, timestamp, message, factory);
+        change = __transaction_send_enqueue(request, viewId, dedupeKey, context, marker, channel, timestamp, message, logForMessage, factory);
         perf.run();
       }
       exception = false;
@@ -2413,7 +2566,7 @@ public abstract class LivingDocument implements RxParent, Caller {
     } finally {
       __currentViewId = -1;
       if (exception) {
-        __revert();
+        __execute__revert(true);
       }
       if (__monitor != null) {
         __monitor.pop(System.nanoTime() - startedTime, exception);

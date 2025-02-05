@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.translator;
 
 import org.junit.Test;
@@ -116,6 +122,7 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -248,6 +255,9 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -343,6 +353,9 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -445,7 +458,6 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    r0.__revert();");
     gold.append("\n    r1.__revert();");
@@ -609,6 +621,7 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -793,20 +806,20 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"r0\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"r1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"r2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"public\"},\"r3\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"complex\"},\"computed\":false,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"r0\":0,\"r1\":\"1\",\"r2\":4.0,\"r3\":{\"r\":-7.5,\"i\":-2.0},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"r0\":0,\"r1\":\"1\",\"r2\":4.0,\"r3\":{\"r\":-7.5,\"i\":-2.0},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:26");
     gold.append("\nMEMORY:2808");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"r0\":0,\"r1\":\"1\",\"r2\":4.0,\"r3\":{\"r\":-7.5,\"i\":-2.0}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"r0\":0,\"r1\":\"1\",\"r2\":4.0,\"r3\":{\"r\":-7.5,\"i\":-2.0}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -1057,6 +1070,7 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -1841,6 +1855,9 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -1924,6 +1941,9 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -2014,7 +2034,6 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    /* root */");
     gold.append("\n  }");
@@ -4474,6 +4493,7 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -4603,20 +4623,20 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"f0\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"f1\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f2\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f3\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f4\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f5\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f6\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f7\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f8\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"f9\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f10\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f11\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f12\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f13\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f14\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f15\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f16\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f17\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f18\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f19\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f20\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f21\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f22\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f23\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f24\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f25\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f26\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f27\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f28\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f29\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f30\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f31\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f32\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f33\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f34\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f35\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f36\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f37\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f38\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f39\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f40\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f41\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f42\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f43\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f44\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f45\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f46\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f47\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f48\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f49\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f50\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f51\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f52\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f53\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f54\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f55\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f56\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f57\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f58\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f59\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f60\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f61\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f62\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f63\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f64\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f65\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f66\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f67\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f68\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f69\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f70\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f71\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f72\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f73\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f74\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f75\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f76\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f77\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f78\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f79\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f80\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f81\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f82\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f83\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f84\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f85\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f86\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f87\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f88\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f89\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f90\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f91\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f92\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f93\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f94\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f95\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f96\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f97\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f98\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f99\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f100\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f101\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f102\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f103\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f104\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"f105\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f106\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f107\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f108\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f109\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f110\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f111\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f112\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"f113\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f114\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f115\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f116\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f117\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f118\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f119\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f120\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f121\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f122\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f123\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f124\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f125\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f126\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":true,\"privacy\":\"public\"},\"f127\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f128\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f129\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f130\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f131\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f132\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f133\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f134\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"double\"}},\"computed\":true,\"privacy\":\"public\"},\"f135\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f136\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f137\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f138\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f139\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f140\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":true,\"privacy\":\"public\"},\"f141\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f142\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f143\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f144\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f145\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f146\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f147\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f148\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f149\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f150\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f151\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f152\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f153\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f154\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":true,\"privacy\":\"public\"},\"f155\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f156\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f157\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f158\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f159\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f160\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f161\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f162\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f163\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f164\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f165\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f166\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f167\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"},\"f168\":{\"type\":{\"nature\":\"native_maybe\",\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:0");
     gold.append("\nMEMORY:9320");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"data\":{\"f0\":0,\"f1\":\"0\",\"f2\":0.5,\"f3\":0.5,\"f5\":{\"r\":1.0,\"i\":-1.0},\"f6\":{\"r\":1.0,\"i\":1.0},\"f8\":1,\"f9\":\"1\",\"f10\":1.0,\"f11\":{\"r\":1.0,\"i\":-0.0},\"f13\":\"0\",\"f14\":\"0\",\"f15\":0.5,\"f16\":0.5,\"f18\":{\"r\":1.0,\"i\":-1.0},\"f19\":{\"r\":1.0,\"i\":1.0},\"f21\":\"1\",\"f22\":\"1\",\"f23\":1.0,\"f24\":{\"r\":1.0,\"i\":-0.0},\"f26\":-0.5,\"f27\":-0.5,\"f28\":0.0,\"f29\":0.0,\"f31\":{\"r\":0.5,\"i\":-1.0},\"f32\":{\"r\":0.5,\"i\":1.0},\"f34\":0.5,\"f35\":0.5,\"f36\":0.5,\"f37\":{\"r\":0.5,\"i\":-0.0},\"f39\":-0.5,\"f40\":-0.5,\"f41\":0.0,\"f42\":0.0,\"f44\":{\"r\":0.5,\"i\":-1.0},\"f45\":{\"r\":0.5,\"i\":1.0},\"f47\":0.5,\"f48\":0.5,\"f49\":0.5,\"f50\":{\"r\":0.5,\"i\":-0.0},\"f65\":{\"r\":-1.0,\"i\":1.0},\"f66\":{\"r\":-1.0,\"i\":1.0},\"f67\":{\"r\":-0.5,\"i\":1.0},\"f68\":{\"r\":-0.5,\"i\":1.0},\"f70\":{\"r\":0.0,\"i\":0.0},\"f71\":{\"r\":0.0,\"i\":2.0},\"f73\":{\"r\":0.0,\"i\":1.0},\"f74\":{\"r\":0.0,\"i\":1.0},\"f75\":{\"r\":0.0,\"i\":1.0},\"f76\":{\"r\":0.0,\"i\":1.0},\"f78\":{\"r\":-1.0,\"i\":-1.0},\"f79\":{\"r\":-1.0,\"i\":-1.0},\"f80\":{\"r\":-0.5,\"i\":-1.0},\"f81\":{\"r\":-0.5,\"i\":-1.0},\"f83\":{\"r\":0.0,\"i\":-2.0},\"f84\":{\"r\":0.0,\"i\":0.0},\"f86\":{\"r\":0.0,\"i\":-1.0},\"f87\":{\"r\":0.0,\"i\":-1.0},\"f88\":{\"r\":0.0,\"i\":-1.0},\"f89\":{\"r\":0.0,\"i\":-1.0},\"f104\":-1,\"f105\":\"-1\",\"f106\":-0.5,\"f107\":-0.5,\"f109\":{\"r\":0.0,\"i\":-1.0},\"f110\":{\"r\":0.0,\"i\":1.0},\"f112\":0,\"f113\":\"0\",\"f114\":0.0,\"f115\":{\"r\":0.0,\"i\":-0.0},\"f117\":\"-1\",\"f118\":\"-1\",\"f119\":-0.5,\"f120\":-0.5,\"f122\":{\"r\":0.0,\"i\":-1.0},\"f123\":{\"r\":0.0,\"i\":1.0},\"f125\":\"0\",\"f126\":\"0\",\"f127\":0.0,\"f128\":{\"r\":0.0,\"i\":-0.0},\"f130\":-1.0,\"f131\":-1.0,\"f132\":-0.5,\"f133\":-0.5,\"f135\":{\"r\":0.0,\"i\":-1.0},\"f136\":{\"r\":0.0,\"i\":1.0},\"f138\":0.0,\"f139\":0.0,\"f140\":0.0,\"f141\":{\"r\":0.0,\"i\":-0.0},\"f143\":{\"r\":-1.0,\"i\":0.0},\"f144\":{\"r\":-1.0,\"i\":0.0},\"f145\":{\"r\":-0.5,\"i\":0.0},\"f146\":{\"r\":-0.5,\"i\":0.0},\"f148\":{\"r\":0.0,\"i\":-1.0},\"f149\":{\"r\":0.0,\"i\":1.0},\"f151\":{\"r\":0.0,\"i\":0.0},\"f152\":{\"r\":0.0,\"i\":0.0},\"f153\":{\"r\":0.0,\"i\":0.0},\"f154\":{\"r\":0.0,\"i\":0.0}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"data\":{\"f0\":0,\"f1\":\"0\",\"f2\":0.5,\"f3\":0.5,\"f5\":{\"r\":1.0,\"i\":-1.0},\"f6\":{\"r\":1.0,\"i\":1.0},\"f8\":1,\"f9\":\"1\",\"f10\":1.0,\"f11\":{\"r\":1.0,\"i\":-0.0},\"f13\":\"0\",\"f14\":\"0\",\"f15\":0.5,\"f16\":0.5,\"f18\":{\"r\":1.0,\"i\":-1.0},\"f19\":{\"r\":1.0,\"i\":1.0},\"f21\":\"1\",\"f22\":\"1\",\"f23\":1.0,\"f24\":{\"r\":1.0,\"i\":-0.0},\"f26\":-0.5,\"f27\":-0.5,\"f28\":0.0,\"f29\":0.0,\"f31\":{\"r\":0.5,\"i\":-1.0},\"f32\":{\"r\":0.5,\"i\":1.0},\"f34\":0.5,\"f35\":0.5,\"f36\":0.5,\"f37\":{\"r\":0.5,\"i\":-0.0},\"f39\":-0.5,\"f40\":-0.5,\"f41\":0.0,\"f42\":0.0,\"f44\":{\"r\":0.5,\"i\":-1.0},\"f45\":{\"r\":0.5,\"i\":1.0},\"f47\":0.5,\"f48\":0.5,\"f49\":0.5,\"f50\":{\"r\":0.5,\"i\":-0.0},\"f65\":{\"r\":-1.0,\"i\":1.0},\"f66\":{\"r\":-1.0,\"i\":1.0},\"f67\":{\"r\":-0.5,\"i\":1.0},\"f68\":{\"r\":-0.5,\"i\":1.0},\"f70\":{\"r\":0.0,\"i\":0.0},\"f71\":{\"r\":0.0,\"i\":2.0},\"f73\":{\"r\":0.0,\"i\":1.0},\"f74\":{\"r\":0.0,\"i\":1.0},\"f75\":{\"r\":0.0,\"i\":1.0},\"f76\":{\"r\":0.0,\"i\":1.0},\"f78\":{\"r\":-1.0,\"i\":-1.0},\"f79\":{\"r\":-1.0,\"i\":-1.0},\"f80\":{\"r\":-0.5,\"i\":-1.0},\"f81\":{\"r\":-0.5,\"i\":-1.0},\"f83\":{\"r\":0.0,\"i\":-2.0},\"f84\":{\"r\":0.0,\"i\":0.0},\"f86\":{\"r\":0.0,\"i\":-1.0},\"f87\":{\"r\":0.0,\"i\":-1.0},\"f88\":{\"r\":0.0,\"i\":-1.0},\"f89\":{\"r\":0.0,\"i\":-1.0},\"f104\":-1,\"f105\":\"-1\",\"f106\":-0.5,\"f107\":-0.5,\"f109\":{\"r\":0.0,\"i\":-1.0},\"f110\":{\"r\":0.0,\"i\":1.0},\"f112\":0,\"f113\":\"0\",\"f114\":0.0,\"f115\":{\"r\":0.0,\"i\":-0.0},\"f117\":\"-1\",\"f118\":\"-1\",\"f119\":-0.5,\"f120\":-0.5,\"f122\":{\"r\":0.0,\"i\":-1.0},\"f123\":{\"r\":0.0,\"i\":1.0},\"f125\":\"0\",\"f126\":\"0\",\"f127\":0.0,\"f128\":{\"r\":0.0,\"i\":-0.0},\"f130\":-1.0,\"f131\":-1.0,\"f132\":-0.5,\"f133\":-0.5,\"f135\":{\"r\":0.0,\"i\":-1.0},\"f136\":{\"r\":0.0,\"i\":1.0},\"f138\":0.0,\"f139\":0.0,\"f140\":0.0,\"f141\":{\"r\":0.0,\"i\":-0.0},\"f143\":{\"r\":-1.0,\"i\":0.0},\"f144\":{\"r\":-1.0,\"i\":0.0},\"f145\":{\"r\":-0.5,\"i\":0.0},\"f146\":{\"r\":-0.5,\"i\":0.0},\"f148\":{\"r\":0.0,\"i\":-1.0},\"f149\":{\"r\":0.0,\"i\":1.0},\"f151\":{\"r\":0.0,\"i\":0.0},\"f152\":{\"r\":0.0,\"i\":0.0},\"f153\":{\"r\":0.0,\"i\":0.0},\"f154\":{\"r\":0.0,\"i\":0.0}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
@@ -4729,6 +4749,7 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\nimport ape.runtime.reactives.*;");
     gold.append("\nimport ape.runtime.reactives.tables.*;");
     gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
     gold.append("\nimport ape.runtime.remote.replication.*;");
     gold.append("\nimport ape.runtime.stdlib.*;");
     gold.append("\nimport ape.runtime.sys.*;");
@@ -4844,6 +4865,9 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
     gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
     gold.append("\n        }");
@@ -4930,6 +4954,9 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n            break;");
     gold.append("\n          case \"__replication\":");
     gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
     gold.append("\n            break;");
     gold.append("\n          default:");
     gold.append("\n            __reader.skipValue();");
@@ -5023,7 +5050,6 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n    __message_id.__revert();");
     gold.append("\n    __time.__revert();");
     gold.append("\n    __timezone.__revert();");
-    gold.append("\n    __auto_table_row_id.__revert();");
     gold.append("\n    __webTaskId.__revert();");
     gold.append("\n    tbl.__revert();");
     gold.append("\n    /* root */");
@@ -5580,6 +5606,7 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
     gold.append("\n    return __map;");
     gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __link(ServiceRegistry __registry) {}");
     gold.append("\n  @Override");
@@ -5765,20 +5792,20 @@ public class GeneratedOperationsSubtractionTests extends GeneratedBase {
     gold.append("\n--REFLECTION RESULTS-------------------------------------");
     gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"tbl\":{\"type\":{\"nature\":\"reactive_table\",\"record_name\":\"R\"},\"computed\":false,\"privacy\":\"private\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}},\"R\":{\"nature\":\"reactive_record\",\"name\":\"R\",\"fields\":{\"id\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"private\"},\"r0\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"r1\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"r2\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"public\"},\"r3\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"complex\"},\"computed\":false,\"privacy\":\"public\"}}},\"_AnonObjConvert_0\":{\"nature\":\"native_message\",\"name\":\"_AnonObjConvert_0\",\"anonymous\":true,\"fields\":{\"r0\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"r1\":{\"type\":{\"nature\":\"native_value\",\"type\":\"long\"},\"computed\":false,\"privacy\":\"public\"},\"r2\":{\"type\":{\"nature\":\"native_value\",\"type\":\"double\"},\"computed\":false,\"privacy\":\"public\"},\"r3\":{\"type\":{\"nature\":\"native_value\",\"type\":\"complex\"},\"computed\":false,\"privacy\":\"public\"}}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
     gold.append("\n--JAVA RUNNING-------------------------------------");
-    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":2,\"tbl\":{\"1\":{\"id\":1,\"r0\":0,\"r1\":\"0\",\"r2\":0.2999999999999998,\"r3\":{\"r\":-4.0,\"i\":-1.0}},\"2\":{\"id\":2,\"r0\":1,\"r1\":\"1\",\"r2\":1.4000000000000004,\"r3\":{\"r\":-4.0,\"i\":0.0}}},\"__messages\":null,\"__seq\":1} need:false in:0");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__messages\":null,\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"__auto_table_row_id\":2,\"tbl\":{\"1\":{\"id\":1,\"r0\":0,\"r1\":\"0\",\"r2\":0.2999999999999998,\"r3\":{\"r\":-4.0,\"i\":-1.0}},\"2\":{\"id\":2,\"r0\":1,\"r1\":\"1\",\"r2\":1.4000000000000004,\"r3\":{\"r\":-4.0,\"i\":0.0}}},\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
     gold.append("\nCPU:43");
     gold.append("\nMEMORY:5434");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__messages\":null,\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__messages\":null,\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
     gold.append("\n+ RANDO DELTA:{\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
-    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__messages\":null,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");

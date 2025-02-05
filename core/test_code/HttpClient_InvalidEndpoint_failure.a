@@ -1,0 +1,7 @@
+message M { int xyz; }
+message V { int n; }
+
+client me {
+  endpoint "wss://www.service.service";
+  endpoint[dev] "ws://192.168.1.42";
+}

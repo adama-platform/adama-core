@@ -1,0 +1,8 @@
+message M { int xyz; }
+message V { int n; }
+message E {}
+
+client me {
+  endpoint "https://localhost:9998";
+  get "/foo/[%x]" <M> foo_me;
+}

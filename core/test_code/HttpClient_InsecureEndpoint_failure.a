@@ -1,0 +1,15 @@
+message M { int xyz; }
+message V { int n; }
+
+client me {
+  header Authorization = "Bearer Happy";
+  secret_header AccessKey = "BLAH";
+  get "/foo/$xyz" <M> foo_me;
+  put "/foo/$xyz" <M,V> go_me;
+  endpoint "http://www.service.service";
+  endpoint[dev] "http://192.168.1.42";
+  {
+    endpoint "http://www.service.service2";
+    get "/foo/$xyz" <M> foo_me_2;
+  }
+}

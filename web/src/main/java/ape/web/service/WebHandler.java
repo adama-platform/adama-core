@@ -1,20 +1,26 @@
-/*
-* Adama Platform and Language
-* Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
-* 
-* This program is free software for non-commercial purposes: 
-* you can redistribute it and/or modify it under the terms of the 
-* GNU Affero General Public License as published by the Free Software Foundation,
-* either version 3 of the License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/**
+ * MIT License
+ * 
+ * Copyright (C) 2021 - 2025 by Adama Platform Engineering, LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package ape.web.service;
 
 import ape.common.*;
@@ -100,18 +106,15 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     this.cache = cache;
     this.transformQueue = transformQueue;
     this.jarThread = Executors.newSingleThreadExecutor();
-    this.domainFinder = new DomainFinder() {
-      @Override
-      public void find(String domain, Callback<Domain> callback) {
-        for (String suffix : webConfig.globalDomains) {
-          if (domain.endsWith("." + suffix)) {
-            String space = domain.substring(0, domain.length() - suffix.length() - 1);
-            callback.success(new Domain(domain, -0, space, "default-document", null, false, null, null, 0, false));
-            return;
-          }
+    this.domainFinder = (domain, callback) -> {
+      for (String suffix : webConfig.globalDomains) {
+        if (domain.endsWith("." + suffix)) {
+          String space = domain.substring(0, domain.length() - suffix.length() - 1);
+          callback.success(new Domain(domain, -0, space, "default-document", null, false, null, null, 0, false));
+          return;
         }
-        incomingDomainFinder.find(domain, callback);
       }
+      incomingDomainFinder.find(domain, callback);
     };
   }
 
@@ -149,11 +152,12 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     sendWithKeepAlive(webConfig, ctx, req, res);
   }
 
-  private void redirect(Runnable metric, FullHttpRequest req, final ChannelHandlerContext ctx, HttpResponseStatus status, String location) {
+  private void redirect(Runnable metric, FullHttpRequest req, final ChannelHandlerContext ctx, HttpResponseStatus status, String location, boolean isDevBox, String identity) {
     metric.run();
     final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), status, Unpooled.wrappedBuffer(EMPTY_RESPONSE));
     HttpUtil.setContentLength(res, 0);
     res.headers().set(HttpHeaderNames.LOCATION, location);
+    injectIdentity(identity, isDevBox, res);
     transferCors(res, req, true);
     sendWithKeepAlive(webConfig, ctx, req, res);
   }
@@ -549,12 +553,13 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     return result.toString();
   }
 
-  private boolean handleInternal(final ChannelHandlerContext ctx, final FullHttpRequest req) {
-    String host = req.headers().get(HttpHeaderNames.HOST);
-    if (host == null) {
-      host = "";
-    }
-    boolean isDevBox = "localhost".equals(host) || host.startsWith("localhost:");
+  private static boolean computeIsDevBox(String host) {
+    boolean isLocalHost = "localhost".equals(host) || host.startsWith("localhost:");
+    boolean is127 = "127.0.0.1".equals(host) || host.startsWith("127.0.0.1:");
+    return isLocalHost || is127;
+  }
+
+  private boolean handleInternal(final String host, boolean isDevBox, final ChannelHandlerContext ctx, final FullHttpRequest req) {
     if (webConfig.healthCheckPath.equals(req.uri())) { // health checks
       sendImmediate(metrics.webhandler_healthcheck, req, ctx, HttpResponseStatus.OK, ("HEALTHY:" + System.currentTimeMillis()).getBytes(StandardCharsets.UTF_8), "text/text; charset=UTF-8", true);
       return true;
@@ -734,7 +739,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     return false;
   }
 
-  private void handleHttpResult(HttpHandler.HttpResult httpResultIncoming, final ChannelHandlerContext ctx, final FullHttpRequest req) {
+  private void handleHttpResult(final String host, final boolean isDevBox, HttpHandler.HttpResult httpResultIncoming, final ChannelHandlerContext ctx, final FullHttpRequest req) {
     HttpHandler.HttpResult httpResult = httpResultIncoming;
     if (httpResult == null) { // no response found
       sendImmediate(metrics.webhandler_notfound, req, ctx, HttpResponseStatus.NOT_FOUND, NOT_FOUND_RESPONSE, "text/html; charset=UTF-8", true);
@@ -742,7 +747,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     if (httpResult.redirect) {
-      redirect(metrics.webhandler_redirect, req, ctx, httpResult.status == 301 ? HttpResponseStatus.MOVED_PERMANENTLY : HttpResponseStatus.FOUND, httpResult.location);
+      redirect(metrics.webhandler_redirect, req, ctx, httpResult.status == 301 ? HttpResponseStatus.MOVED_PERMANENTLY : HttpResponseStatus.FOUND, httpResult.location, isDevBox, httpResult.identity);
       return;
     }
 
@@ -768,8 +773,24 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         res.headers().set(header.getKey(), header.getValue());
       }
     }
+    injectIdentity(httpResult.identity, isDevBox, res);
     transferCors(res, req, httpResult.cors);
     sendWithKeepAlive(webConfig, ctx, req, res);
+  }
+
+  private void injectIdentity(String identity, boolean isDevBox, FullHttpResponse res) {
+    if (identity != null) {
+      // TODO: maybe have an identity name in the httpResult + expiry? OR, parse the identity to link everything up?
+      DefaultCookie cookie = new DefaultCookie("id_default", identity);
+      cookie.setSameSite(CookieHeaderNames.SameSite.Lax);
+      cookie.setMaxAge(60 * 60 * 24 * 365);
+      cookie.setHttpOnly(true);
+      if (!isDevBox) {
+        cookie.setSecure(true);
+      }
+      cookie.setPath("/");
+      res.headers().set(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookie));
+    }
   }
 
   @Override
@@ -780,8 +801,15 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
       return;
     }
 
+    String hostTemp = req.headers().get(HttpHeaderNames.HOST);
+    if (hostTemp == null) {
+      hostTemp = "";
+    }
+    final String host = hostTemp;
+    final boolean isDevBox = computeIsDevBox(host);
+
     // Step 2: Handle internal routing for Adama only stuff
-    if (handleInternal(ctx, req)) {
+    if (handleInternal(host, isDevBox, ctx, req)) {
       return;
     }
 
@@ -790,7 +818,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
       @Override
       public void success(HttpHandler.HttpResult value) {
         ctx.executor().execute(() -> {
-          handleHttpResult(value, ctx, req);
+          handleHttpResult(host, isDevBox, value, ctx, req);
         });
       }
 
@@ -801,7 +829,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         } else {
           LOG.error("failed-web-handler:" + ex.getMessage());
         }
-        handleHttpResult(new HttpHandler.HttpResult(KnownErrors.inferHttpStatusCodeFrom(ex.code), "text/html", ("error:" + ex.code).getBytes(StandardCharsets.UTF_8), true), ctx, req);
+        handleHttpResult(host, isDevBox, new HttpHandler.HttpResult(KnownErrors.inferHttpStatusCodeFrom(ex.code), "text/html", ("error:" + ex.code).getBytes(StandardCharsets.UTF_8), true), ctx, req);
       }
     };
 
