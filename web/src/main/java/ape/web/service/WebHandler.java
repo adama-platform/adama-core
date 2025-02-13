@@ -780,10 +780,16 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
   private void injectIdentity(String identity, boolean isDevBox, FullHttpResponse res) {
     if (identity != null) {
-      // TODO: maybe have an identity name in the httpResult + expiry? OR, parse the identity to link everything up?
-      DefaultCookie cookie = new DefaultCookie("id_default", identity);
+      // TODO: introduce an identity name? expiry?
+      DefaultCookie cookie;
+      if (identity.equalsIgnoreCase("clear")) {
+        cookie = new DefaultCookie("id_default", "");
+        cookie.setMaxAge(0);
+      } else {
+        cookie = new DefaultCookie("id_default", identity);
+        cookie.setMaxAge(60 * 60 * 24 * 365);
+      }
       cookie.setSameSite(CookieHeaderNames.SameSite.Lax);
-      cookie.setMaxAge(60 * 60 * 24 * 365);
       cookie.setHttpOnly(true);
       if (!isDevBox) {
         cookie.setSecure(true);

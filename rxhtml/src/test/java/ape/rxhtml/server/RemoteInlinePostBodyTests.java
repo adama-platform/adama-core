@@ -23,35 +23,13 @@
  */
 package ape.rxhtml.server;
 
-/** the response from a remote inline */
-public class RemoteInlineResponse {
-  public final String body;
-  public final String title;
-  public final String redirect;
-  public final String identity;
-  public final String contentType;
+import org.junit.Test;
 
-  private RemoteInlineResponse(String body, String title, String redirect, String identity, String contentType) {
-    this.body = body;
-    this.title = title;
-    this.redirect = redirect;
-    this.identity = identity;
-    this.contentType = contentType;
-  }
+import java.util.TreeMap;
 
-  public static RemoteInlineResponse body(String body, String title, String identity) {
-    return new RemoteInlineResponse(body, title, null, identity, null);
-  }
-
-  public static RemoteInlineResponse json(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "application/json");
-  }
-
-  public static RemoteInlineResponse xml(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "text/xml");
-  }
-
-  public static RemoteInlineResponse redirect(String redirect, String identity) {
-    return new RemoteInlineResponse(null, null, redirect, identity, null);
+public class RemoteInlinePostBodyTests {
+  @Test
+  public void trivial() {
+    RemoteInlinePostBody body = new RemoteInlinePostBody(new TreeMap<>());
   }
 }

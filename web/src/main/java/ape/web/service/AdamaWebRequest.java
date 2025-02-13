@@ -132,6 +132,13 @@ public class AdamaWebRequest {
       for (Map.Entry<String, List<String>> param : test.parameters().entrySet()) {
         if (param.getValue().size() == 1) {
           bodyJson.put(param.getKey(), param.getValue().get(0));
+        } else if (param.getValue().isEmpty()) {
+          bodyJson.putNull(param.getKey());
+        } else {
+          ArrayNode vals = bodyJson.putArray(param.getKey());
+          for (String val : param.getValue()) {
+            vals.add(val);
+          }
         }
       }
       return bodyJson.toString();

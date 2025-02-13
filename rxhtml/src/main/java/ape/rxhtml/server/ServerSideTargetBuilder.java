@@ -36,11 +36,9 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 
 /** construct the ServerSideTarget from an element */
 public class ServerSideTargetBuilder {
-
   public static boolean hasNoAuth(String authority, String agent) {
     return authority == null || agent == null || "?".equals(authority) || "?".equals(agent);
   }
@@ -66,26 +64,39 @@ public class ServerSideTargetBuilder {
     }
 
     if (toInlineRaw.size() == 0) {
-      String result = shell.wrap(null, toMunge);
+      String result = shell.wrap(null, null, toMunge);
       TreeMap<String, String> headers = new TreeMap<>();
       headers.put("content-type", "text/html; charset=utf-8");
       callback.success(new Target(200, headers, result.getBytes(StandardCharsets.UTF_8), null));
     } else {
       AtomicReference<String> newTitle = new AtomicReference<>(null);
+      AtomicReference<String> newContentType = new AtomicReference<>("text/html; charset=utf-8");
       AtomicReference<String> newLocation = new AtomicReference<>(null);
       AtomicReference<String> newIdentity = new AtomicReference<>(null);
+      AtomicReference<String> newBodyForAlternativeContentType = new AtomicReference<>(null);
+      AtomicReference<String> extMeta = new AtomicReference<>("");
 
       BiConsumer<ArrayList<Element>, Runnable> act = (elements, done) -> {
         for (int k = 0; k < elements.size(); k++) {
           final Element toReplace = elements.get(k);
+          final boolean isPostForced = toReplace.hasAttr("forced");
           final String pathLeveraged = toReplace.attr("path");
           final RemoteInlineRequest request = new RemoteInlineRequest(shell.endpoint, pathLeveraged, query, extHeaders);
           final Callback<RemoteInlineResponse> callbackForResponse = new Callback<>() {
             @Override
             public void success(RemoteInlineResponse value) {
               synchronized (toMunge) {
+                if (value.contentType != null) {
+                  newContentType.set(value.contentType);
+                  newBodyForAlternativeContentType.set(value.body);
+                }
                 if (value.body != null) {
                   Element newBody = Jsoup.parse(value.body).body();
+                  Elements elements = newBody.getElementsByTag("ext-meta");
+                  for (Element element : elements) {
+                    extMeta.set(extMeta.get() + element.html());
+                  }
+                  elements.remove();
                   shell.injectFormHandles(newBody, pathLeveraged);
                   shell.rewriteInline(newBody);
                   int index = toReplace.siblingIndex();
@@ -119,11 +130,13 @@ public class ServerSideTargetBuilder {
           };
           boolean used = false;
           if (bodyIfPost != null) {
-            if (bodyIfPost.containsKey("__path")) {
+            if (isPostForced) {
+              resolver.post(request, new RemoteInlinePostBody(bodyIfPost), callbackForResponse);
+              used = true;
+            } else if (bodyIfPost.containsKey("__path")) {
               List<String> pathSelector = bodyIfPost.get("__path");
               if (pathSelector.size() == 1 && pathLeveraged.equals(pathSelector.get(0))) {
-                RemoteInlinePostBody inlineBody = new RemoteInlinePostBody(bodyIfPost);
-                resolver.post(request, inlineBody, callbackForResponse);
+                resolver.post(request, new RemoteInlinePostBody(bodyIfPost), callbackForResponse);
                 used = true;
               }
             }
@@ -145,9 +158,13 @@ public class ServerSideTargetBuilder {
           // TOOD: figure out if it makes sense to do 301 ever, probably not
           callback.success(new Target(302, headers, null, null));
         } else {
-          String result = shell.wrap(newTitle.get(), toMunge);
-          headers.put("content-type", "text/html; charset=utf-8");
-          callback.success(new Target(200, headers, result.getBytes(StandardCharsets.UTF_8), null));
+          headers.put("content-type", newContentType.get());
+          if (newContentType.get().startsWith("text/html")) {
+            String result = shell.wrap(newTitle.get(), extMeta.get(), toMunge);
+            callback.success(new Target(200, headers, result.getBytes(StandardCharsets.UTF_8), null));
+          } else {
+            callback.success(new Target(200, headers, newBodyForAlternativeContentType.get().getBytes(StandardCharsets.UTF_8), null));
+          }
         }
       };
 
@@ -168,11 +185,6 @@ public class ServerSideTargetBuilder {
       }
     }
   }
-
-  private static void rewrite(ArrayList<Element> elements) {
-
-  }
-
 
   public static ServerSideTarget build(ServerPageShell shell, Element element, String redirectPathIfNoPrinciple) {
     return new ServerSideTarget() {

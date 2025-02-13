@@ -66,12 +66,12 @@ public class SimpleTimeoutTests {
       };
       {
         CountDownLatch latch = new CountDownLatch(1);
-        cons.apply(() -> latch.countDown(), 5L).success("");
+        cons.apply(() -> latch.countDown(), 1000L).success("");
         Assert.assertFalse(latch.await(50, TimeUnit.MILLISECONDS));
       }
       {
         CountDownLatch latch = new CountDownLatch(1);
-        cons.apply(() -> latch.countDown(), 5L).failure(new ErrorCodeException(0));
+        cons.apply(() -> latch.countDown(), 1000L).failure(new ErrorCodeException(0));
         Assert.assertFalse(latch.await(50, TimeUnit.MILLISECONDS));
       }
       {

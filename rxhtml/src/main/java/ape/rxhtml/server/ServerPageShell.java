@@ -141,7 +141,9 @@ public class ServerPageShell {
     }
   }
 
-  public String wrap(String titleOverride, Element body) {
+  public String wrap(String titleOverride, String extendedMeta, Element body) {
+    String ext = extendedMeta == null ? "" : extendedMeta;
+
     StringBuilder sb = new StringBuilder();
     if (shell != null) {
       sb.append("<!DOCTYPE html>\n<html");
@@ -168,9 +170,12 @@ public class ServerPageShell {
       for (Element element : shell.getElementsByTag("script")) {
         sb.append(element);
       }
+      sb.append(ext);
     } else {
-      sb.append("<!DOCTYPE html>\n<html>\n<head>");
+      sb.append("<!DOCTYPE html>\n<html>\n<head>" + ext + "</head>");
     }
+
+
     if (shell != null) {
       sb.append("<body");
       if (shell.hasAttr("body-class")) {

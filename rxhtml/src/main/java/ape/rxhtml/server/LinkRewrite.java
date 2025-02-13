@@ -33,7 +33,8 @@ public class LinkRewrite {
   public final Part[] parts;
 
   public LinkRewrite(String dest) {
-    String[] rule = dest.split(SLASH);
+    String[] rule = dest.split(SLASH, -1);
+
     parts = new Part[rule.length];
     for (int i = 0; i < rule.length; i++) {
       if (rule[i].startsWith("$")) {

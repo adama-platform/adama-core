@@ -23,35 +23,44 @@
  */
 package ape.rxhtml.server;
 
-/** the response from a remote inline */
-public class RemoteInlineResponse {
-  public final String body;
-  public final String title;
-  public final String redirect;
-  public final String identity;
-  public final String contentType;
+import org.junit.Assert;
+import org.junit.Test;
 
-  private RemoteInlineResponse(String body, String title, String redirect, String identity, String contentType) {
-    this.body = body;
-    this.title = title;
-    this.redirect = redirect;
-    this.identity = identity;
-    this.contentType = contentType;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeMap;
+
+public class LinkRewriteTests {
+  @Test
+  public void test_simple() {
+    LinkRewrite r = new LinkRewrite("/xyz");
+    TreeMap<String, List<String>> map = new TreeMap<>();
+    Assert.assertEquals(2, r.score(map));
+    Assert.assertEquals("/xyz", r.eval(map));
   }
 
-  public static RemoteInlineResponse body(String body, String title, String identity) {
-    return new RemoteInlineResponse(body, title, null, identity, null);
+  @Test
+  public void test_root() {
+    LinkRewrite r = new LinkRewrite("/");
+    TreeMap<String, List<String>> map = new TreeMap<>();
+    Assert.assertEquals(2, r.score(map));
+    Assert.assertEquals("/", r.eval(map));
   }
 
-  public static RemoteInlineResponse json(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "application/json");
+  @Test
+  public void rewrite_happy() {
+    LinkRewrite r = new LinkRewrite("/$x/$y");
+    TreeMap<String, List<String>> map = new TreeMap<>();
+    map.put("x", Collections.singletonList("123"));
+    map.put("y", Collections.singletonList("42"));
+    Assert.assertEquals(3, r.score(map));
+    Assert.assertEquals("/123/42", r.eval(map));
   }
 
-  public static RemoteInlineResponse xml(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "text/xml");
-  }
-
-  public static RemoteInlineResponse redirect(String redirect, String identity) {
-    return new RemoteInlineResponse(null, null, redirect, identity, null);
+  @Test
+  public void rewrite_incomplete() {
+    LinkRewrite r = new LinkRewrite("/$x/$z");
+    TreeMap<String, List<String>> map = new TreeMap<>();
+    Assert.assertEquals(-19999, r.score(map));
   }
 }

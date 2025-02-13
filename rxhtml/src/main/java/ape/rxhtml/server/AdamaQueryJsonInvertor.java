@@ -33,9 +33,15 @@ import java.util.*;
 /** for reasons, Adama converts the map<string, list<string>> into a JSON. This inverts that */
 public class AdamaQueryJsonInvertor {
 
+  private static String to_string(JsonNode node) {
+    if (node.isTextual()) {
+      return node.asText();
+    }
+    return node.toString();
+  }
+
   public static TreeMap<String, List<String>> toGet(TreeMap<String, String> captured, String json) {
     TreeMap<String, List<String>> result = new TreeMap<>();
-
     // invert ape.web.service.AdamaWebRequest
     ObjectNode node = Json.parseJsonObject(json);
     { // just simple entries
@@ -43,12 +49,8 @@ public class AdamaQueryJsonInvertor {
       while (simple.hasNext()) {
         Map.Entry<String, JsonNode> entry = simple.next();
         if (!entry.getValue().isArray()) {
-          String value = entry.getValue().textValue();
-          if (value.equals("")) {
-            result.put(entry.getKey(), Collections.emptyList());
-          } else {
-            result.put(entry.getKey(), Collections.singletonList(value));
-          }
+          String value = to_string(entry.getValue());
+          result.put(entry.getKey(), Collections.singletonList(value));
         }
       }
     }
@@ -56,16 +58,18 @@ public class AdamaQueryJsonInvertor {
       Iterator<Map.Entry<String, JsonNode>> arrays = node.fields();
       while (arrays.hasNext()) {
         Map.Entry<String, JsonNode> entry = arrays.next();
-        if (entry.getValue().isArray() && entry.getKey().endsWith("*")) {
+        if (entry.getValue().isArray()) {
           ArrayNode array = (ArrayNode) entry.getValue();
-          String newKey = entry.getKey().substring(0, entry.getKey().lastIndexOf("*"));
           ArrayList<String> values = new ArrayList<>();
           for (JsonNode value : array) {
-            if (value.isTextual()) {
-              values.add(value.textValue());
-            }
+            values.add(to_string(value));
           }
-          result.put(newKey, values);
+          if (entry.getKey().endsWith("*")) {
+            String newKey = entry.getKey().substring(0, entry.getKey().lastIndexOf("*"));
+            result.put(newKey, values);
+          } else {
+            result.put(entry.getKey(), values);
+          }
         }
       }
     }

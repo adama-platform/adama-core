@@ -23,35 +23,33 @@
  */
 package ape.rxhtml.server;
 
-/** the response from a remote inline */
-public class RemoteInlineResponse {
-  public final String body;
-  public final String title;
-  public final String redirect;
-  public final String identity;
-  public final String contentType;
+import org.junit.Assert;
+import org.junit.Test;
 
-  private RemoteInlineResponse(String body, String title, String redirect, String identity, String contentType) {
-    this.body = body;
-    this.title = title;
-    this.redirect = redirect;
-    this.identity = identity;
-    this.contentType = contentType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeMap;
+
+public class RemoteInlineRequestTests {
+  @Test
+  public void coverage_simple() {
+    TreeMap<String, List<String>> query = new TreeMap<>();
+    query.put("x", Collections.singletonList("val"));
+    RemoteInlineRequest request = new RemoteInlineRequest("http://0.1.2.3", "/uri", query, new TreeMap<>());
+    Assert.assertEquals("http://0.1.2.3/uri?x=val", request.toURL());
   }
 
-  public static RemoteInlineResponse body(String body, String title, String identity) {
-    return new RemoteInlineResponse(body, title, null, identity, null);
-  }
-
-  public static RemoteInlineResponse json(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "application/json");
-  }
-
-  public static RemoteInlineResponse xml(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "text/xml");
-  }
-
-  public static RemoteInlineResponse redirect(String redirect, String identity) {
-    return new RemoteInlineResponse(null, null, redirect, identity, null);
+  @Test
+  public void coverage_complex() {
+    TreeMap<String, List<String>> query = new TreeMap<>();
+    ArrayList<String> x = new ArrayList<>();
+    x.add("val1");
+    x.add("val2");
+    x.add("val3");
+    query.put("x", x);
+    query.put("y", Collections.singletonList("val"));
+    RemoteInlineRequest request = new RemoteInlineRequest("http://0.1.2.3", "/uri", query, new TreeMap<>());
+    Assert.assertEquals("http://0.1.2.3/uri?x=val1&x=val2&x=val3&y=val", request.toURL());
   }
 }
