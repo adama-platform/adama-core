@@ -1,0 +1,11 @@
+# For IntelliJ
+.idea
+*.iml
+release
+ca
+127.0.0.1.identity
+logs
+distrib.sh
+.DS_Store
+log.scratch
+

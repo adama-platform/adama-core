@@ -1,0 +1,18 @@
+
+record R {
+  public vec2 v2;
+  public vec3 v3;
+  public vec3 v4;
+}
+
+R r;
+
+message M {
+  vec2 v2;
+  vec3 v3;
+  vec3 v4;
+}
+
+channel foo(M m) {
+  r <- m;
+}

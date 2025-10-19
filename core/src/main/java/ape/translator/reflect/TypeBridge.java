@@ -75,6 +75,20 @@ public class TypeBridge {
       return new TyNativeTime(TypeBehavior.ReadOnlyNativeValue, null, null);
     } else if (NtTimeSpan.class == x) {
       return new TyNativeTimeSpan(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtMatrix2.class == x) {
+      return new TyNativeMatrix2(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtMatrix3.class == x) {
+      return new TyNativeMatrix3(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtMatrix4.class == x) {
+      return new TyNativeMatrix4(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtMatrixH4.class == x) {
+      return new TyNativeMatrixH4(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtVec2.class == x) {
+      return new TyNativeVec2(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtVec3.class == x) {
+      return new TyNativeVec3(TypeBehavior.ReadOnlyNativeValue, null, null);
+    } else if (NtVec4.class == x) {
+      return new TyNativeVec4(TypeBehavior.ReadOnlyNativeValue, null, null);
     } else if (Void.class == x || void.class == x) {
       return null;
     } else if (NtJson.class == x) {

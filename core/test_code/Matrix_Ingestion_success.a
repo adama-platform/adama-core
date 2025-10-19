@@ -1,0 +1,20 @@
+
+record R {
+  public matrix2 m2;
+  public matrix3 m3;
+  public matrix4 m4;
+  public matrixh4 mh4;
+}
+
+R r;
+
+message M {
+  matrix2 m2;
+  matrix3 m3;
+  matrix4 m4;
+  matrixh4 mh4;
+}
+
+channel foo(M m) {
+  r <- m;
+}

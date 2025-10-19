@@ -71,6 +71,8 @@ public class GlobalObjectPool {
     pool.add(GlobalFactory.makeGlobal("Search", LibSearch.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Token", LibToken.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("HTML", LibHTML.class, pool.extensions));
+    pool.add(GlobalFactory.makeGlobal("Vector", LibVector.class, pool.extensions));
+    pool.add(GlobalFactory.makeGlobal("Matrix", LibMatrix.class, pool.extensions));
 
     switch (runtime) {
       case Tooling:

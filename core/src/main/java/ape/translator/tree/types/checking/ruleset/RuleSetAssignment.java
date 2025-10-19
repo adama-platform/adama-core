@@ -194,6 +194,7 @@ public class RuleSetAssignment {
         return true;
       }
     }
+
     final var aPair = RuleSetMap.IsNativePair(environment, typeA);
     final var bPair = RuleSetMap.IsNativePair(environment, typeB);
     if (aPair && bPair) {
@@ -211,6 +212,42 @@ public class RuleSetAssignment {
     final var bTable = RuleSetTable.IsNativeTable(environment, typeB);
     if (aTable && bTable) {
       return ((TyNativeTable) typeA).messageName.equals(((TyNativeTable) typeB).messageName);
+    }
+
+    final var aVec2 = RuleSetVector.IsVec2(environment, typeA);
+    final var bVec2 = RuleSetVector.IsVec2(environment, typeB);
+    if (aVec2 && bVec2) {
+      return true;
+    }
+    final var aVec3 = RuleSetVector.IsVec3(environment, typeA);
+    final var bVec3 = RuleSetVector.IsVec3(environment, typeB);
+    if (aVec3 && bVec3) {
+      return true;
+    }
+    final var aVec4 = RuleSetVector.IsVec4(environment, typeA);
+    final var bVec4 = RuleSetVector.IsVec4(environment, typeB);
+    if (aVec4 && bVec4) {
+      return true;
+    }
+    final var aMat2 = RuleSetMatrix.IsMatrix2(environment, typeA);
+    final var bMat2 = RuleSetMatrix.IsMatrix2(environment, typeB);
+    if (aMat2 && bMat2) {
+      return true;
+    }
+    final var aMat3 = RuleSetMatrix.IsMatrix3(environment, typeA);
+    final var bMat3 = RuleSetMatrix.IsMatrix3(environment, typeB);
+    if (aMat3 && bMat3) {
+      return true;
+    }
+    final var aMat4 = RuleSetMatrix.IsMatrix4(environment, typeA);
+    final var bMat4 = RuleSetMatrix.IsMatrix4(environment, typeB);
+    if (aMat4 && bMat4) {
+      return true;
+    }
+    final var aMatH4 = RuleSetMatrix.IsMatrixH4(environment, typeA);
+    final var bMatH4 = RuleSetMatrix.IsMatrixH4(environment, typeB);
+    if (aMatH4 && bMatH4) {
+      return true;
     }
 
     final var aRxTable = RuleSetTable.IsReactiveTable(environment, typeA);

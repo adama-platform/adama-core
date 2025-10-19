@@ -73,6 +73,44 @@ public class RuleSetEquality {
         // a mix of int/double
         return CanTestEqualityResult.YesButViaNear;
       }
+      {
+        final var aVec2 = RuleSetVector.IsVec2(environment, typeA);
+        final var bVec2 = RuleSetVector.IsVec2(environment, typeB);
+        if (aVec2 && bVec2) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+        final var aVec3 = RuleSetVector.IsVec3(environment, typeA);
+        final var bVec3 = RuleSetVector.IsVec3(environment, typeB);
+        if (aVec3 && bVec3) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+        final var aVec4 = RuleSetVector.IsVec4(environment, typeA);
+        final var bVec4 = RuleSetVector.IsVec4(environment, typeB);
+        if (aVec4 && bVec4) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+        final var aMat2 = RuleSetMatrix.IsMatrix2(environment, typeA);
+        final var bMat2 = RuleSetMatrix.IsMatrix2(environment, typeB);
+        if (aMat2 && bMat2) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+        final var aMat3 = RuleSetMatrix.IsMatrix3(environment, typeA);
+        final var bMat3 = RuleSetMatrix.IsMatrix3(environment, typeB);
+        if (aMat3 && bMat3) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+        final var aMat4 = RuleSetMatrix.IsMatrix4(environment, typeA);
+        final var bMat4 = RuleSetMatrix.IsMatrix4(environment, typeB);
+        if (aMat4 && bMat4) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+        final var aMatH4 = RuleSetMatrix.IsMatrixH4(environment, typeA);
+        final var bMatH4 = RuleSetMatrix.IsMatrixH4(environment, typeB);
+        if (aMatH4 && bMatH4) {
+          return CanTestEqualityResult.YesButViaNear;
+        }
+      }
+
       final var aDynamic = RuleSetCommon.IsDynamic(environment, typeA, true);
       final var bDynamic = RuleSetCommon.IsDynamic(environment, typeB, true);
       if (aDynamic && bDynamic) {

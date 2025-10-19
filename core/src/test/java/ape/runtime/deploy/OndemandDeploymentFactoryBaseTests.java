@@ -99,7 +99,7 @@ public class OndemandDeploymentFactoryBaseTests {
     HashMap<String, PredictiveInventory.MeteringSample> account = new HashMap<>();
     ondemand.account(account);
     Assert.assertNotNull(account.get("space"));
-    int expectedMemSize = 271152;
+    int expectedMemSize = 271107;
     Assert.assertEquals(expectedMemSize, account.get("space").memory);
     ondemand.account(account);
     Assert.assertEquals(expectedMemSize * 2 , account.get("space").memory);

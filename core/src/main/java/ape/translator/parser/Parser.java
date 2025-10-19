@@ -166,6 +166,48 @@ public class Parser {
           return new ViewerConstant(token);
         case "@i":
           return new ComplexConstant(0.0, 1.0, token);
+        case "@pi":
+          return new DoubleConstant(token, Math.PI);
+        case "@e":
+          return new DoubleConstant(token, Math.E);
+        case "@vec": {
+          Token open = consumeExpectedSymbol("[");
+          Expression x = expression(scope);
+          Token pipe1 = consumeExpectedSymbol(",");
+          Expression y = expression(scope);
+          Token pipe2 = tokens.popIf(t -> t.isSymbolWithTextEq(","));
+          Expression z = null;
+          if (pipe2 != null) {
+            z = expression(scope);
+          }
+          Token pipe3 = tokens.popIf(t -> t.isSymbolWithTextEq(","));
+          Expression w = null;
+          if (pipe3 != null) {
+            w = expression(scope);
+          }
+          Token close = consumeExpectedSymbol("]");
+          return new ConstructVector(token, open, x, pipe1, y, pipe2, z, pipe3, w, close);
+        }
+        case "@matrix": {
+          Token open = consumeExpectedSymbol("[");
+          Token potential = null;
+          ArrayList<ConstructMatrix.Fragment> fragments = new ArrayList<>();
+          do {
+            Expression v = expression(scope);
+            potential = consumeExpectedSymbol(",", "~", "]");
+            fragments.add(new ConstructMatrix.Fragment(v, potential));
+          } while (!potential.isSymbolWithTextEq("]"));
+          int sz = fragments.size();
+          switch (sz) {
+            case 4:
+            case 9:
+            case 12:
+            case 16:
+              return new ConstructMatrix(token, open, fragments.toArray(new ConstructMatrix.Fragment[sz]));
+            default:
+              throw new ParseException("Matrix had insufficient elements for a 2x2, 3x3, 4x3, or 4x4 matrix", tokens.getLastTokenIfAvailable());
+          }
+        }
         case "@datetime":
           Token literal = tokens.pop();
           try {
@@ -1858,6 +1900,13 @@ public class Parser {
       case "void":
       case "volatile":
       case "while":
+      case "vec2":
+      case "vec3":
+      case "vec4":
+      case "matrix2":
+      case "matrix3":
+      case "matrix4":
+      case "matrixh4":
         throw new ParseException("Identifier '" + token.text + "' is reserved", token);
     }
     return token;
@@ -2103,6 +2152,20 @@ public class Parser {
         return new TyNativeFuture(behavior, readonlyToken, token, native_parameter_type());
       case "tuple":
         return native_tuple(behavior, readonlyToken, token);
+      case "vec2":
+        return new TyNativeVec2(behavior, readonlyToken, token);
+      case "vec3":
+        return new TyNativeVec3(behavior, readonlyToken, token);
+      case "vec4":
+        return new TyNativeVec4(behavior, readonlyToken, token);
+      case "matrix2":
+        return new TyNativeMatrix2(behavior, readonlyToken, token);
+      case "matrix3":
+        return new TyNativeMatrix3(behavior, readonlyToken, token);
+      case "matrix4":
+        return new TyNativeMatrix4(behavior, readonlyToken, token);
+      case "matrixh4":
+        return new TyNativeMatrixH4(behavior, readonlyToken, token);
       default:
         testId(token);
         index.usages.add(token);
@@ -2240,6 +2303,20 @@ public class Parser {
         return new TyReactiveStateMachineRef(readonly, token);
       case "text":
         return new TyReactiveText(readonly, token);
+      case "vec2":
+        return new TyReactiveVec2(readonly, token);
+      case "vec3":
+        return new TyReactiveVec3(readonly, token);
+      case "vec4":
+        return new TyReactiveVec4(readonly, token);
+      case "matrix2":
+        return new TyReactiveMatrix2(readonly, token);
+      case "matrix3":
+        return new TyReactiveMatrix3(readonly, token);
+      case "matrix4":
+        return new TyReactiveMatrix4(readonly, token);
+      case "matrixh4":
+        return new TyReactiveMatrixH4(readonly, token);
       case "holder": {
         final var typeParameter = type_parameter();
         return new TyReactiveHolder(readonly, token, typeParameter);
@@ -2477,6 +2554,13 @@ public class Parser {
       case "table":
       case "readonly":
       case "long":
+      case "vec2":
+      case "vec3":
+      case "vec4":
+      case "matrix2":
+      case "matrix3":
+      case "matrix4":
+      case "matrixh4":
         return true;
     }
     return false;

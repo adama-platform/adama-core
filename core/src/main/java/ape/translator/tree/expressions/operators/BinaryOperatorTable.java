@@ -77,6 +77,14 @@ public class BinaryOperatorTable {
     TyType tyListRxString = new TyNativeList(TypeBehavior.ReadWriteNative, null, null, new TokenizedItem<>(tyRxString));
     TyType tyListRxComplex = new TyNativeList(TypeBehavior.ReadWriteNative, null, null, new TokenizedItem<>(tyRxComplex));
 
+    TyType tyVec2 = new TyNativeVec2(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+    TyType tyVec3 = new TyNativeVec3(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+    TyType tyVec4 = new TyNativeVec4(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+    TyType tyMat2 = new TyNativeMatrix2(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+    TyType tyMat3 = new TyNativeMatrix3(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+    TyType tyMat4 = new TyNativeMatrix4(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+    TyType tyMatH4 = new TyNativeMatrixH4(TypeBehavior.ReadOnlyGetNativeValue, null, Token.WRAP("vec2"));
+
     // DIVISION (I,L,D,mD,C,mC)x(I,L,D,mD,C,mC)
     {
       insert(tyInt, "/", tyInt, tyMaybeDouble, "LibArithmetic.Divide.II(%s, %s)", false);
@@ -115,6 +123,77 @@ public class BinaryOperatorTable {
       insert(tyMaybeComplex, "/", tyMaybeDouble, tyMaybeComplex, "LibArithmetic.Divide.mCmD(%s, %s)", false);
       insert(tyMaybeComplex, "/", tyComplex, tyMaybeComplex, "LibArithmetic.Divide.mCC(%s, %s)", false);
       insert(tyMaybeComplex, "/", tyMaybeComplex, tyMaybeComplex, "LibArithmetic.Divide.mCmC(%s, %s)", false);
+    }
+    // MATRIX/VECTOR
+    {
+      insert(tyVec2, "*", tyVec2, tyDouble, "LibVector.dot(%s, %s)", false);
+      insert(tyVec3, "*", tyVec3, tyDouble, "LibVector.dot(%s, %s)", false);
+      insert(tyVec4, "*", tyVec4, tyDouble, "LibVector.dot(%s, %s)", false);
+      insert(tyVec2, "+", tyVec2, tyVec2, "LibVector.add(%s, %s)", false);
+      insert(tyVec3, "+", tyVec3, tyVec3, "LibVector.add(%s, %s)", false);
+      insert(tyVec4, "+", tyVec4, tyVec4, "LibVector.add(%s, %s)", false);
+      insert(tyVec2, "-", tyVec2, tyVec2, "LibVector.sub(%s, %s)", false);
+      insert(tyVec3, "-", tyVec3, tyVec3, "LibVector.sub(%s, %s)", false);
+      insert(tyVec4, "-", tyVec4, tyVec4, "LibVector.sub(%s, %s)", false);
+
+      insert(tyVec2, "*", tyDouble, tyVec2, "LibVector.scale(%s, %s)", true);
+      insert(tyVec3, "*", tyDouble, tyVec3, "LibVector.scale(%s, %s)", true);
+      insert(tyVec4, "*", tyDouble, tyVec4, "LibVector.scale(%s, %s)", true);
+      insert(tyDouble, "*", tyVec2, tyVec2, "LibVector.scale(%s, %s)", false);
+      insert(tyDouble, "*", tyVec3, tyVec3, "LibVector.scale(%s, %s)", false);
+      insert(tyDouble, "*", tyVec4, tyVec4, "LibVector.scale(%s, %s)", false);
+      insert(tyVec2, "*", tyInt, tyVec2, "LibVector.scale(%s, %s)", true);
+      insert(tyVec3, "*", tyInt, tyVec3, "LibVector.scale(%s, %s)", true);
+      insert(tyVec4, "*", tyInt, tyVec4, "LibVector.scale(%s, %s)", true);
+      insert(tyInt, "*", tyVec2, tyVec2, "LibVector.scale(%s, %s)", false);
+      insert(tyInt, "*", tyVec3, tyVec3, "LibVector.scale(%s, %s)", false);
+      insert(tyInt, "*", tyVec4, tyVec4, "LibVector.scale(%s, %s)", false);
+
+      insert(tyMat2, "*", tyVec2, tyVec2, "LibMatrix.transform(%s, %s)", false);
+      insert(tyMat3, "*", tyVec3, tyVec3, "LibMatrix.transform(%s, %s)", false);
+      insert(tyMat4, "*", tyVec4, tyVec4, "LibMatrix.transform(%s, %s)", false);
+      insert(tyMatH4, "*", tyVec3, tyVec3, "LibMatrix.transform(%s, %s)", false);
+      insert(tyMatH4, "*", tyVec4, tyVec4, "LibMatrix.transform(%s, %s)", false);
+
+      insert(tyMat2, "*", tyMat2, tyMat2, "LibMatrix.multiply(%s, %s)", false);
+      insert(tyMat3, "*", tyMat3, tyMat3, "LibMatrix.multiply(%s, %s)", false);
+      insert(tyMat4, "*", tyMat4, tyMat4, "LibMatrix.multiply(%s, %s)", false);
+      insert(tyMatH4, "*", tyMatH4, tyMatH4, "LibMatrix.multiply(%s, %s)", false);
+      insert(tyMat4, "*", tyMatH4, tyMat4, "LibMatrix.multiply(%s, %s)", false);
+      insert(tyMatH4, "*", tyMat4, tyMat4, "LibMatrix.multiply(%s, %s)", false);
+
+      // COMPARE
+      {
+        insert(tyVec2, "<", tyVec2, tyBoolean, "(%s).compareTo(%s) < 0", false);
+        insert(tyVec2, "<=", tyVec2, tyBoolean, "(%s).compareTo(%s) <= 0", false);
+        insert(tyVec2, "==", tyVec2, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyVec2, "!=", tyVec2, tyBoolean, "!((%s).equals(%s))", false);
+        insert(tyVec2, ">=", tyVec2, tyBoolean, "(%s).compareTo(%s) >= 0", false);
+        insert(tyVec2, ">", tyVec2, tyBoolean, "(%s).compareTo(%s) > 0", false);
+        insert(tyVec3, "<", tyVec3, tyBoolean, "(%s).compareTo(%s) < 0", false);
+        insert(tyVec3, "<=", tyVec3, tyBoolean, "(%s).compareTo(%s) <= 0", false);
+        insert(tyVec3, "==", tyVec3, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyVec3, "!=", tyVec3, tyBoolean, "!((%s).equals(%s))", false);
+        insert(tyVec3, ">=", tyVec3, tyBoolean, "(%s).compareTo(%s) >= 0", false);
+        insert(tyVec3, ">", tyVec3, tyBoolean, "(%s).compareTo(%s) > 0", false);
+        insert(tyVec4, "<", tyVec4, tyBoolean, "(%s).compareTo(%s) < 0", false);
+        insert(tyVec4, "<=", tyVec4, tyBoolean, "(%s).compareTo(%s) <= 0", false);
+        insert(tyVec4, "==", tyVec4, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyVec4, "!=", tyVec4, tyBoolean, "!((%s).equals(%s))", false);
+        insert(tyVec4, ">=", tyVec4, tyBoolean, "(%s).compareTo(%s) >= 0", false);
+        insert(tyVec4, ">", tyVec4, tyBoolean, "(%s).compareTo(%s) > 0", false);
+      }
+
+      // EQUALITY
+      { insert(tyMat2, "==", tyMat2, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyMat3, "==", tyMat3, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyMat4, "==", tyMat4, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyMatH4, "==", tyMatH4, tyBoolean, "(%s).equals(%s)", false);
+        insert(tyMat2, "!=", tyMat2, tyBoolean, "!((%s).equals(%s))", false);
+        insert(tyMat3, "!=", tyMat3, tyBoolean, "!((%s).equals(%s))", false);
+        insert(tyMat4, "!=", tyMat4, tyBoolean, "!((%s).equals(%s))", false);
+        insert(tyMatH4, "!=", tyMatH4, tyBoolean, "!((%s).equals(%s))", false);
+      }
     }
     // MULTIPLICATION
     {

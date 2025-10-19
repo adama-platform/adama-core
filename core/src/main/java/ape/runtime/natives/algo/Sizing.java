@@ -23,10 +23,7 @@
  */
 package ape.runtime.natives.algo;
 
-import ape.runtime.natives.NtAsset;
-import ape.runtime.natives.NtDynamic;
-import ape.runtime.natives.NtPrincipal;
-import ape.runtime.natives.NtTemplate;
+import ape.runtime.natives.*;
 
 /** size of a native simple type with value -1 */
 public class Sizing {
@@ -45,4 +42,11 @@ public class Sizing {
   public static long memoryOf(NtTemplate x) {
     return 64 + x.template.memory();
   }
+  public static long memoryOf(NtVec2 x) { return 32 + x.memory(); }
+  public static long memoryOf(NtVec3 x) { return 32 + x.memory(); }
+  public static long memoryOf(NtVec4 x) { return 32 + x.memory(); }
+  public static long memoryOf(NtMatrix2 x) { return 32 + x.memory(); }
+  public static long memoryOf(NtMatrix3 x) { return 32 + x.memory(); }
+  public static long memoryOf(NtMatrixH4 x) { return 32 + x.memory(); }
+  public static long memoryOf(NtMatrix4 x) { return 32 + x.memory(); }
 }

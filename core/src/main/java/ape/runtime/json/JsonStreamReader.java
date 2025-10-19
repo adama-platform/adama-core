@@ -208,6 +208,36 @@ public class JsonStreamReader {
     return new NtTimeSpan(readDouble());
   }
 
+  public NtVec2 readNtVec2() {
+    return NtVec2.unpack(readString());
+  }
+
+  public NtVec3 readNtVec3() {
+    return NtVec3.unpack(readString());
+  }
+
+  public NtVec4 readNtVec4() {
+    return NtVec4.unpack(readString());
+  }
+
+  public NtMatrix2 readNtMatrix2() {
+    return NtMatrix2.unpack(readString());
+  }
+
+  public NtMatrix3 readNtMatrix3() {
+    return NtMatrix3.unpack(readString());
+  }
+
+  public NtMatrix4 readNtMatrix4() {
+    return NtMatrix4.unpack(readString());
+  }
+
+  public NtMatrixH4 readNtMatrixH4() {
+    return NtMatrixH4.unpack(readString());
+  }
+
+
+
   public NtComplex readNtComplex() {
     double re = 0.0;
     double im = 0.0;

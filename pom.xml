@@ -16,6 +16,7 @@
         <module>common</module>
         <module>data-caravan</module>
         <module>rxhtml</module>
+        <module>solo</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

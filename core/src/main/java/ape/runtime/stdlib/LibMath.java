@@ -1136,7 +1136,7 @@ public class LibMath {
   @Extension
   public static boolean near(final double a, final double b) {
     final var diff = Math.abs(a - b);
-    return diff < 0.0000001;
+    return diff < 0.00000001;
   }
 
   @Extension

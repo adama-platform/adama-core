@@ -100,6 +100,28 @@ public class HashBuilder {
     digest.update(d.toString().getBytes(StandardCharsets.UTF_8));
   }
 
+  public void hashNtVec2(NtVec2 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+  public void hashNtVec3(NtVec3 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+  public void hashNtVec4(NtVec4 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+  public void hashNtMatrix2(NtMatrix2 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+  public void hashNtMatrix3(NtMatrix3 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+  public void hashNtMatrixH4(NtMatrixH4 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+  public void hashNtMatrix4(NtMatrix4 d) {
+    digest.update(d.pack().getBytes(StandardCharsets.UTF_8));
+  }
+
   public String finish() {
     return Hashing.finishAndEncode(digest);
   }

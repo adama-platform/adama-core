@@ -1,0 +1,29 @@
+public formula d2 = (@vec [1, 2]) * @vec[3, 4]; // 11
+
+public formula d3 = (@vec [1, 2, 3]) * @vec[4, 5, 6]; // 4 + 10 + 18 = 32
+
+public formula d4 = (@vec [1, 2, 3, 4]) * @vec[5, 6, 7, 8]; // 5 + 12 + 21 + 32 = 17 + 53 = 70
+
+public formula add_2 = (@vec [1, 2]) + @vec[3, 4];
+
+public formula add_3 = (@vec [1, 2, 3]) + @vec[4, 5, 6];
+
+public formula add_4 = (@vec [1, 2, 3, 4]) + @vec[5, 6, 7, 8];
+
+public formula sub_2 = (@vec [1, 2]) - @vec[3, 4];
+
+public formula sub_3 = (@vec [1, 2, 3]) - @vec[4, 5, 6];
+
+public formula sub_4 = (@vec [1, 2, 3, 4]) - @vec[5, 6, 7, 8];
+
+public formula scale_2r = (@vec [1, 2]) * 2;
+
+public formula scale_3r = (@vec [1, 2, 3]) * 2;
+
+public formula scale_4r = (@vec [1, 2, 3, 4]) * 2;
+
+public formula scale_2l = 2 * (@vec [1, 2]);
+
+public formula scale_3l = 2 * (@vec [1, 2, 3]);
+
+public formula scale_4l = 2 * (@vec [1, 2, 3, 4]);

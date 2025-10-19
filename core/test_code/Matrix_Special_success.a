@@ -1,0 +1,12 @@
+
+public formula rot45 = (@pi / 4).to_rotation();
+
+public formula rot45_x = (@pi / 4).to_rotation_x();
+
+public formula rot45_y = (@pi / 4).to_rotation_y();
+
+public formula rot45_z = (@pi / 4).to_rotation_z();
+
+public formula rot45_around = (@pi / 4).to_rotation_around(@vec [1, 2, 3]);
+
+public formula rot45_by = (@vec[1, 2, 3]).rotate_around(@pi / 4);

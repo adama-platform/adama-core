@@ -1,0 +1,15 @@
+
+public vec2 v2_r;
+public vec3 v3_r;
+public vec4 v4_r;
+
+#nc {
+  vec2 v2_n;
+  vec3 v3_n;
+  vec4 v4_n;
+  v2_r = v2_n;
+}
+
+@construct {
+  v3_r = @vec [1, 2, 3];
+}

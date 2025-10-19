@@ -227,6 +227,34 @@ public class JsonStreamWriter {
     writeDouble(d.seconds);
   }
 
+  public void writeNtVec2(final NtVec2 v) {
+    writeString(v.pack());
+  }
+
+  public void writeNtVec3(final NtVec3 v) {
+    writeString(v.pack());
+  }
+
+  public void writeNtVec4(final NtVec4 v) {
+    writeString(v.pack());
+  }
+
+  public void writeNtMatrix2(final NtMatrix2 m) {
+    writeString(m.pack());
+  }
+
+  public void writeNtMatrix3(final NtMatrix3 m) {
+    writeString(m.pack());
+  }
+
+  public void writeNtMatrix4(final NtMatrix4 m) {
+    writeString(m.pack());
+  }
+
+  public void writeNtMatrixH4(final NtMatrixH4 m) {
+    writeString(m.pack());
+  }
+
   public void inline(final String s) {
     sb.append(s);
   }
