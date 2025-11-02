@@ -53,74 +53,79 @@ import java.util.function.Consumer;
 
 /** a single instance of Adama using just WebSocket + local filesystem + simple static HTTP GET server */
 public class Solo {
+  private final SimpleExecutor commonExecutor;
+  private final ExecutorService inmemoryExecutor;
+  private final Thread serviceThread;
+
   public static void main(String[] args) throws Exception {
     String scanDir = ".";
-    for (int k = 0; k + 1 < args.length; k++) {
-      if (args[k].startsWith("--scan")) {
+    for (int k = 0; k < args.length; k++) {
+      if (args[k].startsWith("--scan") && k + 1 < args.length) {
         k++;
         scanDir = args[k];
       }
     }
-    System.out.println("scanning:" + scanDir);
-    SimpleExecutor commonExecutor = SimpleExecutor.create("common");
-    ExecutorService inmemoryExecutor = Executors.newSingleThreadExecutor();
+  }
+
+  public Solo(String scanDir) throws Exception {
+    commonExecutor = SimpleExecutor.create("common");
+    inmemoryExecutor = Executors.newSingleThreadExecutor();
     // TODO: create a web config
     WebConfig webConfig = new WebConfig(new ConfigObject(Json.newJsonObject()));
     RuntimeEnvironment runtimeEnvironment = RuntimeEnvironment.Production;
-    try {
-      MetricsFactory factory = new NoOpMetricsFactory();
-      CoreMetrics coreMetrics = new CoreMetrics(factory);
-      WebMetrics webMetrics = new WebMetrics(factory);
-      DeploymentFactoryBase base = new DeploymentFactoryBase(AsyncByteCodeCache.DIRECT, runtimeEnvironment);
-      SoloBundler.scan(new File(scanDir), base, (err) -> {
-      });
-      Consumer<HashMap<String, PredictiveInventory.MeteringSample>> meteringEvent = (map) -> {
-      };
-      MetricsReporter reporter = new MetricsReporter() {
-        @Override
-        public void emitMetrics(Key key, String metricsPayload) {
-        }
-      };
-      InMemoryDataService dataService = new InMemoryDataService(inmemoryExecutor, TimeSource.REAL_TIME);
-      BackupService backupService = new BackupService() {
-        @Override
-        public void backup(Key key, int seq, Reason reason, String document, Callback<String> callback) {
-          callback.success("fake-backup-id");
-        }
-      };
-      WakeService wakeService = (key, when, callback) -> commonExecutor.schedule(new NamedRunnable("wake-up") {
-        @Override
-        public void execute() throws Exception {
-          callback.success(null);
-        }
-      }, when);
-      ReplicationInitiator replicationInitiator = new ReplicationInitiator() {
-        @Override
-        public void startDocumentReplication(Key key, DataObserver observer, Callback<Runnable> cancel) {
-          // NO-OP
-          cancel.success(() -> {
-          });
-        }
-      };
-      TimeSource timeSource = TimeSource.REAL_TIME;
-      int nThreads = 1;
-      CoreService service = new CoreService(coreMetrics, base, meteringEvent, reporter, dataService, backupService, wakeService, replicationInitiator, timeSource, nThreads);
-      base.attachDeliverer(service);
-      SoloServiceBase soloBase = new SoloServiceBase(service);
-      ServiceRunnable webServer = new ServiceRunnable(webConfig, webMetrics, soloBase, (domain, callback) -> callback.success(null), new DomainFinder() {
-        @Override
-        public void find(String domain, Callback<Domain> callback) {
-          callback.failure(new ErrorCodeException(-404));
-        }
-      }, () -> {
-      });
-      Thread serviceThread = new Thread(webServer);
-      serviceThread.start();
-      webServer.waitForReady(1000);
-      serviceThread.join();
-    } finally {
-      commonExecutor.shutdown();
-      inmemoryExecutor.shutdown();
-    }
+    MetricsFactory factory = new NoOpMetricsFactory();
+    CoreMetrics coreMetrics = new CoreMetrics(factory);
+    WebMetrics webMetrics = new WebMetrics(factory);
+    DeploymentFactoryBase base = new DeploymentFactoryBase(AsyncByteCodeCache.DIRECT, runtimeEnvironment);
+    SoloBundler.scan(new File(scanDir), base, (err) -> {
+    });
+    Consumer<HashMap<String, PredictiveInventory.MeteringSample>> meteringEvent = (map) -> {
+    };
+    MetricsReporter reporter = new MetricsReporter() {
+      @Override
+      public void emitMetrics(Key key, String metricsPayload) {
+      }
+    };
+    InMemoryDataService dataService = new InMemoryDataService(inmemoryExecutor, TimeSource.REAL_TIME);
+    BackupService backupService = new BackupService() {
+      @Override
+      public void backup(Key key, int seq, Reason reason, String document, Callback<String> callback) {
+        callback.success("fake-backup-id");
+      }
+    };
+    WakeService wakeService = (key, when, callback) -> commonExecutor.schedule(new NamedRunnable("wake-up") {
+      @Override
+      public void execute() throws Exception {
+        callback.success(null);
+      }
+    }, when);
+    ReplicationInitiator replicationInitiator = new ReplicationInitiator() {
+      @Override
+      public void startDocumentReplication(Key key, DataObserver observer, Callback<Runnable> cancel) {
+        // NO-OP
+        cancel.success(() -> {
+        });
+      }
+    };
+    TimeSource timeSource = TimeSource.REAL_TIME;
+    int nThreads = 1;
+    CoreService service = new CoreService(coreMetrics, base, meteringEvent, reporter, dataService, backupService, wakeService, replicationInitiator, timeSource, nThreads);
+    base.attachDeliverer(service);
+    SoloServiceBase soloBase = new SoloServiceBase(service);
+    ServiceRunnable webServer = new ServiceRunnable(webConfig, webMetrics, soloBase, (domain, callback) -> callback.success(null), new DomainFinder() {
+      @Override
+      public void find(String domain, Callback<Domain> callback) {
+        callback.failure(new ErrorCodeException(-404));
+      }
+    }, () -> {
+    });
+    serviceThread = new Thread(webServer);
+    serviceThread.start();
+    webServer.waitForReady(1000);
+  }
+
+  public void shutdown() {
+    commonExecutor.shutdown();
+    inmemoryExecutor.shutdown();
   }
 }
