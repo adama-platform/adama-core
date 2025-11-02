@@ -30,10 +30,7 @@ import ape.translator.parser.token.Token;
 import ape.translator.tree.expressions.constants.DoubleConstant;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeBehavior;
-import ape.translator.tree.types.natives.TyNativeMatrix2;
-import ape.translator.tree.types.natives.TyNativeMatrix3;
-import ape.translator.tree.types.natives.TyNativeMatrix4;
-import ape.translator.tree.types.natives.TyNativeMatrixH4;
+import ape.translator.tree.types.natives.*;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -84,6 +81,11 @@ public class ConstructMatrix extends Expression {
 
     @Override
     protected TyType typingInternal(Environment environment, TyType suggestion) {
+        TyNativeDouble suggestChild = new TyNativeDouble(TypeBehavior.ReadOnlyGetNativeValue, null, open);
+        for (Fragment fragment : fragments) {
+            TyType fragmentType = fragment.expression.typingInternal(environment, suggestChild);
+            environment.rules.IsNumeric(fragmentType, false);
+        }
         switch (fragments.length) {
             case 4:
                 return new TyNativeMatrix2(TypeBehavior.ReadOnlyGetNativeValue, null, open);

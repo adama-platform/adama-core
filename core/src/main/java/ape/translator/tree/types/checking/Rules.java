@@ -55,12 +55,15 @@ public class Rules {
   }
 
   /** FROM: RuleSetBump */
-  public CanBumpResult CanBumpBool(final TyType tyType, final boolean silent) {
-    return RuleSetBump.CanBumpBool(environment, tyType, silent);
+  public CanBumpResult CanNegateBool(final TyType tyType, final boolean silent) {
+    return RuleSetBump.CanNegateBool(environment, tyType, silent);
   }
 
   public CanBumpResult CanBumpNumeric(final TyType tyType, final boolean silent) {
     return RuleSetBump.CanBumpNumeric(environment, tyType, silent);
+  }
+  public CanBumpResult CanNegateNumber(final TyType tyType, final boolean silent) {
+    return RuleSetBump.CanNegateNumber(environment, tyType, silent);
   }
 
   /** FROM: RuleSetStructures */

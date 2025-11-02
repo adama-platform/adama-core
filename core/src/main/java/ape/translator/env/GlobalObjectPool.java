@@ -58,6 +58,8 @@ public class GlobalObjectPool {
     final TyNativePrincipal tyPrincipal = new TyNativePrincipal(TypeBehavior.ReadOnlyNativeValue, null, null);
     final TyNativeVoid tyVoid = new TyNativeVoid();
     final TyNativeDynamic tyDyn = new TyNativeDynamic(TypeBehavior.ReadOnlyNativeValue, null, null);
+    final TyNativeVec2 tyVec2 = new TyNativeVec2(TypeBehavior.ReadOnlyNativeValue, null, null);
+    final TyNativeVec3 tyVec3 = new TyNativeVec3(TypeBehavior.ReadOnlyNativeValue, null, null);
 
     final var pool = new GlobalObjectPool();
     pool.add(GlobalFactory.makeGlobal("String", LibString.class, pool.extensions));
@@ -114,12 +116,20 @@ public class GlobalObjectPool {
     viewer.functions.put("log",generateInternalDocumentFunction("__logViewState", tyStr, tyBool, null, null));
     pool.add(viewer);
 
+    final var messaging = new TyNativeGlobalObject("Messaging", null, false);
+    messaging.functions.put("send",generateInternalDocumentFunction("__sendTypedMessage", tyStr, tyDyn, tyBool, null, null));
+    messaging.functions.put("broadcast",generateInternalDocumentFunction("__broadcastTypedMessage", tyStr, tyDyn, tyVoid, null, null));
+    pool.add(messaging);
+
     final var random = new TyNativeGlobalObject("Random", null, false);
     random.functions.put("genBoundInt", generateInternalDocumentFunction("__randomBoundInt", tyInt, tyInt, null, null));
     random.functions.put("genInt", generateInternalDocumentFunction("__randomInt", tyInt));
     random.functions.put("genDouble", generateInternalDocumentFunction("__randomDouble", tyDbl));
     random.functions.put("getDoubleGaussian", generateInternalDocumentFunction("__randomGaussian", tyDbl));
     random.functions.put("genLong", generateInternalDocumentFunction("__randomLong", tyLng));
+    random.functions.put("genVec2", generateInternalDocumentFunction("__randomVec2", tyVec2));
+    random.functions.put("genVec3", generateInternalDocumentFunction("__randomVec3", tyVec3));
+
     pool.add(random);
     final var time = new TyNativeGlobalObject("Time", null, false);
     time.functions.put("now", subscribe("__time", generateInternalDocumentFunction("__timeNow", tyLng)));

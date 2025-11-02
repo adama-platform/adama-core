@@ -92,4 +92,8 @@ public class NtVec4 implements NtProxyString, Comparable<NtVec4> {
         }
         return d;
     }
+
+    public NtVec4 negate() {
+        return new NtVec4(-x, -y, -z, -w);
+    }
 }

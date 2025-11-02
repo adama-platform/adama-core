@@ -1,0 +1,16 @@
+message M {
+  double d;
+}
+
+function id(double d) -> M {
+  return {d:d};
+}
+#sm {
+  table<M> t;
+  if ((iterate t order by d desc)[0] as first) {
+
+  }
+  if ((iterate t map (@lambda z: id(z.d)) order by d desc)[0] as first) {
+
+  }
+}

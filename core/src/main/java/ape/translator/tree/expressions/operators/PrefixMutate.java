@@ -74,15 +74,15 @@ public class PrefixMutate extends Expression {
       bumpResult = environment.rules.CanBumpNumeric(result, false);
     } else if (op == PrefixMutateOp.NegateNumber) {
       result = expression.typing(environment.scopeWithComputeContext(newContext), null);
-      bumpResult = environment.rules.CanBumpNumeric(result, false);
+      bumpResult = environment.rules.CanNegateNumber(result, false);
     } else if (op == PrefixMutateOp.NegateBool) {
       result = expression.typing(environment.scopeWithComputeContext(newContext), null);
-      bumpResult = environment.rules.CanBumpBool(result, false);
+      bumpResult = environment.rules.CanNegateBool(result, false);
     }
     if (bumpResult == CanBumpResult.No) {
       return null;
     }
-    if (result instanceof DetailComputeRequiresGet && bumpResult.reactive) {
+    if (result instanceof DetailComputeRequiresGet && bumpResult.nonNative) {
       return ((DetailComputeRequiresGet) result).typeAfterGet(environment).makeCopyWithNewPosition(this, result.behavior);
     }
     return result.makeCopyWithNewPosition(this, result.behavior);
@@ -107,6 +107,15 @@ public class PrefixMutate extends Expression {
       case YesWithListTransformNative:
         expression.writeJava(sb, environment.scopeWithComputeContext(newContext));
         sb.append(".transform((item) -> ").append(op.javaOp).append("item)");
+        break;
+      case YesWithNegateMethod:
+        sb.append("(");
+        expression.writeJava(sb, environment.scopeWithComputeContext(newContext));
+        sb.append(").negate()");
+        break;
+      case YesWithListNegateMethod:
+        expression.writeJava(sb, environment.scopeWithComputeContext(newContext));
+        sb.append(".transform((item) -> item.negate())");
         break;
     }
   }

@@ -126,6 +126,9 @@ public class BinaryOperatorTable {
     }
     // MATRIX/VECTOR
     {
+      insert(tyVec3, "%", tyVec3, tyVec3, "LibVector.cross(%s, %s)", false);
+      insert(tyVec2, "%", tyVec2, tyDouble, "LibVector.cross(%s, %s)", false);
+
       insert(tyVec2, "*", tyVec2, tyDouble, "LibVector.dot(%s, %s)", false);
       insert(tyVec3, "*", tyVec3, tyDouble, "LibVector.dot(%s, %s)", false);
       insert(tyVec4, "*", tyVec4, tyDouble, "LibVector.dot(%s, %s)", false);

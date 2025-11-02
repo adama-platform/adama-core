@@ -37,6 +37,7 @@ import ape.translator.tree.types.TypeBehavior;
 import ape.translator.tree.types.traits.DetailCanExtractForUnique;
 import ape.translator.tree.types.traits.IsCSVCompatible;
 import ape.translator.tree.types.traits.IsNativeValue;
+import ape.translator.tree.types.traits.IsOrderable;
 import ape.translator.tree.types.traits.assign.AssignmentViaNative;
 import ape.translator.tree.types.traits.details.DetailHasDeltaType;
 import ape.translator.tree.types.traits.details.DetailTypeHasMethods;
@@ -53,6 +54,7 @@ public class TyNativeDouble extends TySimpleNative implements //
     DetailCanExtractForUnique, //
     IsCSVCompatible, //
     DetailTypeHasMethods, //
+    IsOrderable, //
     AssignmentViaNative //
 {
   public final Token readonlyToken;

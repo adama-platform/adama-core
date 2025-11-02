@@ -30,6 +30,7 @@ import ape.translator.parser.token.Token;
 import ape.translator.tree.expressions.constants.DoubleConstant;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeBehavior;
+import ape.translator.tree.types.natives.TyNativeDouble;
 import ape.translator.tree.types.natives.TyNativeVec2;
 import ape.translator.tree.types.natives.TyNativeVec3;
 import ape.translator.tree.types.natives.TyNativeVec4;
@@ -96,8 +97,13 @@ public class ConstructVector extends Expression {
 
     @Override
     protected TyType typingInternal(Environment environment, TyType suggestion) {
+        TyNativeDouble suggestChild = new TyNativeDouble(TypeBehavior.ReadOnlyGetNativeValue, null, open);
+        environment.rules.IsNumeric(x.typingInternal(environment, suggestChild), false);
+        environment.rules.IsNumeric(y.typingInternal(environment, suggestChild), false);
         if (pipe2 != null) {
+            environment.rules.IsNumeric(z.typingInternal(environment, suggestChild), false);
             if (pipe3 != null) {
+                environment.rules.IsNumeric(w.typingInternal(environment, suggestChild), false);
                 return new TyNativeVec4(TypeBehavior.ReadOnlyGetNativeValue, null, open);
             } else {
                 return new TyNativeVec3(TypeBehavior.ReadOnlyGetNativeValue, null, open);

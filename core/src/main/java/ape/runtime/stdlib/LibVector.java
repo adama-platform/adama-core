@@ -23,10 +23,12 @@
  */
 package ape.runtime.stdlib;
 
+import ape.runtime.natives.NtMaybe;
 import ape.runtime.natives.NtVec2;
 import ape.runtime.natives.NtVec3;
 import ape.runtime.natives.NtVec4;
 import ape.translator.reflect.Extension;
+import ape.translator.reflect.HiddenType;
 import ape.translator.reflect.Skip;
 
 /** library of vector math */
@@ -83,6 +85,19 @@ public class LibVector {
         return new NtVec4(v.x * s, v.y * s, v.z * s, v.w * s);
     }
 
+    @Skip
+    public static NtVec3 cross(NtVec3 a, NtVec3 b) {
+        double x = a.y * b.z - a.z * b.y;
+        double y = a.z * b.x - a.x * b.z;
+        double z = a.x * b.y - a.y * b.x;
+        return new NtVec3(x, y, z);
+    }
+
+    @Skip
+    public static double cross(NtVec2 a, NtVec2 b) {
+        return a.x * b.y - a.y * b.x;
+    }
+
     @Extension
     public static double length(NtVec2 x) {
         return Math.sqrt(dot(x, x));
@@ -99,11 +114,43 @@ public class LibVector {
     }
 
     @Extension
-    public static NtVec2 normalize(NtVec2 v) {
+    public static @HiddenType(clazz = NtVec2.class) NtMaybe<NtVec2> normalize(NtVec2 v) {
         double len = length(v);
         if (len > 1e-10) {
-            return new NtVec2(v.x / len, v.y / len);
+            return new NtMaybe<>(new NtVec2(v.x / len, v.y / len));
         }
-        return v; // zero vector returned
+        return new NtMaybe<>(); // zero vector returned
+    }
+
+    @Extension
+    public static @HiddenType(clazz = NtVec3.class) NtMaybe<NtVec3> normalize(NtVec3 v) {
+        double len = length(v);
+        if (len > 1e-10) {
+            return new NtMaybe<>(new NtVec3(v.x / len, v.y / len, v.z / len));
+        }
+        return new NtMaybe<>(v);
+    }
+
+    @Extension
+    public static NtVec3 flipToUp(NtVec3 v) {
+        if (v.y < 0) {
+            return new NtVec3(v.x, -v.y, v.z);
+        }
+        return v;
+    }
+
+    @Extension
+    public static NtVec2 cmult(NtVec2 a, NtVec2 b) {
+        return new NtVec2(a.x * b.x, a.y * b.y);
+    }
+
+    @Extension
+    public static NtVec3 cmult(NtVec3 a, NtVec3 b) {
+        return new NtVec3(a.x * b.x, a.y * b.y, a.z * b.z);
+    }
+
+    @Extension
+    public static NtVec4 cmult(NtVec4 a, NtVec4 b) {
+        return new NtVec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
     }
 }

@@ -30,6 +30,12 @@ import ape.translator.tree.expressions.ConstructVector;
 import ape.translator.tree.expressions.Expression;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeBehavior;
+import ape.translator.tree.types.natives.functions.FunctionOverloadInstance;
+import ape.translator.tree.types.natives.functions.FunctionPaint;
+import ape.translator.tree.types.natives.functions.FunctionStyleJava;
+import ape.translator.tree.types.natives.functions.TyNativeFunctionInternalFieldReplacement;
+
+import java.util.ArrayList;
 
 public class TyNativeVec4 extends TyNativeProxyString {
 
@@ -49,6 +55,38 @@ public class TyNativeVec4 extends TyNativeProxyString {
 
     @Override
     public TyNativeFunctional lookupMethod(String name, Environment environment) {
+        TyNativeFunctional fieldLookup;
+        fieldLookup = TyNativeVec4.commonVectorMethod(token, this, name, "x");
+        if (fieldLookup != null) {
+            return fieldLookup;
+        }
+        fieldLookup = TyNativeVec4.commonVectorMethod(token, this, name, "y");
+        if (fieldLookup != null) {
+            return fieldLookup;
+        }
+        fieldLookup = TyNativeVec4.commonVectorMethod(token, this, name, "z");
+        if (fieldLookup != null) {
+            return fieldLookup;
+        }
+        fieldLookup = TyNativeVec4.commonVectorMethod(token, this, name, "w");
+        if (fieldLookup != null) {
+            return fieldLookup;
+        }
         return environment.state.globals.findExtension(this, name);
+    }
+
+    public static TyNativeFunctional commonVectorMethod(Token token, DocumentPosition self, String name, String f) {
+        if (f.equals(name)) {
+            TyNativeFunctional ty = new TyNativeFunctionInternalFieldReplacement(f,
+                    FunctionOverloadInstance.WRAP(
+                            new FunctionOverloadInstance(f,
+                                    new TyNativeDouble(TypeBehavior.ReadOnlyNativeValue, null, token).withPosition(self),
+                                    new ArrayList<>(),
+                                    FunctionPaint.READONLY_NORMAL)),
+                    FunctionStyleJava.None);
+            ty.ingest(token);
+            return ty;
+        }
+        return null;
     }
 }

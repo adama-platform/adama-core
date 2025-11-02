@@ -28,11 +28,13 @@ public enum CanBumpResult {
   YesWithListTransformNative(false), //
   YesWithListTransformSetter(true), //
   YesWithNative(false), //
-  YesWithSetter(true);
+  YesWithSetter(true),
+  YesWithNegateMethod(true),
+  YesWithListNegateMethod(true);
 
-  public final boolean reactive;
+  public final boolean nonNative;
 
-  CanBumpResult(final boolean reactive) {
-    this.reactive = reactive;
+  CanBumpResult(final boolean nonNative) {
+    this.nonNative = nonNative;
   }
 }

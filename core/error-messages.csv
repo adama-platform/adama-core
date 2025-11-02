@@ -238,7 +238,7 @@ file,start_line,start_character,end_line,end_character,message
 ./test_code/Define_AssignTableOddities_failure.a,1,0,7,8,"Could not find a meaning for 'table<X>' -= 'int'"
 ./test_code/Define_AssignTableOddities_failure.a,1,0,1,7,"Type check failure: Must have a type of 'int', 'long', 'double', 'list<int>', 'list<long>', 'list<double>'; instead got 'table<X>'"
 ./test_code/Define_AssignTableOddities_failure.a,1,0,1,7,"Type check failure: Must have a type of 'int', 'long', 'double', 'list<int>', 'list<long>', 'list<double>'; instead got 'table<X>'"
-./test_code/Define_AssignTableOddities_failure.a,1,0,1,7,"Type check failure: Must have a type of 'int', 'long', 'double', 'list<int>', 'list<long>', 'list<double>'; instead got 'table<X>'"
+./test_code/Define_AssignTableOddities_failure.a,1,0,1,7,"Type check failure for negation: Must have a type of 'int', 'long', 'double', 'list<int>', 'list<long>', 'list<double>', vec?, list<vec?>; instead got 'table<X>'"
 ./test_code/Define_AssignTableOddities_failure.a,1,0,1,7,"Type check failure: must have a type of 'bool', but the type is actually 'table<X>'"
 ./test_code/Define_BetweenNonArrayToArray_failure.a,5,2,5,5,"Type check failure: the type 'M[]' is unable to store type 'int'."
 ./test_code/Define_BetweenNonArrayToArray_failure.a,0,0,2,1,"Type check failure: must have a type of 'enum<?>', but the type is actually 'M'"

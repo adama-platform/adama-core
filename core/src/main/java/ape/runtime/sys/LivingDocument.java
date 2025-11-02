@@ -714,6 +714,35 @@ public abstract class LivingDocument implements RxParent, Caller {
     return false;
   }
 
+  public boolean __sendTypedMessage(String type, NtDynamic msg) {
+    if (__currentViewId >= 0) {
+      PrivateView pv = __viewsById.get(__currentViewId);
+      if (pv != null) {
+        final var writer = new JsonStreamWriter();
+        writer.beginObject();
+        writer.writeObjectFieldIntro(type);
+        writer.writeNtDynamic(msg);
+        writer.endObject();
+        pv.deliver(writer.toString());
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public void __broadcastTypedMessage(String type, NtDynamic msg) {
+    for(PrivateView pv : __viewsById.values()) {
+      if (pv != null) {
+        final var writer = new JsonStreamWriter();
+        writer.beginObject();
+        writer.writeObjectFieldIntro(type);
+        writer.writeNtDynamic(msg);
+        writer.endObject();
+        pv.deliver(writer.toString());
+      }
+    }
+  }
+
   public boolean __logViewState(String log) {
     if (__currentViewId >= 0) {
       PrivateView pv = __viewsById.get(__currentViewId);
@@ -1340,6 +1369,31 @@ public abstract class LivingDocument implements RxParent, Caller {
   /** exposed: random double that fits a */
   protected double __randomGaussian() {
     return __random.nextGaussian();
+  }
+
+  /** exposed: a random vec2 */
+  protected NtVec2 __randomVec2() {
+    while (true) {
+      double x = 2 * (__randomDouble() - 0.5);
+      double y = 2 * (__randomDouble() - 0.5);
+      double len = Math.sqrt(x * x + y * y);
+      if (len > 0.001) {
+        return new NtVec2(x / len, y / len);
+      }
+    }
+  }
+
+  /** exposed: a random vec3 */
+  protected NtVec3 __randomVec3() {
+    while (true) {
+      double x = 2 * (__randomDouble() - 0.5);
+      double y = 2 * (__randomDouble() - 0.5);
+      double z = 2 * (__randomDouble() - 0.5);
+      double len = Math.sqrt(x * x + y * y + z * z);
+      if (len > 0.001) {
+        return new NtVec3(x / len, y / len, z / len);
+      }
+    }
   }
 
   /** exposed: random number */

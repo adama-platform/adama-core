@@ -70,7 +70,7 @@ public class PostfixMutate extends Expression {
     if (bumpResult == CanBumpResult.No) {
       return null;
     }
-    if (result instanceof DetailComputeRequiresGet && bumpResult.reactive) {
+    if (result instanceof DetailComputeRequiresGet && bumpResult.nonNative) {
       return ((DetailComputeRequiresGet) result).typeAfterGet(environment).makeCopyWithNewPosition(this, result.behavior);
     }
     return result.makeCopyWithNewPosition(this, result.behavior);

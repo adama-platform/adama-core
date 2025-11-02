@@ -45,4 +45,7 @@ public class RuleSetVector {
         var tyType =  RuleSetCommon.Resolve(environment, tyTypeOriginal, true);
         return tyType instanceof TyNativeVec4 || tyType instanceof TyReactiveVec4;
     }
+    public static boolean IsVector(final Environment environment, final TyType tyTypeOriginal) {
+        return RuleSetVector.IsVec2(environment, tyTypeOriginal) || RuleSetVector.IsVec3(environment, tyTypeOriginal) || RuleSetVector.IsVec4(environment, tyTypeOriginal);
+    }
 }

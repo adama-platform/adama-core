@@ -1,0 +1,7 @@
+message M {
+}
+
+channel foo(M m) {
+  Messaging.send("e", {x:0, y:0}.to_dynamic());
+  Messaging.broadcast("e", {x:0, y:0}.to_dynamic());
+}

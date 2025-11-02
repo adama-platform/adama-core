@@ -31,6 +31,12 @@ import ape.translator.tree.expressions.Expression;
 import ape.translator.tree.expressions.constants.DoubleConstant;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeBehavior;
+import ape.translator.tree.types.natives.functions.FunctionOverloadInstance;
+import ape.translator.tree.types.natives.functions.FunctionPaint;
+import ape.translator.tree.types.natives.functions.FunctionStyleJava;
+import ape.translator.tree.types.natives.functions.TyNativeFunctionInternalFieldReplacement;
+
+import java.util.ArrayList;
 
 public class TyNativeVec2 extends TyNativeProxyString {
 
@@ -50,6 +56,15 @@ public class TyNativeVec2 extends TyNativeProxyString {
 
     @Override
     public TyNativeFunctional lookupMethod(String name, Environment environment) {
+        TyNativeFunctional fieldLookup;
+        fieldLookup = TyNativeVec4.commonVectorMethod(token, this, name, "x");
+        if (fieldLookup != null) {
+            return fieldLookup;
+        }
+        fieldLookup = TyNativeVec4.commonVectorMethod(token, this, name, "y");
+        if (fieldLookup != null) {
+            return fieldLookup;
+        }
         return environment.state.globals.findExtension(this, name);
     }
 }

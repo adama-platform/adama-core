@@ -2670,7 +2670,7 @@ public class Parser {
         Expression str = expression(scope);
         return new OrderDyn(base, op, str);
       case "map": {
-        final var fun = expression(scope);
+        final var fun = ternary(scope);
         return new Map(base, op, fun);
       }
       case "shuffle":

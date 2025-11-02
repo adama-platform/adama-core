@@ -13,3 +13,37 @@ public vec4 v4_r;
 @construct {
   v3_r = @vec [1, 2, 3];
 }
+
+public formula r2 = Random.genVec2();
+public formula r3 = Random.genVec3();
+
+public formula r3_f = r3.flipToUp();
+
+public formula r2_x = r2.cmult(@vec[1, 0]);
+public formula r2_y = r2.cmult(@vec[0, 1]);
+
+public formula r3_x = r3.cmult(@vec[1, 0, 0]);
+public formula r3_y = r3.cmult(@vec[0, 1, 0]);
+public formula r3_z = r3.cmult(@vec[0, 0, 1]);
+
+public formula v4 = @vec[1, 2, 3, 4];
+
+public formula r2_n = r2.normalize();
+public formula r3_n = r3.normalize();
+
+public formula v4_x = v4.cmult(@vec[1, 0, 0, 0]);
+public formula v4_y = v4.cmult(@vec[0, 1, 0, 0]);
+public formula v4_z = v4.cmult(@vec[0, 0, 1, 0]);
+public formula v4_w = v4.cmult(@vec[0, 0, 0, 1]);
+
+public formula v2_f_x = r2.x();
+public formula v2_f_y = r2.y();
+
+public formula v3_f_x = r3.x();
+public formula v3_f_y = r3.y();
+public formula v3_f_z = r3.z();
+
+public formula v4_f_x = v4.x();
+public formula v4_f_y = v4.y();
+public formula v4_f_z = v4.z();
+public formula v4_f_w = v4.w();
