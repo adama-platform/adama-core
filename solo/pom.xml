@@ -28,11 +28,6 @@
         </dependency>
         <dependency>
             <groupId>ape</groupId>
-            <artifactId>services</artifactId>
-            <version>MAIN</version>
-        </dependency>
-        <dependency>
-            <groupId>ape</groupId>
             <artifactId>web</artifactId>
             <version>MAIN</version>
         </dependency>
