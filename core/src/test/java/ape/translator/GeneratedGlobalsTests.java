@@ -85,6 +85,7 @@ public class GeneratedGlobalsTests extends GeneratedBase {
     gold.append("\n==========================================================");
     gold.append("\n--ISSUES-------------------------------------------");
     gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.Pair;");
     gold.append("\nimport ape.runtime.async.*;");
     gold.append("\nimport ape.runtime.contracts.*;");
     gold.append("\nimport ape.runtime.delta.*;");
@@ -862,6 +863,7 @@ public class GeneratedGlobalsTests extends GeneratedBase {
     gold.append("\n==========================================================");
     gold.append("\n--ISSUES-------------------------------------------");
     gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.Pair;");
     gold.append("\nimport ape.runtime.async.*;");
     gold.append("\nimport ape.runtime.contracts.*;");
     gold.append("\nimport ape.runtime.delta.*;");
@@ -1593,6 +1595,7 @@ public class GeneratedGlobalsTests extends GeneratedBase {
     gold.append("\n==========================================================");
     gold.append("\n--ISSUES-------------------------------------------");
     gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.Pair;");
     gold.append("\nimport ape.runtime.async.*;");
     gold.append("\nimport ape.runtime.contracts.*;");
     gold.append("\nimport ape.runtime.delta.*;");
@@ -2388,6 +2391,7 @@ public class GeneratedGlobalsTests extends GeneratedBase {
     gold.append("\n==========================================================");
     gold.append("\n--ISSUES-------------------------------------------");
     gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.Pair;");
     gold.append("\nimport ape.runtime.async.*;");
     gold.append("\nimport ape.runtime.contracts.*;");
     gold.append("\nimport ape.runtime.delta.*;");

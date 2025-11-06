@@ -246,6 +246,51 @@ public class LivingDocumentTests {
     Assert.assertEquals("{\"data\":{\"mappy\":{\"4\":null}},\"seq\":6}", list.get(2));
   }
 
+
+  @Test
+  public void gridtest() throws Exception {
+    RealDocumentSetup setup = new RealDocumentSetup("@static { create { return true; } } @connected { return true; }" + //
+            "public grid<int, double> heights; message M {}" +
+            "public formula w = heights.width();" +
+            "public formula h = heights.height();" +
+            "public formula flat = heights.flatten(-1.0);" + //
+            "channel foo(M m) { heights[1, 2] = 3.14; } " + //
+            "channel goo(M m) { heights.remove(1, 2); } ");
+    setup.document.connect(ContextSupport.WRAP(NtPrincipal.NO_ONE), new RealDocumentSetup.AssertInt(2));
+    RealDocumentSetup.GotView gv = new RealDocumentSetup.GotView();
+    ArrayList<String> list = new ArrayList<>();
+    Perspective linked =
+            new Perspective() {
+              @Override
+              public void data(String data) {
+                list.add(data);
+              }
+
+              @Override
+              public void disconnect() {}
+            };
+
+    setup.document.createPrivateView(NtPrincipal.NO_ONE, linked, new JsonStreamReader("{}"), gv);
+
+    setup.document.send(
+            ContextSupport.WRAP(NtPrincipal.NO_ONE),
+            null,
+            null,
+            "foo",
+            "{}",
+            new RealDocumentSetup.AssertInt(5));
+    setup.document.send(
+            ContextSupport.WRAP(NtPrincipal.NO_ONE),
+            null,
+            null,
+            "goo",
+            "{}",
+            new RealDocumentSetup.AssertInt(6));
+    Assert.assertEquals("{\"data\":{\"w\":0,\"h\":0},\"seq\":4}", list.get(0));
+    Assert.assertEquals("{\"data\":{\"heights\":{\"1:2\":3.14},\"w\":2,\"h\":3,\"flat\":{\"0\":-1.0,\"1\":-1.0,\"2\":-1.0,\"3\":-1.0,\"4\":-1.0,\"5\":3.14,\"@s\":6}},\"seq\":5}", list.get(1));
+    Assert.assertEquals("{\"data\":{\"heights\":{\"1:2\":null},\"w\":0,\"h\":0,\"flat\":{\"0\":null,\"1\":null,\"2\":null,\"3\":null,\"4\":null,\"5\":null,\"@s\":0}},\"seq\":6}", list.get(2));
+  }
+
   @Test
   public void message_blocked_by_await() throws Exception {
     try {

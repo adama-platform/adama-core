@@ -151,6 +151,10 @@ public class Rules {
     return RuleSetMap.IsMap(environment, tyType);
   }
 
+  public boolean IsGrid(final TyType tyType) {
+    return RuleSetGrid.IsGrid(environment, tyType);
+  }
+
   /** FROM: RuleSetMaybe */
   public boolean IsMaybe(final TyType tyType, final boolean silent) {
     return RuleSetMaybe.IsMaybe(environment, tyType, silent);

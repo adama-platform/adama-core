@@ -1,0 +1,16 @@
+public grid<int, double> heights;
+
+public formula hf = heights.flatten(0);
+
+record R {
+   public double h;
+   public int type;
+}
+
+public grid<int, R> cells;
+
+@construct {
+  heights[0, 0] = 1;
+  heights[0, 4] = 2;
+  cells[0, 2].h = 4;
+}

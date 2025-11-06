@@ -2197,9 +2197,16 @@ public class Parser {
           }
           result = new FieldLookup(result, op, field);
         } else if (op.isSymbolWithTextEq("[")) {
-          final var arg = expression(scope);
-          final var closeBracket = consumeExpectedSymbol("]");
-          result = new IndexLookup(result, op, arg, closeBracket);
+          final var arg1 = expression(scope);
+          Token gridLookup = tokens.popIf((t) -> t.isSymbolWithTextEq(","));
+          if (gridLookup != null) {
+            final var arg2 = expression(scope);
+            final var closeBracket = consumeExpectedSymbol("]");
+            result = new GridLookup(result, op, arg1, gridLookup, arg2, closeBracket);
+          } else {
+            final var closeBracket = consumeExpectedSymbol("]");
+            result = new IndexLookup(result, op, arg1, closeBracket);
+          }
         } else if (op.isSymbolWithTextEq("(")) {
           final var args = new ArrayList<TokenizedItem<Expression>>();
           var next = tokens.popIf(t -> t.isSymbolWithTextEq(")"));
@@ -2263,6 +2270,15 @@ public class Parser {
     return new TyReactiveMap(readonly, mapToken, openThing, domainType, commaToken, rangeType, closeThing);
   }
 
+  public TyReactiveGrid reactive_grid(boolean readonly, final Token mapToken) throws AdamaLangException {
+    final var openThing = consumeExpectedSymbol("<");
+    final var domainType = native_type(false);
+    final var commaToken = consumeExpectedSymbol(",");
+    final var rangeType = reactive_type(readonly, false);
+    final var closeThing = consumeExpectedSymbol(">");
+    return new TyReactiveGrid(readonly, mapToken, openThing, domainType, commaToken, rangeType, closeThing);
+  }
+
   private TyType reactive_type(boolean readonly, boolean has_policy) throws AdamaLangException {
     return enrich(reactive_type_intern(readonly, has_policy));
   }
@@ -2321,6 +2337,8 @@ public class Parser {
         final var typeParameter = type_parameter();
         return new TyReactiveHolder(readonly, token, typeParameter);
       }
+      case "grid":
+        return reactive_grid(readonly, token);
       case "table": {
         final var typeParameter = type_parameter();
         TyReactiveTable table =  new TyReactiveTable(readonly, token, typeParameter);

@@ -1,0 +1,6 @@
+public grid<int, double> heights;
+
+@load {
+  heights[0.1, 0] = 1;
+  heights[0, 0.2] = 1;
+}
