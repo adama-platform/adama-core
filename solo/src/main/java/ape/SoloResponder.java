@@ -184,9 +184,9 @@ public class SoloResponder extends GeneratedSoloRouterBase {
 
   private class LocalStream {
     public final Key key;
+    private final ArrayList<Consumer<Boolean>> queue;
     private CoreStream ref;
     private boolean closed;
-    private final ArrayList<Consumer<Boolean>> queue;
 
     public LocalStream(Key key) {
       this.key = key;

@@ -1,6 +1,8 @@
 public grid<int, double> heights;
+public grid<int, bool> dungeon;
 
 public formula hf = heights.flatten(0);
+public formula dung_f = dungeon.flatten(false);
 
 record R {
    public double h;
@@ -13,4 +15,6 @@ public grid<int, R> cells;
   heights[0, 0] = 1;
   heights[0, 4] = 2;
   cells[0, 2].h = 4;
+
+  dungeon[0,1] = true;
 }

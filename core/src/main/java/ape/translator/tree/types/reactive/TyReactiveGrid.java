@@ -162,6 +162,7 @@ public class TyReactiveGrid extends TyType implements //
           switch (javaRangeType) {
             case "double":
             case "int":
+            case "boolean":
               valid = true;
               break;
             default:

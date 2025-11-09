@@ -357,7 +357,7 @@ public class RxGrid<DomainTy, RangeTy extends RxBase> extends RxBase implements 
     double[] result = new double[flat.length];
     for (int i = 0; i < result.length; i++) {
       if (flat[i] != null) {
-        result[i] = ((RxDouble) flat[i]).get().doubleValue();
+        result[i] = ((RxDouble) flat[i]).get();
       } else {
         result[i] = defValue;
       }
@@ -370,7 +370,20 @@ public class RxGrid<DomainTy, RangeTy extends RxBase> extends RxBase implements 
     int[] result = new int[flat.length];
     for (int i = 0; i < result.length; i++) {
       if (flat[i] != null) {
-        result[i] = ((RxInt32) flat[i]).get().intValue();
+        result[i] = ((RxInt32) flat[i]).get();
+      } else {
+        result[i] = defValue;
+      }
+    }
+    return result;
+  }
+
+  public boolean[] flatten(boolean defValue) {
+    RxBase[] flat = base_flatten();
+    boolean[] result = new boolean[flat.length];
+    for (int i = 0; i < result.length; i++) {
+      if (flat[i] != null) {
+        result[i] = ((RxBoolean) flat[i]).get();
       } else {
         result[i] = defValue;
       }

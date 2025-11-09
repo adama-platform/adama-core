@@ -46,6 +46,7 @@ import ape.web.service.WebConfig;
 import ape.web.service.WebMetrics;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,21 +58,10 @@ public class Solo {
   private final ExecutorService inmemoryExecutor;
   private final Thread serviceThread;
 
-  public static void main(String[] args) throws Exception {
-    String scanDir = ".";
-    for (int k = 0; k < args.length; k++) {
-      if (args[k].startsWith("--scan") && k + 1 < args.length) {
-        k++;
-        scanDir = args[k];
-      }
-    }
-  }
-
-  public Solo(String scanDir) throws Exception {
+  public Solo(String scanDir, String webConfigJson) throws Exception {
     commonExecutor = SimpleExecutor.create("common");
     inmemoryExecutor = Executors.newSingleThreadExecutor();
-    // TODO: create a web config
-    WebConfig webConfig = new WebConfig(new ConfigObject(Json.newJsonObject()));
+    WebConfig webConfig = new WebConfig(new ConfigObject(Json.parseJsonObject(webConfigJson)));
     RuntimeEnvironment runtimeEnvironment = RuntimeEnvironment.Production;
     MetricsFactory factory = new NoOpMetricsFactory();
     CoreMetrics coreMetrics = new CoreMetrics(factory);
@@ -122,6 +112,27 @@ public class Solo {
     serviceThread = new Thread(webServer);
     serviceThread.start();
     webServer.waitForReady(1000);
+  }
+
+  public static void main(String[] args) throws Exception {
+    String scanDir = ".";
+    String webConfigJson = "{}";
+    for (int k = 0; k < args.length; k++) {
+      if (args[k].startsWith("--scan") && k + 1 < args.length) {
+        k++;
+        scanDir = args[k];
+      }
+      if (args[k].startsWith("--web") && k + 1 < args.length) {
+        k++;
+        webConfigJson = Files.readString(new File(args[k]).toPath());
+      }
+    }
+    Solo solo = new Solo(scanDir, webConfigJson);
+    try {
+      solo.serviceThread.join();
+    } finally {
+      solo.shutdown();
+    }
   }
 
   public void shutdown() {
