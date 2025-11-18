@@ -34,6 +34,7 @@ import ape.translator.tree.types.reactive.TyReactiveMaybe;
 import ape.translator.tree.types.reactive.TyReactiveRecord;
 import ape.translator.tree.types.reactive.TyReactiveTable;
 import ape.translator.tree.types.traits.IsEnum;
+import ape.translator.tree.types.traits.IsGrid;
 import ape.translator.tree.types.traits.IsMap;
 import ape.translator.tree.types.traits.IsStructure;
 import ape.translator.tree.types.traits.assign.AssignmentViaNative;
@@ -190,6 +191,20 @@ public class RuleSetAssignment {
       final var ab2 = CanTypeAStoreTypeB(environment, mapB.getDomainType(environment), mapA.getDomainType(environment), tweak, true);
       final var ab3 = CanTypeAStoreTypeB(environment, mapA.getRangeType(environment), mapB.getRangeType(environment), tweak, true);
       final var ab4 = CanTypeAStoreTypeB(environment, mapB.getRangeType(environment), mapA.getRangeType(environment), tweak, true);
+      if (ab1 && ab2 && ab3 && ab4) {
+        return true;
+      }
+    }
+
+    final var aGrid = RuleSetGrid.IsNativeGrid(environment, typeA);
+    final var bGrid = RuleSetGrid.IsNativeGrid(environment, typeB);
+    if (aGrid && bGrid) {
+      final var gridA = (IsGrid) typeA;
+      final var gridB = (IsGrid) typeB;
+      final var ab1 = CanTypeAStoreTypeB(environment, gridA.getDomainType(environment), gridB.getDomainType(environment), tweak, true);
+      final var ab2 = CanTypeAStoreTypeB(environment, gridB.getDomainType(environment), gridA.getDomainType(environment), tweak, true);
+      final var ab3 = CanTypeAStoreTypeB(environment, gridA.getRangeType(environment), gridB.getRangeType(environment), tweak, true);
+      final var ab4 = CanTypeAStoreTypeB(environment, gridB.getRangeType(environment), gridA.getRangeType(environment), tweak, true);
       if (ab1 && ab2 && ab3 && ab4) {
         return true;
       }

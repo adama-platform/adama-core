@@ -25,6 +25,8 @@ package ape.translator.tree.types.checking.ruleset;
 
 import ape.translator.env.Environment;
 import ape.translator.tree.types.TyType;
+import ape.translator.tree.types.natives.TyNativeGrid;
+import ape.translator.tree.types.reactive.TyReactiveGrid;
 import ape.translator.tree.types.traits.IsGrid;
 import ape.translator.tree.types.traits.IsMap;
 
@@ -32,5 +34,15 @@ public class RuleSetGrid {
   public static boolean IsGrid(final Environment environment, final TyType tyTypeOriginal) {
     var tyType =  RuleSetCommon.Resolve(environment, tyTypeOriginal, true);
     return tyType != null && (tyType instanceof IsGrid);
+  }
+
+  public static boolean IsNativeGrid(final Environment environment, final TyType tyTypeOriginal) {
+    var tyType =  RuleSetCommon.Resolve(environment, tyTypeOriginal, true);
+    return tyType != null && (tyType instanceof TyNativeGrid);
+  }
+  
+  public static boolean IsReactiveGrid(final Environment environment, final TyType tyTypeOriginal) {
+    var tyType =  RuleSetCommon.Resolve(environment, tyTypeOriginal, true);
+    return tyType != null && (tyType instanceof TyReactiveGrid);
   }
 }

@@ -2011,6 +2011,15 @@ public class Parser {
     return new TyNativeMap(behavior, readonlyToken, mapToken, openThing, domainType, commaToken, rangeType, closeThing);
   }
 
+  public TyNativeGrid native_grid(final TypeBehavior behavior, final Token readonlyToken, final Token mapToken) throws AdamaLangException {
+    final var openThing = consumeExpectedSymbol("<");
+    final var domainType = native_type(false);
+    final var commaToken = consumeExpectedSymbol(",");
+    final var rangeType = native_type(false);
+    final var closeThing = consumeExpectedSymbol(">");
+    return new TyNativeGrid(behavior, readonlyToken, mapToken, openThing, domainType, commaToken, rangeType, closeThing);
+  }
+
   public TyNativePair native_pair(final TypeBehavior behavior, final Token readonlyToken, final Token pairToken) throws AdamaLangException {
     final var openThing = consumeExpectedSymbol("<");
     final var domainType = native_type(false);
@@ -2134,6 +2143,8 @@ public class Parser {
         return native_pair(behavior, readonlyToken, token);
       case "map":
         return native_map(behavior, readonlyToken, token);
+      case "grid":
+        return native_grid(behavior, readonlyToken, token);
       case "table":
         if (args) {
           final var typeParameter = type_parameter();
@@ -2337,8 +2348,6 @@ public class Parser {
         final var typeParameter = type_parameter();
         return new TyReactiveHolder(readonly, token, typeParameter);
       }
-      case "grid":
-        return reactive_grid(readonly, token);
       case "table": {
         final var typeParameter = type_parameter();
         TyReactiveTable table =  new TyReactiveTable(readonly, token, typeParameter);
@@ -2359,6 +2368,8 @@ public class Parser {
       }
       case "map":
         return reactive_map(readonly, token);
+      case "grid":
+        return reactive_grid(readonly, token);
       case "maybe":
         return new TyReactiveMaybe(readonly, token, reactive_parameter_type(readonly));
       default:
@@ -2567,6 +2578,7 @@ public class Parser {
       case "maybe":
       case "future":
       case "map":
+      case "grid":
       case "pair":
       case "tuple":
       case "table":

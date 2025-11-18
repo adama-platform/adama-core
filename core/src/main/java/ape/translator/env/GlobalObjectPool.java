@@ -68,6 +68,7 @@ public class GlobalObjectPool {
     pool.add(GlobalFactory.makeGlobal("Date", LibDate.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("TimeSpan", LibTimeSpan.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Map", LibMap.class, pool.extensions));
+    pool.add(GlobalFactory.makeGlobal("Grid", LibGrid.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Templates", LibTemplates.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Template", LibTemplate.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Search", LibSearch.class, pool.extensions));
@@ -75,6 +76,7 @@ public class GlobalObjectPool {
     pool.add(GlobalFactory.makeGlobal("HTML", LibHTML.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Vector", LibVector.class, pool.extensions));
     pool.add(GlobalFactory.makeGlobal("Matrix", LibMatrix.class, pool.extensions));
+    pool.add(GlobalFactory.makeGlobal("Mazes", LibMazes.class, pool.extensions));
 
     switch (runtime) {
       case Tooling:

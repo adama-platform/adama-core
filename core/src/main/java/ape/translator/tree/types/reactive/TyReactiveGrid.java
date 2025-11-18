@@ -38,7 +38,6 @@ import ape.translator.tree.types.natives.functions.FunctionPaint;
 import ape.translator.tree.types.natives.functions.FunctionStyleJava;
 import ape.translator.tree.types.traits.*;
 import ape.translator.tree.types.traits.details.DetailComputeRequiresGet;
-import ape.translator.tree.types.traits.details.DetailContainsAnEmbeddedType;
 import ape.translator.tree.types.traits.details.DetailHasDeltaType;
 import ape.translator.tree.types.traits.details.DetailTypeHasMethods;
 
@@ -50,8 +49,7 @@ public class TyReactiveGrid extends TyType implements //
     DetailNeedsSettle, //
     IsGrid, //
     IsKillable, //
-    DetailHasDeltaType, //
-    DetailContainsAnEmbeddedType {
+    DetailHasDeltaType {
   public final boolean readonly;
   public final Token closeThing;
   public final Token commaToken;
@@ -178,6 +176,12 @@ public class TyReactiveGrid extends TyType implements //
         }
       }
     }
+    if ("mergeIn".equals(name) && rangeType instanceof IsReactiveValue && rangeType instanceof DetailComputeRequiresGet) {
+      TyNativeGrid gridInput = new TyNativeGrid(TypeBehavior.ReadOnlyGetNativeValue, null, null, null, domainType, null, ((DetailComputeRequiresGet) rangeType).typeAfterGet(environment), null);
+      ArrayList<TyType> args = new ArrayList<>();
+      args.add(gridInput);
+      return new TyNativeFunctional("mergeIn", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("mergeIn", new TyNativeVoid().withPosition(this), args, FunctionPaint.NORMAL)), FunctionStyleJava.ExpressionThenArgs);
+    }
     if ("size".equals(name)) {
       return new TyNativeFunctional(name, FunctionOverloadInstance.WRAP(new FunctionOverloadInstance(name, new TyNativeInteger(TypeBehavior.ReadOnlyNativeValue, null, mapToken).withPosition(this), new ArrayList<>(), FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
     }
@@ -185,7 +189,7 @@ public class TyReactiveGrid extends TyType implements //
       ArrayList<TyType> args = new ArrayList<>();
       args.add(domainType);
       args.add(domainType);
-      return new TyNativeFunctional("remove", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("remove", new TyNativeVoid().withPosition(this), args, FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
+      return new TyNativeFunctional("remove", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("remove", new TyNativeVoid().withPosition(this), args, FunctionPaint.NORMAL)), FunctionStyleJava.ExpressionThenArgs);
     }
     if ("has".equals(name)) {
       ArrayList<TyType> args = new ArrayList<>();
@@ -207,10 +211,5 @@ public class TyReactiveGrid extends TyType implements //
       range = ((DetailComputeRequiresGet) range).typeAfterGet(environment);
     }
     return "DGrid<" + domain + "," + ((DetailHasDeltaType) range).getDeltaType(environment) + ">";
-  }
-
-  @Override
-  public TyType getEmbeddedType(Environment environment) {
-    return new TyNativePair(TypeBehavior.ReadOnlyNativeValue, null, null, null, environment.rules.Resolve(domainType, false), null, environment.rules.Resolve(rangeType, false), null);
   }
 }

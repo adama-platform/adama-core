@@ -95,6 +95,9 @@ public class MegaIf extends Statement {
         if (environment.rules.IsMaybe(branch.condition.maybeType, false)) {
           branch.condition.elementType = ((DetailContainsAnEmbeddedType) branch.condition.maybeType).getEmbeddedType(compute);
           if (branch.condition.elementType != null) {
+            if (compute.defined(branch.condition.name)) {
+              environment.document.createError(this, branch.condition.name + " has been defined already");
+            }
             compute.define(branch.condition.name, branch.condition.elementType, false, branch.condition.elementType);
           }
         } else {

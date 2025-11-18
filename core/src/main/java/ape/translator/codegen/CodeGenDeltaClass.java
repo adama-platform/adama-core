@@ -35,6 +35,8 @@ import ape.translator.tree.types.reactive.*;
 import ape.translator.tree.types.structures.BubbleDefinition;
 import ape.translator.tree.types.structures.FieldDefinition;
 import ape.translator.tree.types.structures.StructureStorage;
+import ape.translator.tree.types.traits.IsGrid;
+import ape.translator.tree.types.traits.IsMap;
 import ape.translator.tree.types.traits.details.DetailComputeRequiresGet;
 import ape.translator.tree.types.traits.details.DetailContainsAnEmbeddedType;
 import ape.translator.tree.types.traits.details.DetailHasDeltaType;
@@ -294,24 +296,24 @@ public class CodeGenDeltaClass {
       writeShowDMap(sb, deltaObject, sourceData, environment.rules.Resolve(((TyNativeMap) sourceType).domainType, false), environment.rules.Resolve(((TyNativeMap) sourceType).rangeType, false), targetObjectWriter, environment, tabDown);
     } else if (sourceType instanceof TyNativePair) {
       writeShowDPair(sb, deltaObject, sourceData, environment.rules.Resolve(((TyNativePair) sourceType).domainType, false), environment.rules.Resolve(((TyNativePair) sourceType).rangeType, false), targetObjectWriter, environment, tabDown);
-    } else if (sourceType instanceof TyReactiveMap) {
+    } else if (sourceType instanceof IsMap) {
       boolean addGet = false;
-      var walkRangeType = ((TyReactiveMap) sourceType).getRangeType(environment);
+      var walkRangeType = ((IsMap) sourceType).getRangeType(environment);
       var rangeType = walkRangeType;
       if (walkRangeType instanceof DetailComputeRequiresGet) {
         addGet = true;
         rangeType = ((DetailComputeRequiresGet) walkRangeType).typeAfterGet(environment);
       }
-      writeShowDMapRx(sb, deltaObject, sourceData, ((TyReactiveMap) sourceType).getDomainType(environment), walkRangeType, rangeType, addGet, targetObjectWriter, environment, tabDown);
-    } else if (sourceType instanceof TyReactiveGrid) {
+      writeShowDMapRx(sb, deltaObject, sourceData, ((IsMap) sourceType).getDomainType(environment), walkRangeType, rangeType, addGet, targetObjectWriter, environment, tabDown);
+    } else if (sourceType instanceof IsGrid) {
       boolean addGet = false;
-      var walkRangeType = ((TyReactiveGrid) sourceType).getRangeType(environment);
+      var walkRangeType = ((IsGrid) sourceType).getRangeType(environment);
       var rangeType = walkRangeType;
       if (walkRangeType instanceof DetailComputeRequiresGet) {
         addGet = true;
         rangeType = ((DetailComputeRequiresGet) walkRangeType).typeAfterGet(environment);
       }
-      writeShowDGridRx(sb, deltaObject, sourceData, ((TyReactiveGrid) sourceType).getDomainType(environment), walkRangeType, rangeType, addGet, targetObjectWriter, environment, tabDown);
+      writeShowDGridRx(sb, deltaObject, sourceData, ((IsGrid) sourceType).getDomainType(environment), walkRangeType, rangeType, addGet, targetObjectWriter, environment, tabDown);
     }
   }
 

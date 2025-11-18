@@ -21,37 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.common;
+package ape.runtime.stdlib;
 
-import java.util.Objects;
+import ape.common.Pair;
+import ape.runtime.natives.NtGrid;
+import ape.runtime.stdlib.bonus.BasicRoomMazeGenerator;
+import ape.translator.reflect.HiddenTypes2;
 
-/** a simple pair of two same types */
-public class Pair<Ty> {
-  public final Ty x;
-  public final Ty y;
-  public Pair(Ty x, Ty y) {
-    this.x = x;
-    this.y = y;
-  }
+import java.util.Random;
 
-  public Pair<Ty> swap() {
-    return new Pair<>(y, x);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    Pair pair = (Pair) o;
-    return Objects.equals(x, pair.x) && Objects.equals(y, pair.y);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(x, y);
-  }
-
-  @Override
-  public String toString() {
-    return SimpleStringArrayCodec.pack(x.toString(), y.toString());
+public class LibMazes {
+  public static @HiddenTypes2(class1 = Integer.class, class2 = Boolean.class) NtGrid<Integer, Boolean> basic_v0(long seed, int w, int h, int generations, int min, int max, int margin) {
+    NtGrid<Integer, Boolean> grid = new NtGrid<>();
+    BasicRoomMazeGenerator.generate(new Random(seed), w, h, generations, min, max, margin, (x, y) -> {
+      grid.storage.put(new Pair<>(x, y), true);
+    });
+    return grid;
   }
 }

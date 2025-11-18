@@ -25,12 +25,10 @@ package ape.runtime.reactives;
 
 import ape.common.Pair;
 import ape.common.SimpleStringArrayCodec;
-import ape.runtime.contracts.RxChild;
-import ape.runtime.contracts.RxKillable;
-import ape.runtime.contracts.RxParent;
-import ape.runtime.contracts.RxParentIntercept;
+import ape.runtime.contracts.*;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
+import ape.runtime.natives.NtGrid;
 import ape.runtime.natives.NtPair;
 
 import java.util.*;
@@ -417,6 +415,15 @@ public class RxGrid<DomainTy, RangeTy extends RxBase> extends RxBase implements 
       buildWidthAndHeight();
     }
     return cachedHeight;
+  }
+
+  public <NativeTy> void mergeIn(NtGrid<DomainTy, NativeTy> grid) {
+    for(Map.Entry<Pair<DomainTy>, NativeTy> entry : grid.storage.entrySet()) {
+      RangeTy m = getOrCreate(entry.getKey());
+      if (m instanceof CanGetAndSet) {
+        ((CanGetAndSet<NativeTy>) m).set(entry.getValue());
+      }
+    }
   }
 
   @Override

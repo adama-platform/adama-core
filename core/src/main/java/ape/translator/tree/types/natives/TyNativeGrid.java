@@ -37,6 +37,7 @@ import ape.translator.tree.types.natives.functions.FunctionOverloadInstance;
 import ape.translator.tree.types.natives.functions.FunctionPaint;
 import ape.translator.tree.types.natives.functions.FunctionStyleJava;
 import ape.translator.tree.types.traits.CanBeMapDomain;
+import ape.translator.tree.types.traits.IsGrid;
 import ape.translator.tree.types.traits.IsMap;
 import ape.translator.tree.types.traits.assign.AssignmentViaSetter;
 import ape.translator.tree.types.traits.details.DetailContainsAnEmbeddedType;
@@ -47,13 +48,12 @@ import ape.translator.tree.types.traits.details.DetailTypeHasMethods;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class TyNativeMap extends TyType implements //
-    AssignmentViaSetter, //
-    DetailHasDeltaType, //
-    DetailTypeHasMethods, //
-    DetailNativeDeclarationIsNotStandard, //
-    DetailContainsAnEmbeddedType, //
-    IsMap //
+public class TyNativeGrid extends TyType implements //
+        AssignmentViaSetter, //
+        DetailHasDeltaType, //
+        DetailTypeHasMethods, //
+        DetailNativeDeclarationIsNotStandard, //
+        IsGrid //
 {
   public final Token readonlyToken;
   public final Token closeThing;
@@ -63,7 +63,7 @@ public class TyNativeMap extends TyType implements //
   public final Token openThing;
   public final TyType rangeType;
 
-  public TyNativeMap(final TypeBehavior behavior, final Token readonlyToken, final Token mapToken, final Token openThing, final TyType domainType, final Token commaToken, final TyType rangeType, final Token closeThing) {
+  public TyNativeGrid(final TypeBehavior behavior, final Token readonlyToken, final Token mapToken, final Token openThing, final TyType domainType, final Token commaToken, final TyType rangeType, final Token closeThing) {
     super(behavior);
     this.readonlyToken = readonlyToken;
     this.mapToken = mapToken;
@@ -97,14 +97,14 @@ public class TyNativeMap extends TyType implements //
 
   @Override
   public String getAdamaType() {
-    return "map<" + domainType.getAdamaType() + "," + rangeType.getAdamaType() + ">";
+    return "grid<" + domainType.getAdamaType() + "," + rangeType.getAdamaType() + ">";
   }
 
   @Override
   public String getJavaBoxType(final Environment environment) {
     final var dt = getDomainType(environment);
     final var rt = getRangeType(environment);
-    return "NtMap<" + dt.getJavaBoxType(environment) + "," + rt.getJavaBoxType(environment) + ">";
+    return "NtGrid<" + dt.getJavaBoxType(environment) + "," + rt.getJavaBoxType(environment) + ">";
   }
 
   @Override
@@ -124,7 +124,7 @@ public class TyNativeMap extends TyType implements //
 
   @Override
   public TyType makeCopyWithNewPositionInternal(final DocumentPosition position, final TypeBehavior newBehavior) {
-    return new TyNativeMap(newBehavior, readonlyToken, mapToken, openThing, domainType, commaToken, rangeType, closeThing).withPosition(position);
+    return new TyNativeGrid(newBehavior, readonlyToken, mapToken, openThing, domainType, commaToken, rangeType, closeThing).withPosition(position);
   }
 
   @Override
@@ -145,7 +145,7 @@ public class TyNativeMap extends TyType implements //
   public void writeTypeReflectionJson(JsonStreamWriter writer, ReflectionSource source) {
     writer.beginObject();
     writer.writeObjectFieldIntro("nature");
-    writer.writeString("native_map");
+    writer.writeString("native_grid");
     writeAnnotations(writer);
     writer.writeObjectFieldIntro("domain");
     domainType.writeTypeReflectionJson(writer, source);
@@ -156,7 +156,7 @@ public class TyNativeMap extends TyType implements //
 
   @Override
   public String getDeltaType(final Environment environment) {
-    return "DMap<" + domainType.getJavaBoxType(environment) + "," + ((DetailHasDeltaType) rangeType).getDeltaType(environment) + ">";
+    return "DGrid<" + domainType.getJavaBoxType(environment) + "," + ((DetailHasDeltaType) rangeType).getDeltaType(environment) + ">";
   }
 
   @Override
@@ -171,43 +171,47 @@ public class TyNativeMap extends TyType implements //
 
   @Override
   public TyNativeFunctional lookupMethod(final String name, final Environment environment) {
-    if ("insert".equals(name)) {
-      final var args = new ArrayList<TyType>();
-      args.add(this);
-      return new TyNativeFunctional("insert", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("insert", this, args, FunctionPaint.CAST_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
+    if (domainType.getJavaConcreteType(environment).equals("int")) {
+      if ("rotate".equals(name)) {
+        final var args = new ArrayList<TyType>();
+        args.add(environment.rules.Resolve(domainType, false));
+        final var foi = new FunctionOverloadInstance("LibGrid.rotate", this, args, FunctionPaint.READONLY_NORMAL);
+        return new TyNativeFunctional("LibGrid.rotate", FunctionOverloadInstance.WRAP(foi), FunctionStyleJava.InjectNameThenExpressionAndArgs);
+      }
+      if ("translate".equals(name)) {
+        final var args = new ArrayList<TyType>();
+        args.add(environment.rules.Resolve(domainType, false));
+        args.add(environment.rules.Resolve(domainType, false));
+        final var foi = new FunctionOverloadInstance("LibGrid.translate", this, args, FunctionPaint.READONLY_NORMAL);
+        return new TyNativeFunctional("LibGrid.translate", FunctionOverloadInstance.WRAP(foi), FunctionStyleJava.InjectNameThenExpressionAndArgs);
+      }
+      if ("smash".equals(name)) {
+        final var foi = new FunctionOverloadInstance("LibGrid.smash", this, new ArrayList<>(), FunctionPaint.READONLY_NORMAL);
+        return new TyNativeFunctional("LibGrid.smash", FunctionOverloadInstance.WRAP(foi), FunctionStyleJava.InjectNameThenExpressionAndArgs);
+      }
     }
     if ("remove".equals(name)) {
       final var args = new ArrayList<TyType>();
+      args.add(environment.rules.Resolve(domainType, false));
       args.add(environment.rules.Resolve(domainType, false));
       TyType returnType = new TyNativeMaybe(TypeBehavior.ReadOnlyNativeValue, null, null, new TokenizedItem<>(rangeType)).withPosition(this);
       return new TyNativeFunctional("remove", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("remove", returnType, args, FunctionPaint.CAST_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
     }
     if ("has".equals(name)) {
       ArrayList<TyType> args = new ArrayList<>();
-      args.add(domainType);
+      args.add(environment.rules.Resolve(domainType, false));
+      args.add(environment.rules.Resolve(domainType, false));
       return new TyNativeFunctional("has", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("has", new TyNativeBoolean(TypeBehavior.ReadOnlyNativeValue, null, mapToken).withPosition(this), args, FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
     }
     if ("clear".equals(name)) {
       return new TyNativeFunctional("clear", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("clear", new TyNativeVoid().withPosition(this), new ArrayList<>(), FunctionPaint.NORMAL)), FunctionStyleJava.ExpressionThenArgs);
     }
+    if ("transpose".equals(name)) {
+      return new TyNativeFunctional("transpose", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("transpose", new TyNativeVoid().withPosition(this), new ArrayList<>(), FunctionPaint.NORMAL)), FunctionStyleJava.ExpressionThenArgs);
+    }
     if ("size".equals(name)) {
       return new TyNativeFunctional("size", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("size", new TyNativeInteger(TypeBehavior.ReadOnlyNativeValue, null, mapToken).withPosition(this), new ArrayList<>(), FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
     }
-    if ("min".equals(name)) {
-      return new TyNativeFunctional("min", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("min", getCommonQueryResultType(environment), new ArrayList<>(), FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
-    }
-    if ("max".equals(name)) {
-      return new TyNativeFunctional("max", FunctionOverloadInstance.WRAP(new FunctionOverloadInstance("max", getCommonQueryResultType(environment), new ArrayList<>(), FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
-    }
     return environment.state.globals.findExtension(this, name);
-  }
-
-  private TyType getCommonQueryResultType(Environment environment) {
-    return new TyNativeMaybe(TypeBehavior.ReadOnlyNativeValue, null, null, new TokenizedItem<>(getEmbeddedType(environment))).withPosition(this);
-  }
-
-  @Override
-  public TyType getEmbeddedType(Environment environment) {
-    return new TyNativePair(TypeBehavior.ReadOnlyNativeValue, null, null, null, environment.rules.Resolve(domainType, false), null, environment.rules.Resolve(rangeType, false), null);
   }
 }

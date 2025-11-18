@@ -109,7 +109,11 @@ public class GridLookup extends Expression {
       boolean good1 = environment.rules.CanTypeAStoreTypeB(domainType, typeArg1, StorageTweak.None, false);
       boolean good2 = environment.rules.CanTypeAStoreTypeB(domainType, typeArg2, StorageTweak.None, false);
       if (good1 && good2) {
-        resultType = gridType.getRangeType(environment);
+        if (RuleSetGrid.IsNativeGrid(environment, typeExpr)) {
+          resultType = new TyNativeMaybe(TypeBehavior.ReadWriteWithSetGet, null, null, new TokenizedItem<>(gridType.getRangeType(environment))).withPosition(this);
+        } else {
+          resultType = gridType.getRangeType(environment);
+        }
       }
     }
     return resultType;

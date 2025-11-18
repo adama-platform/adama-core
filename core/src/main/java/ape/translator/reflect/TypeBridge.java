@@ -24,12 +24,16 @@
 package ape.translator.reflect;
 
 import ape.runtime.natives.*;
+import ape.runtime.reactives.RxBoolean;
+import ape.runtime.reactives.RxGrid;
 import ape.translator.tree.types.natives.*;
 import ape.runtime.natives.*;
 import ape.translator.tree.common.TokenizedItem;
 import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.TypeBehavior;
 import ape.translator.tree.types.natives.*;
+import ape.translator.tree.types.reactive.TyReactiveBoolean;
+import ape.translator.tree.types.reactive.TyReactiveMap;
 
 /** convert a known java type into an Adama type */
 public class TypeBridge {
@@ -110,6 +114,13 @@ public class TypeBridge {
       TyType subTypeDomain = getAdamaSubType("NtMap<>::Domain", hiddenTypes[0]);
       TyType subTypeRange = getAdamaSubType("NtMap<>::Range", hiddenTypes[1]);
       return new TyNativeMap(TypeBehavior.ReadOnlyNativeValue, null, null, null, subTypeDomain, null, subTypeRange, null);
+    } else if (NtGrid.class == x) {
+      if (hiddenTypes == null || hiddenTypes.length != 2) {
+        throw new RuntimeException("NtGrid<> requires two hidden types");
+      }
+      TyType subTypeDomain = getAdamaSubType("NtMap<>::Domain", hiddenTypes[0]);
+      TyType subTypeRange = getAdamaSubType("NtMap<>::Range", hiddenTypes[1]);
+      return new TyNativeGrid(TypeBehavior.ReadOnlyNativeValue, null, null, null, subTypeDomain, null, subTypeRange, null);
     }
     throw new RuntimeException("can't find:" + x.toString());
   }

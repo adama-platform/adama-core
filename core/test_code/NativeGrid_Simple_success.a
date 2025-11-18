@@ -1,0 +1,27 @@
+public int sz;
+
+public bool h_0_0;
+public bool h_1_1;
+
+@construct {
+  grid<int, bool> dungeon;
+  dungeon[0, 0] = true;
+  dungeon[0, 1] = true;
+  sz = dungeon.size();
+  h_0_0 = dungeon.has(0, 0);
+  h_1_1 = dungeon.has(1, 1);
+  dungeon.transpose();
+}
+
+function foo() -> grid<int, bool> {
+  grid<int, bool> dungeon;
+  dungeon[0, 0] = true;
+  dungeon[0, 1] = true;
+  return dungeon;
+}
+
+public formula test_d_grid = foo();
+public formula test_d_grid_r = foo().rotate(2);
+public formula test_d_grid_t = foo().translate(10, 10);
+public formula test_d_grid_r_smash = foo().rotate(3).smash();
+public formula mz = Mazes.basic_v0(100000, 60, 50, 1000, 3, 8, 2);

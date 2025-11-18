@@ -1,0 +1,14 @@
+record Player {
+  public int id;
+  public principal who;
+}
+
+table<Player> _players;
+
+procedure get_player_id(principal me) -> int {
+  if ((iterate _players where who == me)[0] as me) {
+    return me.id;
+  }
+  return -1;
+}
+
