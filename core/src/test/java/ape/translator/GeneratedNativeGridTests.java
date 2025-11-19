@@ -26,48 +26,893 @@ package ape.translator;
 import org.junit.Test;
 
 public class GeneratedNativeGridTests extends GeneratedBase {
-  private String cached_MergeIntoRx_1 = null;
-  private String get_MergeIntoRx_1() {
-    if (cached_MergeIntoRx_1 != null) {
-      return cached_MergeIntoRx_1;
+  private String cached_Flatten_1 = null;
+  private String get_Flatten_1() {
+    if (cached_Flatten_1 != null) {
+      return cached_Flatten_1;
     }
-    cached_MergeIntoRx_1 = generateTestOutput(true, "MergeIntoRx_1", "./test_code/NativeGrid_MergeIntoRx_success.a");
-    return cached_MergeIntoRx_1;
+    cached_Flatten_1 = generateTestOutput(true, "Flatten_1", "./test_code/NativeGrid_Flatten_success.a");
+    return cached_Flatten_1;
+  }
+
+  @Test
+  public void testFlattenEmission() {
+    assertEmissionGood(get_Flatten_1());
+  }
+
+  @Test
+  public void testFlattenSuccess() {
+    assertLivePass(get_Flatten_1());
+  }
+
+  @Test
+  public void testFlattenNoFormatException() {
+    assertNoFormatException(get_Flatten_1());
+  }
+
+  @Test
+  public void testFlattenGoodWillHappy() {
+    assertGoodWillHappy(get_Flatten_1());
+  }
+
+  @Test
+  public void testFlattenExceptionFree() {
+    assertExceptionFree(get_Flatten_1());
+  }
+
+  @Test
+  public void testFlattenTODOFree() {
+    assertTODOFree(get_Flatten_1());
+  }
+
+  @Test
+  public void stable_Flatten_1() {
+    String live = get_Flatten_1();
+    StringBuilder gold = new StringBuilder();
+    gold.append("Path:NativeGrid_Flatten_success.a");
+    gold.append("\n--EMISSION-----------------------------------------");
+    gold.append("\nEmission Success, Yay");
+    gold.append("\n=FORMAT===================================================");
+    gold.append("\npublic int m_x;");
+    gold.append("\npublic int m_y;");
+    gold.append("\npublic int w;");
+    gold.append("\npublic int h;");
+    gold.append("\n@construct {");
+    gold.append("\n  grid<int, bool> dungeon;");
+    gold.append("\n  dungeon[1, 4] = true;");
+    gold.append("\n  dungeon[2, 1] = true;");
+    gold.append("\n  m_x = dungeon.minX();");
+    gold.append("\n  m_y = dungeon.minX();");
+    gold.append("\n  w = dungeon.width();");
+    gold.append("\n  h = dungeon.height();");
+    gold.append("\n}");
+    gold.append("\nfunction foo() -> grid<int, bool> {");
+    gold.append("\n  grid<int, bool> dungeon;");
+    gold.append("\n  dungeon[0, 0] = false;");
+    gold.append("\n  dungeon[0, 5] = false;");
+    gold.append("\n  dungeon[1, 1] = true;");
+    gold.append("\n  return dungeon;");
+    gold.append("\n}");
+    gold.append("\npublic formula test_d_grid = foo();");
+    gold.append("\npublic formula test_d_grid_sz = test_d_grid.size();");
+    gold.append("\npublic formula test_d_grid_flat = test_d_grid.flatten(true);");
+    gold.append("\n");
+    gold.append("\n==========================================================");
+    gold.append("\n--ISSUES-------------------------------------------");
+    gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.Pair;");
+    gold.append("\nimport ape.runtime.async.*;");
+    gold.append("\nimport ape.runtime.contracts.*;");
+    gold.append("\nimport ape.runtime.delta.*;");
+    gold.append("\nimport ape.runtime.exceptions.*;");
+    gold.append("\nimport ape.runtime.graph.*;");
+    gold.append("\nimport ape.runtime.index.*;");
+    gold.append("\nimport ape.runtime.json.*;");
+    gold.append("\nimport ape.runtime.natives.*;");
+    gold.append("\nimport ape.runtime.natives.algo.*;");
+    gold.append("\nimport ape.runtime.natives.lists.*;");
+    gold.append("\nimport ape.runtime.ops.*;");
+    gold.append("\nimport ape.runtime.reactives.*;");
+    gold.append("\nimport ape.runtime.reactives.tables.*;");
+    gold.append("\nimport ape.runtime.remote.*;");
+    gold.append("\nimport ape.runtime.remote.client.*;");
+    gold.append("\nimport ape.runtime.remote.replication.*;");
+    gold.append("\nimport ape.runtime.stdlib.*;");
+    gold.append("\nimport ape.runtime.sys.*;");
+    gold.append("\nimport ape.runtime.sys.cron.*;");
+    gold.append("\nimport ape.runtime.sys.web.*;");
+    gold.append("\nimport ape.runtime.text.*;");
+    gold.append("\nimport java.time.*;");
+    gold.append("\nimport java.util.function.Consumer;");
+    gold.append("\nimport java.util.function.Function;");
+    gold.append("\nimport java.util.ArrayList;");
+    gold.append("\nimport java.util.Comparator;");
+    gold.append("\nimport java.util.HashMap;");
+    gold.append("\nimport java.util.HashSet;");
+    gold.append("\nimport java.util.Map;");
+    gold.append("\nimport java.util.Set;");
+    gold.append("\npublic class Flatten_1 extends LivingDocument {");
+    gold.append("\n  private final RxInt32 m_x;");
+    gold.append("\n  private final RxInt32 m_y;");
+    gold.append("\n  private final RxInt32 w;");
+    gold.append("\n  private final RxInt32 h;");
+    gold.append("\n  private final RxLazy<NtGrid<Integer,Boolean>> test_d_grid;");
+    gold.append("\n  private final RxLazy<Integer> test_d_grid_sz;");
+    gold.append("\n  private final RxLazy<boolean[]> test_d_grid_flat;");
+    gold.append("\n  @Override");
+    gold.append("\n  public long __memory() {");
+    gold.append("\n    long __sum = super.__memory() + 2176;");
+    gold.append("\n    __sum += m_x.__memory();");
+    gold.append("\n    __sum += m_y.__memory();");
+    gold.append("\n    __sum += w.__memory();");
+    gold.append("\n    __sum += h.__memory();");
+    gold.append("\n    __sum += test_d_grid.__memory();");
+    gold.append("\n    __sum += test_d_grid_sz.__memory();");
+    gold.append("\n    __sum += test_d_grid_flat.__memory();");
+    gold.append("\n    return __sum;");
+    gold.append("\n  }");
+    gold.append("\n  public Flatten_1(DocumentMonitor __monitor) {");
+    gold.append("\n    super(__monitor);");
+    gold.append("\n    m_x = new RxInt32(this, 0);");
+    gold.append("\n    m_y = new RxInt32(this, 0);");
+    gold.append("\n    w = new RxInt32(this, 0);");
+    gold.append("\n    h = new RxInt32(this, 0);");
+    gold.append("\n    test_d_grid = new RxLazy<NtGrid<Integer,Boolean>>(this, () -> (NtGrid<Integer,Boolean>)(__FUNC_0_foo()), null);");
+    gold.append("\n    test_d_grid_sz = new RxLazy<Integer>(this, () -> (Integer)(test_d_grid.get().size()), null);");
+    gold.append("\n    test_d_grid_flat = new RxLazy<boolean[]>(this, () -> (boolean[])(LibGrid.flatten(test_d_grid.get(), true)), null);");
+    gold.append("\n    test_d_grid.__subscribe(test_d_grid_sz);");
+    gold.append("\n    test_d_grid.__subscribe(test_d_grid_flat);");
+    gold.append("\n    __goodwillBudget = 100000;");
+    gold.append("\n    __goodwillLimitOfBudget = 100000;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __settle(Set<Integer> __viewers) {");
+    gold.append("\n    test_d_grid.__settle(__viewers);");
+    gold.append("\n    test_d_grid_sz.__settle(__viewers);");
+    gold.append("\n    test_d_grid_flat.__settle(__viewers);");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __insert(JsonStreamReader __reader) {");
+    gold.append("\n    if (__reader.startObject()) {");
+    gold.append("\n      while(__reader.notEndOfObject()) {");
+    gold.append("\n        String __fieldName = __reader.fieldName();");
+    gold.append("\n        switch (__fieldName) {");
+    gold.append("\n          case \"m_x\":");
+    gold.append("\n            m_x.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"m_y\":");
+    gold.append("\n            m_y.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"w\":");
+    gold.append("\n            w.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"h\":");
+    gold.append("\n            h.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__state\":");
+    gold.append("\n            __state.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__constructed\":");
+    gold.append("\n            __constructed.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__next_time\":");
+    gold.append("\n            __next_time.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__last_expire_time\":");
+    gold.append("\n            __last_expire_time.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__blocked\":");
+    gold.append("\n            __blocked.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__seq\":");
+    gold.append("\n            __seq.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__entropy\":");
+    gold.append("\n            __entropy.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_future_id\":");
+    gold.append("\n            __auto_future_id.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__connection_id\":");
+    gold.append("\n            __connection_id.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__message_id\":");
+    gold.append("\n            __message_id.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__time\":");
+    gold.append("\n            __time.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__timezone\":");
+    gold.append("\n            __timezone.__insert(__reader);");
+    gold.append("\n            __timezoneCachedZoneId = ZoneId.of(__timezone.get());");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_table_row_id\":");
+    gold.append("\n            __auto_table_row_id.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_gen\":");
+    gold.append("\n            __auto_gen.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_cache_id\":");
+    gold.append("\n            __auto_cache_id.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__cache\":");
+    gold.append("\n            __cache.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__webTaskId\":");
+    gold.append("\n            __webTaskId.__insert(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__dedupe\":");
+    gold.append("\n            __hydrateDeduper(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__clients\":");
+    gold.append("\n            __hydrateClients(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__messages\":");
+    gold.append("\n            __hydrateMessages(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__enqueued\":");
+    gold.append("\n            __hydrateEnqueuedTaskManager(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__webqueue\":");
+    gold.append("\n            __hydrateWebQueue(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__timeouts\":");
+    gold.append("\n            __hydrateTimeouts(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__replication\":");
+    gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          default:");
+    gold.append("\n            __reader.skipValue();");
+    gold.append("\n        }");
+    gold.append("\n      }");
+    gold.append("\n    }");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __patch(JsonStreamReader __reader) {");
+    gold.append("\n    if (__reader.startObject()) {");
+    gold.append("\n      while(__reader.notEndOfObject()) {");
+    gold.append("\n        String __fieldName = __reader.fieldName();");
+    gold.append("\n        switch (__fieldName) {");
+    gold.append("\n          case \"m_x\":");
+    gold.append("\n            m_x.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"m_y\":");
+    gold.append("\n            m_y.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"w\":");
+    gold.append("\n            w.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"h\":");
+    gold.append("\n            h.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__state\":");
+    gold.append("\n            __state.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__constructed\":");
+    gold.append("\n            __constructed.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__next_time\":");
+    gold.append("\n            __next_time.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__last_expire_time\":");
+    gold.append("\n            __last_expire_time.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__blocked\":");
+    gold.append("\n            __blocked.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__seq\":");
+    gold.append("\n            __seq.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__entropy\":");
+    gold.append("\n            __entropy.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_future_id\":");
+    gold.append("\n            __auto_future_id.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__connection_id\":");
+    gold.append("\n            __connection_id.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__message_id\":");
+    gold.append("\n            __message_id.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__time\":");
+    gold.append("\n            __time.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__timezone\":");
+    gold.append("\n            __timezone.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_table_row_id\":");
+    gold.append("\n            __auto_table_row_id.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_gen\":");
+    gold.append("\n            __auto_gen.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__auto_cache_id\":");
+    gold.append("\n            __auto_cache_id.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__cache\":");
+    gold.append("\n            __cache.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__webTaskId\":");
+    gold.append("\n            __webTaskId.__patch(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__dedupe\":");
+    gold.append("\n            __hydrateDeduper(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__clients\":");
+    gold.append("\n            __hydrateClients(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__messages\":");
+    gold.append("\n            __hydrateMessages(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__enqueued\":");
+    gold.append("\n            __hydrateEnqueuedTaskManager(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__webqueue\":");
+    gold.append("\n            __hydrateWebQueue(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__timeouts\":");
+    gold.append("\n            __hydrateTimeouts(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__replication\":");
+    gold.append("\n            __hydrateReplicationEngine(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          case \"__log\":");
+    gold.append("\n            __hydrateLog(__reader);");
+    gold.append("\n            break;");
+    gold.append("\n          default:");
+    gold.append("\n            __reader.skipValue();");
+    gold.append("\n        }");
+    gold.append("\n      }");
+    gold.append("\n    }");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __dump(JsonStreamWriter __writer) {");
+    gold.append("\n    __writer.beginObject();");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__snapshot\");");
+    gold.append("\n    __writer.writeString(__space + \"/\" + __key);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"m_x\");");
+    gold.append("\n    m_x.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"m_y\");");
+    gold.append("\n    m_y.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"w\");");
+    gold.append("\n    w.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"h\");");
+    gold.append("\n    h.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__state\");");
+    gold.append("\n    __state.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__constructed\");");
+    gold.append("\n    __constructed.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__next_time\");");
+    gold.append("\n    __next_time.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__last_expire_time\");");
+    gold.append("\n    __last_expire_time.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__blocked\");");
+    gold.append("\n    __blocked.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__seq\");");
+    gold.append("\n    __seq.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__entropy\");");
+    gold.append("\n    __entropy.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__auto_future_id\");");
+    gold.append("\n    __auto_future_id.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__connection_id\");");
+    gold.append("\n    __connection_id.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__message_id\");");
+    gold.append("\n    __message_id.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__time\");");
+    gold.append("\n    __time.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__timezone\");");
+    gold.append("\n    __timezone.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__auto_table_row_id\");");
+    gold.append("\n    __auto_table_row_id.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__auto_gen\");");
+    gold.append("\n    __auto_gen.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__auto_cache_id\");");
+    gold.append("\n    __auto_cache_id.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__cache\");");
+    gold.append("\n    __cache.__dump(__writer);");
+    gold.append("\n    __writer.writeObjectFieldIntro(\"__webTaskId\");");
+    gold.append("\n    __webTaskId.__dump(__writer);");
+    gold.append("\n    __dumpDeduper(__writer);");
+    gold.append("\n    __dumpClients(__writer);");
+    gold.append("\n    __dumpMessages(__writer);");
+    gold.append("\n    __dumpEnqueuedTaskManager(__writer);");
+    gold.append("\n    __dumpTimeouts(__writer);");
+    gold.append("\n    __dumpWebQueue(__writer);");
+    gold.append("\n    __dumpReplicationEngine(__writer);");
+    gold.append("\n    __writer.endObject();");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __commit(String __name, JsonStreamWriter __forward, JsonStreamWriter __reverse) {");
+    gold.append("\n    __state.__commit(\"__state\", __forward, __reverse);");
+    gold.append("\n    __constructed.__commit(\"__constructed\", __forward, __reverse);");
+    gold.append("\n    __next_time.__commit(\"__next_time\", __forward, __reverse);");
+    gold.append("\n    __last_expire_time.__commit(\"__last_expire_time\", __forward, __reverse);");
+    gold.append("\n    __blocked.__commit(\"__blocked\", __forward, __reverse);");
+    gold.append("\n    __seq.__commit(\"__seq\", __forward, __reverse);");
+    gold.append("\n    __entropy.__commit(\"__entropy\", __forward, __reverse);");
+    gold.append("\n    __auto_future_id.__commit(\"__auto_future_id\", __forward, __reverse);");
+    gold.append("\n    __connection_id.__commit(\"__connection_id\", __forward, __reverse);");
+    gold.append("\n    __message_id.__commit(\"__message_id\", __forward, __reverse);");
+    gold.append("\n    __time.__commit(\"__time\", __forward, __reverse);");
+    gold.append("\n    __timezone.__commit(\"__timezone\", __forward, __reverse);");
+    gold.append("\n    __auto_table_row_id.__commit(\"__auto_table_row_id\", __forward, __reverse);");
+    gold.append("\n    __auto_gen.__commit(\"__auto_gen\", __forward, __reverse);");
+    gold.append("\n    __auto_cache_id.__commit(\"__auto_cache_id\", __forward, __reverse);");
+    gold.append("\n    __cache.__commit(\"__cache\", __forward, __reverse);");
+    gold.append("\n    __webTaskId.__commit(\"__webTaskId\", __forward, __reverse);");
+    gold.append("\n    m_x.__commit(\"m_x\", __forward, __reverse);");
+    gold.append("\n    m_y.__commit(\"m_y\", __forward, __reverse);");
+    gold.append("\n    w.__commit(\"w\", __forward, __reverse);");
+    gold.append("\n    h.__commit(\"h\", __forward, __reverse);");
+    gold.append("\n    /* root */");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __revert() {");
+    gold.append("\n    __state.__revert();");
+    gold.append("\n    __constructed.__revert();");
+    gold.append("\n    __next_time.__revert();");
+    gold.append("\n    __last_expire_time.__revert();");
+    gold.append("\n    __blocked.__revert();");
+    gold.append("\n    __seq.__revert();");
+    gold.append("\n    __entropy.__revert();");
+    gold.append("\n    __auto_future_id.__revert();");
+    gold.append("\n    __connection_id.__revert();");
+    gold.append("\n    __message_id.__revert();");
+    gold.append("\n    __time.__revert();");
+    gold.append("\n    __timezone.__revert();");
+    gold.append("\n    __webTaskId.__revert();");
+    gold.append("\n    m_x.__revert();");
+    gold.append("\n    m_y.__revert();");
+    gold.append("\n    w.__revert();");
+    gold.append("\n    h.__revert();");
+    gold.append("\n    /* root */");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __writeRxReport(JsonStreamWriter __writer) { }");
+    gold.append("\n  public class DeltaPrivacyCache {");
+    gold.append("\n    public DeltaPrivacyCache(NtPrincipal __who) {}");
+    gold.append("\n  }");
+    gold.append("\n  private class DeltaFlatten_1 implements DeltaNode {");
+    gold.append("\n    private DInt32 __dm_x;");
+    gold.append("\n    private DInt32 __dm_y;");
+    gold.append("\n    private DInt32 __dw;");
+    gold.append("\n    private DInt32 __dh;");
+    gold.append("\n    private int __gtest_d_grid;");
+    gold.append("\n    private DGrid<Integer,DBoolean> __dtest_d_grid;");
+    gold.append("\n    private int __gtest_d_grid_sz;");
+    gold.append("\n    private DInt32 __dtest_d_grid_sz;");
+    gold.append("\n    private int __gtest_d_grid_flat;");
+    gold.append("\n    private DList<DBoolean> __dtest_d_grid_flat;");
+    gold.append("\n    private boolean __emitted;");
+    gold.append("\n    private DeltaFlatten_1() {");
+    gold.append("\n      __dm_x = new DInt32();");
+    gold.append("\n      __dm_y = new DInt32();");
+    gold.append("\n      __dw = new DInt32();");
+    gold.append("\n      __dh = new DInt32();");
+    gold.append("\n      __gtest_d_grid = -1;");
+    gold.append("\n      __dtest_d_grid = new DGrid<Integer,DBoolean>();");
+    gold.append("\n      __gtest_d_grid_sz = -1;");
+    gold.append("\n      __dtest_d_grid_sz = new DInt32();");
+    gold.append("\n      __gtest_d_grid_flat = -1;");
+    gold.append("\n      __dtest_d_grid_flat = new DList<DBoolean>();");
+    gold.append("\n      __emitted = false;");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public long __memory() {");
+    gold.append("\n      long __sum = 40;");
+    gold.append("\n      __sum += __dm_x.__memory();");
+    gold.append("\n      __sum += __dm_y.__memory();");
+    gold.append("\n      __sum += __dw.__memory();");
+    gold.append("\n      __sum += __dh.__memory();");
+    gold.append("\n      __sum += __dtest_d_grid.__memory();");
+    gold.append("\n      __sum += __dtest_d_grid_sz.__memory();");
+    gold.append("\n      __sum += __dtest_d_grid_flat.__memory();");
+    gold.append("\n      return __sum;");
+    gold.append("\n    }");
+    gold.append("\n    public boolean show(Flatten_1 __item, PrivateLazyDeltaWriter __writer) {");
+    gold.append("\n      DeltaPrivacyCache __policy_cache = new DeltaPrivacyCache(__writer.who);");
+    gold.append("\n      __writer.setCacheObject(__policy_cache);");
+    gold.append("\n      __code_cost += 7;");
+    gold.append("\n      PrivateLazyDeltaWriter __obj = __writer.planObject();");
+    gold.append("\n      __obj.manifest();");
+    gold.append("\n      __dm_x.show(__item.m_x.get(), __obj.planField(\"m_x\"));");
+    gold.append("\n      __dm_y.show(__item.m_y.get(), __obj.planField(\"m_y\"));");
+    gold.append("\n      __dw.show(__item.w.get(), __obj.planField(\"w\"));");
+    gold.append("\n      __dh.show(__item.h.get(), __obj.planField(\"h\"));");
+    gold.append("\n      if (__gtest_d_grid != __item.test_d_grid.getGeneration()) {");
+    gold.append("\n        {");
+    gold.append("\n          PrivateLazyDeltaWriter __map1 = __obj.planField(\"test_d_grid\").planObject();");
+    gold.append("\n          DGrid<Integer,DBoolean> __deltaMap2 = __dtest_d_grid;");
+    gold.append("\n          DGrid<Integer,DBoolean>.Walk __deltaMapWalker3 = __deltaMap2.begin();");
+    gold.append("\n          for (NtPair<Pair<Integer>,Boolean> __mapEntry4 : __item.test_d_grid.get()) {");
+    gold.append("\n            DBoolean __deltaElement5 = __deltaMapWalker3.next(__mapEntry4.key, () -> new DBoolean());");
+    gold.append("\n            __deltaElement5.show(__mapEntry4.value, __map1.planField(\"\" + __mapEntry4.key));");
+    gold.append("\n          }");
+    gold.append("\n          __deltaMapWalker3.end(__map1);");
+    gold.append("\n          __map1.end();");
+    gold.append("\n        }");
+    gold.append("\n        __gtest_d_grid = __item.test_d_grid.getGeneration();");
+    gold.append("\n      }");
+    gold.append("\n      if (__gtest_d_grid_sz != __item.test_d_grid_sz.getGeneration()) {");
+    gold.append("\n        __dtest_d_grid_sz.show(__item.test_d_grid_sz.get(), __obj.planField(\"test_d_grid_sz\"));");
+    gold.append("\n        __gtest_d_grid_sz = __item.test_d_grid_sz.getGeneration();");
+    gold.append("\n      }");
+    gold.append("\n      if (__gtest_d_grid_flat != __item.test_d_grid_flat.getGeneration()) {");
+    gold.append("\n        {");
+    gold.append("\n          DList<DBoolean> __deltaList7 = __dtest_d_grid_flat;");
+    gold.append("\n          PrivateLazyDeltaWriter __list6 = __obj.planField(\"test_d_grid_flat\").planObject();");
+    gold.append("\n          int __index10 = 0;");
+    gold.append("\n          for (Boolean __listElement8 : __item.test_d_grid_flat.get()) {");
+    gold.append("\n            DBoolean __deltaElement9 = __deltaList7.getPrior(__index10, () -> new DBoolean());");
+    gold.append("\n            __deltaElement9.show(__listElement8, __list6.planField(__index10));");
+    gold.append("\n            __index10++;");
+    gold.append("\n          }");
+    gold.append("\n          __deltaList7.rectify(__index10, __list6);");
+    gold.append("\n          __list6.end();");
+    gold.append("\n        }");
+    gold.append("\n        __gtest_d_grid_flat = __item.test_d_grid_flat.getGeneration();");
+    gold.append("\n      }");
+    gold.append("\n      if (__obj.end()) {");
+    gold.append("\n        __emitted = true;");
+    gold.append("\n      }");
+    gold.append("\n      return true;");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public void clear() {");
+    gold.append("\n      __dm_x.clear();");
+    gold.append("\n      __dm_y.clear();");
+    gold.append("\n      __dw.clear();");
+    gold.append("\n      __dh.clear();");
+    gold.append("\n      __dtest_d_grid.clear();");
+    gold.append("\n      __dtest_d_grid_sz.clear();");
+    gold.append("\n      __dtest_d_grid_flat.clear();");
+    gold.append("\n      __code_cost += 7;");
+    gold.append("\n    }");
+    gold.append("\n    public void hide(PrivateLazyDeltaWriter __writer) {");
+    gold.append("\n      if (__emitted) {");
+    gold.append("\n        clear();");
+    gold.append("\n        __emitted = false;");
+    gold.append("\n        __writer.writeNull();");
+    gold.append("\n      }");
+    gold.append("\n    }");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public Set<String> __get_intern_strings() {");
+    gold.append("\n    HashSet<String> __interns = new HashSet<>();");
+    gold.append("\n    __interns.add(\"\");");
+    gold.append("\n    __interns.add(\"?\");");
+    gold.append("\n    return __interns;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public PrivateView __createPrivateView(NtPrincipal __who, Perspective ___perspective) {");
+    gold.append("\n    Flatten_1 __self = this;");
+    gold.append("\n    DeltaFlatten_1 __state = new DeltaFlatten_1();");
+    gold.append("\n    RTx__ViewerType __viewerState = new RTx__ViewerType();");
+    gold.append("\n    int __viewId = __genViewId();");
+    gold.append("\n    return new PrivateView(__viewId, __who, ___perspective) {");
+    gold.append("\n      @Override");
+    gold.append("\n      public long memory() {");
+    gold.append("\n        return __state.__memory();");
+    gold.append("\n      }");
+    gold.append("\n      @Override");
+    gold.append("\n      public void dumpViewer(JsonStreamWriter __writer) {");
+    gold.append("\n        __viewerState.__writeOut(__writer);");
+    gold.append("\n      }");
+    gold.append("\n      @Override");
+    gold.append("\n      public void ingest(JsonStreamReader __reader) {");
+    gold.append("\n        __viewerState.__ingest(__reader);");
+    gold.append("\n      }");
+    gold.append("\n      @Override");
+    gold.append("\n      public void update(JsonStreamWriter __writer) {");
+    gold.append("\n        __state.show(__self, PrivateLazyDeltaWriter.bind(__who, __writer, __viewerState, __viewId));");
+    gold.append("\n      }");
+    gold.append("\n    };");
+    gold.append("\n  }");
+    gold.append("\n  private static class RTx__ViewerType extends NtMessageBase {");
+    gold.append("\n    private final RTx__ViewerType __this;");
+    gold.append("\n    @Override");
+    gold.append("\n    public long __memory() { return 64; }");
+    gold.append("\n    public void __reset() {}");
+    gold.append("\n    public void __hash(HashBuilder __hash) {");
+    gold.append("\n      __hash.hashString(\"anonymous\");");
+    gold.append("\n    }");
+    gold.append("\n    private static String[] __INDEX_COLUMNS___ViewerType = new String[] {};");
+    gold.append("\n    @Override");
+    gold.append("\n    public String[] __getIndexColumns() {");
+    gold.append("\n      return __INDEX_COLUMNS___ViewerType;");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public int[] __getIndexValues() {");
+    gold.append("\n      return new int[] {};");
+    gold.append("\n    }");
+    gold.append("\n    private RTx__ViewerType(JsonStreamReader __reader) {");
+    gold.append("\n      __this = this;");
+    gold.append("\n      __ingest(__reader);");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public void __ingest(JsonStreamReader __reader) {");
+    gold.append("\n      __reader.mustSkipObject();");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public void __writeOut(JsonStreamWriter __writer) {");
+    gold.append("\n      __writer.beginObject();");
+    gold.append("\n      __writer.endObject();");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public void __parsed() throws AbortMessageException {}");
+    gold.append("\n    private RTx__ViewerType() { __this = this; }");
+    gold.append("\n  }");
+    gold.append("\n  private class DeltaRTx__ViewerType implements DeltaNode {");
+    gold.append("\n    private boolean __emitted;");
+    gold.append("\n    private DeltaRTx__ViewerType() {");
+    gold.append("\n      __emitted = false;");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public long __memory() {");
+    gold.append("\n      long __sum = 40;");
+    gold.append("\n      return __sum;");
+    gold.append("\n    }");
+    gold.append("\n    public void show(RTx__ViewerType __item, PrivateLazyDeltaWriter __writer) {");
+    gold.append("\n      PrivateLazyDeltaWriter __obj = __writer.planObject();");
+    gold.append("\n      if (__obj.end()) {");
+    gold.append("\n        __emitted = true;");
+    gold.append("\n      }");
+    gold.append("\n    }");
+    gold.append("\n    @Override");
+    gold.append("\n    public void clear() {");
+    gold.append("\n      __code_cost += 0;");
+    gold.append("\n    }");
+    gold.append("\n    public void hide(PrivateLazyDeltaWriter __writer) {");
+    gold.append("\n      if (__emitted) {");
+    gold.append("\n        clear();");
+    gold.append("\n        __emitted = false;");
+    gold.append("\n        __writer.writeNull();");
+    gold.append("\n      }");
+    gold.append("\n    }");
+    gold.append("\n  }");
+    gold.append("\n  private NtGrid<Integer,Boolean> __FUNC_0_foo() {");
+    gold.append("\n    __code_cost += 6;");
+    gold.append("\n    __track(0);");
+    gold.append("\n    NtGrid<Integer,Boolean> dungeon = new NtGrid<Integer,Boolean>();");
+    gold.append("\n    __track(1);");
+    gold.append("\n    dungeon.lookup(0, 0).set(false);");
+    gold.append("\n    __track(2);");
+    gold.append("\n    dungeon.lookup(0, 5).set(false);");
+    gold.append("\n    __track(3);");
+    gold.append("\n    dungeon.lookup(1, 1).set(true);");
+    gold.append("\n    __track(4);");
+    gold.append("\n    return dungeon;");
+    gold.append("\n  }");
+    gold.append("\n  public static HashMap<String, HashMap<String, Object>> __services() {");
+    gold.append("\n    HashMap<String, HashMap<String, Object>> __map = new HashMap<>();");
+    gold.append("\n    return __map;");
+    gold.append("\n  }");
+    gold.append("\n  public static void __create_generic_clients(ServiceRegistry __registry, HeaderDecryptor decryptor) throws Exception {}");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __link(ServiceRegistry __registry) {}");
+    gold.append("\n  @Override");
+    gold.append("\n  public Service __findService(String __name) { return null; }");
+    gold.append("\n  @Override");
+    gold.append("\n  public String __getViewStateFilter() {");
+    gold.append("\n    return \"[]\";");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected boolean __is_direct_channel(String channel) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected void __handle_direct(CoreRequestContext context, String channel, Object __message) throws AbortMessageException {");
+    gold.append("\n    return;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected void __route(AsyncTask task) {");
+    gold.append("\n    return;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected Object __parse_message(String channel, JsonStreamReader __reader) {");
+    gold.append("\n    __reader.skipValue();");
+    gold.append("\n    return NtMessageBase.NULL;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected void __reset_future_queues() {");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public String __metrics() { return \"{}\"; }");
+    gold.append("\n  @Override");
+    gold.append("\n  public String __traffic(CoreRequestContext __context) { return \"\"; }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __debug(JsonStreamWriter __writer) {}");
+    gold.append("\n  @Override");
+    gold.append("\n  protected long __computeGraphs() { return 0; }");
+    gold.append("\n  @Override");
+    gold.append("\n  public boolean __open_channel(String name) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public String __auth(CoreRequestContext __context, String username, String password) {");
+    gold.append("\n    return null;");
+    gold.append("\n  }");
+    gold.append("\n  public AuthResponse __authpipe(CoreRequestContext __context, String __message) {");
+    gold.append("\n    return null;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __password(CoreRequestContext __context, String __pw) {}");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __make_cron_progress() {}");
+    gold.append("\n  @Override");
+    gold.append("\n  protected void __reset_cron() {}");
+    gold.append("\n  @Override");
+    gold.append("\n  public Long __predict_cron_wake_time() { return null; }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected WebResponse __get_internal(CoreRequestContext __context, WebGet __request) throws AbortMessageException {");
+    gold.append("\n    WebPath __path = new WebPath(__request.uri);");
+    gold.append("\n    return null;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected WebResponse __put_internal(CoreRequestContext __context, WebPut __request) throws AbortMessageException {");
+    gold.append("\n    WebPath __path = new WebPath(__request.uri);");
+    gold.append("\n    return null;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected WebResponse __delete_internal(CoreRequestContext __context, WebDelete __request) throws AbortMessageException {");
+    gold.append("\n    WebPath __path = new WebPath(__request.uri);");
+    gold.append("\n    return null;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public WebResponse __options(CoreRequestContext __context, WebGet __request) {");
+    gold.append("\n    WebPath __path = new WebPath(__request.uri);");
+    gold.append("\n    return null;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected void __invoke_label(String __new_state) {}");
+    gold.append("\n  public static boolean __onCanCreate(CoreRequestContext __context) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  public static boolean __onCanInvent(CoreRequestContext __context) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  public static boolean __onCanSendWhileDisconnected(CoreRequestContext __context) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __onLoad() {}");
+    gold.append("\n  @Override");
+    gold.append("\n  public boolean __onCanAssetAttached(CoreRequestContext __cvalue) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __onAssetAttached(CoreRequestContext __cvalue, NtAsset __pvalue) {}");
+    gold.append("\n  @Override");
+    gold.append("\n  public boolean __delete(CoreRequestContext __cvalue) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public boolean __onConnected(CoreRequestContext __cvalue) {");
+    gold.append("\n    return false;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __onDisconnected(CoreRequestContext __cvalue) {}");
+    gold.append("\n  public static HashMap<String, Object> __config() {");
+    gold.append("\n    HashMap<String, Object> __map = new HashMap<>();");
+    gold.append("\n    return __map;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public String[] __getTests() {");
+    gold.append("\n    return new String[] {};");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public void __test(TestReportBuilder report, String testName) throws AbortMessageException {}");
+    gold.append("\n  private void __construct_0(CoreRequestContext __context, NtPrincipal __who, NtMessageBase __object) {");
+    gold.append("\n    __code_cost += 8;");
+    gold.append("\n    __track(0);");
+    gold.append("\n    NtGrid<Integer,Boolean> dungeon = new NtGrid<Integer,Boolean>();");
+    gold.append("\n    __track(1);");
+    gold.append("\n    dungeon.lookup(1, 4).set(true);");
+    gold.append("\n    __track(2);");
+    gold.append("\n    dungeon.lookup(2, 1).set(true);");
+    gold.append("\n    __track(3);");
+    gold.append("\n    m_x.set(dungeon.minX());");
+    gold.append("\n    __track(4);");
+    gold.append("\n    m_y.set(dungeon.minX());");
+    gold.append("\n    __track(5);");
+    gold.append("\n    w.set(dungeon.width());");
+    gold.append("\n    __track(6);");
+    gold.append("\n    h.set(dungeon.height());");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected NtMessageBase __parse_construct_arg(JsonStreamReader __reader) {");
+    gold.append("\n    __reader.skipValue();");
+    gold.append("\n    return NtMessageBase.NULL;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  protected void __construct_intern(CoreRequestContext __context, NtMessageBase __object) {");
+    gold.append("\n    __construct_0(__context, __context.who, __object);");
+    gold.append("\n  }");
+    gold.append("\n  /* end of file */");
+    gold.append("\n}");
+    gold.append("\n");
+    gold.append("\n--=[LivingDocumentFactory COMPILING]=---");
+    gold.append("\n--=[LivingDocumentFactory MADE]=---");
+    gold.append("\n--REFLECTION RESULTS-------------------------------------");
+    gold.append("\n{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{\"m_x\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"m_y\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"w\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"h\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"computed\":false,\"privacy\":\"public\"},\"test_d_grid\":{\"type\":{\"nature\":\"native_grid\",\"domain\":{\"nature\":\"native_value\",\"type\":\"int\"},\"range\":{\"nature\":\"native_value\",\"type\":\"bool\"}},\"computed\":true,\"privacy\":\"public\"},\"test_d_grid_sz\":{\"type\":{\"nature\":\"native_value\",\"type\":\"int\"},\"computed\":true,\"privacy\":\"public\"},\"test_d_grid_flat\":{\"type\":{\"nature\":\"native_array\",\"type\":{\"nature\":\"native_value\",\"type\":\"bool\"}},\"computed\":true,\"privacy\":\"public\"}}},\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true,\"fields\":{}}},\"channels\":{},\"channels-privacy\":{},\"constructors\":[],\"labels\":[]}");
+    gold.append("\n--JAVA RUNNING-------------------------------------");
+    gold.append("\n{\"command\":\"construct\",\"timestamp\":\"0\",\"who\":{\"agent\":\"?\",\"authority\":\"?\"},\"arg\":{},\"entropy\":\"0\",\"key\":\"0\",\"origin\":\"origin\",\"ip\":\"ip\"}-->{\"__constructed\":true,\"__entropy\":\"-4962768465676381896\",\"m_x\":1,\"m_y\":1,\"w\":2,\"h\":4,\"__seq\":1} need:false in:0");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"25\"}-->{\"__seq\":2,\"__entropy\":\"4804307197456638271\",\"__time\":\"25\"} need:false in:0");
+    gold.append("\nCPU:8");
+    gold.append("\nMEMORY:2872");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
+    gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
+    gold.append("\n+ NO_ONE DELTA:{\"data\":{\"m_x\":1,\"m_y\":1,\"w\":2,\"h\":4,\"test_d_grid\":{\"0:0\":false,\"1:1\":true,\"0:5\":false},\"test_d_grid_sz\":3,\"test_d_grid_flat\":{\"0\":false,\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"6\":true,\"7\":true,\"8\":true,\"9\":true,\"10\":false,\"11\":true,\"@s\":12}},\"seq\":3}");
+    gold.append("\nNO_ONE|FAILURE:184333");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
+    gold.append("\nRANDO: CREATED PRIVATE VIEW");
+    gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
+    gold.append("\n+ RANDO DELTA:{\"data\":{\"m_x\":1,\"m_y\":1,\"w\":2,\"h\":4,\"test_d_grid\":{\"0:0\":false,\"1:1\":true,\"0:5\":false},\"test_d_grid_sz\":3,\"test_d_grid_flat\":{\"0\":false,\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"6\":true,\"7\":true,\"8\":true,\"9\":true,\"10\":false,\"11\":true,\"@s\":12}},\"seq\":4}");
+    gold.append("\nRANDO|FAILURE:184333");
+    gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
+    gold.append("\nRANDO|SUCCESS:5");
+    gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
+    gold.append("\n+ RANDO DELTA:{\"seq\":5}");
+    gold.append("\nMEMORY:5166");
+    gold.append("\n--JAVA RESULTS-------------------------------------");
+    gold.append("\n{\"__snapshot\":\"0/0\",\"m_x\":1,\"m_y\":1,\"w\":2,\"h\":4,\"__state\":\"\",\"__constructed\":true,\"__next_time\":\"0\",\"__last_expire_time\":\"0\",\"__blocked\":false,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__auto_future_id\":0,\"__connection_id\":0,\"__message_id\":0,\"__time\":\"100\",\"__timezone\":\"UTC\",\"__auto_table_row_id\":0,\"__auto_gen\":0,\"__auto_cache_id\":0,\"__cache\":{},\"__webTaskId\":0,\"__webqueue\":{},\"__replication\":{}}");
+    gold.append("\n--DUMP RESULTS-------------------------------------");
+    gold.append("\n{}");
+    gold.append("\n--METRIC RESULTS-----------------------------------");
+    gold.append("\n{\"__snapshot\":\"0/0\",\"m_x\":1,\"m_y\":1,\"w\":2,\"h\":4,\"__state\":\"\",\"__constructed\":true,\"__next_time\":\"0\",\"__last_expire_time\":\"0\",\"__blocked\":false,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__auto_future_id\":0,\"__connection_id\":0,\"__message_id\":0,\"__time\":\"100\",\"__timezone\":\"UTC\",\"__auto_table_row_id\":0,\"__auto_gen\":0,\"__auto_cache_id\":0,\"__cache\":{},\"__webTaskId\":0,\"__webqueue\":{},\"__replication\":{}}");
+    gold.append("\n{\"__snapshot\":\"0/0\",\"m_x\":1,\"m_y\":1,\"w\":2,\"h\":4,\"__state\":\"\",\"__constructed\":true,\"__next_time\":\"0\",\"__last_expire_time\":\"0\",\"__blocked\":false,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__auto_future_id\":0,\"__connection_id\":0,\"__message_id\":0,\"__time\":\"100\",\"__timezone\":\"UTC\",\"__auto_table_row_id\":0,\"__auto_gen\":0,\"__auto_cache_id\":0,\"__cache\":{},\"__webTaskId\":0,\"__webqueue\":{},\"__replication\":{}}");
+    gold.append("\n--JAVA TEST RESULTS--------------------------------");
+    gold.append("\n");
+    gold.append("\nSuccess");
+    assertStable(live, gold);
+  }
+  private String cached_MergeIntoRx_2 = null;
+  private String get_MergeIntoRx_2() {
+    if (cached_MergeIntoRx_2 != null) {
+      return cached_MergeIntoRx_2;
+    }
+    cached_MergeIntoRx_2 = generateTestOutput(true, "MergeIntoRx_2", "./test_code/NativeGrid_MergeIntoRx_success.a");
+    return cached_MergeIntoRx_2;
   }
 
   @Test
   public void testMergeIntoRxEmission() {
-    assertEmissionGood(get_MergeIntoRx_1());
+    assertEmissionGood(get_MergeIntoRx_2());
   }
 
   @Test
   public void testMergeIntoRxSuccess() {
-    assertLivePass(get_MergeIntoRx_1());
+    assertLivePass(get_MergeIntoRx_2());
   }
 
   @Test
   public void testMergeIntoRxNoFormatException() {
-    assertNoFormatException(get_MergeIntoRx_1());
+    assertNoFormatException(get_MergeIntoRx_2());
   }
 
   @Test
   public void testMergeIntoRxGoodWillHappy() {
-    assertGoodWillHappy(get_MergeIntoRx_1());
+    assertGoodWillHappy(get_MergeIntoRx_2());
   }
 
   @Test
   public void testMergeIntoRxExceptionFree() {
-    assertExceptionFree(get_MergeIntoRx_1());
+    assertExceptionFree(get_MergeIntoRx_2());
   }
 
   @Test
   public void testMergeIntoRxTODOFree() {
-    assertTODOFree(get_MergeIntoRx_1());
+    assertTODOFree(get_MergeIntoRx_2());
   }
 
   @Test
-  public void stable_MergeIntoRx_1() {
-    String live = get_MergeIntoRx_1();
+  public void stable_MergeIntoRx_2() {
+    String live = get_MergeIntoRx_2();
     StringBuilder gold = new StringBuilder();
     gold.append("Path:NativeGrid_MergeIntoRx_success.a");
     gold.append("\n--EMISSION-----------------------------------------");
@@ -116,7 +961,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\nimport java.util.HashSet;");
     gold.append("\nimport java.util.Map;");
     gold.append("\nimport java.util.Set;");
-    gold.append("\npublic class MergeIntoRx_1 extends LivingDocument {");
+    gold.append("\npublic class MergeIntoRx_2 extends LivingDocument {");
     gold.append("\n  private final RxGrid<Integer,RxBoolean> dungeon;");
     gold.append("\n  @Override");
     gold.append("\n  public long __memory() {");
@@ -124,7 +969,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n    __sum += dungeon.__memory();");
     gold.append("\n    return __sum;");
     gold.append("\n  }");
-    gold.append("\n  public MergeIntoRx_1(DocumentMonitor __monitor) {");
+    gold.append("\n  public MergeIntoRx_2(DocumentMonitor __monitor) {");
     gold.append("\n    super(__monitor);");
     gold.append("\n    dungeon = new RxGrid<Integer,RxBoolean>(this, new RxMap.IntegerCodec<RxBoolean>() { @Override public RxBoolean make(RxParent __parent) { return new RxBoolean(__parent, false);} });");
     gold.append("\n    __goodwillBudget = 100000;");
@@ -410,10 +1255,10 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n  public class DeltaPrivacyCache {");
     gold.append("\n    public DeltaPrivacyCache(NtPrincipal __who) {}");
     gold.append("\n  }");
-    gold.append("\n  private class DeltaMergeIntoRx_1 implements DeltaNode {");
+    gold.append("\n  private class DeltaMergeIntoRx_2 implements DeltaNode {");
     gold.append("\n    private DGrid<Integer,DBoolean> __ddungeon;");
     gold.append("\n    private boolean __emitted;");
-    gold.append("\n    private DeltaMergeIntoRx_1() {");
+    gold.append("\n    private DeltaMergeIntoRx_2() {");
     gold.append("\n      __ddungeon = new DGrid<Integer,DBoolean>();");
     gold.append("\n      __emitted = false;");
     gold.append("\n    }");
@@ -423,7 +1268,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n      __sum += __ddungeon.__memory();");
     gold.append("\n      return __sum;");
     gold.append("\n    }");
-    gold.append("\n    public boolean show(MergeIntoRx_1 __item, PrivateLazyDeltaWriter __writer) {");
+    gold.append("\n    public boolean show(MergeIntoRx_2 __item, PrivateLazyDeltaWriter __writer) {");
     gold.append("\n      DeltaPrivacyCache __policy_cache = new DeltaPrivacyCache(__writer.who);");
     gold.append("\n      __writer.setCacheObject(__policy_cache);");
     gold.append("\n      __code_cost += 1;");
@@ -467,8 +1312,8 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n  }");
     gold.append("\n  @Override");
     gold.append("\n  public PrivateView __createPrivateView(NtPrincipal __who, Perspective ___perspective) {");
-    gold.append("\n    MergeIntoRx_1 __self = this;");
-    gold.append("\n    DeltaMergeIntoRx_1 __state = new DeltaMergeIntoRx_1();");
+    gold.append("\n    MergeIntoRx_2 __self = this;");
+    gold.append("\n    DeltaMergeIntoRx_2 __state = new DeltaMergeIntoRx_2();");
     gold.append("\n    RTx__ViewerType __viewerState = new RTx__ViewerType();");
     gold.append("\n    int __viewId = __genViewId();");
     gold.append("\n    return new PrivateView(__viewId, __who, ___perspective) {");
@@ -731,48 +1576,48 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\nSuccess");
     assertStable(live, gold);
   }
-  private String cached_Simple_2 = null;
-  private String get_Simple_2() {
-    if (cached_Simple_2 != null) {
-      return cached_Simple_2;
+  private String cached_Simple_3 = null;
+  private String get_Simple_3() {
+    if (cached_Simple_3 != null) {
+      return cached_Simple_3;
     }
-    cached_Simple_2 = generateTestOutput(true, "Simple_2", "./test_code/NativeGrid_Simple_success.a");
-    return cached_Simple_2;
+    cached_Simple_3 = generateTestOutput(true, "Simple_3", "./test_code/NativeGrid_Simple_success.a");
+    return cached_Simple_3;
   }
 
   @Test
   public void testSimpleEmission() {
-    assertEmissionGood(get_Simple_2());
+    assertEmissionGood(get_Simple_3());
   }
 
   @Test
   public void testSimpleSuccess() {
-    assertLivePass(get_Simple_2());
+    assertLivePass(get_Simple_3());
   }
 
   @Test
   public void testSimpleNoFormatException() {
-    assertNoFormatException(get_Simple_2());
+    assertNoFormatException(get_Simple_3());
   }
 
   @Test
   public void testSimpleGoodWillHappy() {
-    assertGoodWillHappy(get_Simple_2());
+    assertGoodWillHappy(get_Simple_3());
   }
 
   @Test
   public void testSimpleExceptionFree() {
-    assertExceptionFree(get_Simple_2());
+    assertExceptionFree(get_Simple_3());
   }
 
   @Test
   public void testSimpleTODOFree() {
-    assertTODOFree(get_Simple_2());
+    assertTODOFree(get_Simple_3());
   }
 
   @Test
-  public void stable_Simple_2() {
-    String live = get_Simple_2();
+  public void stable_Simple_3() {
+    String live = get_Simple_3();
     StringBuilder gold = new StringBuilder();
     gold.append("Path:NativeGrid_Simple_success.a");
     gold.append("\n--EMISSION-----------------------------------------");
@@ -836,7 +1681,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\nimport java.util.HashSet;");
     gold.append("\nimport java.util.Map;");
     gold.append("\nimport java.util.Set;");
-    gold.append("\npublic class Simple_2 extends LivingDocument {");
+    gold.append("\npublic class Simple_3 extends LivingDocument {");
     gold.append("\n  private final RxInt32 sz;");
     gold.append("\n  private final RxBoolean h_0_0;");
     gold.append("\n  private final RxBoolean h_1_1;");
@@ -858,7 +1703,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n    __sum += mz.__memory();");
     gold.append("\n    return __sum;");
     gold.append("\n  }");
-    gold.append("\n  public Simple_2(DocumentMonitor __monitor) {");
+    gold.append("\n  public Simple_3(DocumentMonitor __monitor) {");
     gold.append("\n    super(__monitor);");
     gold.append("\n    sz = new RxInt32(this, 0);");
     gold.append("\n    h_0_0 = new RxBoolean(this, false);");
@@ -1175,7 +2020,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n  public class DeltaPrivacyCache {");
     gold.append("\n    public DeltaPrivacyCache(NtPrincipal __who) {}");
     gold.append("\n  }");
-    gold.append("\n  private class DeltaSimple_2 implements DeltaNode {");
+    gold.append("\n  private class DeltaSimple_3 implements DeltaNode {");
     gold.append("\n    private DInt32 __dsz;");
     gold.append("\n    private DBoolean __dh_0_0;");
     gold.append("\n    private DBoolean __dh_1_1;");
@@ -1190,7 +2035,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n    private int __gmz;");
     gold.append("\n    private DGrid<Integer,DBoolean> __dmz;");
     gold.append("\n    private boolean __emitted;");
-    gold.append("\n    private DeltaSimple_2() {");
+    gold.append("\n    private DeltaSimple_3() {");
     gold.append("\n      __dsz = new DInt32();");
     gold.append("\n      __dh_0_0 = new DBoolean();");
     gold.append("\n      __dh_1_1 = new DBoolean();");
@@ -1219,7 +2064,7 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n      __sum += __dmz.__memory();");
     gold.append("\n      return __sum;");
     gold.append("\n    }");
-    gold.append("\n    public boolean show(Simple_2 __item, PrivateLazyDeltaWriter __writer) {");
+    gold.append("\n    public boolean show(Simple_3 __item, PrivateLazyDeltaWriter __writer) {");
     gold.append("\n      DeltaPrivacyCache __policy_cache = new DeltaPrivacyCache(__writer.who);");
     gold.append("\n      __writer.setCacheObject(__policy_cache);");
     gold.append("\n      __code_cost += 8;");
@@ -1332,8 +2177,8 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\n  }");
     gold.append("\n  @Override");
     gold.append("\n  public PrivateView __createPrivateView(NtPrincipal __who, Perspective ___perspective) {");
-    gold.append("\n    Simple_2 __self = this;");
-    gold.append("\n    DeltaSimple_2 __state = new DeltaSimple_2();");
+    gold.append("\n    Simple_3 __self = this;");
+    gold.append("\n    DeltaSimple_3 __state = new DeltaSimple_3();");
     gold.append("\n    RTx__ViewerType __viewerState = new RTx__ViewerType();");
     gold.append("\n    int __viewId = __genViewId();");
     gold.append("\n    return new PrivateView(__viewId, __who, ___perspective) {");
@@ -1587,18 +2432,18 @@ public class GeneratedNativeGridTests extends GeneratedBase {
     gold.append("\nMEMORY:2892");
     gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"50\"}-->{\"__seq\":3,\"__entropy\":\"-1034601897293430941\",\"__time\":\"50\"} need:false in:0");
     gold.append("\nNO_ONE: CREATED PRIVATE VIEW");
-    gold.append("\n+ NO_ONE DELTA:{\"data\":{\"sz\":2,\"h_0_0\":true,\"h_1_1\":false,\"test_d_grid\":{\"0:0\":true,\"0:1\":true},\"test_d_grid_r\":{\"0:-1\":true,\"0:0\":true,\"0:1\":true},\"test_d_grid_t\":{\"0:0\":true,\"10:10\":true,\"0:1\":true,\"10:11\":true},\"test_d_grid_r_smash\":{\"1:0\":true,\"0:0\":true,\"0:1\":true},\"mz\":{\"35:4\":true,\"34:37\":true,\"34:39\":true,\"34:40\":true,\"34:41\":true,\"34:42\":true,\"34:43\":true,\"34:44\":true,\"34:45\":true,\"34:46\":true,\"34:47\":true,\"35:16\":true,\"35:23\":true,\"35:30\":true,\"35:31\":true,\"35:32\":true,\"35:33\":true,\"36:4\":true,\"35:37\":true,\"35:39\":true,\"35:40\":true,\"35:41\":true,\"35:42\":true,\"35:43\":true,\"35:44\":true,\"35:45\":true,\"35:46\":true,\"35:47\":true,\"36:16\":true,\"36:23\":true,\"36:30\":true,\"36:31\":true,\"36:32\":true,\"36:33\":true,\"37:4\":true,\"36:37\":true,\"36:39\":true,\"36:40\":true,\"36:41\":true,\"36:42\":true,\"36:43\":true,\"36:44\":true,\"36:45\":true,\"36:46\":true,\"36:47\":true,\"37:16\":true,\"37:23\":true,\"37:30\":true,\"37:31\":true,\"37:32\":true,\"37:33\":true,\"37:34\":true,\"38:4\":true,\"37:35\":true,\"37:36\":true,\"37:37\":true,\"37:38\":true,\"37:39\":true,\"37:40\":true,\"37:41\":true,\"37:42\":true,\"37:43\":true,\"37:44\":true,\"37:45\":true,\"37:46\":true,\"37:47\":true,\"38:16\":true,\"38:21\":true,\"38:22\":true,\"38:23\":true,\"38:24\":true,\"38:30\":true,\"38:31\":true,\"38:32\":true,\"38:33\":true,\"39:4\":true,\"38:37\":true,\"38:39\":true,\"38:40\":true,\"38:41\":true,\"38:42\":true,\"38:43\":true,\"38:44\":true,\"38:45\":true,\"38:46\":true,\"38:47\":true,\"39:16\":true,\"39:21\":true,\"39:22\":true,\"39:23\":true,\"39:24\":true,\"39:25\":true,\"39:26\":true,\"39:27\":true,\"39:28\":true,\"39:29\":true,\"39:30\":true,\"39:31\":true,\"39:32\":true,\"39:33\":true,\"40:3\":true,\"40:4\":true,\"40:5\":true,\"40:6\":true,\"39:37\":true,\"39:39\":true,\"39:40\":true,\"39:41\":true,\"39:42\":true,\"40:11\":true,\"39:43\":true,\"40:12\":true,\"39:44\":true,\"40:13\":true,\"39:45\":true,\"40:14\":true,\"39:46\":true,\"40:15\":true,\"39:47\":true,\"40:16\":true,\"40:17\":true,\"40:18\":true,\"40:19\":true,\"40:20\":true,\"40:21\":true,\"40:22\":true,\"40:23\":true,\"40:24\":true,\"40:30\":true,\"40:31\":true,\"40:32\":true,\"40:33\":true,\"41:3\":true,\"41:4\":true,\"41:5\":true,\"41:6\":true,\"40:37\":true,\"40:40\":true,\"41:11\":true,\"41:12\":true,\"41:13\":true,\"41:14\":true,\"41:15\":true,\"41:16\":true,\"41:17\":true,\"41:18\":true,\"41:21\":true,\"41:22\":true,\"41:23\":true,\"41:24\":true,\"41:31\":true,\"42:3\":true,\"42:4\":true,\"42:5\":true,\"42:6\":true,\"41:37\":true,\"41:40\":true,\"42:11\":true,\"42:12\":true,\"42:13\":true,\"42:14\":true,\"42:15\":true,\"42:16\":true,\"42:17\":true,\"42:18\":true,\"42:31\":true,\"43:3\":true,\"43:4\":true,\"43:5\":true,\"43:6\":true,\"42:37\":true,\"42:40\":true,\"43:11\":true,\"43:12\":true,\"43:13\":true,\"43:14\":true,\"43:15\":true,\"43:16\":true,\"43:17\":true,\"43:18\":true,\"43:31\":true,\"44:3\":true,\"44:4\":true,\"44:5\":true,\"44:6\":true,\"43:37\":true,\"44:7\":true,\"44:8\":true,\"43:40\":true,\"44:9\":true,\"44:10\":true,\"44:11\":true,\"44:12\":true,\"44:13\":true,\"44:14\":true,\"44:15\":true,\"44:16\":true,\"44:17\":true,\"44:18\":true,\"44:31\":true,\"45:3\":true,\"45:4\":true,\"45:5\":true,\"45:6\":true,\"44:37\":true,\"44:40\":true,\"45:11\":true,\"45:12\":true,\"45:13\":true,\"45:14\":true,\"45:15\":true,\"45:16\":true,\"45:17\":true,\"45:18\":true,\"45:31\":true,\"46:3\":true,\"46:4\":true,\"46:5\":true,\"46:6\":true,\"45:37\":true,\"45:40\":true,\"46:11\":true,\"46:12\":true,\"46:13\":true,\"46:14\":true,\"46:15\":true,\"46:16\":true,\"46:17\":true,\"46:18\":true,\"46:27\":true,\"46:28\":true,\"46:29\":true,\"46:30\":true,\"46:31\":true,\"46:32\":true,\"46:33\":true,\"47:3\":true,\"47:4\":true,\"47:5\":true,\"47:6\":true,\"46:37\":true,\"46:40\":true,\"47:11\":true,\"47:12\":true,\"47:13\":true,\"47:14\":true,\"47:15\":true,\"47:16\":true,\"47:17\":true,\"47:18\":true,\"47:27\":true,\"47:28\":true,\"47:29\":true,\"47:30\":true,\"47:31\":true,\"47:32\":true,\"47:33\":true,\"48:3\":true,\"48:4\":true,\"48:5\":true,\"47:37\":true,\"48:6\":true,\"47:38\":true,\"47:39\":true,\"47:40\":true,\"47:41\":true,\"47:42\":true,\"48:11\":true,\"48:12\":true,\"48:13\":true,\"48:14\":true,\"48:15\":true,\"48:16\":true,\"48:17\":true,\"48:18\":true,\"48:27\":true,\"48:28\":true,\"48:29\":true,\"48:30\":true,\"48:31\":true,\"48:32\":true,\"48:33\":true,\"48:34\":true,\"48:35\":true,\"48:36\":true,\"48:37\":true,\"48:38\":true,\"48:39\":true,\"48:40\":true,\"48:41\":true,\"48:42\":true,\"49:13\":true,\"49:27\":true,\"49:28\":true,\"49:29\":true,\"49:30\":true,\"49:31\":true,\"49:32\":true,\"49:33\":true,\"49:37\":true,\"49:38\":true,\"49:39\":true,\"49:40\":true,\"49:41\":true,\"49:42\":true,\"50:13\":true,\"50:27\":true,\"50:28\":true,\"50:29\":true,\"50:30\":true,\"50:31\":true,\"50:32\":true,\"50:33\":true,\"50:37\":true,\"50:38\":true,\"50:39\":true,\"51:8\":true,\"50:40\":true,\"51:9\":true,\"50:41\":true,\"51:10\":true,\"50:42\":true,\"51:11\":true,\"51:12\":true,\"51:13\":true,\"51:14\":true,\"51:15\":true,\"51:16\":true,\"51:37\":true,\"51:38\":true,\"51:39\":true,\"52:8\":true,\"51:40\":true,\"52:9\":true,\"51:41\":true,\"52:10\":true,\"51:42\":true,\"52:11\":true,\"52:12\":true,\"52:13\":true,\"52:14\":true,\"52:15\":true,\"52:16\":true,\"52:17\":true,\"52:18\":true,\"52:19\":true,\"52:20\":true,\"52:21\":true,\"52:22\":true,\"52:23\":true,\"52:24\":true,\"52:25\":true,\"52:26\":true,\"52:27\":true,\"52:28\":true,\"52:29\":true,\"52:30\":true,\"52:31\":true,\"52:32\":true,\"52:33\":true,\"52:34\":true,\"52:35\":true,\"52:36\":true,\"52:37\":true,\"52:38\":true,\"52:39\":true,\"53:8\":true,\"52:40\":true,\"53:9\":true,\"52:41\":true,\"53:10\":true,\"52:42\":true,\"53:11\":true,\"53:12\":true,\"53:13\":true,\"53:14\":true,\"53:15\":true,\"53:16\":true,\"53:37\":true,\"53:38\":true,\"53:39\":true,\"54:8\":true,\"53:40\":true,\"54:9\":true,\"53:41\":true,\"54:10\":true,\"53:42\":true,\"54:11\":true,\"54:12\":true,\"54:13\":true,\"54:14\":true,\"54:15\":true,\"54:16\":true,\"54:37\":true,\"54:38\":true,\"54:39\":true,\"55:8\":true,\"54:40\":true,\"55:9\":true,\"54:41\":true,\"55:10\":true,\"54:42\":true,\"55:11\":true,\"55:12\":true,\"55:13\":true,\"55:14\":true,\"55:15\":true,\"55:16\":true,\"56:8\":true,\"56:9\":true,\"56:10\":true,\"56:11\":true,\"56:12\":true,\"56:13\":true,\"56:14\":true,\"56:15\":true,\"56:16\":true,\"2:25\":true,\"2:26\":true,\"2:27\":true,\"2:28\":true,\"2:29\":true,\"2:30\":true,\"2:31\":true,\"3:25\":true,\"3:26\":true,\"3:27\":true,\"3:28\":true,\"3:29\":true,\"3:30\":true,\"3:31\":true,\"4:10\":true,\"3:41\":true,\"4:11\":true,\"3:42\":true,\"4:12\":true,\"3:43\":true,\"4:13\":true,\"3:44\":true,\"4:14\":true,\"4:15\":true,\"4:16\":true,\"4:17\":true,\"4:18\":true,\"4:25\":true,\"4:26\":true,\"4:27\":true,\"4:28\":true,\"4:29\":true,\"4:30\":true,\"4:31\":true,\"4:35\":true,\"4:36\":true,\"4:37\":true,\"4:38\":true,\"5:10\":true,\"4:41\":true,\"5:11\":true,\"4:42\":true,\"5:12\":true,\"4:43\":true,\"5:13\":true,\"4:44\":true,\"5:14\":true,\"5:15\":true,\"5:16\":true,\"5:17\":true,\"5:18\":true,\"5:25\":true,\"5:26\":true,\"5:27\":true,\"5:28\":true,\"5:29\":true,\"5:30\":true,\"5:31\":true,\"5:35\":true,\"5:36\":true,\"5:37\":true,\"5:38\":true,\"5:39\":true,\"5:40\":true,\"6:10\":true,\"5:41\":true,\"6:11\":true,\"5:42\":true,\"6:12\":true,\"5:43\":true,\"6:13\":true,\"5:44\":true,\"6:14\":true,\"6:15\":true,\"6:16\":true,\"6:17\":true,\"6:18\":true,\"6:25\":true,\"6:26\":true,\"6:27\":true,\"6:28\":true,\"6:29\":true,\"6:30\":true,\"6:31\":true,\"7:2\":true,\"7:3\":true,\"6:35\":true,\"7:4\":true,\"6:36\":true,\"7:5\":true,\"6:37\":true,\"7:6\":true,\"6:38\":true,\"7:7\":true,\"7:10\":true,\"6:41\":true,\"7:11\":true,\"6:42\":true,\"7:12\":true,\"6:43\":true,\"6:44\":true,\"7:16\":true,\"7:17\":true,\"7:18\":true,\"7:19\":true,\"7:20\":true,\"7:21\":true,\"7:22\":true,\"7:23\":true,\"7:24\":true,\"7:25\":true,\"7:26\":true,\"7:27\":true,\"7:28\":true,\"7:29\":true,\"7:30\":true,\"7:31\":true,\"7:32\":true,\"8:2\":true,\"7:33\":true,\"8:3\":true,\"7:34\":true,\"7:35\":true,\"8:4\":true,\"7:36\":true,\"8:5\":true,\"7:37\":true,\"8:6\":true,\"7:38\":true,\"8:7\":true,\"8:10\":true,\"8:11\":true,\"7:42\":true,\"8:12\":true,\"8:16\":true,\"8:17\":true,\"8:18\":true,\"8:25\":true,\"8:26\":true,\"8:27\":true,\"8:28\":true,\"8:29\":true,\"8:30\":true,\"8:31\":true,\"9:2\":true,\"9:3\":true,\"8:35\":true,\"9:4\":true,\"8:36\":true,\"9:5\":true,\"8:37\":true,\"9:6\":true,\"8:38\":true,\"9:7\":true,\"9:8\":true,\"9:9\":true,\"9:10\":true,\"9:11\":true,\"8:42\":true,\"9:12\":true,\"9:16\":true,\"9:17\":true,\"9:18\":true,\"9:25\":true,\"9:26\":true,\"9:27\":true,\"9:28\":true,\"9:29\":true,\"9:30\":true,\"9:31\":true,\"10:2\":true,\"10:3\":true,\"9:35\":true,\"10:4\":true,\"9:36\":true,\"10:5\":true,\"9:37\":true,\"10:6\":true,\"9:38\":true,\"10:7\":true,\"10:10\":true,\"10:11\":true,\"9:42\":true,\"10:12\":true,\"10:13\":true,\"10:14\":true,\"10:15\":true,\"10:16\":true,\"10:17\":true,\"10:18\":true,\"10:25\":true,\"10:26\":true,\"10:27\":true,\"10:28\":true,\"10:29\":true,\"10:30\":true,\"10:31\":true,\"11:2\":true,\"11:3\":true,\"10:35\":true,\"11:4\":true,\"10:36\":true,\"11:5\":true,\"10:37\":true,\"11:6\":true,\"10:38\":true,\"11:7\":true,\"11:10\":true,\"11:11\":true,\"10:42\":true,\"11:12\":true,\"11:13\":true,\"11:14\":true,\"11:15\":true,\"11:16\":true,\"11:17\":true,\"11:18\":true,\"11:31\":true,\"12:2\":true,\"12:3\":true,\"11:35\":true,\"12:4\":true,\"11:36\":true,\"12:5\":true,\"11:37\":true,\"12:6\":true,\"11:38\":true,\"12:7\":true,\"12:10\":true,\"12:11\":true,\"11:42\":true,\"12:12\":true,\"12:13\":true,\"12:14\":true,\"12:15\":true,\"12:16\":true,\"12:17\":true,\"12:18\":true,\"12:31\":true,\"13:2\":true,\"13:3\":true,\"12:35\":true,\"13:4\":true,\"12:36\":true,\"13:5\":true,\"12:37\":true,\"13:6\":true,\"12:38\":true,\"13:7\":true,\"12:42\":true,\"13:14\":true,\"13:31\":true,\"14:2\":true,\"14:3\":true,\"14:4\":true,\"14:5\":true,\"14:6\":true,\"13:37\":true,\"14:7\":true,\"13:41\":true,\"13:42\":true,\"13:43\":true,\"13:44\":true,\"14:14\":true,\"14:31\":true,\"15:2\":true,\"15:3\":true,\"15:4\":true,\"15:5\":true,\"15:6\":true,\"14:37\":true,\"15:7\":true,\"14:41\":true,\"14:42\":true,\"15:11\":true,\"14:43\":true,\"15:12\":true,\"14:44\":true,\"15:13\":true,\"15:14\":true,\"15:15\":true,\"15:16\":true,\"15:17\":true,\"15:18\":true,\"15:19\":true,\"15:31\":true,\"16:4\":true,\"15:37\":true,\"15:41\":true,\"15:42\":true,\"16:11\":true,\"15:43\":true,\"16:12\":true,\"15:44\":true,\"16:13\":true,\"16:14\":true,\"16:15\":true,\"16:16\":true,\"16:17\":true,\"16:18\":true,\"16:19\":true,\"16:31\":true,\"17:4\":true,\"16:37\":true,\"16:41\":true,\"16:42\":true,\"17:11\":true,\"16:43\":true,\"17:12\":true,\"16:44\":true,\"17:13\":true,\"17:14\":true,\"17:15\":true,\"17:16\":true,\"17:17\":true,\"17:18\":true,\"17:19\":true,\"18:0\":true,\"17:31\":true,\"18:1\":true,\"18:2\":true,\"18:3\":true,\"18:4\":true,\"18:5\":true,\"18:6\":true,\"17:37\":true,\"17:41\":true,\"17:42\":true,\"18:11\":true,\"17:43\":true,\"18:12\":true,\"17:44\":true,\"18:13\":true,\"18:17\":true,\"18:18\":true,\"18:19\":true,\"18:31\":true,\"19:0\":true,\"18:32\":true,\"19:1\":true,\"18:33\":true,\"19:2\":true,\"18:34\":true,\"19:3\":true,\"19:4\":true,\"18:35\":true,\"19:5\":true,\"18:36\":true,\"19:6\":true,\"18:37\":true,\"18:38\":true,\"19:7\":true,\"18:39\":true,\"19:8\":true,\"18:40\":true,\"19:9\":true,\"18:41\":true,\"19:10\":true,\"18:42\":true,\"19:11\":true,\"18:43\":true,\"19:12\":true,\"18:44\":true,\"19:13\":true,\"19:17\":true,\"19:18\":true,\"19:19\":true,\"19:31\":true,\"20:0\":true,\"19:32\":true,\"20:1\":true,\"19:33\":true,\"20:2\":true,\"19:34\":true,\"20:3\":true,\"20:4\":true,\"20:5\":true,\"20:6\":true,\"19:37\":true,\"19:41\":true,\"19:42\":true,\"20:11\":true,\"19:43\":true,\"20:12\":true,\"19:44\":true,\"20:13\":true,\"20:17\":true,\"20:18\":true,\"20:19\":true,\"20:31\":true,\"21:0\":true,\"20:32\":true,\"21:1\":true,\"20:33\":true,\"21:2\":true,\"20:34\":true,\"21:3\":true,\"21:4\":true,\"21:5\":true,\"21:6\":true,\"20:37\":true,\"21:11\":true,\"20:42\":true,\"21:12\":true,\"21:13\":true,\"21:14\":true,\"21:15\":true,\"21:16\":true,\"21:17\":true,\"21:18\":true,\"21:19\":true,\"21:31\":true,\"21:32\":true,\"21:33\":true,\"21:34\":true,\"22:3\":true,\"21:37\":true,\"22:11\":true,\"21:42\":true,\"22:12\":true,\"22:13\":true,\"22:14\":true,\"22:15\":true,\"22:16\":true,\"22:17\":true,\"22:18\":true,\"22:19\":true,\"22:31\":true,\"22:32\":true,\"22:33\":true,\"22:34\":true,\"23:3\":true,\"22:37\":true,\"23:11\":true,\"22:42\":true,\"23:12\":true,\"23:13\":true,\"23:14\":true,\"23:15\":true,\"23:16\":true,\"23:17\":true,\"23:18\":true,\"23:19\":true,\"23:20\":true,\"23:21\":true,\"23:22\":true,\"23:23\":true,\"23:24\":true,\"23:25\":true,\"23:26\":true,\"23:27\":true,\"23:31\":true,\"23:32\":true,\"23:33\":true,\"23:34\":true,\"24:3\":true,\"23:37\":true,\"23:42\":true,\"24:16\":true,\"24:23\":true,\"24:24\":true,\"24:25\":true,\"24:26\":true,\"24:27\":true,\"24:28\":true,\"24:29\":true,\"24:30\":true,\"24:31\":true,\"25:0\":true,\"24:32\":true,\"25:1\":true,\"24:33\":true,\"25:2\":true,\"24:34\":true,\"25:3\":true,\"25:4\":true,\"25:5\":true,\"25:6\":true,\"24:37\":true,\"25:7\":true,\"25:8\":true,\"24:41\":true,\"24:42\":true,\"24:43\":true,\"24:44\":true,\"25:16\":true,\"25:23\":true,\"25:24\":true,\"25:25\":true,\"25:26\":true,\"25:27\":true,\"25:31\":true,\"26:0\":true,\"25:32\":true,\"26:1\":true,\"25:33\":true,\"26:2\":true,\"25:34\":true,\"26:3\":true,\"26:4\":true,\"26:5\":true,\"26:6\":true,\"25:37\":true,\"26:7\":true,\"26:8\":true,\"25:41\":true,\"25:42\":true,\"25:43\":true,\"25:44\":true,\"26:15\":true,\"26:16\":true,\"26:17\":true,\"26:18\":true,\"26:23\":true,\"26:24\":true,\"26:25\":true,\"26:26\":true,\"26:27\":true,\"26:31\":true,\"27:0\":true,\"26:32\":true,\"27:1\":true,\"26:33\":true,\"27:2\":true,\"26:34\":true,\"27:3\":true,\"27:4\":true,\"27:5\":true,\"27:6\":true,\"26:37\":true,\"27:7\":true,\"27:8\":true,\"27:9\":true,\"26:41\":true,\"27:10\":true,\"26:42\":true,\"27:11\":true,\"26:43\":true,\"27:12\":true,\"26:44\":true,\"27:13\":true,\"27:14\":true,\"27:15\":true,\"27:16\":true,\"27:17\":true,\"27:18\":true,\"27:23\":true,\"27:24\":true,\"27:25\":true,\"27:26\":true,\"27:27\":true,\"28:0\":true,\"28:1\":true,\"27:32\":true,\"28:2\":true,\"28:3\":true,\"28:4\":true,\"28:5\":true,\"28:6\":true,\"27:37\":true,\"28:7\":true,\"28:8\":true,\"27:41\":true,\"27:42\":true,\"27:43\":true,\"27:44\":true,\"28:15\":true,\"28:16\":true,\"28:17\":true,\"28:18\":true,\"28:19\":true,\"28:20\":true,\"28:21\":true,\"28:22\":true,\"28:23\":true,\"28:24\":true,\"28:25\":true,\"28:26\":true,\"28:27\":true,\"28:32\":true,\"29:4\":true,\"28:37\":true,\"28:41\":true,\"28:42\":true,\"28:43\":true,\"28:44\":true,\"29:15\":true,\"29:16\":true,\"29:17\":true,\"29:18\":true,\"29:23\":true,\"29:24\":true,\"29:25\":true,\"29:26\":true,\"29:27\":true,\"29:32\":true,\"30:4\":true,\"29:37\":true,\"29:42\":true,\"30:15\":true,\"30:16\":true,\"30:17\":true,\"30:18\":true,\"30:23\":true,\"30:24\":true,\"30:25\":true,\"30:26\":true,\"30:27\":true,\"30:32\":true,\"31:4\":true,\"30:37\":true,\"30:42\":true,\"31:15\":true,\"31:16\":true,\"31:17\":true,\"31:18\":true,\"31:23\":true,\"31:24\":true,\"31:25\":true,\"31:26\":true,\"31:27\":true,\"31:32\":true,\"32:4\":true,\"31:37\":true,\"31:39\":true,\"31:40\":true,\"31:41\":true,\"31:42\":true,\"31:43\":true,\"31:44\":true,\"31:45\":true,\"31:46\":true,\"32:15\":true,\"31:47\":true,\"32:16\":true,\"32:17\":true,\"32:18\":true,\"32:23\":true,\"32:32\":true,\"33:4\":true,\"32:37\":true,\"32:39\":true,\"32:40\":true,\"32:41\":true,\"32:42\":true,\"32:43\":true,\"32:44\":true,\"32:45\":true,\"32:46\":true,\"33:15\":true,\"32:47\":true,\"33:16\":true,\"33:17\":true,\"33:18\":true,\"33:23\":true,\"33:32\":true,\"34:4\":true,\"33:37\":true,\"33:39\":true,\"33:40\":true,\"33:41\":true,\"33:42\":true,\"33:43\":true,\"33:44\":true,\"33:45\":true,\"33:46\":true,\"34:15\":true,\"33:47\":true,\"34:16\":true,\"34:17\":true,\"34:18\":true,\"34:23\":true,\"34:32\":true}},\"seq\":3}");
+    gold.append("\n+ NO_ONE DELTA:{\"data\":{\"sz\":2,\"h_0_0\":true,\"h_1_1\":false,\"test_d_grid\":{\"0:0\":true,\"0:1\":true},\"test_d_grid_r\":{\"0:-1\":true,\"0:0\":true,\"0:1\":true},\"test_d_grid_t\":{\"0:0\":true,\"10:10\":true,\"0:1\":true,\"10:11\":true},\"test_d_grid_r_smash\":{\"1:0\":true,\"0:0\":true,\"0:1\":true},\"mz\":{\"35:4\":false,\"34:37\":false,\"34:39\":false,\"34:40\":false,\"34:41\":false,\"34:42\":false,\"34:43\":false,\"34:44\":false,\"34:45\":false,\"34:46\":false,\"34:47\":false,\"35:16\":false,\"35:23\":false,\"35:30\":false,\"35:31\":false,\"35:32\":false,\"35:33\":false,\"36:4\":false,\"35:37\":false,\"35:39\":false,\"35:40\":false,\"35:41\":false,\"35:42\":false,\"35:43\":false,\"35:44\":false,\"35:45\":false,\"35:46\":false,\"35:47\":false,\"36:16\":false,\"36:23\":false,\"36:30\":false,\"36:31\":false,\"36:32\":false,\"36:33\":false,\"37:4\":false,\"36:37\":false,\"36:39\":false,\"36:40\":false,\"36:41\":false,\"36:42\":false,\"36:43\":false,\"36:44\":false,\"36:45\":false,\"36:46\":false,\"36:47\":false,\"37:16\":false,\"37:23\":false,\"37:30\":false,\"37:31\":false,\"37:32\":false,\"37:33\":false,\"37:34\":false,\"38:4\":false,\"37:35\":false,\"37:36\":false,\"37:37\":false,\"37:38\":false,\"37:39\":false,\"37:40\":false,\"37:41\":false,\"37:42\":false,\"37:43\":false,\"37:44\":false,\"37:45\":false,\"37:46\":false,\"37:47\":false,\"38:16\":false,\"38:21\":false,\"38:22\":false,\"38:23\":false,\"38:24\":false,\"38:30\":false,\"38:31\":false,\"38:32\":false,\"38:33\":false,\"39:4\":false,\"38:37\":false,\"38:39\":false,\"38:40\":false,\"38:41\":false,\"38:42\":false,\"38:43\":false,\"38:44\":false,\"38:45\":false,\"38:46\":false,\"38:47\":false,\"39:16\":false,\"39:21\":false,\"39:22\":false,\"39:23\":false,\"39:24\":false,\"39:25\":false,\"39:26\":false,\"39:27\":false,\"39:28\":false,\"39:29\":false,\"39:30\":false,\"39:31\":false,\"39:32\":false,\"39:33\":false,\"40:3\":false,\"40:4\":false,\"40:5\":false,\"40:6\":false,\"39:37\":false,\"39:39\":false,\"39:40\":false,\"39:41\":false,\"39:42\":false,\"40:11\":false,\"39:43\":false,\"40:12\":false,\"39:44\":false,\"40:13\":false,\"39:45\":false,\"40:14\":false,\"39:46\":false,\"40:15\":false,\"39:47\":false,\"40:16\":false,\"40:17\":false,\"40:18\":false,\"40:19\":false,\"40:20\":false,\"40:21\":false,\"40:22\":false,\"40:23\":false,\"40:24\":false,\"40:30\":false,\"40:31\":false,\"40:32\":false,\"40:33\":false,\"41:3\":false,\"41:4\":false,\"41:5\":false,\"41:6\":false,\"40:37\":false,\"40:40\":false,\"41:11\":false,\"41:12\":false,\"41:13\":false,\"41:14\":false,\"41:15\":false,\"41:16\":false,\"41:17\":false,\"41:18\":false,\"41:21\":false,\"41:22\":false,\"41:23\":false,\"41:24\":false,\"41:31\":false,\"42:3\":false,\"42:4\":false,\"42:5\":false,\"42:6\":false,\"41:37\":false,\"41:40\":false,\"42:11\":false,\"42:12\":false,\"42:13\":false,\"42:14\":false,\"42:15\":false,\"42:16\":false,\"42:17\":false,\"42:18\":false,\"42:31\":false,\"43:3\":false,\"43:4\":false,\"43:5\":false,\"43:6\":false,\"42:37\":false,\"42:40\":false,\"43:11\":false,\"43:12\":false,\"43:13\":false,\"43:14\":false,\"43:15\":false,\"43:16\":false,\"43:17\":false,\"43:18\":false,\"43:31\":false,\"44:3\":false,\"44:4\":false,\"44:5\":false,\"44:6\":false,\"43:37\":false,\"44:7\":false,\"44:8\":false,\"43:40\":false,\"44:9\":false,\"44:10\":false,\"44:11\":false,\"44:12\":false,\"44:13\":false,\"44:14\":false,\"44:15\":false,\"44:16\":false,\"44:17\":false,\"44:18\":false,\"44:31\":false,\"45:3\":false,\"45:4\":false,\"45:5\":false,\"45:6\":false,\"44:37\":false,\"44:40\":false,\"45:11\":false,\"45:12\":false,\"45:13\":false,\"45:14\":false,\"45:15\":false,\"45:16\":false,\"45:17\":false,\"45:18\":false,\"45:31\":false,\"46:3\":false,\"46:4\":false,\"46:5\":false,\"46:6\":false,\"45:37\":false,\"45:40\":false,\"46:11\":false,\"46:12\":false,\"46:13\":false,\"46:14\":false,\"46:15\":false,\"46:16\":false,\"46:17\":false,\"46:18\":false,\"46:27\":false,\"46:28\":false,\"46:29\":false,\"46:30\":false,\"46:31\":false,\"46:32\":false,\"46:33\":false,\"47:3\":false,\"47:4\":false,\"47:5\":false,\"47:6\":false,\"46:37\":false,\"46:40\":false,\"47:11\":false,\"47:12\":false,\"47:13\":false,\"47:14\":false,\"47:15\":false,\"47:16\":false,\"47:17\":false,\"47:18\":false,\"47:27\":false,\"47:28\":false,\"47:29\":false,\"47:30\":false,\"47:31\":false,\"47:32\":false,\"47:33\":false,\"48:3\":false,\"48:4\":false,\"48:5\":false,\"47:37\":false,\"48:6\":false,\"47:38\":false,\"47:39\":false,\"47:40\":false,\"47:41\":false,\"47:42\":false,\"48:11\":false,\"48:12\":false,\"48:13\":false,\"48:14\":false,\"48:15\":false,\"48:16\":false,\"48:17\":false,\"48:18\":false,\"48:27\":false,\"48:28\":false,\"48:29\":false,\"48:30\":false,\"48:31\":false,\"48:32\":false,\"48:33\":false,\"48:34\":false,\"48:35\":false,\"48:36\":false,\"48:37\":false,\"48:38\":false,\"48:39\":false,\"48:40\":false,\"48:41\":false,\"48:42\":false,\"49:13\":false,\"49:27\":false,\"49:28\":false,\"49:29\":false,\"49:30\":false,\"49:31\":false,\"49:32\":false,\"49:33\":false,\"49:37\":false,\"49:38\":false,\"49:39\":false,\"49:40\":false,\"49:41\":false,\"49:42\":false,\"50:13\":false,\"50:27\":false,\"50:28\":false,\"50:29\":false,\"50:30\":false,\"50:31\":false,\"50:32\":false,\"50:33\":false,\"50:37\":false,\"50:38\":false,\"50:39\":false,\"51:8\":false,\"50:40\":false,\"51:9\":false,\"50:41\":false,\"51:10\":false,\"50:42\":false,\"51:11\":false,\"51:12\":false,\"51:13\":false,\"51:14\":false,\"51:15\":false,\"51:16\":false,\"51:37\":false,\"51:38\":false,\"51:39\":false,\"52:8\":false,\"51:40\":false,\"52:9\":false,\"51:41\":false,\"52:10\":false,\"51:42\":false,\"52:11\":false,\"52:12\":false,\"52:13\":false,\"52:14\":false,\"52:15\":false,\"52:16\":false,\"52:17\":false,\"52:18\":false,\"52:19\":false,\"52:20\":false,\"52:21\":false,\"52:22\":false,\"52:23\":false,\"52:24\":false,\"52:25\":false,\"52:26\":false,\"52:27\":false,\"52:28\":false,\"52:29\":false,\"52:30\":false,\"52:31\":false,\"52:32\":false,\"52:33\":false,\"52:34\":false,\"52:35\":false,\"52:36\":false,\"52:37\":false,\"52:38\":false,\"52:39\":false,\"53:8\":false,\"52:40\":false,\"53:9\":false,\"52:41\":false,\"53:10\":false,\"52:42\":false,\"53:11\":false,\"53:12\":false,\"53:13\":false,\"53:14\":false,\"53:15\":false,\"53:16\":false,\"53:37\":false,\"53:38\":false,\"53:39\":false,\"54:8\":false,\"53:40\":false,\"54:9\":false,\"53:41\":false,\"54:10\":false,\"53:42\":false,\"54:11\":false,\"54:12\":false,\"54:13\":false,\"54:14\":false,\"54:15\":false,\"54:16\":false,\"54:37\":false,\"54:38\":false,\"54:39\":false,\"55:8\":false,\"54:40\":false,\"55:9\":false,\"54:41\":false,\"55:10\":false,\"54:42\":false,\"55:11\":false,\"55:12\":false,\"55:13\":false,\"55:14\":false,\"55:15\":false,\"55:16\":false,\"56:8\":false,\"56:9\":false,\"56:10\":false,\"56:11\":false,\"56:12\":false,\"56:13\":false,\"56:14\":false,\"56:15\":false,\"56:16\":false,\"59:0\":true,\"59:49\":true,\"0:0\":true,\"0:49\":true,\"2:25\":false,\"2:26\":false,\"2:27\":false,\"2:28\":false,\"2:29\":false,\"2:30\":false,\"2:31\":false,\"3:25\":false,\"3:26\":false,\"3:27\":false,\"3:28\":false,\"3:29\":false,\"3:30\":false,\"3:31\":false,\"4:10\":false,\"3:41\":false,\"4:11\":false,\"3:42\":false,\"4:12\":false,\"3:43\":false,\"4:13\":false,\"3:44\":false,\"4:14\":false,\"4:15\":false,\"4:16\":false,\"4:17\":false,\"4:18\":false,\"4:25\":false,\"4:26\":false,\"4:27\":false,\"4:28\":false,\"4:29\":false,\"4:30\":false,\"4:31\":false,\"4:35\":false,\"4:36\":false,\"4:37\":false,\"4:38\":false,\"5:10\":false,\"4:41\":false,\"5:11\":false,\"4:42\":false,\"5:12\":false,\"4:43\":false,\"5:13\":false,\"4:44\":false,\"5:14\":false,\"5:15\":false,\"5:16\":false,\"5:17\":false,\"5:18\":false,\"5:25\":false,\"5:26\":false,\"5:27\":false,\"5:28\":false,\"5:29\":false,\"5:30\":false,\"5:31\":false,\"5:35\":false,\"5:36\":false,\"5:37\":false,\"5:38\":false,\"5:39\":false,\"5:40\":false,\"6:10\":false,\"5:41\":false,\"6:11\":false,\"5:42\":false,\"6:12\":false,\"5:43\":false,\"6:13\":false,\"5:44\":false,\"6:14\":false,\"6:15\":false,\"6:16\":false,\"6:17\":false,\"6:18\":false,\"6:25\":false,\"6:26\":false,\"6:27\":false,\"6:28\":false,\"6:29\":false,\"6:30\":false,\"6:31\":false,\"7:2\":false,\"7:3\":false,\"6:35\":false,\"7:4\":false,\"6:36\":false,\"7:5\":false,\"6:37\":false,\"7:6\":false,\"6:38\":false,\"7:7\":false,\"7:10\":false,\"6:41\":false,\"7:11\":false,\"6:42\":false,\"7:12\":false,\"6:43\":false,\"6:44\":false,\"7:16\":false,\"7:17\":false,\"7:18\":false,\"7:19\":false,\"7:20\":false,\"7:21\":false,\"7:22\":false,\"7:23\":false,\"7:24\":false,\"7:25\":false,\"7:26\":false,\"7:27\":false,\"7:28\":false,\"7:29\":false,\"7:30\":false,\"7:31\":false,\"7:32\":false,\"8:2\":false,\"7:33\":false,\"8:3\":false,\"7:34\":false,\"7:35\":false,\"8:4\":false,\"7:36\":false,\"8:5\":false,\"7:37\":false,\"8:6\":false,\"7:38\":false,\"8:7\":false,\"8:10\":false,\"8:11\":false,\"7:42\":false,\"8:12\":false,\"8:16\":false,\"8:17\":false,\"8:18\":false,\"8:25\":false,\"8:26\":false,\"8:27\":false,\"8:28\":false,\"8:29\":false,\"8:30\":false,\"8:31\":false,\"9:2\":false,\"9:3\":false,\"8:35\":false,\"9:4\":false,\"8:36\":false,\"9:5\":false,\"8:37\":false,\"9:6\":false,\"8:38\":false,\"9:7\":false,\"9:8\":false,\"9:9\":false,\"9:10\":false,\"9:11\":false,\"8:42\":false,\"9:12\":false,\"9:16\":false,\"9:17\":false,\"9:18\":false,\"9:25\":false,\"9:26\":false,\"9:27\":false,\"9:28\":false,\"9:29\":false,\"9:30\":false,\"9:31\":false,\"10:2\":false,\"10:3\":false,\"9:35\":false,\"10:4\":false,\"9:36\":false,\"10:5\":false,\"9:37\":false,\"10:6\":false,\"9:38\":false,\"10:7\":false,\"10:10\":false,\"10:11\":false,\"9:42\":false,\"10:12\":false,\"10:13\":false,\"10:14\":false,\"10:15\":false,\"10:16\":false,\"10:17\":false,\"10:18\":false,\"10:25\":false,\"10:26\":false,\"10:27\":false,\"10:28\":false,\"10:29\":false,\"10:30\":false,\"10:31\":false,\"11:2\":false,\"11:3\":false,\"10:35\":false,\"11:4\":false,\"10:36\":false,\"11:5\":false,\"10:37\":false,\"11:6\":false,\"10:38\":false,\"11:7\":false,\"11:10\":false,\"11:11\":false,\"10:42\":false,\"11:12\":false,\"11:13\":false,\"11:14\":false,\"11:15\":false,\"11:16\":false,\"11:17\":false,\"11:18\":false,\"11:31\":false,\"12:2\":false,\"12:3\":false,\"11:35\":false,\"12:4\":false,\"11:36\":false,\"12:5\":false,\"11:37\":false,\"12:6\":false,\"11:38\":false,\"12:7\":false,\"12:10\":false,\"12:11\":false,\"11:42\":false,\"12:12\":false,\"12:13\":false,\"12:14\":false,\"12:15\":false,\"12:16\":false,\"12:17\":false,\"12:18\":false,\"12:31\":false,\"13:2\":false,\"13:3\":false,\"12:35\":false,\"13:4\":false,\"12:36\":false,\"13:5\":false,\"12:37\":false,\"13:6\":false,\"12:38\":false,\"13:7\":false,\"12:42\":false,\"13:14\":false,\"13:31\":false,\"14:2\":false,\"14:3\":false,\"14:4\":false,\"14:5\":false,\"14:6\":false,\"13:37\":false,\"14:7\":false,\"13:41\":false,\"13:42\":false,\"13:43\":false,\"13:44\":false,\"14:14\":false,\"14:31\":false,\"15:2\":false,\"15:3\":false,\"15:4\":false,\"15:5\":false,\"15:6\":false,\"14:37\":false,\"15:7\":false,\"14:41\":false,\"14:42\":false,\"15:11\":false,\"14:43\":false,\"15:12\":false,\"14:44\":false,\"15:13\":false,\"15:14\":false,\"15:15\":false,\"15:16\":false,\"15:17\":false,\"15:18\":false,\"15:19\":false,\"15:31\":false,\"16:4\":false,\"15:37\":false,\"15:41\":false,\"15:42\":false,\"16:11\":false,\"15:43\":false,\"16:12\":false,\"15:44\":false,\"16:13\":false,\"16:14\":false,\"16:15\":false,\"16:16\":false,\"16:17\":false,\"16:18\":false,\"16:19\":false,\"16:31\":false,\"17:4\":false,\"16:37\":false,\"16:41\":false,\"16:42\":false,\"17:11\":false,\"16:43\":false,\"17:12\":false,\"16:44\":false,\"17:13\":false,\"17:14\":false,\"17:15\":false,\"17:16\":false,\"17:17\":false,\"17:18\":false,\"17:19\":false,\"18:0\":false,\"17:31\":false,\"18:1\":false,\"18:2\":false,\"18:3\":false,\"18:4\":false,\"18:5\":false,\"18:6\":false,\"17:37\":false,\"17:41\":false,\"17:42\":false,\"18:11\":false,\"17:43\":false,\"18:12\":false,\"17:44\":false,\"18:13\":false,\"18:17\":false,\"18:18\":false,\"18:19\":false,\"18:31\":false,\"19:0\":false,\"18:32\":false,\"19:1\":false,\"18:33\":false,\"19:2\":false,\"18:34\":false,\"19:3\":false,\"19:4\":false,\"18:35\":false,\"19:5\":false,\"18:36\":false,\"19:6\":false,\"18:37\":false,\"18:38\":false,\"19:7\":false,\"18:39\":false,\"19:8\":false,\"18:40\":false,\"19:9\":false,\"18:41\":false,\"19:10\":false,\"18:42\":false,\"19:11\":false,\"18:43\":false,\"19:12\":false,\"18:44\":false,\"19:13\":false,\"19:17\":false,\"19:18\":false,\"19:19\":false,\"19:31\":false,\"20:0\":false,\"19:32\":false,\"20:1\":false,\"19:33\":false,\"20:2\":false,\"19:34\":false,\"20:3\":false,\"20:4\":false,\"20:5\":false,\"20:6\":false,\"19:37\":false,\"19:41\":false,\"19:42\":false,\"20:11\":false,\"19:43\":false,\"20:12\":false,\"19:44\":false,\"20:13\":false,\"20:17\":false,\"20:18\":false,\"20:19\":false,\"20:31\":false,\"21:0\":false,\"20:32\":false,\"21:1\":false,\"20:33\":false,\"21:2\":false,\"20:34\":false,\"21:3\":false,\"21:4\":false,\"21:5\":false,\"21:6\":false,\"20:37\":false,\"21:11\":false,\"20:42\":false,\"21:12\":false,\"21:13\":false,\"21:14\":false,\"21:15\":false,\"21:16\":false,\"21:17\":false,\"21:18\":false,\"21:19\":false,\"21:31\":false,\"21:32\":false,\"21:33\":false,\"21:34\":false,\"22:3\":false,\"21:37\":false,\"22:11\":false,\"21:42\":false,\"22:12\":false,\"22:13\":false,\"22:14\":false,\"22:15\":false,\"22:16\":false,\"22:17\":false,\"22:18\":false,\"22:19\":false,\"22:31\":false,\"22:32\":false,\"22:33\":false,\"22:34\":false,\"23:3\":false,\"22:37\":false,\"23:11\":false,\"22:42\":false,\"23:12\":false,\"23:13\":false,\"23:14\":false,\"23:15\":false,\"23:16\":false,\"23:17\":false,\"23:18\":false,\"23:19\":false,\"23:20\":false,\"23:21\":false,\"23:22\":false,\"23:23\":false,\"23:24\":false,\"23:25\":false,\"23:26\":false,\"23:27\":false,\"23:31\":false,\"23:32\":false,\"23:33\":false,\"23:34\":false,\"24:3\":false,\"23:37\":false,\"23:42\":false,\"24:16\":false,\"24:23\":false,\"24:24\":false,\"24:25\":false,\"24:26\":false,\"24:27\":false,\"24:28\":false,\"24:29\":false,\"24:30\":false,\"24:31\":false,\"25:0\":false,\"24:32\":false,\"25:1\":false,\"24:33\":false,\"25:2\":false,\"24:34\":false,\"25:3\":false,\"25:4\":false,\"25:5\":false,\"25:6\":false,\"24:37\":false,\"25:7\":false,\"25:8\":false,\"24:41\":false,\"24:42\":false,\"24:43\":false,\"24:44\":false,\"25:16\":false,\"25:23\":false,\"25:24\":false,\"25:25\":false,\"25:26\":false,\"25:27\":false,\"25:31\":false,\"26:0\":false,\"25:32\":false,\"26:1\":false,\"25:33\":false,\"26:2\":false,\"25:34\":false,\"26:3\":false,\"26:4\":false,\"26:5\":false,\"26:6\":false,\"25:37\":false,\"26:7\":false,\"26:8\":false,\"25:41\":false,\"25:42\":false,\"25:43\":false,\"25:44\":false,\"26:15\":false,\"26:16\":false,\"26:17\":false,\"26:18\":false,\"26:23\":false,\"26:24\":false,\"26:25\":false,\"26:26\":false,\"26:27\":false,\"26:31\":false,\"27:0\":false,\"26:32\":false,\"27:1\":false,\"26:33\":false,\"27:2\":false,\"26:34\":false,\"27:3\":false,\"27:4\":false,\"27:5\":false,\"27:6\":false,\"26:37\":false,\"27:7\":false,\"27:8\":false,\"27:9\":false,\"26:41\":false,\"27:10\":false,\"26:42\":false,\"27:11\":false,\"26:43\":false,\"27:12\":false,\"26:44\":false,\"27:13\":false,\"27:14\":false,\"27:15\":false,\"27:16\":false,\"27:17\":false,\"27:18\":false,\"27:23\":false,\"27:24\":false,\"27:25\":false,\"27:26\":false,\"27:27\":false,\"28:0\":false,\"28:1\":false,\"27:32\":false,\"28:2\":false,\"28:3\":false,\"28:4\":false,\"28:5\":false,\"28:6\":false,\"27:37\":false,\"28:7\":false,\"28:8\":false,\"27:41\":false,\"27:42\":false,\"27:43\":false,\"27:44\":false,\"28:15\":false,\"28:16\":false,\"28:17\":false,\"28:18\":false,\"28:19\":false,\"28:20\":false,\"28:21\":false,\"28:22\":false,\"28:23\":false,\"28:24\":false,\"28:25\":false,\"28:26\":false,\"28:27\":false,\"28:32\":false,\"29:4\":false,\"28:37\":false,\"28:41\":false,\"28:42\":false,\"28:43\":false,\"28:44\":false,\"29:15\":false,\"29:16\":false,\"29:17\":false,\"29:18\":false,\"29:23\":false,\"29:24\":false,\"29:25\":false,\"29:26\":false,\"29:27\":false,\"29:32\":false,\"30:4\":false,\"29:37\":false,\"29:42\":false,\"30:15\":false,\"30:16\":false,\"30:17\":false,\"30:18\":false,\"30:23\":false,\"30:24\":false,\"30:25\":false,\"30:26\":false,\"30:27\":false,\"30:32\":false,\"31:4\":false,\"30:37\":false,\"30:42\":false,\"31:15\":false,\"31:16\":false,\"31:17\":false,\"31:18\":false,\"31:23\":false,\"31:24\":false,\"31:25\":false,\"31:26\":false,\"31:27\":false,\"31:32\":false,\"32:4\":false,\"31:37\":false,\"31:39\":false,\"31:40\":false,\"31:41\":false,\"31:42\":false,\"31:43\":false,\"31:44\":false,\"31:45\":false,\"31:46\":false,\"32:15\":false,\"31:47\":false,\"32:16\":false,\"32:17\":false,\"32:18\":false,\"32:23\":false,\"32:32\":false,\"33:4\":false,\"32:37\":false,\"32:39\":false,\"32:40\":false,\"32:41\":false,\"32:42\":false,\"32:43\":false,\"32:44\":false,\"32:45\":false,\"32:46\":false,\"33:15\":false,\"32:47\":false,\"33:16\":false,\"33:17\":false,\"33:18\":false,\"33:23\":false,\"33:32\":false,\"34:4\":false,\"33:37\":false,\"33:39\":false,\"33:40\":false,\"33:41\":false,\"33:42\":false,\"33:43\":false,\"33:44\":false,\"33:45\":false,\"33:46\":false,\"34:15\":false,\"33:47\":false,\"34:16\":false,\"34:17\":false,\"34:18\":false,\"34:23\":false,\"34:32\":false}},\"seq\":3}");
     gold.append("\nNO_ONE|FAILURE:184333");
     gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"75\"}-->{\"__seq\":4,\"__entropy\":\"7848011421992302230\",\"__time\":\"75\"} need:false in:0");
     gold.append("\nRANDO: CREATED PRIVATE VIEW");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":4}");
-    gold.append("\n+ RANDO DELTA:{\"data\":{\"sz\":2,\"h_0_0\":true,\"h_1_1\":false,\"test_d_grid\":{\"0:0\":true,\"0:1\":true},\"test_d_grid_r\":{\"0:-1\":true,\"0:0\":true,\"0:1\":true},\"test_d_grid_t\":{\"0:0\":true,\"10:10\":true,\"0:1\":true,\"10:11\":true},\"test_d_grid_r_smash\":{\"1:0\":true,\"0:0\":true,\"0:1\":true},\"mz\":{\"35:4\":true,\"34:37\":true,\"34:39\":true,\"34:40\":true,\"34:41\":true,\"34:42\":true,\"34:43\":true,\"34:44\":true,\"34:45\":true,\"34:46\":true,\"34:47\":true,\"35:16\":true,\"35:23\":true,\"35:30\":true,\"35:31\":true,\"35:32\":true,\"35:33\":true,\"36:4\":true,\"35:37\":true,\"35:39\":true,\"35:40\":true,\"35:41\":true,\"35:42\":true,\"35:43\":true,\"35:44\":true,\"35:45\":true,\"35:46\":true,\"35:47\":true,\"36:16\":true,\"36:23\":true,\"36:30\":true,\"36:31\":true,\"36:32\":true,\"36:33\":true,\"37:4\":true,\"36:37\":true,\"36:39\":true,\"36:40\":true,\"36:41\":true,\"36:42\":true,\"36:43\":true,\"36:44\":true,\"36:45\":true,\"36:46\":true,\"36:47\":true,\"37:16\":true,\"37:23\":true,\"37:30\":true,\"37:31\":true,\"37:32\":true,\"37:33\":true,\"37:34\":true,\"38:4\":true,\"37:35\":true,\"37:36\":true,\"37:37\":true,\"37:38\":true,\"37:39\":true,\"37:40\":true,\"37:41\":true,\"37:42\":true,\"37:43\":true,\"37:44\":true,\"37:45\":true,\"37:46\":true,\"37:47\":true,\"38:16\":true,\"38:21\":true,\"38:22\":true,\"38:23\":true,\"38:24\":true,\"38:30\":true,\"38:31\":true,\"38:32\":true,\"38:33\":true,\"39:4\":true,\"38:37\":true,\"38:39\":true,\"38:40\":true,\"38:41\":true,\"38:42\":true,\"38:43\":true,\"38:44\":true,\"38:45\":true,\"38:46\":true,\"38:47\":true,\"39:16\":true,\"39:21\":true,\"39:22\":true,\"39:23\":true,\"39:24\":true,\"39:25\":true,\"39:26\":true,\"39:27\":true,\"39:28\":true,\"39:29\":true,\"39:30\":true,\"39:31\":true,\"39:32\":true,\"39:33\":true,\"40:3\":true,\"40:4\":true,\"40:5\":true,\"40:6\":true,\"39:37\":true,\"39:39\":true,\"39:40\":true,\"39:41\":true,\"39:42\":true,\"40:11\":true,\"39:43\":true,\"40:12\":true,\"39:44\":true,\"40:13\":true,\"39:45\":true,\"40:14\":true,\"39:46\":true,\"40:15\":true,\"39:47\":true,\"40:16\":true,\"40:17\":true,\"40:18\":true,\"40:19\":true,\"40:20\":true,\"40:21\":true,\"40:22\":true,\"40:23\":true,\"40:24\":true,\"40:30\":true,\"40:31\":true,\"40:32\":true,\"40:33\":true,\"41:3\":true,\"41:4\":true,\"41:5\":true,\"41:6\":true,\"40:37\":true,\"40:40\":true,\"41:11\":true,\"41:12\":true,\"41:13\":true,\"41:14\":true,\"41:15\":true,\"41:16\":true,\"41:17\":true,\"41:18\":true,\"41:21\":true,\"41:22\":true,\"41:23\":true,\"41:24\":true,\"41:31\":true,\"42:3\":true,\"42:4\":true,\"42:5\":true,\"42:6\":true,\"41:37\":true,\"41:40\":true,\"42:11\":true,\"42:12\":true,\"42:13\":true,\"42:14\":true,\"42:15\":true,\"42:16\":true,\"42:17\":true,\"42:18\":true,\"42:31\":true,\"43:3\":true,\"43:4\":true,\"43:5\":true,\"43:6\":true,\"42:37\":true,\"42:40\":true,\"43:11\":true,\"43:12\":true,\"43:13\":true,\"43:14\":true,\"43:15\":true,\"43:16\":true,\"43:17\":true,\"43:18\":true,\"43:31\":true,\"44:3\":true,\"44:4\":true,\"44:5\":true,\"44:6\":true,\"43:37\":true,\"44:7\":true,\"44:8\":true,\"43:40\":true,\"44:9\":true,\"44:10\":true,\"44:11\":true,\"44:12\":true,\"44:13\":true,\"44:14\":true,\"44:15\":true,\"44:16\":true,\"44:17\":true,\"44:18\":true,\"44:31\":true,\"45:3\":true,\"45:4\":true,\"45:5\":true,\"45:6\":true,\"44:37\":true,\"44:40\":true,\"45:11\":true,\"45:12\":true,\"45:13\":true,\"45:14\":true,\"45:15\":true,\"45:16\":true,\"45:17\":true,\"45:18\":true,\"45:31\":true,\"46:3\":true,\"46:4\":true,\"46:5\":true,\"46:6\":true,\"45:37\":true,\"45:40\":true,\"46:11\":true,\"46:12\":true,\"46:13\":true,\"46:14\":true,\"46:15\":true,\"46:16\":true,\"46:17\":true,\"46:18\":true,\"46:27\":true,\"46:28\":true,\"46:29\":true,\"46:30\":true,\"46:31\":true,\"46:32\":true,\"46:33\":true,\"47:3\":true,\"47:4\":true,\"47:5\":true,\"47:6\":true,\"46:37\":true,\"46:40\":true,\"47:11\":true,\"47:12\":true,\"47:13\":true,\"47:14\":true,\"47:15\":true,\"47:16\":true,\"47:17\":true,\"47:18\":true,\"47:27\":true,\"47:28\":true,\"47:29\":true,\"47:30\":true,\"47:31\":true,\"47:32\":true,\"47:33\":true,\"48:3\":true,\"48:4\":true,\"48:5\":true,\"47:37\":true,\"48:6\":true,\"47:38\":true,\"47:39\":true,\"47:40\":true,\"47:41\":true,\"47:42\":true,\"48:11\":true,\"48:12\":true,\"48:13\":true,\"48:14\":true,\"48:15\":true,\"48:16\":true,\"48:17\":true,\"48:18\":true,\"48:27\":true,\"48:28\":true,\"48:29\":true,\"48:30\":true,\"48:31\":true,\"48:32\":true,\"48:33\":true,\"48:34\":true,\"48:35\":true,\"48:36\":true,\"48:37\":true,\"48:38\":true,\"48:39\":true,\"48:40\":true,\"48:41\":true,\"48:42\":true,\"49:13\":true,\"49:27\":true,\"49:28\":true,\"49:29\":true,\"49:30\":true,\"49:31\":true,\"49:32\":true,\"49:33\":true,\"49:37\":true,\"49:38\":true,\"49:39\":true,\"49:40\":true,\"49:41\":true,\"49:42\":true,\"50:13\":true,\"50:27\":true,\"50:28\":true,\"50:29\":true,\"50:30\":true,\"50:31\":true,\"50:32\":true,\"50:33\":true,\"50:37\":true,\"50:38\":true,\"50:39\":true,\"51:8\":true,\"50:40\":true,\"51:9\":true,\"50:41\":true,\"51:10\":true,\"50:42\":true,\"51:11\":true,\"51:12\":true,\"51:13\":true,\"51:14\":true,\"51:15\":true,\"51:16\":true,\"51:37\":true,\"51:38\":true,\"51:39\":true,\"52:8\":true,\"51:40\":true,\"52:9\":true,\"51:41\":true,\"52:10\":true,\"51:42\":true,\"52:11\":true,\"52:12\":true,\"52:13\":true,\"52:14\":true,\"52:15\":true,\"52:16\":true,\"52:17\":true,\"52:18\":true,\"52:19\":true,\"52:20\":true,\"52:21\":true,\"52:22\":true,\"52:23\":true,\"52:24\":true,\"52:25\":true,\"52:26\":true,\"52:27\":true,\"52:28\":true,\"52:29\":true,\"52:30\":true,\"52:31\":true,\"52:32\":true,\"52:33\":true,\"52:34\":true,\"52:35\":true,\"52:36\":true,\"52:37\":true,\"52:38\":true,\"52:39\":true,\"53:8\":true,\"52:40\":true,\"53:9\":true,\"52:41\":true,\"53:10\":true,\"52:42\":true,\"53:11\":true,\"53:12\":true,\"53:13\":true,\"53:14\":true,\"53:15\":true,\"53:16\":true,\"53:37\":true,\"53:38\":true,\"53:39\":true,\"54:8\":true,\"53:40\":true,\"54:9\":true,\"53:41\":true,\"54:10\":true,\"53:42\":true,\"54:11\":true,\"54:12\":true,\"54:13\":true,\"54:14\":true,\"54:15\":true,\"54:16\":true,\"54:37\":true,\"54:38\":true,\"54:39\":true,\"55:8\":true,\"54:40\":true,\"55:9\":true,\"54:41\":true,\"55:10\":true,\"54:42\":true,\"55:11\":true,\"55:12\":true,\"55:13\":true,\"55:14\":true,\"55:15\":true,\"55:16\":true,\"56:8\":true,\"56:9\":true,\"56:10\":true,\"56:11\":true,\"56:12\":true,\"56:13\":true,\"56:14\":true,\"56:15\":true,\"56:16\":true,\"2:25\":true,\"2:26\":true,\"2:27\":true,\"2:28\":true,\"2:29\":true,\"2:30\":true,\"2:31\":true,\"3:25\":true,\"3:26\":true,\"3:27\":true,\"3:28\":true,\"3:29\":true,\"3:30\":true,\"3:31\":true,\"4:10\":true,\"3:41\":true,\"4:11\":true,\"3:42\":true,\"4:12\":true,\"3:43\":true,\"4:13\":true,\"3:44\":true,\"4:14\":true,\"4:15\":true,\"4:16\":true,\"4:17\":true,\"4:18\":true,\"4:25\":true,\"4:26\":true,\"4:27\":true,\"4:28\":true,\"4:29\":true,\"4:30\":true,\"4:31\":true,\"4:35\":true,\"4:36\":true,\"4:37\":true,\"4:38\":true,\"5:10\":true,\"4:41\":true,\"5:11\":true,\"4:42\":true,\"5:12\":true,\"4:43\":true,\"5:13\":true,\"4:44\":true,\"5:14\":true,\"5:15\":true,\"5:16\":true,\"5:17\":true,\"5:18\":true,\"5:25\":true,\"5:26\":true,\"5:27\":true,\"5:28\":true,\"5:29\":true,\"5:30\":true,\"5:31\":true,\"5:35\":true,\"5:36\":true,\"5:37\":true,\"5:38\":true,\"5:39\":true,\"5:40\":true,\"6:10\":true,\"5:41\":true,\"6:11\":true,\"5:42\":true,\"6:12\":true,\"5:43\":true,\"6:13\":true,\"5:44\":true,\"6:14\":true,\"6:15\":true,\"6:16\":true,\"6:17\":true,\"6:18\":true,\"6:25\":true,\"6:26\":true,\"6:27\":true,\"6:28\":true,\"6:29\":true,\"6:30\":true,\"6:31\":true,\"7:2\":true,\"7:3\":true,\"6:35\":true,\"7:4\":true,\"6:36\":true,\"7:5\":true,\"6:37\":true,\"7:6\":true,\"6:38\":true,\"7:7\":true,\"7:10\":true,\"6:41\":true,\"7:11\":true,\"6:42\":true,\"7:12\":true,\"6:43\":true,\"6:44\":true,\"7:16\":true,\"7:17\":true,\"7:18\":true,\"7:19\":true,\"7:20\":true,\"7:21\":true,\"7:22\":true,\"7:23\":true,\"7:24\":true,\"7:25\":true,\"7:26\":true,\"7:27\":true,\"7:28\":true,\"7:29\":true,\"7:30\":true,\"7:31\":true,\"7:32\":true,\"8:2\":true,\"7:33\":true,\"8:3\":true,\"7:34\":true,\"7:35\":true,\"8:4\":true,\"7:36\":true,\"8:5\":true,\"7:37\":true,\"8:6\":true,\"7:38\":true,\"8:7\":true,\"8:10\":true,\"8:11\":true,\"7:42\":true,\"8:12\":true,\"8:16\":true,\"8:17\":true,\"8:18\":true,\"8:25\":true,\"8:26\":true,\"8:27\":true,\"8:28\":true,\"8:29\":true,\"8:30\":true,\"8:31\":true,\"9:2\":true,\"9:3\":true,\"8:35\":true,\"9:4\":true,\"8:36\":true,\"9:5\":true,\"8:37\":true,\"9:6\":true,\"8:38\":true,\"9:7\":true,\"9:8\":true,\"9:9\":true,\"9:10\":true,\"9:11\":true,\"8:42\":true,\"9:12\":true,\"9:16\":true,\"9:17\":true,\"9:18\":true,\"9:25\":true,\"9:26\":true,\"9:27\":true,\"9:28\":true,\"9:29\":true,\"9:30\":true,\"9:31\":true,\"10:2\":true,\"10:3\":true,\"9:35\":true,\"10:4\":true,\"9:36\":true,\"10:5\":true,\"9:37\":true,\"10:6\":true,\"9:38\":true,\"10:7\":true,\"10:10\":true,\"10:11\":true,\"9:42\":true,\"10:12\":true,\"10:13\":true,\"10:14\":true,\"10:15\":true,\"10:16\":true,\"10:17\":true,\"10:18\":true,\"10:25\":true,\"10:26\":true,\"10:27\":true,\"10:28\":true,\"10:29\":true,\"10:30\":true,\"10:31\":true,\"11:2\":true,\"11:3\":true,\"10:35\":true,\"11:4\":true,\"10:36\":true,\"11:5\":true,\"10:37\":true,\"11:6\":true,\"10:38\":true,\"11:7\":true,\"11:10\":true,\"11:11\":true,\"10:42\":true,\"11:12\":true,\"11:13\":true,\"11:14\":true,\"11:15\":true,\"11:16\":true,\"11:17\":true,\"11:18\":true,\"11:31\":true,\"12:2\":true,\"12:3\":true,\"11:35\":true,\"12:4\":true,\"11:36\":true,\"12:5\":true,\"11:37\":true,\"12:6\":true,\"11:38\":true,\"12:7\":true,\"12:10\":true,\"12:11\":true,\"11:42\":true,\"12:12\":true,\"12:13\":true,\"12:14\":true,\"12:15\":true,\"12:16\":true,\"12:17\":true,\"12:18\":true,\"12:31\":true,\"13:2\":true,\"13:3\":true,\"12:35\":true,\"13:4\":true,\"12:36\":true,\"13:5\":true,\"12:37\":true,\"13:6\":true,\"12:38\":true,\"13:7\":true,\"12:42\":true,\"13:14\":true,\"13:31\":true,\"14:2\":true,\"14:3\":true,\"14:4\":true,\"14:5\":true,\"14:6\":true,\"13:37\":true,\"14:7\":true,\"13:41\":true,\"13:42\":true,\"13:43\":true,\"13:44\":true,\"14:14\":true,\"14:31\":true,\"15:2\":true,\"15:3\":true,\"15:4\":true,\"15:5\":true,\"15:6\":true,\"14:37\":true,\"15:7\":true,\"14:41\":true,\"14:42\":true,\"15:11\":true,\"14:43\":true,\"15:12\":true,\"14:44\":true,\"15:13\":true,\"15:14\":true,\"15:15\":true,\"15:16\":true,\"15:17\":true,\"15:18\":true,\"15:19\":true,\"15:31\":true,\"16:4\":true,\"15:37\":true,\"15:41\":true,\"15:42\":true,\"16:11\":true,\"15:43\":true,\"16:12\":true,\"15:44\":true,\"16:13\":true,\"16:14\":true,\"16:15\":true,\"16:16\":true,\"16:17\":true,\"16:18\":true,\"16:19\":true,\"16:31\":true,\"17:4\":true,\"16:37\":true,\"16:41\":true,\"16:42\":true,\"17:11\":true,\"16:43\":true,\"17:12\":true,\"16:44\":true,\"17:13\":true,\"17:14\":true,\"17:15\":true,\"17:16\":true,\"17:17\":true,\"17:18\":true,\"17:19\":true,\"18:0\":true,\"17:31\":true,\"18:1\":true,\"18:2\":true,\"18:3\":true,\"18:4\":true,\"18:5\":true,\"18:6\":true,\"17:37\":true,\"17:41\":true,\"17:42\":true,\"18:11\":true,\"17:43\":true,\"18:12\":true,\"17:44\":true,\"18:13\":true,\"18:17\":true,\"18:18\":true,\"18:19\":true,\"18:31\":true,\"19:0\":true,\"18:32\":true,\"19:1\":true,\"18:33\":true,\"19:2\":true,\"18:34\":true,\"19:3\":true,\"19:4\":true,\"18:35\":true,\"19:5\":true,\"18:36\":true,\"19:6\":true,\"18:37\":true,\"18:38\":true,\"19:7\":true,\"18:39\":true,\"19:8\":true,\"18:40\":true,\"19:9\":true,\"18:41\":true,\"19:10\":true,\"18:42\":true,\"19:11\":true,\"18:43\":true,\"19:12\":true,\"18:44\":true,\"19:13\":true,\"19:17\":true,\"19:18\":true,\"19:19\":true,\"19:31\":true,\"20:0\":true,\"19:32\":true,\"20:1\":true,\"19:33\":true,\"20:2\":true,\"19:34\":true,\"20:3\":true,\"20:4\":true,\"20:5\":true,\"20:6\":true,\"19:37\":true,\"19:41\":true,\"19:42\":true,\"20:11\":true,\"19:43\":true,\"20:12\":true,\"19:44\":true,\"20:13\":true,\"20:17\":true,\"20:18\":true,\"20:19\":true,\"20:31\":true,\"21:0\":true,\"20:32\":true,\"21:1\":true,\"20:33\":true,\"21:2\":true,\"20:34\":true,\"21:3\":true,\"21:4\":true,\"21:5\":true,\"21:6\":true,\"20:37\":true,\"21:11\":true,\"20:42\":true,\"21:12\":true,\"21:13\":true,\"21:14\":true,\"21:15\":true,\"21:16\":true,\"21:17\":true,\"21:18\":true,\"21:19\":true,\"21:31\":true,\"21:32\":true,\"21:33\":true,\"21:34\":true,\"22:3\":true,\"21:37\":true,\"22:11\":true,\"21:42\":true,\"22:12\":true,\"22:13\":true,\"22:14\":true,\"22:15\":true,\"22:16\":true,\"22:17\":true,\"22:18\":true,\"22:19\":true,\"22:31\":true,\"22:32\":true,\"22:33\":true,\"22:34\":true,\"23:3\":true,\"22:37\":true,\"23:11\":true,\"22:42\":true,\"23:12\":true,\"23:13\":true,\"23:14\":true,\"23:15\":true,\"23:16\":true,\"23:17\":true,\"23:18\":true,\"23:19\":true,\"23:20\":true,\"23:21\":true,\"23:22\":true,\"23:23\":true,\"23:24\":true,\"23:25\":true,\"23:26\":true,\"23:27\":true,\"23:31\":true,\"23:32\":true,\"23:33\":true,\"23:34\":true,\"24:3\":true,\"23:37\":true,\"23:42\":true,\"24:16\":true,\"24:23\":true,\"24:24\":true,\"24:25\":true,\"24:26\":true,\"24:27\":true,\"24:28\":true,\"24:29\":true,\"24:30\":true,\"24:31\":true,\"25:0\":true,\"24:32\":true,\"25:1\":true,\"24:33\":true,\"25:2\":true,\"24:34\":true,\"25:3\":true,\"25:4\":true,\"25:5\":true,\"25:6\":true,\"24:37\":true,\"25:7\":true,\"25:8\":true,\"24:41\":true,\"24:42\":true,\"24:43\":true,\"24:44\":true,\"25:16\":true,\"25:23\":true,\"25:24\":true,\"25:25\":true,\"25:26\":true,\"25:27\":true,\"25:31\":true,\"26:0\":true,\"25:32\":true,\"26:1\":true,\"25:33\":true,\"26:2\":true,\"25:34\":true,\"26:3\":true,\"26:4\":true,\"26:5\":true,\"26:6\":true,\"25:37\":true,\"26:7\":true,\"26:8\":true,\"25:41\":true,\"25:42\":true,\"25:43\":true,\"25:44\":true,\"26:15\":true,\"26:16\":true,\"26:17\":true,\"26:18\":true,\"26:23\":true,\"26:24\":true,\"26:25\":true,\"26:26\":true,\"26:27\":true,\"26:31\":true,\"27:0\":true,\"26:32\":true,\"27:1\":true,\"26:33\":true,\"27:2\":true,\"26:34\":true,\"27:3\":true,\"27:4\":true,\"27:5\":true,\"27:6\":true,\"26:37\":true,\"27:7\":true,\"27:8\":true,\"27:9\":true,\"26:41\":true,\"27:10\":true,\"26:42\":true,\"27:11\":true,\"26:43\":true,\"27:12\":true,\"26:44\":true,\"27:13\":true,\"27:14\":true,\"27:15\":true,\"27:16\":true,\"27:17\":true,\"27:18\":true,\"27:23\":true,\"27:24\":true,\"27:25\":true,\"27:26\":true,\"27:27\":true,\"28:0\":true,\"28:1\":true,\"27:32\":true,\"28:2\":true,\"28:3\":true,\"28:4\":true,\"28:5\":true,\"28:6\":true,\"27:37\":true,\"28:7\":true,\"28:8\":true,\"27:41\":true,\"27:42\":true,\"27:43\":true,\"27:44\":true,\"28:15\":true,\"28:16\":true,\"28:17\":true,\"28:18\":true,\"28:19\":true,\"28:20\":true,\"28:21\":true,\"28:22\":true,\"28:23\":true,\"28:24\":true,\"28:25\":true,\"28:26\":true,\"28:27\":true,\"28:32\":true,\"29:4\":true,\"28:37\":true,\"28:41\":true,\"28:42\":true,\"28:43\":true,\"28:44\":true,\"29:15\":true,\"29:16\":true,\"29:17\":true,\"29:18\":true,\"29:23\":true,\"29:24\":true,\"29:25\":true,\"29:26\":true,\"29:27\":true,\"29:32\":true,\"30:4\":true,\"29:37\":true,\"29:42\":true,\"30:15\":true,\"30:16\":true,\"30:17\":true,\"30:18\":true,\"30:23\":true,\"30:24\":true,\"30:25\":true,\"30:26\":true,\"30:27\":true,\"30:32\":true,\"31:4\":true,\"30:37\":true,\"30:42\":true,\"31:15\":true,\"31:16\":true,\"31:17\":true,\"31:18\":true,\"31:23\":true,\"31:24\":true,\"31:25\":true,\"31:26\":true,\"31:27\":true,\"31:32\":true,\"32:4\":true,\"31:37\":true,\"31:39\":true,\"31:40\":true,\"31:41\":true,\"31:42\":true,\"31:43\":true,\"31:44\":true,\"31:45\":true,\"31:46\":true,\"32:15\":true,\"31:47\":true,\"32:16\":true,\"32:17\":true,\"32:18\":true,\"32:23\":true,\"32:32\":true,\"33:4\":true,\"32:37\":true,\"32:39\":true,\"32:40\":true,\"32:41\":true,\"32:42\":true,\"32:43\":true,\"32:44\":true,\"32:45\":true,\"32:46\":true,\"33:15\":true,\"32:47\":true,\"33:16\":true,\"33:17\":true,\"33:18\":true,\"33:23\":true,\"33:32\":true,\"34:4\":true,\"33:37\":true,\"33:39\":true,\"33:40\":true,\"33:41\":true,\"33:42\":true,\"33:43\":true,\"33:44\":true,\"33:45\":true,\"33:46\":true,\"34:15\":true,\"33:47\":true,\"34:16\":true,\"34:17\":true,\"34:18\":true,\"34:23\":true,\"34:32\":true}},\"seq\":4}");
+    gold.append("\n+ RANDO DELTA:{\"data\":{\"sz\":2,\"h_0_0\":true,\"h_1_1\":false,\"test_d_grid\":{\"0:0\":true,\"0:1\":true},\"test_d_grid_r\":{\"0:-1\":true,\"0:0\":true,\"0:1\":true},\"test_d_grid_t\":{\"0:0\":true,\"10:10\":true,\"0:1\":true,\"10:11\":true},\"test_d_grid_r_smash\":{\"1:0\":true,\"0:0\":true,\"0:1\":true},\"mz\":{\"35:4\":false,\"34:37\":false,\"34:39\":false,\"34:40\":false,\"34:41\":false,\"34:42\":false,\"34:43\":false,\"34:44\":false,\"34:45\":false,\"34:46\":false,\"34:47\":false,\"35:16\":false,\"35:23\":false,\"35:30\":false,\"35:31\":false,\"35:32\":false,\"35:33\":false,\"36:4\":false,\"35:37\":false,\"35:39\":false,\"35:40\":false,\"35:41\":false,\"35:42\":false,\"35:43\":false,\"35:44\":false,\"35:45\":false,\"35:46\":false,\"35:47\":false,\"36:16\":false,\"36:23\":false,\"36:30\":false,\"36:31\":false,\"36:32\":false,\"36:33\":false,\"37:4\":false,\"36:37\":false,\"36:39\":false,\"36:40\":false,\"36:41\":false,\"36:42\":false,\"36:43\":false,\"36:44\":false,\"36:45\":false,\"36:46\":false,\"36:47\":false,\"37:16\":false,\"37:23\":false,\"37:30\":false,\"37:31\":false,\"37:32\":false,\"37:33\":false,\"37:34\":false,\"38:4\":false,\"37:35\":false,\"37:36\":false,\"37:37\":false,\"37:38\":false,\"37:39\":false,\"37:40\":false,\"37:41\":false,\"37:42\":false,\"37:43\":false,\"37:44\":false,\"37:45\":false,\"37:46\":false,\"37:47\":false,\"38:16\":false,\"38:21\":false,\"38:22\":false,\"38:23\":false,\"38:24\":false,\"38:30\":false,\"38:31\":false,\"38:32\":false,\"38:33\":false,\"39:4\":false,\"38:37\":false,\"38:39\":false,\"38:40\":false,\"38:41\":false,\"38:42\":false,\"38:43\":false,\"38:44\":false,\"38:45\":false,\"38:46\":false,\"38:47\":false,\"39:16\":false,\"39:21\":false,\"39:22\":false,\"39:23\":false,\"39:24\":false,\"39:25\":false,\"39:26\":false,\"39:27\":false,\"39:28\":false,\"39:29\":false,\"39:30\":false,\"39:31\":false,\"39:32\":false,\"39:33\":false,\"40:3\":false,\"40:4\":false,\"40:5\":false,\"40:6\":false,\"39:37\":false,\"39:39\":false,\"39:40\":false,\"39:41\":false,\"39:42\":false,\"40:11\":false,\"39:43\":false,\"40:12\":false,\"39:44\":false,\"40:13\":false,\"39:45\":false,\"40:14\":false,\"39:46\":false,\"40:15\":false,\"39:47\":false,\"40:16\":false,\"40:17\":false,\"40:18\":false,\"40:19\":false,\"40:20\":false,\"40:21\":false,\"40:22\":false,\"40:23\":false,\"40:24\":false,\"40:30\":false,\"40:31\":false,\"40:32\":false,\"40:33\":false,\"41:3\":false,\"41:4\":false,\"41:5\":false,\"41:6\":false,\"40:37\":false,\"40:40\":false,\"41:11\":false,\"41:12\":false,\"41:13\":false,\"41:14\":false,\"41:15\":false,\"41:16\":false,\"41:17\":false,\"41:18\":false,\"41:21\":false,\"41:22\":false,\"41:23\":false,\"41:24\":false,\"41:31\":false,\"42:3\":false,\"42:4\":false,\"42:5\":false,\"42:6\":false,\"41:37\":false,\"41:40\":false,\"42:11\":false,\"42:12\":false,\"42:13\":false,\"42:14\":false,\"42:15\":false,\"42:16\":false,\"42:17\":false,\"42:18\":false,\"42:31\":false,\"43:3\":false,\"43:4\":false,\"43:5\":false,\"43:6\":false,\"42:37\":false,\"42:40\":false,\"43:11\":false,\"43:12\":false,\"43:13\":false,\"43:14\":false,\"43:15\":false,\"43:16\":false,\"43:17\":false,\"43:18\":false,\"43:31\":false,\"44:3\":false,\"44:4\":false,\"44:5\":false,\"44:6\":false,\"43:37\":false,\"44:7\":false,\"44:8\":false,\"43:40\":false,\"44:9\":false,\"44:10\":false,\"44:11\":false,\"44:12\":false,\"44:13\":false,\"44:14\":false,\"44:15\":false,\"44:16\":false,\"44:17\":false,\"44:18\":false,\"44:31\":false,\"45:3\":false,\"45:4\":false,\"45:5\":false,\"45:6\":false,\"44:37\":false,\"44:40\":false,\"45:11\":false,\"45:12\":false,\"45:13\":false,\"45:14\":false,\"45:15\":false,\"45:16\":false,\"45:17\":false,\"45:18\":false,\"45:31\":false,\"46:3\":false,\"46:4\":false,\"46:5\":false,\"46:6\":false,\"45:37\":false,\"45:40\":false,\"46:11\":false,\"46:12\":false,\"46:13\":false,\"46:14\":false,\"46:15\":false,\"46:16\":false,\"46:17\":false,\"46:18\":false,\"46:27\":false,\"46:28\":false,\"46:29\":false,\"46:30\":false,\"46:31\":false,\"46:32\":false,\"46:33\":false,\"47:3\":false,\"47:4\":false,\"47:5\":false,\"47:6\":false,\"46:37\":false,\"46:40\":false,\"47:11\":false,\"47:12\":false,\"47:13\":false,\"47:14\":false,\"47:15\":false,\"47:16\":false,\"47:17\":false,\"47:18\":false,\"47:27\":false,\"47:28\":false,\"47:29\":false,\"47:30\":false,\"47:31\":false,\"47:32\":false,\"47:33\":false,\"48:3\":false,\"48:4\":false,\"48:5\":false,\"47:37\":false,\"48:6\":false,\"47:38\":false,\"47:39\":false,\"47:40\":false,\"47:41\":false,\"47:42\":false,\"48:11\":false,\"48:12\":false,\"48:13\":false,\"48:14\":false,\"48:15\":false,\"48:16\":false,\"48:17\":false,\"48:18\":false,\"48:27\":false,\"48:28\":false,\"48:29\":false,\"48:30\":false,\"48:31\":false,\"48:32\":false,\"48:33\":false,\"48:34\":false,\"48:35\":false,\"48:36\":false,\"48:37\":false,\"48:38\":false,\"48:39\":false,\"48:40\":false,\"48:41\":false,\"48:42\":false,\"49:13\":false,\"49:27\":false,\"49:28\":false,\"49:29\":false,\"49:30\":false,\"49:31\":false,\"49:32\":false,\"49:33\":false,\"49:37\":false,\"49:38\":false,\"49:39\":false,\"49:40\":false,\"49:41\":false,\"49:42\":false,\"50:13\":false,\"50:27\":false,\"50:28\":false,\"50:29\":false,\"50:30\":false,\"50:31\":false,\"50:32\":false,\"50:33\":false,\"50:37\":false,\"50:38\":false,\"50:39\":false,\"51:8\":false,\"50:40\":false,\"51:9\":false,\"50:41\":false,\"51:10\":false,\"50:42\":false,\"51:11\":false,\"51:12\":false,\"51:13\":false,\"51:14\":false,\"51:15\":false,\"51:16\":false,\"51:37\":false,\"51:38\":false,\"51:39\":false,\"52:8\":false,\"51:40\":false,\"52:9\":false,\"51:41\":false,\"52:10\":false,\"51:42\":false,\"52:11\":false,\"52:12\":false,\"52:13\":false,\"52:14\":false,\"52:15\":false,\"52:16\":false,\"52:17\":false,\"52:18\":false,\"52:19\":false,\"52:20\":false,\"52:21\":false,\"52:22\":false,\"52:23\":false,\"52:24\":false,\"52:25\":false,\"52:26\":false,\"52:27\":false,\"52:28\":false,\"52:29\":false,\"52:30\":false,\"52:31\":false,\"52:32\":false,\"52:33\":false,\"52:34\":false,\"52:35\":false,\"52:36\":false,\"52:37\":false,\"52:38\":false,\"52:39\":false,\"53:8\":false,\"52:40\":false,\"53:9\":false,\"52:41\":false,\"53:10\":false,\"52:42\":false,\"53:11\":false,\"53:12\":false,\"53:13\":false,\"53:14\":false,\"53:15\":false,\"53:16\":false,\"53:37\":false,\"53:38\":false,\"53:39\":false,\"54:8\":false,\"53:40\":false,\"54:9\":false,\"53:41\":false,\"54:10\":false,\"53:42\":false,\"54:11\":false,\"54:12\":false,\"54:13\":false,\"54:14\":false,\"54:15\":false,\"54:16\":false,\"54:37\":false,\"54:38\":false,\"54:39\":false,\"55:8\":false,\"54:40\":false,\"55:9\":false,\"54:41\":false,\"55:10\":false,\"54:42\":false,\"55:11\":false,\"55:12\":false,\"55:13\":false,\"55:14\":false,\"55:15\":false,\"55:16\":false,\"56:8\":false,\"56:9\":false,\"56:10\":false,\"56:11\":false,\"56:12\":false,\"56:13\":false,\"56:14\":false,\"56:15\":false,\"56:16\":false,\"59:0\":true,\"59:49\":true,\"0:0\":true,\"0:49\":true,\"2:25\":false,\"2:26\":false,\"2:27\":false,\"2:28\":false,\"2:29\":false,\"2:30\":false,\"2:31\":false,\"3:25\":false,\"3:26\":false,\"3:27\":false,\"3:28\":false,\"3:29\":false,\"3:30\":false,\"3:31\":false,\"4:10\":false,\"3:41\":false,\"4:11\":false,\"3:42\":false,\"4:12\":false,\"3:43\":false,\"4:13\":false,\"3:44\":false,\"4:14\":false,\"4:15\":false,\"4:16\":false,\"4:17\":false,\"4:18\":false,\"4:25\":false,\"4:26\":false,\"4:27\":false,\"4:28\":false,\"4:29\":false,\"4:30\":false,\"4:31\":false,\"4:35\":false,\"4:36\":false,\"4:37\":false,\"4:38\":false,\"5:10\":false,\"4:41\":false,\"5:11\":false,\"4:42\":false,\"5:12\":false,\"4:43\":false,\"5:13\":false,\"4:44\":false,\"5:14\":false,\"5:15\":false,\"5:16\":false,\"5:17\":false,\"5:18\":false,\"5:25\":false,\"5:26\":false,\"5:27\":false,\"5:28\":false,\"5:29\":false,\"5:30\":false,\"5:31\":false,\"5:35\":false,\"5:36\":false,\"5:37\":false,\"5:38\":false,\"5:39\":false,\"5:40\":false,\"6:10\":false,\"5:41\":false,\"6:11\":false,\"5:42\":false,\"6:12\":false,\"5:43\":false,\"6:13\":false,\"5:44\":false,\"6:14\":false,\"6:15\":false,\"6:16\":false,\"6:17\":false,\"6:18\":false,\"6:25\":false,\"6:26\":false,\"6:27\":false,\"6:28\":false,\"6:29\":false,\"6:30\":false,\"6:31\":false,\"7:2\":false,\"7:3\":false,\"6:35\":false,\"7:4\":false,\"6:36\":false,\"7:5\":false,\"6:37\":false,\"7:6\":false,\"6:38\":false,\"7:7\":false,\"7:10\":false,\"6:41\":false,\"7:11\":false,\"6:42\":false,\"7:12\":false,\"6:43\":false,\"6:44\":false,\"7:16\":false,\"7:17\":false,\"7:18\":false,\"7:19\":false,\"7:20\":false,\"7:21\":false,\"7:22\":false,\"7:23\":false,\"7:24\":false,\"7:25\":false,\"7:26\":false,\"7:27\":false,\"7:28\":false,\"7:29\":false,\"7:30\":false,\"7:31\":false,\"7:32\":false,\"8:2\":false,\"7:33\":false,\"8:3\":false,\"7:34\":false,\"7:35\":false,\"8:4\":false,\"7:36\":false,\"8:5\":false,\"7:37\":false,\"8:6\":false,\"7:38\":false,\"8:7\":false,\"8:10\":false,\"8:11\":false,\"7:42\":false,\"8:12\":false,\"8:16\":false,\"8:17\":false,\"8:18\":false,\"8:25\":false,\"8:26\":false,\"8:27\":false,\"8:28\":false,\"8:29\":false,\"8:30\":false,\"8:31\":false,\"9:2\":false,\"9:3\":false,\"8:35\":false,\"9:4\":false,\"8:36\":false,\"9:5\":false,\"8:37\":false,\"9:6\":false,\"8:38\":false,\"9:7\":false,\"9:8\":false,\"9:9\":false,\"9:10\":false,\"9:11\":false,\"8:42\":false,\"9:12\":false,\"9:16\":false,\"9:17\":false,\"9:18\":false,\"9:25\":false,\"9:26\":false,\"9:27\":false,\"9:28\":false,\"9:29\":false,\"9:30\":false,\"9:31\":false,\"10:2\":false,\"10:3\":false,\"9:35\":false,\"10:4\":false,\"9:36\":false,\"10:5\":false,\"9:37\":false,\"10:6\":false,\"9:38\":false,\"10:7\":false,\"10:10\":false,\"10:11\":false,\"9:42\":false,\"10:12\":false,\"10:13\":false,\"10:14\":false,\"10:15\":false,\"10:16\":false,\"10:17\":false,\"10:18\":false,\"10:25\":false,\"10:26\":false,\"10:27\":false,\"10:28\":false,\"10:29\":false,\"10:30\":false,\"10:31\":false,\"11:2\":false,\"11:3\":false,\"10:35\":false,\"11:4\":false,\"10:36\":false,\"11:5\":false,\"10:37\":false,\"11:6\":false,\"10:38\":false,\"11:7\":false,\"11:10\":false,\"11:11\":false,\"10:42\":false,\"11:12\":false,\"11:13\":false,\"11:14\":false,\"11:15\":false,\"11:16\":false,\"11:17\":false,\"11:18\":false,\"11:31\":false,\"12:2\":false,\"12:3\":false,\"11:35\":false,\"12:4\":false,\"11:36\":false,\"12:5\":false,\"11:37\":false,\"12:6\":false,\"11:38\":false,\"12:7\":false,\"12:10\":false,\"12:11\":false,\"11:42\":false,\"12:12\":false,\"12:13\":false,\"12:14\":false,\"12:15\":false,\"12:16\":false,\"12:17\":false,\"12:18\":false,\"12:31\":false,\"13:2\":false,\"13:3\":false,\"12:35\":false,\"13:4\":false,\"12:36\":false,\"13:5\":false,\"12:37\":false,\"13:6\":false,\"12:38\":false,\"13:7\":false,\"12:42\":false,\"13:14\":false,\"13:31\":false,\"14:2\":false,\"14:3\":false,\"14:4\":false,\"14:5\":false,\"14:6\":false,\"13:37\":false,\"14:7\":false,\"13:41\":false,\"13:42\":false,\"13:43\":false,\"13:44\":false,\"14:14\":false,\"14:31\":false,\"15:2\":false,\"15:3\":false,\"15:4\":false,\"15:5\":false,\"15:6\":false,\"14:37\":false,\"15:7\":false,\"14:41\":false,\"14:42\":false,\"15:11\":false,\"14:43\":false,\"15:12\":false,\"14:44\":false,\"15:13\":false,\"15:14\":false,\"15:15\":false,\"15:16\":false,\"15:17\":false,\"15:18\":false,\"15:19\":false,\"15:31\":false,\"16:4\":false,\"15:37\":false,\"15:41\":false,\"15:42\":false,\"16:11\":false,\"15:43\":false,\"16:12\":false,\"15:44\":false,\"16:13\":false,\"16:14\":false,\"16:15\":false,\"16:16\":false,\"16:17\":false,\"16:18\":false,\"16:19\":false,\"16:31\":false,\"17:4\":false,\"16:37\":false,\"16:41\":false,\"16:42\":false,\"17:11\":false,\"16:43\":false,\"17:12\":false,\"16:44\":false,\"17:13\":false,\"17:14\":false,\"17:15\":false,\"17:16\":false,\"17:17\":false,\"17:18\":false,\"17:19\":false,\"18:0\":false,\"17:31\":false,\"18:1\":false,\"18:2\":false,\"18:3\":false,\"18:4\":false,\"18:5\":false,\"18:6\":false,\"17:37\":false,\"17:41\":false,\"17:42\":false,\"18:11\":false,\"17:43\":false,\"18:12\":false,\"17:44\":false,\"18:13\":false,\"18:17\":false,\"18:18\":false,\"18:19\":false,\"18:31\":false,\"19:0\":false,\"18:32\":false,\"19:1\":false,\"18:33\":false,\"19:2\":false,\"18:34\":false,\"19:3\":false,\"19:4\":false,\"18:35\":false,\"19:5\":false,\"18:36\":false,\"19:6\":false,\"18:37\":false,\"18:38\":false,\"19:7\":false,\"18:39\":false,\"19:8\":false,\"18:40\":false,\"19:9\":false,\"18:41\":false,\"19:10\":false,\"18:42\":false,\"19:11\":false,\"18:43\":false,\"19:12\":false,\"18:44\":false,\"19:13\":false,\"19:17\":false,\"19:18\":false,\"19:19\":false,\"19:31\":false,\"20:0\":false,\"19:32\":false,\"20:1\":false,\"19:33\":false,\"20:2\":false,\"19:34\":false,\"20:3\":false,\"20:4\":false,\"20:5\":false,\"20:6\":false,\"19:37\":false,\"19:41\":false,\"19:42\":false,\"20:11\":false,\"19:43\":false,\"20:12\":false,\"19:44\":false,\"20:13\":false,\"20:17\":false,\"20:18\":false,\"20:19\":false,\"20:31\":false,\"21:0\":false,\"20:32\":false,\"21:1\":false,\"20:33\":false,\"21:2\":false,\"20:34\":false,\"21:3\":false,\"21:4\":false,\"21:5\":false,\"21:6\":false,\"20:37\":false,\"21:11\":false,\"20:42\":false,\"21:12\":false,\"21:13\":false,\"21:14\":false,\"21:15\":false,\"21:16\":false,\"21:17\":false,\"21:18\":false,\"21:19\":false,\"21:31\":false,\"21:32\":false,\"21:33\":false,\"21:34\":false,\"22:3\":false,\"21:37\":false,\"22:11\":false,\"21:42\":false,\"22:12\":false,\"22:13\":false,\"22:14\":false,\"22:15\":false,\"22:16\":false,\"22:17\":false,\"22:18\":false,\"22:19\":false,\"22:31\":false,\"22:32\":false,\"22:33\":false,\"22:34\":false,\"23:3\":false,\"22:37\":false,\"23:11\":false,\"22:42\":false,\"23:12\":false,\"23:13\":false,\"23:14\":false,\"23:15\":false,\"23:16\":false,\"23:17\":false,\"23:18\":false,\"23:19\":false,\"23:20\":false,\"23:21\":false,\"23:22\":false,\"23:23\":false,\"23:24\":false,\"23:25\":false,\"23:26\":false,\"23:27\":false,\"23:31\":false,\"23:32\":false,\"23:33\":false,\"23:34\":false,\"24:3\":false,\"23:37\":false,\"23:42\":false,\"24:16\":false,\"24:23\":false,\"24:24\":false,\"24:25\":false,\"24:26\":false,\"24:27\":false,\"24:28\":false,\"24:29\":false,\"24:30\":false,\"24:31\":false,\"25:0\":false,\"24:32\":false,\"25:1\":false,\"24:33\":false,\"25:2\":false,\"24:34\":false,\"25:3\":false,\"25:4\":false,\"25:5\":false,\"25:6\":false,\"24:37\":false,\"25:7\":false,\"25:8\":false,\"24:41\":false,\"24:42\":false,\"24:43\":false,\"24:44\":false,\"25:16\":false,\"25:23\":false,\"25:24\":false,\"25:25\":false,\"25:26\":false,\"25:27\":false,\"25:31\":false,\"26:0\":false,\"25:32\":false,\"26:1\":false,\"25:33\":false,\"26:2\":false,\"25:34\":false,\"26:3\":false,\"26:4\":false,\"26:5\":false,\"26:6\":false,\"25:37\":false,\"26:7\":false,\"26:8\":false,\"25:41\":false,\"25:42\":false,\"25:43\":false,\"25:44\":false,\"26:15\":false,\"26:16\":false,\"26:17\":false,\"26:18\":false,\"26:23\":false,\"26:24\":false,\"26:25\":false,\"26:26\":false,\"26:27\":false,\"26:31\":false,\"27:0\":false,\"26:32\":false,\"27:1\":false,\"26:33\":false,\"27:2\":false,\"26:34\":false,\"27:3\":false,\"27:4\":false,\"27:5\":false,\"27:6\":false,\"26:37\":false,\"27:7\":false,\"27:8\":false,\"27:9\":false,\"26:41\":false,\"27:10\":false,\"26:42\":false,\"27:11\":false,\"26:43\":false,\"27:12\":false,\"26:44\":false,\"27:13\":false,\"27:14\":false,\"27:15\":false,\"27:16\":false,\"27:17\":false,\"27:18\":false,\"27:23\":false,\"27:24\":false,\"27:25\":false,\"27:26\":false,\"27:27\":false,\"28:0\":false,\"28:1\":false,\"27:32\":false,\"28:2\":false,\"28:3\":false,\"28:4\":false,\"28:5\":false,\"28:6\":false,\"27:37\":false,\"28:7\":false,\"28:8\":false,\"27:41\":false,\"27:42\":false,\"27:43\":false,\"27:44\":false,\"28:15\":false,\"28:16\":false,\"28:17\":false,\"28:18\":false,\"28:19\":false,\"28:20\":false,\"28:21\":false,\"28:22\":false,\"28:23\":false,\"28:24\":false,\"28:25\":false,\"28:26\":false,\"28:27\":false,\"28:32\":false,\"29:4\":false,\"28:37\":false,\"28:41\":false,\"28:42\":false,\"28:43\":false,\"28:44\":false,\"29:15\":false,\"29:16\":false,\"29:17\":false,\"29:18\":false,\"29:23\":false,\"29:24\":false,\"29:25\":false,\"29:26\":false,\"29:27\":false,\"29:32\":false,\"30:4\":false,\"29:37\":false,\"29:42\":false,\"30:15\":false,\"30:16\":false,\"30:17\":false,\"30:18\":false,\"30:23\":false,\"30:24\":false,\"30:25\":false,\"30:26\":false,\"30:27\":false,\"30:32\":false,\"31:4\":false,\"30:37\":false,\"30:42\":false,\"31:15\":false,\"31:16\":false,\"31:17\":false,\"31:18\":false,\"31:23\":false,\"31:24\":false,\"31:25\":false,\"31:26\":false,\"31:27\":false,\"31:32\":false,\"32:4\":false,\"31:37\":false,\"31:39\":false,\"31:40\":false,\"31:41\":false,\"31:42\":false,\"31:43\":false,\"31:44\":false,\"31:45\":false,\"31:46\":false,\"32:15\":false,\"31:47\":false,\"32:16\":false,\"32:17\":false,\"32:18\":false,\"32:23\":false,\"32:32\":false,\"33:4\":false,\"32:37\":false,\"32:39\":false,\"32:40\":false,\"32:41\":false,\"32:42\":false,\"32:43\":false,\"32:44\":false,\"32:45\":false,\"32:46\":false,\"33:15\":false,\"32:47\":false,\"33:16\":false,\"33:17\":false,\"33:18\":false,\"33:23\":false,\"33:32\":false,\"34:4\":false,\"33:37\":false,\"33:39\":false,\"33:40\":false,\"33:41\":false,\"33:42\":false,\"33:43\":false,\"33:44\":false,\"33:45\":false,\"33:46\":false,\"34:15\":false,\"33:47\":false,\"34:16\":false,\"34:17\":false,\"34:18\":false,\"34:23\":false,\"34:32\":false}},\"seq\":4}");
     gold.append("\nRANDO|FAILURE:184333");
     gold.append("\n{\"command\":\"invalidate\",\"timestamp\":\"100\"}-->{\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__time\":\"100\"} need:false in:0");
     gold.append("\nRANDO|SUCCESS:5");
     gold.append("\n+ NO_ONE DELTA:{\"seq\":5}");
     gold.append("\n+ RANDO DELTA:{\"seq\":5}");
-    gold.append("\nMEMORY:179970");
+    gold.append("\nMEMORY:180610");
     gold.append("\n--JAVA RESULTS-------------------------------------");
     gold.append("\n{\"__snapshot\":\"0/0\",\"sz\":2,\"h_0_0\":true,\"h_1_1\":false,\"__state\":\"\",\"__constructed\":true,\"__next_time\":\"0\",\"__last_expire_time\":\"0\",\"__blocked\":false,\"__seq\":5,\"__entropy\":\"-8929183248358367000\",\"__auto_future_id\":0,\"__connection_id\":0,\"__message_id\":0,\"__time\":\"100\",\"__timezone\":\"UTC\",\"__auto_table_row_id\":0,\"__auto_gen\":0,\"__auto_cache_id\":0,\"__cache\":{},\"__webTaskId\":0,\"__webqueue\":{},\"__replication\":{}}");
     gold.append("\n--DUMP RESULTS-------------------------------------");

@@ -189,6 +189,23 @@ public class TyNativeGrid extends TyType implements //
         final var foi = new FunctionOverloadInstance("LibGrid.smash", this, new ArrayList<>(), FunctionPaint.READONLY_NORMAL);
         return new TyNativeFunctional("LibGrid.smash", FunctionOverloadInstance.WRAP(foi), FunctionStyleJava.InjectNameThenExpressionAndArgs);
       }
+      if ("width".equals(name) || "height".equals(name) || "minX".equals(name) || "minY".equals(name)) {
+        return new TyNativeFunctional(name, FunctionOverloadInstance.WRAP(new FunctionOverloadInstance(name, new TyNativeInteger(TypeBehavior.ReadOnlyNativeValue, null, mapToken).withPosition(this), new ArrayList<>(), FunctionPaint.READONLY_NORMAL)), FunctionStyleJava.ExpressionThenArgs);
+      }
+      String rangeTyAsStr = rangeType.getJavaConcreteType(environment);
+      switch (rangeTyAsStr) {
+        case "int":
+        case "boolean":
+        case "double": {
+          if ("flatten".equals(name)) {
+            final var args = new ArrayList<TyType>();
+            args.add(environment.rules.Resolve(rangeType, false));
+            TyNativeArray resultType = new TyNativeArray(TypeBehavior.ReadOnlyGetNativeValue, rangeType, null);
+            final var foi = new FunctionOverloadInstance("LibGrid.flatten", resultType, args, FunctionPaint.READONLY_NORMAL);
+            return new TyNativeFunctional("LibGrid.flatten", FunctionOverloadInstance.WRAP(foi), FunctionStyleJava.InjectNameThenExpressionAndArgs);
+          }
+        }
+      }
     }
     if ("remove".equals(name)) {
       final var args = new ArrayList<TyType>();

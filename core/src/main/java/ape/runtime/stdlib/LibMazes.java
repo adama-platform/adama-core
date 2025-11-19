@@ -33,8 +33,12 @@ import java.util.Random;
 public class LibMazes {
   public static @HiddenTypes2(class1 = Integer.class, class2 = Boolean.class) NtGrid<Integer, Boolean> basic_v0(long seed, int w, int h, int generations, int min, int max, int margin) {
     NtGrid<Integer, Boolean> grid = new NtGrid<>();
+    grid.storage.put(new Pair<>(0, 0), true);
+    grid.storage.put(new Pair<>(w - 1, 0), true);
+    grid.storage.put(new Pair<>(w - 1, h - 1), true);
+    grid.storage.put(new Pair<>(0, h - 1), true);
     BasicRoomMazeGenerator.generate(new Random(seed), w, h, generations, min, max, margin, (x, y) -> {
-      grid.storage.put(new Pair<>(x, y), true);
+      grid.storage.put(new Pair<>(x, y), false);
     });
     return grid;
   }

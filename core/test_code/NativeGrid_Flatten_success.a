@@ -1,0 +1,25 @@
+public int m_x;
+public int m_y;
+public int w;
+public int h;
+@construct {
+  grid<int, bool> dungeon;
+  dungeon[1, 4] = true;
+  dungeon[2, 1] = true;
+  m_x = dungeon.minX();
+  m_y = dungeon.minX();
+  w = dungeon.width();
+  h = dungeon.height();
+}
+
+function foo() -> grid<int, bool> {
+  grid<int, bool> dungeon;
+  dungeon[0, 0] = false;
+  dungeon[0, 5] = false;
+  dungeon[1, 1] = true;
+  return dungeon;
+}
+
+public formula test_d_grid = foo();
+public formula test_d_grid_sz = test_d_grid.size();
+public formula test_d_grid_flat = test_d_grid.flatten(true);

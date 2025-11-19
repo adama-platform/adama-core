@@ -27,6 +27,7 @@ import ape.common.Pair;
 import ape.runtime.natives.NtGrid;
 import ape.translator.reflect.Skip;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class LibGrid {
@@ -80,5 +81,53 @@ public class LibGrid {
       next.storage.put(new Pair<>(p.x + u, p.y + v), entry.getValue());
     }
     return next;
+  }
+
+  @Skip
+  public static boolean[] flatten(NtGrid<Integer, Boolean> grid, boolean defaultValue) {
+    if (grid.size() == 0) {
+      return new boolean[0];
+    }
+    boolean[] result = new boolean[grid.width() * grid.height()];
+    int mx = grid.minX();
+    int my = grid.minY();
+    Arrays.fill(result, defaultValue);
+    for (Map.Entry<Pair<Integer>, Boolean> entry : grid.storage.entrySet()) {
+      Pair<Integer> p = entry.getKey();
+      result[(p.x - mx) + (p.y - my) * grid.width()] = entry.getValue();
+    }
+    return result;
+  }
+
+  @Skip
+  public static int[] flatten(NtGrid<Integer, Integer> grid, int defaultValue) {
+    if (grid.size() == 0) {
+      return new int[0];
+    }
+    int[] result = new int[grid.width() * grid.height()];
+    int mx = grid.minX();
+    int my = grid.minY();
+    Arrays.fill(result, defaultValue);
+    for (Map.Entry<Pair<Integer>, Integer> entry : grid.storage.entrySet()) {
+      Pair<Integer> p = entry.getKey();
+      result[(p.x - mx) + (p.y - my) * grid.width()] = entry.getValue();
+    }
+    return result;
+  }
+
+  @Skip
+  public static double[] flatten(NtGrid<Integer, Double> grid, double defaultValue) {
+    if (grid.size() == 0) {
+      return new double[0];
+    }
+    double[] result = new double[grid.width() * grid.height()];
+    int mx = grid.minX();
+    int my = grid.minY();
+    Arrays.fill(result, defaultValue);
+    for (Map.Entry<Pair<Integer>, Double> entry : grid.storage.entrySet()) {
+      Pair<Integer> p = entry.getKey();
+      result[(p.x - mx) + (p.y - my) * grid.width()] = entry.getValue();
+    }
+    return result;
   }
 }

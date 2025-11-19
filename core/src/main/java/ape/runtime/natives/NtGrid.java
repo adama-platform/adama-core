@@ -31,13 +31,24 @@ import java.util.Map;
 
 public class NtGrid<TIn, TOut> implements Iterable<NtPair<Pair<TIn>, TOut>>  {
   public final HashMap<Pair<TIn>, TOut> storage;
+  private int cachedWidth = -1;
+  private int cachedHeight = -1;
+  private int cachedMinX;
+  private int cachedMinY;
 
   public NtGrid() {
     this.storage = new HashMap<>();
+    resetSizeCache();
   }
 
   public NtGrid(final NtGrid<TIn, TOut> input) {
     this.storage = new HashMap<>(input.storage);
+    resetSizeCache();
+  }
+
+  private void resetSizeCache() {
+    this.cachedWidth = -1;
+    this.cachedHeight = -1;
   }
 
   public NtMaybe<TOut> lookup(final TIn a, final TIn b) {
@@ -49,12 +60,14 @@ public class NtGrid<TIn, TOut> implements Iterable<NtPair<Pair<TIn>, TOut>>  {
       } else {
         storage.put(key, update);
       }
+      resetSizeCache();
     });
   }
 
   public NtMaybe<TOut> remove(final TIn a, final TIn b) {
     Pair<TIn> key = new Pair<>(a, b);
     final var data = storage.remove(key);
+    resetSizeCache();
     return new NtMaybe<>(data);
   }
 
@@ -64,6 +77,7 @@ public class NtGrid<TIn, TOut> implements Iterable<NtPair<Pair<TIn>, TOut>>  {
 
   public void clear() {
     storage.clear();
+    resetSizeCache();
   }
 
   public void transpose() {
@@ -94,5 +108,53 @@ public class NtGrid<TIn, TOut> implements Iterable<NtPair<Pair<TIn>, TOut>>  {
         return new NtPair<>(entry.getKey(), entry.getValue());
       }
     };
+  }
+
+  private void updateCaches() {
+    int max_x = Integer.MIN_VALUE;
+    int min_x = Integer.MAX_VALUE;
+    int max_y = Integer.MIN_VALUE;
+    int min_y = Integer.MAX_VALUE;
+    for (Map.Entry<Pair<TIn>, TOut> entry : storage.entrySet()) {
+      Pair<TIn> p = entry.getKey();
+      if (p.x instanceof Integer && p.y instanceof Integer) {
+        max_x = Math.max(max_x, (int) p.x);
+        min_x = Math.min(min_x, (int) p.x);
+        max_y = Math.max(max_y, (int) p.y);
+        min_y = Math.min(min_y, (int) p.y);
+      }
+    }
+    cachedWidth = (max_x - min_x) + 1;
+    cachedHeight = (max_y - min_y) + 1;
+    cachedMinX = min_x;
+    cachedMinY = min_y;
+  }
+
+  public int minX() {
+    if (cachedWidth == -1) {
+      updateCaches();
+    }
+    return cachedMinX;
+  }
+  public int minY() {
+    if (cachedWidth == -1) {
+      updateCaches();
+    }
+    return cachedMinY;
+  }
+
+
+  public int width() {
+    if (cachedWidth < 0) {
+      updateCaches();
+    }
+    return cachedWidth;
+  }
+
+  public int height() {
+    if (cachedHeight < 0) {
+      updateCaches();
+    }
+    return cachedHeight;
   }
 }
