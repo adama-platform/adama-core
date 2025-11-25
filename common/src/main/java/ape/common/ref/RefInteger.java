@@ -21,9 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.common;
+package ape.common.ref;
 
-public class Platform {
-  public static final String VERSION = "20251125130809";
-  public static final String JS_VERSION = "11bba41e182d13feddee3f8a6250911e";
+/** a referenced integer (a mutable Integer box) */
+public class RefInteger {
+  public int value;
+
+  public RefInteger(int value) {
+    this.value = value;
+  }
+
+  public boolean decrement() {
+    value --;
+    return value > 0;
+  }
 }

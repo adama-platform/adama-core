@@ -97,6 +97,11 @@ public class ServerSideTargetBuilder {
                     extMeta.set(extMeta.get() + element.html());
                   }
                   elements.remove();
+                  elements = newBody.getElementsByTag("title");
+                  for (Element element : elements) {
+                    newTitle.set(element.text());
+                  }
+                  elements.remove();
                   shell.injectFormHandles(newBody, pathLeveraged);
                   shell.rewriteInline(newBody);
                   int index = toReplace.siblingIndex();

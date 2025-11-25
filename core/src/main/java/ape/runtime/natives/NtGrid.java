@@ -143,7 +143,6 @@ public class NtGrid<TIn, TOut> implements Iterable<NtPair<Pair<TIn>, TOut>>  {
     return cachedMinY;
   }
 
-
   public int width() {
     if (cachedWidth < 0) {
       updateCaches();

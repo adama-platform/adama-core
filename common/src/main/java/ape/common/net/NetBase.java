@@ -140,7 +140,7 @@ public class NetBase {
       }
     });
     ChannelFuture future = bootstrap.bind();
-    LOGGER.info("started");
+    LOGGER.error("started server:" + port);
     CountDownLatch waitForEndLatch = new CountDownLatch(1);
     return new ServerHandle() {
       @Override

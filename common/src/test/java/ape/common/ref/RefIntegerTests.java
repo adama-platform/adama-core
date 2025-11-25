@@ -21,9 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.common;
+package ape.common.ref;
 
-public class Platform {
-  public static final String VERSION = "20251125130809";
-  public static final String JS_VERSION = "11bba41e182d13feddee3f8a6250911e";
+import org.junit.Assert;
+import org.junit.Test;
+
+public class RefIntegerTests {
+  @Test
+  public void trivial() {
+    RefInteger t = new RefInteger(2);
+    Assert.assertEquals(2, t.value);
+    Assert.assertTrue(t.decrement());
+    Assert.assertEquals(1, t.value);
+    Assert.assertFalse(t.decrement());
+    Assert.assertEquals(0, t.value);
+  }
 }

@@ -309,8 +309,6 @@ public class RxGrid<DomainTy, RangeTy extends RxBase> extends RxBase implements 
     }
   }
 
-
-
   public RangeTy lookup(DomainTy x, DomainTy y) {
     return getOrCreate(new Pair<>(x, y));
   }
