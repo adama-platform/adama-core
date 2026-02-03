@@ -26,10 +26,11 @@ package ape.runtime.async;
 import ape.runtime.natives.NtPrincipal;
 
 /**
- * This represents a future which has been vended to the runtime.
- *
- * <p>A future which has been vended, and it is assigned a unique id. Given how the async element
- * works within Adama, it is vital that order of futures vended be stable.
+ * Pending decision request vended to a client for async input.
+ * Assigned a unique persistent ID to correlate requests with responses
+ * across document executions. Tracks claimed/taken state to prevent
+ * double-processing. The json field holds the serialized question for
+ * the client to answer. Order stability is critical for determinism.
  */
 public class OutstandingFuture {
   public final String channel;

@@ -25,7 +25,12 @@ package ape.caravan.index;
 
 import io.netty.buffer.ByteBuf;
 
-/** a very simple doubly-linked heap */
+/**
+ * Abstract interface for managing allocation within a linear storage space.
+ * Provides region-based allocation and deallocation, tracks available space,
+ * supports snapshot/restore for WAL recovery, and reports usage statistics.
+ * Implementations use free-list or similar strategies for space management.
+ */
 public interface Heap {
   /** how many bytes are available to allocate */
   long available();

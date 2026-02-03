@@ -28,7 +28,12 @@ import ape.common.codec.Flow;
 import ape.common.codec.TypeId;
 import ape.runtime.data.RemoteDocumentUpdate;
 
-/** Events within a document's log */
+/**
+ * Data structures for Caravan write-ahead log events.
+ * Defines the four event types persisted in the WAL: Change (single delta),
+ * Batch (multiple changes), Snapshot (compacted state), and Recover
+ * (document restoration). Annotated with codec metadata for serialization.
+ */
 public interface Events {
   @TypeId(0x10)
   @Flow("Event")

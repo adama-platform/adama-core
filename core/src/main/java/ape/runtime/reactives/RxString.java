@@ -28,7 +28,13 @@ import ape.runtime.contracts.RxParent;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 
-/** a reactive string */
+/**
+ * Reactive string with change tracking and index support.
+ * Maintains backup value for commit/revert semantics. Supports string
+ * concatenation via opAddTo() with proper dirty flag propagation and
+ * index trigger notification. Index value is the string's hashCode(),
+ * enabling efficient equality-based lookups in ReactiveIndex.
+ */
 public class RxString extends RxIndexableBase implements Comparable<RxString>, CanGetAndSet<String> {
   protected String backup;
   protected String value;

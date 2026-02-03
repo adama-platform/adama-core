@@ -30,7 +30,14 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/** filters invalidation events based on the keys within a map */
+/**
+ * Fine-grained invalidation filter for map-dependent computed values.
+ * Tracks which map keys were actually read during formula evaluation,
+ * then filters incoming change events to only fire invalidations when
+ * relevant keys change. Supports per-viewer tracking via FireGate
+ * instances for efficient incremental view updates. Analogous to
+ * RxTableGuard but for RxMap key-based access patterns.
+ */
 public class RxMapGuard<DomainTy> implements MapSubscription<DomainTy> {
   private final RxDependent owner;
 

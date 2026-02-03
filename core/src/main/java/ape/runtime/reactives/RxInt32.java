@@ -28,7 +28,13 @@ import ape.runtime.contracts.RxParent;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 
-/** a reactive 32-bit integer (int) */
+/**
+ * Reactive 32-bit integer with change tracking and index support.
+ * Maintains backup value for commit/revert semantics. Supports arithmetic
+ * operations (add, multiply, increment, decrement) that properly raise
+ * dirty flags and trigger index updates. Extends RxIndexableBase to
+ * participate in table column indexing via getIndexValue().
+ */
 public class RxInt32 extends RxIndexableBase implements Comparable<RxInt32>, CanGetAndSet<Integer> {
   protected int backup;
   protected int value;

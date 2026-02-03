@@ -28,7 +28,12 @@ import ape.runtime.json.JsonStreamWriter;
 
 import java.util.Objects;
 
-/** the output of a service call */
+/**
+ * Response from an external service call with success/failure semantics.
+ * Contains either a result (JSON string) on success or a failure message
+ * with error code on error. Persisted in RxCache to enable retry and
+ * caching of service responses. NULL sentinel represents pending state.
+ */
 public class RemoteResult {
   public static RemoteResult NULL = new RemoteResult(null, null, null);
   public final String result;

@@ -27,7 +27,13 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
-/** a date and a time with the time zone in the typical gregorian calendar */
+/**
+ * Immutable timestamp with timezone using Java ZonedDateTime.
+ * Provides full date/time/zone semantics for scheduling, logging, and
+ * temporal queries. The toInt() encoding converts to minutes since epoch
+ * for efficient indexing (fits in 32-bit int for ~4000 years). Parsing
+ * uses ISO-8601 format with system timezone as fallback default.
+ */
 public class NtDateTime implements Comparable<NtDateTime> {
   public final ZonedDateTime dateTime;
 

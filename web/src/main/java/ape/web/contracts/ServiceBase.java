@@ -30,8 +30,12 @@ import ape.web.io.JsonRequest;
 import ape.web.io.JsonResponder;
 
 /**
- * this is the base of the service which is used to spawn ServiceConnection's when a new request
- * comes online
+ * Root service factory interface for the web server.
+ * Provides three core capabilities:
+ * - establish(): Create ServiceConnection for WebSocket clients
+ * - http(): Access HttpHandler for HTTP request routing
+ * - assets(): Access AssetSystem for file storage operations
+ * Implementations wire together the platform's request handling infrastructure.
  */
 public interface ServiceBase {
 

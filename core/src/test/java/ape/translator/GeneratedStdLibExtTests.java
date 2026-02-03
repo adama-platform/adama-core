@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedStdLibExtTests extends GeneratedBase {
   private String cached_SignAndHexWithGCD_1 = null;
   private String get_SignAndHexWithGCD_1() {

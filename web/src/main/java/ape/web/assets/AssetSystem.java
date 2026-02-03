@@ -28,7 +28,13 @@ import ape.runtime.data.Key;
 import ape.runtime.natives.NtAsset;
 import ape.web.io.ConnectionContext;
 
-/** defines the asset system from the perspective of the web tier */
+/**
+ * Storage interface for document-attached files from the web tier.
+ * Provides four core operations:
+ * - request(): Stream asset content to client (by AssetRequest or Key+NtAsset)
+ * - attach(): Associate uploaded asset with a document, optionally sending a channel message
+ * - upload(): Store asset bytes to the underlying storage system
+ */
 public interface AssetSystem {
   /** stream an asset from underlying medium */
   void request(AssetRequest request, AssetStream stream);

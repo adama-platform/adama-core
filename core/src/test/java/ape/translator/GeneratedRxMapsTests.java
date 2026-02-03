@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedRxMapsTests extends GeneratedBase {
   private String cached_Chain_1 = null;
   private String get_Chain_1() {

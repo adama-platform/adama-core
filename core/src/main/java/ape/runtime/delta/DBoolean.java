@@ -26,7 +26,12 @@ package ape.runtime.delta;
 import ape.runtime.contracts.DeltaNode;
 import ape.runtime.json.PrivateLazyDeltaWriter;
 
-/** a boolean that will respect privacy and sends state to client only on changes */
+/**
+ * Delta tracker for booleans with privacy-aware change detection.
+ * Caches previously sent value and only emits to PrivateLazyDeltaWriter
+ * when the value actually changes. The hide() method sends null when a
+ * field becomes private. Used by generated PrivateView code.
+ */
 public class DBoolean implements DeltaNode {
   private Boolean prior;
 

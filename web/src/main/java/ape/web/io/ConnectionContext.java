@@ -27,8 +27,10 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 /**
- * Since WebSocket is the primary transport, we can leverage some HTTP headers for insight along
- * with connection properties
+ * HTTP/WebSocket connection metadata extracted from headers.
+ * Captures origin URL, client IP (stripped of port), user-agent string,
+ * and cookie-based identities. Used for authentication context, logging,
+ * and policy evaluation throughout request processing.
  */
 public class ConnectionContext {
   public final String origin;

@@ -30,7 +30,12 @@ import ape.common.ErrorCodeException;
 
 import java.util.Locale;
 
-/** a thin wrapper for easy access to a JSON request */
+/**
+ * Typed accessor wrapper for JSON-RPC style requests over WebSocket.
+ * Provides validated extraction of request fields (id, method, string/int/object
+ * parameters) with structured error codes when fields are missing or malformed.
+ * Carries ConnectionContext for request metadata.
+ */
 public class JsonRequest {
   public final ConnectionContext context;
   private final ObjectNode node;

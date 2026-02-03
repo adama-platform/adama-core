@@ -23,7 +23,13 @@
  */
 package ape.runtime.contracts;
 
-/** should be killed upon removal from a structure */
+/**
+ * Lifecycle interface for reactive values that hold resources.
+ * Called when a reactive value is removed from its container (table row
+ * deleted, map entry removed, maybe cleared). Implementations should
+ * clean up any resources like nested killable children or external
+ * subscriptions to prevent memory leaks.
+ */
 public interface RxKillable {
 
   void __kill();

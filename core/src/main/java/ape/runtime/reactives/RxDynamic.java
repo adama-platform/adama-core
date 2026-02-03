@@ -30,7 +30,13 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtDynamic;
 
-/** a reactive data type to hide and hold an entire json tree */
+/**
+ * Reactive container for arbitrary JSON trees with change tracking.
+ * Wraps NtDynamic (opaque JSON blob) for schema-free embedded data.
+ * Commits use JsonAlgebra to compute structural deltas between JSON
+ * values, enabling efficient delta synchronization of nested objects.
+ * Maintains backup value for commit/revert semantics.
+ */
 public class RxDynamic extends RxBase implements Comparable<RxDynamic>, CanGetAndSet<NtDynamic> {
   private NtDynamic backup;
   private NtDynamic value;

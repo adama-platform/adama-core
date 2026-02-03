@@ -23,7 +23,12 @@
  */
 package ape.runtime.contracts;
 
-/** allow both messages and records to be indexable dynamically */
+/**
+ * Interface for records with multiple indexed columns.
+ * Used by generated record types to expose all indexed fields at once.
+ * Returns parallel arrays of column names and current index values,
+ * enabling bulk index operations during record insertion and deletion.
+ */
 public interface MultiIndexable {
 
   public String[] __getIndexColumns();

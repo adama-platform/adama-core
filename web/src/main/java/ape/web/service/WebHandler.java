@@ -72,6 +72,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
+/**
+ * Netty HTTP request handler with comprehensive routing for the Adama platform.
+ * Handles internal routes (/~upload, /~health, /libadama.js, cookie management),
+ * domain-based routing to documents via HttpHandler, asset delivery with caching
+ * and transforms, CORS support, and response streaming. Integrates with
+ * WebRequestShield for security filtering.
+ */
 public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
   private static final Logger LOG = LoggerFactory.getLogger(WebHandler.class);
 

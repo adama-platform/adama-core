@@ -31,7 +31,13 @@ import ape.translator.reflect.UseName;
 
 import java.util.Arrays;
 
-/** very simple statistics */
+/**
+ * Standard library for statistical operations on numeric lists.
+ * Provides average, sum, min, max, count, variance, and standard deviation
+ * for integer, long, and double lists. All functions return NtMaybe to
+ * handle empty lists gracefully. Uses @UseName annotation to map to
+ * Adama language function names (e.g., sumDoubles -> "sum").
+ */
 public class LibStatistics {
   @UseName(name = "average")
   @Extension

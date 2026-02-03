@@ -40,7 +40,13 @@ import java.util.PrimitiveIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** a basic string library */
+/**
+ * Standard library for string manipulation in Adama documents.
+ * Provides split, join, contains, indexOf, replace, trim, substring, pad,
+ * encoding (base64, hex, URL), password hashing (scrypt), regex matching,
+ * and character-level operations. Methods are annotated with @Extension
+ * to expose them as Adama language built-ins callable on string values.
+ */
 public class LibString {
 
   @Extension

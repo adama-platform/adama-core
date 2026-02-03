@@ -33,7 +33,13 @@ import ape.runtime.reactives.tables.TablePubSub;
 
 import java.util.function.Supplier;
 
-/** the base object for generated record types */
+/**
+ * Abstract base class for generated table row record types.
+ * Provides lifecycle management (alive, dying, killed states), indexing support
+ * via MultiIndexable, parent-child reactive relationships, and primary key
+ * identification. Generated subclasses add typed fields and implement
+ * reindexing, linking, and field access methods.
+ */
 public abstract class RxRecordBase<Ty extends RxRecordBase<Ty>> extends RxBase implements Comparable<Ty>, MultiIndexable, RxParent, RxChild, RxKillable {
   protected boolean __isDying;
   private boolean __alive;

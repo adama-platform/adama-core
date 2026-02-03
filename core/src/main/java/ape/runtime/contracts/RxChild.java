@@ -23,7 +23,13 @@
  */
 package ape.runtime.contracts;
 
-/** the child of a reactive expression/data */
+/**
+ * Subscriber interface for reactive invalidation notifications.
+ * Implementations receive __raiseInvalid() when a subscribed value changes.
+ * Returns true if the subscriber is still alive and should continue receiving
+ * notifications; false triggers automatic unsubscription. Used to propagate
+ * changes through the reactive dependency graph.
+ */
 public interface RxChild {
   /** return true if still alive */
   boolean __raiseInvalid();

@@ -42,7 +42,9 @@ public class TestClass {
     outputFile = new StringBuilder();
     outputFile.append(DefaultCopyright.COPYRIGHT_FILE_PREFIX);
     outputFile.append("package ape.translator;\n\n");
+    outputFile.append("import javax.annotation.processing.Generated;\n");
     outputFile.append("import org.junit.Test;\n\n");
+    outputFile.append("@Generated(\"ape.support.testgen.TestClass\")\n");
     outputFile.append(String.format("public class Generated%sTests extends GeneratedBase {\n", clazz));
   }
 

@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedMatrixTests extends GeneratedBase {
   private String cached_Ingestion_1 = null;
   private String get_Ingestion_1() {

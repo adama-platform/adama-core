@@ -26,7 +26,13 @@ package ape.runtime.natives;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-/** a time within a day at the precision of a minute */
+/**
+ * Immutable time-of-day (hour:minute) at minute precision.
+ * Represents wall-clock time without date or timezone context. The toInt()
+ * encoding computes hour*60 + minute for efficient indexing (0-1439 range).
+ * Parsing accepts "HH:MM" format with default minute of 0 if omitted.
+ * Used for scheduling and time-based filtering in Adama documents.
+ */
 public class NtTime implements Comparable<NtTime> {
   public final int hour;
   public final int minute;

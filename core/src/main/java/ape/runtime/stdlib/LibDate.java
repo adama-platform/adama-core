@@ -37,7 +37,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 
-/** date math for just days */
+/**
+ * Standard library for date operations in Adama documents.
+ * Provides date construction, arithmetic (add/subtract days), formatting,
+ * day-of-week extraction, month names, calendar view generation, date
+ * comparisons, and conversions between NtDate, NtDateTime, and Java
+ * LocalDate types. Methods use @Extension annotation for Adama exposure.
+ */
 public class LibDate {
   @Extension
   public static @HiddenType(clazz = NtDateTime.class) NtMaybe<NtDateTime> construct(NtDate date, NtTime time, double seconds, String zone) {

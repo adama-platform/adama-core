@@ -27,6 +27,13 @@ import ape.runtime.contracts.Indexable;
 import ape.runtime.contracts.RxParent;
 import ape.runtime.reactives.tables.IndexInvalidate;
 
+/**
+ * Base class for reactive values that can participate in table column indexes.
+ * Implements Indexable interface and maintains an IndexInvalidate watcher
+ * that receives notifications when the value changes. The trigger() method
+ * notifies the watcher with both old and new index values, enabling
+ * ReactiveIndex to efficiently update its internal structures.
+ */
 public abstract class RxIndexableBase extends RxBase implements Indexable {
   protected IndexInvalidate watcher;
 

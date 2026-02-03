@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedRegressionTests extends GeneratedBase {
   private String cached_Issue20251114_1 = null;
   private String get_Issue20251114_1() {

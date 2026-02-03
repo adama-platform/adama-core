@@ -26,7 +26,13 @@ package ape.runtime.delta;
 import ape.runtime.contracts.DeltaNode;
 import ape.runtime.json.PrivateLazyDeltaWriter;
 
-/** a int32 that will respect privacy and sends state to client only on changes */
+/**
+ * Delta tracker for 32-bit integers with privacy-aware change detection.
+ * Caches previously sent value and only emits to PrivateLazyDeltaWriter
+ * when the value actually changes. The hide() method sends null when a
+ * field becomes private. Used by generated PrivateView code to minimize
+ * bandwidth in delta synchronization.
+ */
 public class DInt32 implements DeltaNode {
   private Integer prior;
 

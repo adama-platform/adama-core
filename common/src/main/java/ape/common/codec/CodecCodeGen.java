@@ -46,6 +46,7 @@ public class CodecCodeGen {
     sb.append(DefaultCopyright.COPYRIGHT_FILE_PREFIX);
     sb.append("package " + packageName + ";\n\n");
 
+    sb.append("import javax.annotation.processing.Generated;\n");
     sb.append("import io.netty.buffer.ByteBuf;\n");
     sb.append("import io.netty.buffer.Unpooled;\n");
     sb.append("import ape.common.codec.Helper;\n");
@@ -54,6 +55,7 @@ public class CodecCodeGen {
       sb.append("import ").append(clazz.getName().replace('$', '.')).append(";\n");
     }
     sb.append("\n");
+    sb.append("@Generated(\"ape.common.codec.CodecCodeGen\")\n");
     sb.append("public class ").append(className).append(" {\n");
 
     HashSet<String> allFlows = new HashSet<>();

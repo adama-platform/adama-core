@@ -23,6 +23,7 @@
  */
 package ape.caravan.events;
 
+import javax.annotation.processing.Generated;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import ape.common.codec.Helper;
@@ -32,6 +33,7 @@ import ape.caravan.events.Events.Snapshot;
 import ape.caravan.events.Events.Batch;
 import ape.caravan.events.Events.Change;
 
+@Generated("ape.common.codec.CodecCodeGen")
 public class EventCodec {
 
   public static abstract class StreamEvent implements ByteStream {

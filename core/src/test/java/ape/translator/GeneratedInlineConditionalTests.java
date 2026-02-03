@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedInlineConditionalTests extends GeneratedBase {
   private String cached_AssignmentRecordProxy_1 = null;
   private String get_AssignmentRecordProxy_1() {

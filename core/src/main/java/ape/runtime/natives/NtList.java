@@ -32,7 +32,14 @@ import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/** the core list abstraction */
+/**
+ * Functional list interface for query operations on table results.
+ * Provides LINQ-style operations: where (filter), orderBy (sort), skip/limit
+ * (pagination), shuffle (randomize), transform/map (projection), reduce
+ * (aggregation), unique (deduplication), and rank (scoring). Operations
+ * chain lazily where possible. Backed by SelectorRxObjectList for table
+ * queries or ArrayNtList for materialized results.
+ */
 public interface NtList<Ty> extends Iterable<Ty> {
   void __delete();
 

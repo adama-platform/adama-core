@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedReturnTests extends GeneratedBase {
   private String cached_ShouldReturnButDoesnt_1 = null;
   private String get_ShouldReturnButDoesnt_1() {

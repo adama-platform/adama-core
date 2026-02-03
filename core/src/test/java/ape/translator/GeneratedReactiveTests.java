@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedReactiveTests extends GeneratedBase {
   private String cached_FormulaUsingOtherFormula_1 = null;
   private String get_FormulaUsingOtherFormula_1() {

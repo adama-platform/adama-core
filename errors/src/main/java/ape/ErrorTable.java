@@ -23,9 +23,11 @@
  */
 package ape;
 
+import javax.annotation.processing.Generated;
 import java.util.HashMap;
 import java.util.HashSet;
 
+@Generated("ape.GenerateTables")
 public class ErrorTable {
   public static final ErrorTable INSTANCE = new ErrorTable();
   public final HashMap<Integer, String> names;

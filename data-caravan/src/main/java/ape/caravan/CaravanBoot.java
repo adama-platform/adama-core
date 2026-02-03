@@ -38,7 +38,12 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** booting a production caravan data service */
+/**
+ * Bootstrap factory for initializing a production Caravan data service.
+ * Creates the WAL directories, DurableListStore, CaravanDataService, and
+ * ManagedDataService with background flushing. Registers a shutdown hook
+ * to ensure clean persistence on process termination.
+ */
 public class CaravanBoot {
   private final SimpleExecutor caravanExecutor;
   private final SimpleExecutor managedExecutor;

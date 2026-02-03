@@ -35,7 +35,13 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Function;
 
-/** a reactive maybe */
+/**
+ * Reactive optional container for nullable reactive values.
+ * Wraps another reactive type (Ty) and tracks presence/absence with full
+ * commit/revert semantics. Supports lazy creation via make(), deletion,
+ * and comparison. Emits null in JSON when absent, creating clean delta
+ * representations for optional fields and embedded records.
+ */
 public class RxMaybe<Ty extends RxBase, Ry> extends RxBase implements RxParent, RxChild, RxKillable {
   private final Function<RxParent, Ty> maker;
   private Ty priorValue;

@@ -27,7 +27,13 @@ import ape.runtime.stdlib.LibMath;
 
 import java.util.Objects;
 
-/** a complex number */
+/**
+ * Immutable complex number with real and imaginary components.
+ * Supports mathematical operations including reciprocal for division.
+ * Comparison orders by real part first, then imaginary. The zero()
+ * method uses LibMath.near() for floating-point tolerance checks.
+ * Used for scientific computing in Adama documents.
+ */
 public class NtComplex implements Comparable<NtComplex> {
   public final double real;
   public final double imaginary;

@@ -26,7 +26,13 @@ package ape.runtime.natives;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/** A single date in the typical gregorian calendar */
+/**
+ * Immutable calendar date (year/month/day) in Gregorian format.
+ * Supports comparison, hashing, and conversion to LocalDate for
+ * Java interop. The toInt() encoding packs into a single integer for
+ * efficient indexing. Parsing accepts "YYYY-MM-DD" or "YYYY/MM/DD"
+ * with defaults for missing month/day components.
+ */
 public class NtDate implements Comparable<NtDate> {
   public final int year;
   public final int month;

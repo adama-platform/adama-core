@@ -30,7 +30,12 @@ import ape.web.io.ConnectionContext;
 
 import java.util.TreeMap;
 
-/** a simple http handler */
+/**
+ * HTTP request handler interface for routing requests to documents and spaces.
+ * Implementations resolve domain/URI combinations to HttpResult responses which
+ * can be body content, asset references, or redirects. Also provides deep health
+ * check endpoint for infrastructure monitoring.
+ */
 public interface HttpHandler {
 
   public enum Method {

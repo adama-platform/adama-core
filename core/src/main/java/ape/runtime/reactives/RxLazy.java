@@ -28,7 +28,13 @@ import ape.runtime.contracts.RxParent;
 import java.util.Set;
 import java.util.function.Supplier;
 
-/** a reactive lazy formula which is computed on demand */
+/**
+ * Reactive computed value that lazily evaluates a formula on demand.
+ * Caches the result until invalidated by dependency changes. Supports
+ * performance tracking via optional perf supplier. Generation numbers
+ * provide efficient change detection for delta synchronization without
+ * comparing actual values.
+ */
 public class RxLazy<Ty> extends RxDependent {
   protected final Supplier<Ty> formula;
   private final Supplier<Runnable> perf;

@@ -29,7 +29,13 @@ import ape.runtime.natives.NtPrincipal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** A sink is basically a queue for multiple users to contribute to. */
+/**
+ * Per-user message queue for channel-based async communication.
+ * Each channel has a Sink that maintains separate queues per user (principal).
+ * Messages are enqueued via AsyncTask and dequeued as SimpleFuture results.
+ * Supports conditional dequeue by timestamp and maybe-wrapped extraction.
+ * Used by generated channel handlers to implement Adama's async messaging.
+ */
 public class Sink<T> {
   /** the communication channel for the sink */
   public final String channel;

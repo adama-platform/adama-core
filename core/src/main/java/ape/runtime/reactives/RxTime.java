@@ -29,7 +29,12 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtTime;
 
-/** a reactive time within a day at the precision of a minute */
+/**
+ * Reactive time-of-day (hour:minute) with change tracking and index support.
+ * Wraps NtTime at minute precision without date or timezone. Maintains
+ * backup value for commit/revert semantics. Index value is the integer
+ * encoding (hour*60 + minute) for efficient time-based filtering in tables.
+ */
 public class RxTime extends RxIndexableBase implements CanGetAndSet<NtTime>, Comparable<RxTime> {
   private NtTime backup;
   private NtTime value;

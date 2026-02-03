@@ -34,6 +34,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * In-memory cache for a single document's state within Caravan.
+ * Accumulates snapshots and change events from the WAL, tracks sequence numbers,
+ * and supports computing the current document state by merging base snapshots
+ * with redo operations. Provides head patch computation and rewind capabilities
+ * for time-travel queries.
+ */
 public abstract class LocalCache implements ByteArrayStream, EventCodec.HandlerEvent {
   private final ArrayList<SeqString> redos;
   private final ArrayDeque<SeqString> undos;

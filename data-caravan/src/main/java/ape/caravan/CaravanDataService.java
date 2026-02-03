@@ -48,6 +48,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
+/**
+ * Local disk-based data service with write-ahead logging and cloud backup integration.
+ * Implements the ArchivingDataService interface to provide durable document storage
+ * through append-only logs on local disk with asynchronous cloud archival. Supports
+ * document initialization, patching, snapshots, backup/restore, and compute operations.
+ * Uses an in-memory cache for active documents and a DurableListStore for persistence.
+ */
 public class CaravanDataService implements ArchivingDataService {
   private final Logger LOGGER = LoggerFactory.getLogger(CaravanDataService.class);
   private final CaravanMetrics metrics;

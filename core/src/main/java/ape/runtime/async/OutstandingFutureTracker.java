@@ -31,9 +31,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * this class has the job of trakcing futures which get created and assigning them persistent ids.
- * This is the class which buffers asks from the code such that we can turn around and ask the
- * people
+ * Tracks pending async decisions (futures) requested from users.
+ * Assigns persistent IDs to futures so decisions can be matched to
+ * requests across document executions. Buffers questions (channel/client
+ * pairs) from code and dumps them to viewers so clients see what
+ * decisions they need to make. Manages commit/restore lifecycle for
+ * transactional consistency.
  */
 public class OutstandingFutureTracker {
   public final ArrayList<OutstandingFuture> created;

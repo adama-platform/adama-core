@@ -28,7 +28,12 @@ import ape.runtime.data.Key;
 
 import java.io.File;
 
-/** restore/backup from the cloud */
+/**
+ * Interface for cloud storage operations used by Caravan for backup/restore.
+ * Defines the contract for checking archive existence, downloading archives
+ * to local files, uploading local archives to cloud storage, and deleting
+ * archives. Implementations typically use S3 or similar object stores.
+ */
 public interface Cloud {
   /** the path for where cloud files are stored */
   File path();

@@ -28,7 +28,13 @@ import ape.runtime.contracts.RxParent;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 
-/** a reactive boolean */
+/**
+ * Reactive boolean with change tracking and index support.
+ * Maintains backup value for commit/revert semantics. Index value maps
+ * true to 1 and false to 0, enabling efficient boolean-based table
+ * filtering via ReactiveIndex. Changes trigger dirty flag propagation
+ * and index update notifications.
+ */
 public class RxBoolean extends RxIndexableBase implements Comparable<RxBoolean>, CanGetAndSet<Boolean> {
   private boolean backup;
   private boolean value;

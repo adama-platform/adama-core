@@ -29,6 +29,14 @@ import ape.runtime.reactives.maps.MapGuardTarget;
 
 import java.util.ArrayList;
 
+/**
+ * Base class for reactive values that depend on tables and maps.
+ * Manages guard pairs that track read patterns during formula evaluation
+ * to enable fine-grained invalidation. Supports both formula mode (single
+ * reader) and viewer-centric bubble mode (per-client tracking). Coordinates
+ * with RxTableGuard and RxMapGuard to minimize spurious recomputation
+ * when only irrelevant data changes.
+ */
 public abstract class RxDependent extends RxNerfedBase implements RxChild {
   protected ArrayList<GuardPairCommon> guards;
 

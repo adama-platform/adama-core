@@ -52,7 +52,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-/** a single instance of Adama using just WebSocket + local filesystem + simple static HTTP GET server */
+/**
+ * Standalone single-node Adama server for simple deployments.
+ * Combines WebSocket API, local filesystem-based document storage,
+ * and static HTTP serving in one process. Useful for single-tenant
+ * deployments, testing, and edge computing scenarios.
+ */
 public class Solo {
   private final SimpleExecutor commonExecutor;
   private final ExecutorService inmemoryExecutor;

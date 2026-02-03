@@ -23,7 +23,12 @@
  */
 package ape;
 
-/** centralized listing of all error codes */
+/**
+ * Centralized registry of all error codes used across the Adama platform.
+ * Each code is a unique integer annotated with metadata: @RetryInternally for
+ * auto-retry errors, @User for user-visible errors, @Description for docs,
+ * @NotProblem for expected conditions. Codes are grouped by subsystem.
+ */
 public class ErrorCodes {
   public static final int IMPOSSIBLE = 101386;
 

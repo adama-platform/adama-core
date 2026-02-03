@@ -29,7 +29,13 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtAsset;
 
-/** a reactive asset type */
+/**
+ * Reactive container for file/blob asset references with change tracking.
+ * Wraps NtAsset (immutable file metadata: id, name, contentType, size, hash).
+ * Maintains backup value for commit/revert semantics. Assets are compared
+ * by their internal ordering for sorting. Does not support indexing since
+ * asset lookup is typically by id rather than value-based queries.
+ */
 public class RxAsset extends RxBase implements Comparable<RxAsset>, CanGetAndSet<NtAsset> {
   private NtAsset backup;
   private NtAsset value;

@@ -26,7 +26,13 @@ package ape.runtime.reactives;
 import ape.runtime.contracts.RxParent;
 import ape.runtime.json.JsonStreamWriter;
 
-/** a reactive string */
+/**
+ * Reactive string optimized for pre-validated/escaped content.
+ * Extends RxString but uses writeFastString() during serialization,
+ * which skips JSON escape processing. Use for strings known to be
+ * safe (no control characters or quotes needing escape), providing
+ * faster JSON output at the cost of correctness guarantees.
+ */
 public class RxFastString extends RxString {
   public RxFastString(final RxParent owner, final String value) {
     super(owner, value);

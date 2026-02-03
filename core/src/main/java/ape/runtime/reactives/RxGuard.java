@@ -29,8 +29,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 /**
- * a condition to learn if changes have occured. This is like a Lazy, but gives people the ability
- * to learn if changes have happened since the last time a commited happened
+ * Change detector for incremental view updates via generation numbers.
+ * Tracks whether dependent values have changed since last observation.
+ * Maintains per-viewer bump counters to provide unique generation values
+ * for each client, enabling efficient "has anything changed?" checks
+ * without comparing actual values. Used by delta synchronization to
+ * determine which fields need to be sent to each viewer.
  */
 public class RxGuard extends RxDependent {
   private int generation;

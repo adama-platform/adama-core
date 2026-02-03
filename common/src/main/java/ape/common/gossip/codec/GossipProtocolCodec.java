@@ -23,6 +23,7 @@
  */
 package ape.common.gossip.codec;
 
+import javax.annotation.processing.Generated;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import ape.common.codec.Helper;
@@ -37,6 +38,7 @@ import ape.common.gossip.codec.GossipProtocol.HashFoundRequestForwardQuickGossip
 import ape.common.gossip.codec.GossipProtocol.BeginGossip;
 import ape.common.gossip.codec.GossipProtocol.Endpoint;
 
+@Generated("ape.common.codec.CodecCodeGen")
 public class GossipProtocolCodec {
 
   public static abstract class StreamChatterFromServer implements ByteStream {

@@ -38,6 +38,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+/**
+ * Filesystem scanner that discovers and bundles Adama spaces for the Solo server.
+ * Scans directories for main.adama or backend.adama files, collects imports,
+ * creates deployment plans, and deploys them to the DeploymentFactoryBase.
+ */
 public class SoloBundler {
   public static String bundle(String spaceName, File mainFile, File includePath, Consumer<String> error) throws Exception {
     ObjectNode plan = Json.newJsonObject();

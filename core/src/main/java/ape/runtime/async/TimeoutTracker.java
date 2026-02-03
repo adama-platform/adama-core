@@ -31,7 +31,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-/** track the timeouts */
+/**
+ * Manages timeout scheduling for async futures in documents.
+ * Tracks timeout entries by ID with creation timestamp and duration.
+ * Integrates with document's next-wake-time calculation to ensure
+ * timely execution. Supports commit/revert for transactional consistency
+ * and persistence via dump/hydrate for durability.
+ */
 public class TimeoutTracker {
   public final RxInt64 time;
   public final HashMap<Integer, Timeout> timeouts;

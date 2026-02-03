@@ -28,7 +28,13 @@ import ape.runtime.contracts.RxParent;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 
-/** a reactive 64-bit integer (long) */
+/**
+ * Reactive 64-bit integer with change tracking and index support.
+ * Maintains backup value for commit/revert semantics. Supports arithmetic
+ * operations (add, multiply, increment, decrement) with proper dirty flag
+ * propagation and index trigger notification. Index value is truncated
+ * to 32-bit for compatibility with ReactiveIndex.
+ */
 public class RxInt64 extends RxIndexableBase implements Comparable<RxInt64>, CanGetAndSet<Long> {
   private long backup;
   private long value;

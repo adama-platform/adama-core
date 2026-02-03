@@ -23,7 +23,13 @@
  */
 package ape.runtime.contracts;
 
-/** generic way of getting a value and setting a value within a class */
+/**
+ * Accessor interface for reactive value types.
+ * Provides uniform get/set protocol for primitive reactive types
+ * (RxInt32, RxString, RxBoolean, etc.). Enables generic code to
+ * read and write values without knowing the specific reactive type.
+ * Used by RxMaybe to delegate get/set to the wrapped value.
+ */
 public interface CanGetAndSet<T> {
   /** get the value */
   T get();

@@ -28,7 +28,12 @@ import ape.runtime.json.JsonStreamReader;
 
 import java.util.function.Function;
 
-/** a reactive 32-bit integer (int) used by enums with the ability to correct invalid values */
+/**
+ * Reactive integer specialized for Adama enum types with value correction.
+ * Extends RxInt32 with a fixer function that maps invalid enum ordinals
+ * to a valid default. Applied on insert, patch, and set operations to
+ * handle schema evolution when enum values are added or removed.
+ */
 public class RxEnumInt32 extends RxInt32 {
   private final Function<Integer, Integer> fixer;
 

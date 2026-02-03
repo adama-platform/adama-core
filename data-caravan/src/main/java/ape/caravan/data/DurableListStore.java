@@ -45,6 +45,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Append-only durable storage engine with write-ahead logging.
+ * Manages a heap-allocated storage file with an index for document lists,
+ * using a write-ahead log for crash recovery. Supports append, read, trim,
+ * and delete operations with batched notifications on flush. Handles
+ * automatic log rotation when size thresholds are exceeded.
+ */
 public class DurableListStore {
   private static final Logger LOGGER = LoggerFactory.getLogger(DurableListStore.class);
   // the data structures to manage the giant linear space

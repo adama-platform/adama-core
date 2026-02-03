@@ -53,6 +53,14 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * HTTP and WebSocket client built on Netty for outbound requests.
+ * Provides three connection modes:
+ * - execute(): One-shot HTTP requests with dedicated connections
+ * - executeShared(): Pooled HTTP/1.1 connections for high-throughput scenarios
+ * - open(): WebSocket connections with lifecycle callbacks
+ * Handles TLS, chunked transfers, timeouts, and connection pooling via AsyncPool.
+ */
 public class WebClientBase {
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(WebClientBase.class);
   private static final byte[] EMPTY_BODY = new byte[0];

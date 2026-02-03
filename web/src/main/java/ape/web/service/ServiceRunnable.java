@@ -45,6 +45,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Main HTTP/WebSocket server bootstrap using Netty NIO.
+ * Binds to configured port, optionally enables TLS via cert.pem/key.pem,
+ * initializes the channel pipeline with WebHandler and WebSocketHandler,
+ * and runs periodic heartbeats. Manages graceful shutdown of event loops,
+ * asset cache, and transform queue.
+ */
 public class ServiceRunnable implements Runnable {
   private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRunnable.class);
   private final WebConfig webConfig;

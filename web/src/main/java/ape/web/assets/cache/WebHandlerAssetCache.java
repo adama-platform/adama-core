@@ -35,7 +35,14 @@ import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-/** the asset cache for the web handler */
+/**
+ * Two-tier asset cache for serving document files.
+ * Memory tier: Small HTML/CSS/JS files (up to 196KB) with 64MB total limit
+ * Disk tier: Larger files (up to 16MB) with 1GB total limit
+ * Both tiers use LRU eviction with time-based expiration. Supports concurrent
+ * requestors via async shared cache pattern - first requestor triggers fetch,
+ * subsequent requestors attach to in-progress stream.
+ */
 public class WebHandlerAssetCache {
   private final SimpleExecutor memoryExecutor;
   private final SimpleExecutor fileExecutor;

@@ -23,7 +23,12 @@
  */
 package ape.runtime.natives;
 
-/** a pairing within a map, and a stand alone value */
+/**
+ * Immutable key-value tuple for map iteration and tuple returns.
+ * Generic over domain (key) and range (value) types. Used as the
+ * iteration element type for NtMap and RxMap, and for returning
+ * multiple values from reduce() and other aggregation operations.
+ */
 public class NtPair<D, R> {
   public final D key;
   public final R value;

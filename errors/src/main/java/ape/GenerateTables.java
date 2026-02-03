@@ -29,9 +29,11 @@ public class GenerateTables {
   public static String generate() throws Exception {
     StringBuilder sb = new StringBuilder();
     sb.append("package ape;\n\n");
+    sb.append("import javax.annotation.processing.Generated;\n");
     sb.append("import java.util.HashMap;\n");
     sb.append("import java.util.HashSet;\n");
     sb.append("\n");
+    sb.append("@Generated(\"ape.GenerateTables\")\n");
     sb.append("public class ErrorTable {\n");
     sb.append("  public static final ErrorTable INSTANCE = new ErrorTable();\n");
     sb.append("  public final HashMap<Integer, String> names;\n");

@@ -29,7 +29,12 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtDateTime;
 
-/** a reactive date and a time with the time zone in the typical gregorian calendar */
+/**
+ * Reactive timestamp (date + time + timezone) with change tracking and index support.
+ * Wraps NtDateTime combining Gregorian date, time of day, and timezone offset.
+ * Maintains backup value for commit/revert semantics. Index value is an integer
+ * encoding for efficient temporal queries in tables.
+ */
 public class RxDateTime extends RxIndexableBase implements CanGetAndSet<NtDateTime>, Comparable<RxDateTime> {
   private NtDateTime backup;
   private NtDateTime value;

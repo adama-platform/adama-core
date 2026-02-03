@@ -26,7 +26,12 @@ package ape.web.contracts;
 import ape.web.io.JsonRequest;
 import ape.web.io.JsonResponder;
 
-/** represents a single connection via a WebSocket */
+/**
+ * Per-client WebSocket connection handler for JSON-RPC message processing.
+ * Created by ServiceBase.establish() for each new connection. Handles
+ * request execution, keepalive health checks, and connection termination.
+ * Implementations dispatch requests to appropriate API handlers.
+ */
 public interface ServiceConnection {
 
   /** the client is executing a single request */

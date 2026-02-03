@@ -42,7 +42,13 @@ import ape.runtime.reactives.maps.MapPubSub;
 
 import java.util.*;
 
-/** a reactive map */
+/**
+ * Reactive key-value map with change tracking and pub/sub notifications.
+ * Keys are serialized via Codec implementations (Integer, Long, String, Principal).
+ * Tracks created/deleted entries separately for accurate delta generation.
+ * Supports guard-based access tracking for incremental view updates and
+ * efficient change propagation via MapPubSub.
+ */
 public class RxMap<DomainTy, RangeTy extends RxBase> extends RxBase implements Iterable<NtPair<DomainTy, RangeTy>>, RxParent, RxChild, RxKillable, MapGuardTarget {
   public final Codec<DomainTy, RangeTy> codec;
   public final LinkedHashMap<DomainTy, RangeTy> deleted;

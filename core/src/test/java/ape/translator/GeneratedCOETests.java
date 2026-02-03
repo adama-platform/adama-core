@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedCOETests extends GeneratedBase {
   private String cached_ConvertDouble_1 = null;
   private String get_ConvertDouble_1() {

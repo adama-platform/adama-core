@@ -28,7 +28,13 @@ import ape.runtime.json.JsonStreamWriter;
 import java.util.List;
 import java.util.Map;
 
-/** provides an optimized way for working with Json trees */
+/**
+ * Typed accessor for navigating parsed JSON trees.
+ * Wraps a Java object tree (Map/List/primitives) with safe traversal
+ * via deref() and type extraction via to_s(), to_i(), to_d(), to_l(),
+ * to_b(). Returns NtMaybe for type conversions to handle missing or
+ * wrong-typed values. Converts back to NtDynamic for storage.
+ */
 public class NtJson {
   public final Object tree;
 

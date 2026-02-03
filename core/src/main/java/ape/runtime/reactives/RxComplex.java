@@ -29,7 +29,13 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtComplex;
 
-/** a reactive complex number */
+/**
+ * Reactive complex number (real + imaginary) with change tracking.
+ * Wraps NtComplex for mathematical computations involving complex arithmetic.
+ * Supports compound assignment operations (+=, *=, -=) that properly raise
+ * dirty flags. Maintains backup value for commit/revert semantics. Does not
+ * support indexing as complex numbers are not typically used in table queries.
+ */
 public class RxComplex extends RxBase implements CanGetAndSet<NtComplex> {
   private NtComplex backup;
   private NtComplex value;

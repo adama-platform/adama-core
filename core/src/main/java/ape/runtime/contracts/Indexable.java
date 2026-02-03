@@ -25,7 +25,13 @@ package ape.runtime.contracts;
 
 import ape.runtime.reactives.tables.IndexInvalidate;
 
-/** indicates a common way to extract the index value from a data type */
+/**
+ * Interface for values that can participate in table column indexes.
+ * Provides getIndexValue() to extract an integer for index lookup and
+ * setWatcher() to register for change notifications. When the value
+ * changes, the watcher is notified with old and new index values so
+ * ReactiveIndex can update its internal mapping structures.
+ */
 public interface Indexable {
   /** get the value to index the item on */
   int getIndexValue();

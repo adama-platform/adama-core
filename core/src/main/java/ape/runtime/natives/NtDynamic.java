@@ -25,7 +25,13 @@ package ape.runtime.natives;
 
 import ape.runtime.json.JsonStreamReader;
 
-/** a native data type to hide and hold an entire json tree */
+/**
+ * Opaque JSON blob for schema-free embedded data.
+ * Stores arbitrary JSON as a string with lazy parsing to Java tree on
+ * demand via cached(). Comparison is lexicographic on raw JSON. Used for
+ * dynamic fields that store user-defined structures without compile-time
+ * schema. Converts to NtJson for programmatic traversal.
+ */
 public class NtDynamic implements Comparable<NtDynamic>, NtToDynamic {
   public static final NtDynamic NULL = new NtDynamic("null");
   public final String json;

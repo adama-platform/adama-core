@@ -29,7 +29,13 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtPrincipal;
 
-/** a reactive client */
+/**
+ * Reactive user identity (principal) with change tracking and index support.
+ * Wraps NtPrincipal (agent@authority pair). Maintains backup value for
+ * commit/revert semantics. Index value is the principal's hashCode(),
+ * enabling efficient identity-based lookups for ownership and permission
+ * queries in tables.
+ */
 public class RxPrincipal extends RxIndexableBase implements Comparable<RxPrincipal>, CanGetAndSet<NtPrincipal> {
   private NtPrincipal backup;
   private NtPrincipal value;

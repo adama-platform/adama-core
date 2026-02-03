@@ -28,7 +28,13 @@ import ape.runtime.contracts.RxParent;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 
-/** a reactive double */
+/**
+ * Reactive double-precision floating-point with change tracking.
+ * Maintains backup value for commit/revert semantics. Supports arithmetic
+ * operations (add, multiply, increment, decrement) with proper dirty flag
+ * propagation. Unlike integer types, does not extend RxIndexableBase since
+ * floating-point values cannot be efficiently indexed.
+ */
 public class RxDouble extends RxBase implements Comparable<RxDouble>, CanGetAndSet<Double> {
   private double backup;
   private double value;

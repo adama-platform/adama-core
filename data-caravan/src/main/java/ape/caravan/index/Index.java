@@ -28,7 +28,12 @@ import ape.caravan.data.DiskMetrics;
 
 import java.util.*;
 
-/** maps longs to lists of regions */
+/**
+ * In-memory index mapping document IDs to lists of storage regions.
+ * Tracks the ordered sequence of append regions for each document,
+ * supports trimming old entries, deletion, and snapshot/restore for
+ * WAL recovery. Reports size distribution metrics for monitoring.
+ */
 public class Index {
   private final HashMap<Long, ArrayList<AnnotatedRegion>> index;
 

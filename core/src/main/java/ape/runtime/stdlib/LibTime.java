@@ -29,6 +29,12 @@ import ape.runtime.natives.NtTimeSpan;
 import ape.translator.reflect.Extension;
 import ape.translator.reflect.HiddenType;
 
+/**
+ * Standard library for time-of-day operations in Adama documents.
+ * Provides time construction, extension with timespan (clamped to day),
+ * cyclic addition (wraps at midnight), overlap detection for time ranges,
+ * and conversion to integer encoding. Works with NtTime at minute precision.
+ */
 public class LibTime {
   @Extension
   public static int toInt(NtTime t) {

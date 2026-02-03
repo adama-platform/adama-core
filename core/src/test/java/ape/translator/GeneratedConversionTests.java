@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedConversionTests extends GeneratedBase {
   private String cached_CantConvertIntList_1 = null;
   private String get_CantConvertIntList_1() {

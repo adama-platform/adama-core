@@ -32,6 +32,12 @@ import ape.translator.reflect.Skip;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * Standard library for list operations in Adama documents.
+ * Provides flatten (nested to single), manifest (extract maybes), reverse,
+ * skip, drop, join, indexing helpers, and other functional transformations.
+ * Methods marked @Skip are internal and not exposed to Adama language.
+ */
 public class LibLists {
   @Skip
   public static <T> NtList<T> flatten(NtList<NtList<T>> list) {

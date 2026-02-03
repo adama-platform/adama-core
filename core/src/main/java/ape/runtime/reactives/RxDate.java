@@ -29,7 +29,12 @@ import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtDate;
 
-/** A single date in the typical gregorian calendar */
+/**
+ * Reactive calendar date (year/month/day) with change tracking and index support.
+ * Wraps NtDate in Gregorian calendar format. Maintains backup value for
+ * commit/revert semantics. Index value is the date's integer encoding,
+ * enabling efficient date-range queries and filtering in tables.
+ */
 public class RxDate extends RxIndexableBase implements Comparable<RxDate>, CanGetAndSet<NtDate> {
   private NtDate backup;
   private NtDate value;

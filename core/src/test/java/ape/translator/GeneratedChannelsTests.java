@@ -23,8 +23,10 @@
  */
 package ape.translator;
 
+import javax.annotation.processing.Generated;
 import org.junit.Test;
 
+@Generated("ape.support.testgen.TestClass")
 public class GeneratedChannelsTests extends GeneratedBase {
   private String cached_AsyncLegacy_1 = null;
   private String get_AsyncLegacy_1() {

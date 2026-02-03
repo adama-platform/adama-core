@@ -26,7 +26,12 @@ package ape.runtime.delta;
 import ape.runtime.contracts.DeltaNode;
 import ape.runtime.json.PrivateLazyDeltaWriter;
 
-/** a string that will respect privacy and sends state to client only on changes */
+/**
+ * Delta tracker for strings with privacy-aware change detection.
+ * Caches previously sent value and only emits to PrivateLazyDeltaWriter
+ * when the value actually changes. The hide() method sends null when a
+ * field becomes private. Memory usage accounts for the cached string length.
+ */
 public class DString implements DeltaNode {
   private String prior;
 

@@ -27,7 +27,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-/** a simple map */
+/**
+ * Ordered key-value map using TreeMap for sorted iteration.
+ * Provides lookup returning NtMaybe with assign/delete chains for fluent
+ * updates. Supports iteration as NtPair stream, min/max access, and bulk
+ * operations (insert, set, clear). Used as the storage backend for RxMap
+ * reactive wrapper and for reduce() aggregation results.
+ */
 public class NtMap<TIn, TOut> implements Iterable<NtPair<TIn, TOut>> {
   public final TreeMap<TIn, TOut> storage;
 

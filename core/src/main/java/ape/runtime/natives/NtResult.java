@@ -26,7 +26,13 @@ package ape.runtime.natives;
 import ape.ErrorCodes;
 import ape.runtime.exceptions.ComputeBlockedException;
 
-/** a result for an async operation */
+/**
+ * Async operation result container with success/failure/pending states.
+ * Wraps a value with failure code and message for service call results.
+ * The await() method blocks document execution (throws ComputeBlockedException)
+ * until the result is available or failed. The finished() check returns
+ * true when either a value exists or a failure occurred.
+ */
 public class NtResult<T> {
   private final T value;
   private final boolean failed;

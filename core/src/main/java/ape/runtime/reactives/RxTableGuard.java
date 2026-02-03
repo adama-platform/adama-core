@@ -27,7 +27,14 @@ import ape.runtime.reactives.tables.TableSubscription;
 
 import java.util.*;
 
-/** this filters incoming events against was read to minimize invalidations */
+/**
+ * Fine-grained invalidation filter for table-dependent computed values.
+ * Tracks which primary keys and index values were actually read during
+ * formula evaluation, then filters incoming change events to only fire
+ * invalidations when relevant data changes. Supports per-viewer tracking
+ * via FireGate instances for efficient incremental view updates. This
+ * minimizes unnecessary recomputation when unrelated table rows change.
+ */
 public class RxTableGuard implements TableSubscription {
   private final RxDependent owner;
   private TreeMap<Integer, FireGate> children;

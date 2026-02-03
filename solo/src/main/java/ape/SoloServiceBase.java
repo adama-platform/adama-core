@@ -42,7 +42,12 @@ import ape.web.io.JsonResponder;
 import java.nio.charset.StandardCharsets;
 import java.util.TreeMap;
 
-/** connects HTTP to CoreService + File System */
+/**
+ * Service base adapter for the Solo standalone server.
+ * Bridges HTTP requests and WebSocket connections to the CoreService,
+ * establishing connections through SoloResponder and providing
+ * stub implementations for HTTP handling and assets.
+ */
 public class SoloServiceBase implements ServiceBase {
   private final CoreService service;
 
