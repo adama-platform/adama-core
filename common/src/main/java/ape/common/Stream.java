@@ -23,7 +23,12 @@
  */
 package ape.common;
 
-/** A simple streaming interface */
+/**
+ * Async streaming interface for multi-value results.
+ * Receives zero or more values via next(), then either complete()
+ * on success or failure() on error. Complement to Callback for
+ * operations that produce sequences rather than single values.
+ */
 public interface Stream<T> {
   /** data was produced */
   void next(T value);

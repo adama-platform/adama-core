@@ -23,6 +23,7 @@
  */
 package ape.api;
 
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import ape.common.*;
@@ -31,6 +32,7 @@ import ape.ErrorCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** the base for running just the server via Solo.java */@Generated("ape.apikit.Tool")
 public abstract class GeneratedSoloRouterBase {
   private static final Logger ACCESS_LOG = LoggerFactory.getLogger("access");
   private static final JsonLogger SOLO_ACCESS_LOG = (item) -> ACCESS_LOG.debug(item.toString());

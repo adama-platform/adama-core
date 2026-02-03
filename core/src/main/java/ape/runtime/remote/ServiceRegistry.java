@@ -38,7 +38,13 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
-/** a service registry maps service names to services */
+/**
+ * Registry mapping service names to Service implementations for external integrations.
+ * Services are resolved at document deployment time from configuration. The registry
+ * supports static registration of built-in services, per-space service resolution,
+ * and generic HTTP client factories. Service definitions can be introspected via
+ * getLinkDefinition for compile-time validation of service method signatures.
+ */
 public class ServiceRegistry {
   public static TreeMap<String, ServiceConstructor> REGISTRY = new TreeMap<>();
   public static GenericClientBase GENERIC_CLIENT_BASE = new GenericClientBase() {

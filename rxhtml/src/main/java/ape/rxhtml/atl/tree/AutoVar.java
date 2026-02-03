@@ -30,6 +30,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * ATL tree node representing the auto-variable (% or $).
+ * References the current iteration item in loops and repeat contexts.
+ * Only valid in contexts where allow_auto is true.
+ */
 public class AutoVar implements Tree {
   @Override
   public Map<String, String> variables() {

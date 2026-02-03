@@ -30,7 +30,11 @@ import ape.common.template.tree.*;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-/** parser for convert strings into template [T] trees. */
+/**
+ * Recursive descent parser for converting template strings into syntax trees.
+ * Parses text literals, variable expressions (with optional unescape filter),
+ * and conditional blocks (if/ifnot with end markers) into composable T nodes.
+ */
 public class Parser {
   private final ArrayList<Fragment> fragments;
   private int at;

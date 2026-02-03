@@ -29,7 +29,8 @@ import org.junit.Test;
 public class RemoteInlineResponseTests {
   @Test
   public void trivial_body() {
-    RemoteInlineResponse response = RemoteInlineResponse.body("body", "title", "identity");
+    RemoteInlineResponse response = RemoteInlineResponse.body(200, "body", "title", "identity");
+    Assert.assertEquals(200, response.status);
     Assert.assertEquals("body", response.body);
     Assert.assertEquals("title", response.title);
     Assert.assertEquals("identity", response.identity);
@@ -39,7 +40,8 @@ public class RemoteInlineResponseTests {
 
   @Test
   public void trivial_json() {
-    RemoteInlineResponse response = RemoteInlineResponse.json("body", "identity");
+    RemoteInlineResponse response = RemoteInlineResponse.json(403, "body", "identity");
+    Assert.assertEquals(403, response.status);
     Assert.assertEquals("body", response.body);
     Assert.assertNull(response.title);
     Assert.assertEquals("identity", response.identity);
@@ -49,7 +51,7 @@ public class RemoteInlineResponseTests {
 
   @Test
   public void trivial_xml() {
-    RemoteInlineResponse response = RemoteInlineResponse.xml("body", "identity");
+    RemoteInlineResponse response = RemoteInlineResponse.xml(200, "body", "identity");
     Assert.assertEquals("body", response.body);
     Assert.assertNull(response.title);
     Assert.assertEquals("identity", response.identity);

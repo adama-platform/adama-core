@@ -31,7 +31,11 @@ import java.security.Key;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-/** Wrapper for the master key used to protect the database with the host key; this is an alternative to using key-management */
+/**
+ * AES-256 encryption using a master key for protecting sensitive data at rest.
+ * Uses CTR mode with random nonce for encryption. The master key is stored
+ * as Base64 and used to encrypt other keys and secrets before database storage.
+ */
 public class MasterKey {
   public static String generateMasterKey() {
     SecureRandom secureRandom = new SecureRandom();

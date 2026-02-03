@@ -26,6 +26,11 @@ package ape.rxhtml.atl;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Tokenizes ATL (Attribute Template Language) expressions into a token stream.
+ * Handles variable references ({var}), conditional blocks ([condition]), text content,
+ * and escape sequences (``). Tokens include pipe-separated transforms for value processing.
+ */
 public class TokenStream {
 
   public static ArrayList<Token> tokenize(String text) throws ParseException {

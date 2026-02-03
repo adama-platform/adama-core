@@ -26,7 +26,11 @@ package ape.common.csv;
 import java.util.ArrayList;
 import java.util.PrimitiveIterator;
 
-/** assuming a reader parsed out lines, this will parse a complete CSV line */
+/**
+ * RFC 4180 compliant CSV line parser.
+ * Handles comma-separated fields with quoted strings containing
+ * commas, newlines, and escaped double quotes (doubled quotes).
+ */
 public class LineReader {
   /** parse a line assuming a well parsed line */
   public static String[] parse(String ln) {

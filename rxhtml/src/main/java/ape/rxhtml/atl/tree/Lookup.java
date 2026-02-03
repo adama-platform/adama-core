@@ -31,7 +31,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-/** lookup a variable */
+/**
+ * ATL tree node that represents a variable reference lookup.
+ * Resolves a variable path (e.g., "data.user.name") into a JavaScript
+ * expression that fetches the value from the reactive state tree.
+ */
 public class Lookup implements Tree {
   public final String name;
   public final String complete;

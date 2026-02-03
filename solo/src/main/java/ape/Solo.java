@@ -57,6 +57,8 @@ public class Solo {
   private final SimpleExecutor commonExecutor;
   private final ExecutorService inmemoryExecutor;
   private final Thread serviceThread;
+  private final CoreService service;
+  private final ServiceRunnable runnable;
 
   public Solo(String scanDir, String webConfigJson) throws Exception {
     commonExecutor = SimpleExecutor.create("common");
@@ -99,19 +101,19 @@ public class Solo {
     };
     TimeSource timeSource = TimeSource.REAL_TIME;
     int nThreads = 1;
-    CoreService service = new CoreService(coreMetrics, base, meteringEvent, reporter, dataService, backupService, wakeService, replicationInitiator, timeSource, nThreads);
+    service = new CoreService(coreMetrics, base, meteringEvent, reporter, dataService, backupService, wakeService, replicationInitiator, timeSource, nThreads);
     base.attachDeliverer(service);
     SoloServiceBase soloBase = new SoloServiceBase(service);
-    ServiceRunnable webServer = new ServiceRunnable(webConfig, webMetrics, soloBase, (domain, callback) -> callback.success(null), new DomainFinder() {
+    runnable = new ServiceRunnable(webConfig, webMetrics, soloBase, (domain, callback) -> callback.success(null), new DomainFinder() {
       @Override
       public void find(String domain, Callback<Domain> callback) {
         callback.failure(new ErrorCodeException(-404));
       }
     }, () -> {
     });
-    serviceThread = new Thread(webServer);
+    serviceThread = new Thread(runnable);
     serviceThread.start();
-    webServer.waitForReady(1000);
+    runnable.waitForReady(1000);
   }
 
   public static void main(String[] args) throws Exception {
@@ -135,8 +137,13 @@ public class Solo {
     }
   }
 
-  public void shutdown() {
-    commonExecutor.shutdown();
-    inmemoryExecutor.shutdown();
+  public void shutdown() throws InterruptedException {
+    try {
+      service.shutdown();
+    } finally {
+      runnable.shutdown();
+      commonExecutor.shutdown();
+      inmemoryExecutor.shutdown();
+    }
   }
 }

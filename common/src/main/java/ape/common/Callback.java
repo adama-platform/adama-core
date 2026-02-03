@@ -27,8 +27,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
 
 /**
- * This callback interface is used by DataService such that actions not only succeed/fail, but
- * provide progress notifications which could relate to a state diagram.
+ * Primary async result callback interface for success/failure handling.
+ * The central abstraction for asynchronous operations throughout the platform,
+ * providing type-safe result delivery and structured error propagation via
+ * ErrorCodeException. Includes utilities for transforming, chaining, and
+ * combining callbacks.
  */
 public interface Callback<T> {
   ExceptionLogger CALLBACK_LOGGER = ExceptionLogger.FOR(Callback.class);

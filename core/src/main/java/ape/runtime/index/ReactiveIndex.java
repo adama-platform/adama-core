@@ -30,7 +30,13 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/** an index of a single column of data */
+/**
+ * Reactive index for a single table column, mapping integer values to matching rows.
+ * Maintains sorted sets of rows per indexed value for O(log n) lookup. Tracks
+ * "unknown" rows whose index values have changed but haven't been reindexed yet.
+ * Supports equals, less-than, and greater-than query modes via EvaluateLookupMode.
+ * Indexes are automatically maintained as row field values change.
+ */
 public class ReactiveIndex<Ty extends RxRecordBase> {
   /** a data structure which is precise; we know that the given item is in this bucket for SURE */
   private final TreeMap<Integer, TreeSet<Ty>> index;

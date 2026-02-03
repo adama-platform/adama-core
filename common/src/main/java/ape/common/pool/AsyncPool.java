@@ -30,7 +30,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** An async pool designed for asynchronous connection management */
+/**
+ * Async object pool with per-request keying for connection reuse.
+ * Manages pooled resources (connections, clients) by request key with
+ * configurable max lifetime, usage count limits, and pool size caps.
+ * Supports periodic sweeping to clean expired or dead items.
+ */
 public class AsyncPool<R, S extends Living> {
   private final SimpleExecutor executor;
   private final TimeSource time;

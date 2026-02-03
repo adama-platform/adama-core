@@ -32,8 +32,12 @@ import ape.runtime.natives.NtPrincipal;
 import ape.runtime.sys.CoreRequestContext;
 
 /**
- * a task is a wrapper around a message, it is used to track the lifecycle of the message and delay
- * executing code from the living document.
+ * Represents a pending message in the document's async processing queue.
+ * Wraps a message along with sender identity, channel, timestamp, and execution
+ * context. The task tracks whether the message has been consumed, aborted, or
+ * is still pending. Generated channel handlers attach actions to tasks, which
+ * are then executed during document evaluation. Supports retry on abort via
+ * RetryProgressException.
  */
 public class AsyncTask {
   public final String channel;

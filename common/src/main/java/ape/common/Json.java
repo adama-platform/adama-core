@@ -28,7 +28,11 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-/** helpful toolss for Jackson JSON library */
+/**
+ * Static utility methods for working with Jackson JSON library.
+ * Provides convenient factory methods for creating JSON nodes and
+ * type-safe field accessors for reading ObjectNode properties.
+ */
 public class Json {
   public static final JsonMapper MAPPER = new JsonMapper();
 

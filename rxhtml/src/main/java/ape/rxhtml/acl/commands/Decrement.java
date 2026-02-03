@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** Decrement a number by 1 */
+/**
+ * ACL command that decrements a numeric value in the view state by 1.
+ * Useful for counter UIs, pagination, and quantity adjustments.
+ * Defaults to view scope if no prefix specified. Syntax: dec:path or decrement:path
+ */
 public class Decrement implements Command {
   public final String path;
 

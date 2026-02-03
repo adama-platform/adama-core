@@ -32,7 +32,13 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-/** exceptionally simply code generator for building codecs against a Netty ByteBuf. The ideal is to minimize as much overhead as possible and get bytes in and out using Netty's data structures */
+/**
+ * Code generator for binary serialization codecs using Netty ByteBuf.
+ * Generates read/write methods from annotated message classes, supporting
+ * versioning via @TypeId/@PriorTypeId, field ordering via @FieldOrder,
+ * and message routing via @Flow. Minimizes overhead by generating
+ * direct ByteBuf operations.
+ */
 public class CodecCodeGen {
 
   public static String assembleCodec(String packageName, String className, Class<?>... classes) {

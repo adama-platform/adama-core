@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** Reset the form */
+/**
+ * ACL command that resets the nearest ancestor form to its initial state.
+ * Clears all form inputs and restores default values.
+ * Syntax: reset
+ */
 public class Reset implements Command {
   public Reset() {
   }

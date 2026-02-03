@@ -31,7 +31,11 @@ import ape.ErrorCodes;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
-/** a pre-validated parsed token; we parse to find which keys to look up */
+/**
+ * Lightweight JWT parser for extracting claims without full verification.
+ * Parses the token payload to extract issuer, subject, key ID, and proxy
+ * fields. Used to determine which signing key to use for full validation.
+ */
 public class ParsedToken {
   public final String iss;
   public final String sub;

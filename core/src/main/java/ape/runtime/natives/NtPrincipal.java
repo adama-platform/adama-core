@@ -23,7 +23,13 @@
  */
 package ape.runtime.natives;
 
-/** represents who someone is */
+/**
+ * Immutable identity type representing a user in the Adama system.
+ * A principal consists of an agent (user identifier) and authority (authentication
+ * provider). The special NO_ONE principal ("?@?") represents an anonymous or
+ * system user. Principals are compared first by authority, then by agent, and
+ * use cached hash codes for efficient map/set operations.
+ */
 public class NtPrincipal implements Comparable<NtPrincipal> {
   public static NtPrincipal NO_ONE = new NtPrincipal("?", "?");
   public final String agent;

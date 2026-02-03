@@ -25,7 +25,12 @@ package ape.common.csv;
 
 import java.util.PrimitiveIterator;
 
-/** write a valid CSV (RFC 4180) line/record */
+/**
+ * RFC 4180 compliant CSV line writer.
+ * Generates properly escaped CSV records with automatic quoting
+ * for fields containing commas, quotes, or newlines. Supports
+ * primitive types and strings.
+ */
 public class LineWriter {
   private StringBuilder sb = new StringBuilder();
   private boolean notFirst;

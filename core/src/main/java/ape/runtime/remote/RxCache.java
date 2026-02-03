@@ -41,7 +41,13 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/** a cache of service calls */
+/**
+ * Reactive cache for remote service call results within a document.
+ * Deduplicates identical invocations (same service, method, caller, parameters)
+ * and caches results. Tracks pending requests via route IDs, delivers async
+ * results, and garbage-collects unused entries between evaluations. Persists
+ * cached results with the document state for replay after recovery.
+ */
 public class RxCache extends RxBase implements RxKillable {
   private final LivingDocument root;
   private final TreeMap<RemoteInvocation, RemoteSite> mapping;

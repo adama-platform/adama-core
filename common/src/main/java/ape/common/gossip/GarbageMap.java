@@ -28,7 +28,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** represents a map that cleans things up based on time */
+/**
+ * Time-based expiring map with LRU eviction for size limits.
+ * Items are timestamped on insertion and removed during gc() if they
+ * exceed the age threshold. Also enforces a maximum entry count via
+ * LinkedHashMap's removeEldestEntry mechanism.
+ */
 public class GarbageMap<T> implements Iterable<T> {
 
   private final LinkedHashMap<String, AgingItem> items;

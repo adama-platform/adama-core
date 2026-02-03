@@ -33,7 +33,11 @@ import ape.rxhtml.typing.ViewScope;
 
 import java.util.Map;
 
-/** Manifests are e part of a multi-tenant web app where there is a local storage config with add, use, and delete */
+/**
+ * ACL command for managing web app manifests in multi-tenant applications.
+ * Handles adding, using, and deleting manifest configurations stored in local storage.
+ * Syntax: manifest-add:url, manifest-use:id, manifest-del:id
+ */
 public class ManifestBaseCommand implements Command {
   public final String command;
   public final String value;

@@ -23,7 +23,11 @@
  */
 package ape.rxhtml.codegen;
 
-/** a tab-friendly wrapper around StringBuilder */
+/**
+ * Code generation writer with automatic indentation management.
+ * Provides fluent API for building JavaScript code with proper formatting.
+ * Tracks tab depth and provides methods for indentation control.
+ */
 public class Writer {
   private final StringBuilder sb = new StringBuilder();
   private int tabAt;

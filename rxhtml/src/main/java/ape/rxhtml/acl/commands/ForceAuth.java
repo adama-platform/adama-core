@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** a way for testing users at the developer stage to inject an authentication token into the system */
+/**
+ * ACL command for development/testing that injects an authentication identity.
+ * Allows developers to test authenticated flows without going through login.
+ * Should not be used in production. Syntax: force-auth:name=identityToken
+ */
 public class ForceAuth implements Command {
   public String name;
   public String identity;

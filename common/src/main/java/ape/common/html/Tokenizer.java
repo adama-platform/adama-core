@@ -28,7 +28,12 @@ import java.util.LinkedList;
 import java.util.PrimitiveIterator;
 import java.util.regex.Pattern;
 
-/** Convert a string into an iterator of tokens */
+/**
+ * HTML tokenizer that converts a string into an iterator of tokens.
+ * Produces tokens for text content, element opens/closes, comments,
+ * and embedded text within script/style/code tags. Tracks line and
+ * character positions for error reporting.
+ */
 public class Tokenizer implements Iterator<Token> {
   private final PrimitiveIterator.OfInt codepoints;
   private final LinkedList<Token> buffer;

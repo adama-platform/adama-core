@@ -25,7 +25,11 @@ package ape.rxhtml.acl.commands;
 
 import ape.rxhtml.template.Environment;
 
-/** a bulk command happens in one atomic batch  */
+/**
+ * Interface for commands that execute as part of an atomic batch operation.
+ * Bulk commands generate expressions that can be combined into a single
+ * transaction rather than executing as individual operations.
+ */
 public interface BulkCommand {
   /** write a closed form expression */
   void writeBulk(Environment env, String eVar, String appendTo);

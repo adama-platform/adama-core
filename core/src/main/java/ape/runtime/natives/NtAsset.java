@@ -25,7 +25,13 @@ package ape.runtime.natives;
 
 import java.util.Objects;
 
-/** represents an asset/file/object that has been attached to a document held in storage */
+/**
+ * Immutable file/blob asset reference attached to a document.
+ * Contains metadata about stored files: unique ID, original filename, MIME content
+ * type, size in bytes, and integrity hashes (MD5, SHA-384). Assets are stored
+ * externally and garbage-collected based on document references. The NOTHING
+ * sentinel represents an empty/unset asset reference.
+ */
 public class NtAsset implements Comparable<NtAsset> {
   public static final NtAsset NOTHING = new NtAsset("", "", "", 0, "", "");
   public final String id;

@@ -25,13 +25,15 @@ package ape.rxhtml.server;
 
 /** the response from a remote inline */
 public class RemoteInlineResponse {
+  public final int status;
   public final String body;
   public final String title;
   public final String redirect;
   public final String identity;
   public final String contentType;
 
-  private RemoteInlineResponse(String body, String title, String redirect, String identity, String contentType) {
+  private RemoteInlineResponse(int status, String body, String title, String redirect, String identity, String contentType) {
+    this.status = status;
     this.body = body;
     this.title = title;
     this.redirect = redirect;
@@ -39,19 +41,19 @@ public class RemoteInlineResponse {
     this.contentType = contentType;
   }
 
-  public static RemoteInlineResponse body(String body, String title, String identity) {
-    return new RemoteInlineResponse(body, title, null, identity, null);
+  public static RemoteInlineResponse body(int status, String body, String title, String identity) {
+    return new RemoteInlineResponse(status, body, title, null, identity, null);
   }
 
-  public static RemoteInlineResponse json(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "application/json");
+  public static RemoteInlineResponse json(int status, String body, String identity) {
+    return new RemoteInlineResponse(status, body, null, null, identity, "application/json");
   }
 
-  public static RemoteInlineResponse xml(String body, String identity) {
-    return new RemoteInlineResponse(body, null, null, identity, "text/xml");
+  public static RemoteInlineResponse xml(int status, String body, String identity) {
+    return new RemoteInlineResponse(status, body, null, null, identity, "text/xml");
   }
 
   public static RemoteInlineResponse redirect(String redirect, String identity) {
-    return new RemoteInlineResponse(null, null, redirect, identity, null);
+    return new RemoteInlineResponse(302, null, null, redirect, identity, null);
   }
 }

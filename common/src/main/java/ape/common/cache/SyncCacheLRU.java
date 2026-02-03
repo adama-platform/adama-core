@@ -30,7 +30,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-/** This is traditional Least Recently Used cache where items in the cached are measured (i.e. memory size or storage bytes) and expire based on time. This class is not thread safe. */
+/**
+ * Synchronous LRU cache with size measurement and time-based expiration.
+ * Evicts entries based on count limits, total measured size, and age.
+ * Items must implement Measurable to report their size (memory/bytes).
+ * Maintains a minimum entry count to prevent cache blowout from large items.
+ * Not thread-safe; callers must synchronize externally.
+ */
 public class SyncCacheLRU<D, R extends Measurable> {
   private final TimeSource time;
   private final LinkedHashMap<D, CacheEntry<R>> cache;

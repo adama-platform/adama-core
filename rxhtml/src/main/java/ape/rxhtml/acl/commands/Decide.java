@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** decide a single value from a set */
+/**
+ * ACL command that makes a single-selection decision from a set via a channel.
+ * Used for exclusive choice scenarios where only one option can be selected.
+ * Syntax: decide:channel|key|path
+ */
 public class Decide implements Command {
   public final String channel;
   public final String key;

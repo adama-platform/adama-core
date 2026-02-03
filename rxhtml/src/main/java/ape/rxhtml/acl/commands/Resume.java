@@ -26,6 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
+/**
+ * ACL command that resumes a paused workflow or async operation.
+ * Used to continue processing after user interaction completes.
+ * Implements BulkCommand for batch execution. Syntax: resume
+ */
 public class Resume implements Command, BulkCommand {
   @Override
   public void writeBulk(Environment env, String eVar, String appendTo) {

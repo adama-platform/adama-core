@@ -30,6 +30,12 @@ import ape.rxhtml.atl.ParseException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+/**
+ * Parses Action Command Language (ACL) strings into executable Command objects.
+ * ACL provides a mini-language for specifying user interaction behaviors like
+ * form submission, state changes, navigation, and authentication actions.
+ * Commands are space-separated with optional colon-delimited parameters.
+ */
 public class Parser {
 
   public static ArrayList<Command> parse(String command) throws ParseException  {

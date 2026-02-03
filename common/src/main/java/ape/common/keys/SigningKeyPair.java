@@ -35,7 +35,12 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-/** a signing pair for authentication (specifically for documents) */
+/**
+ * ES256 (ECDSA with P-256) key pair for JWT signing and verification.
+ * Used for document-level authentication, generating signed tokens that
+ * grant access to specific documents. Keys are stored encrypted with
+ * the master key and include both signing and verification capabilities.
+ */
 public class SigningKeyPair {
   public final String algo;
   public final PrivateKey privateKey;

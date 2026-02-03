@@ -28,7 +28,11 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
 
-/** a simple factory for creating public/private keys for VAPID */
+/**
+ * Factory for generating VAPID (Voluntary Application Server Identification)
+ * key pairs used in Web Push authentication. Generates EC key pairs on the
+ * secp256r1 (P-256) curve with Base64-encoded public and private keys.
+ */
 public class VAPIDFactory {
   private SecureRandom random;
 

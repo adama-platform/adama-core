@@ -23,7 +23,11 @@
  */
 package ape.common.metrics;
 
-/** for measuring a resource which may be active in memory */
+/**
+ * Gauge metric for tracking in-flight resources or operations.
+ * Tracks current count of active items (connections, requests, etc.)
+ * via up/down increments or direct value setting for dashboard display.
+ */
 public interface Inflight {
   /** bump the resource up */
   void up();

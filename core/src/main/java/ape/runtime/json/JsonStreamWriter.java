@@ -29,7 +29,12 @@ import ape.translator.parser.token.Token;
 
 import java.util.*;
 
-/** Very fast Json stream writer. */
+/**
+ * High-performance JSON stream writer using StringBuilder for fast string construction.
+ * Handles comma placement automatically via a state machine. Provides typed write
+ * methods for all Adama native types. Optionally tracks unique asset bytes written
+ * for storage accounting.
+ */
 public class JsonStreamWriter {
   private final Stack<CommaStateMachine> commas;
   private final StringBuilder sb = new StringBuilder();

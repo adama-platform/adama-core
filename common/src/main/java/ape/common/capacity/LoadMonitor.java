@@ -30,7 +30,12 @@ import ape.common.jvm.MachineHeat;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** Monitors the heat on the machine and fires LoadEvents */
+/**
+ * Monitors JVM CPU and memory utilization, firing LoadEvents to registered listeners.
+ * Samples system metrics every 250ms, maintains a rolling window of 30 samples,
+ * and reports averaged values to CPU and memory event handlers for load balancing
+ * and capacity management decisions.
+ */
 public class LoadMonitor {
   private final AtomicBoolean alive;
   private final Sample[] samples;

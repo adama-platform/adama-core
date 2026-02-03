@@ -27,7 +27,12 @@ import ape.common.gossip.codec.GossipProtocol;
 
 import java.util.Objects;
 
-/** an instance represents an application on a host that is heartbeating */
+/**
+ * Represents a single application instance in the gossip cluster.
+ * Tracks identity (id, ip, port, role), health (counter, witness timestamp),
+ * and lifecycle (created, local flag). Counter increments with each heartbeat;
+ * stale instances are candidates for deletion based on witness age.
+ */
 public class Instance implements Comparable<Instance> {
   public final String id;
   public final int monitoringPort;

@@ -24,7 +24,9 @@
 package ape.common;
 
 /**
- * A variant of Callback that throws an exception and which can be passed back int
+ * Callback variant that allows the success handler to throw ErrorCodeException.
+ * Catches exceptions from invoke() and automatically routes them to failure(),
+ * simplifying error handling in callback chains where the handler may fail.
  */
 public abstract class ExceptionCallback<T> implements Callback<T>  {
   /** the action happened successfully, and the result is value */

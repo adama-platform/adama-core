@@ -31,6 +31,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/**
+ * ATL tree node that concatenates multiple child expressions into a single string.
+ * Combines static text segments with dynamic variable lookups and conditionals.
+ */
 public class Concat implements Tree {
   public final Tree[] children;
 

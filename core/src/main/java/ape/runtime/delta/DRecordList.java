@@ -29,7 +29,14 @@ import ape.runtime.json.PrivateLazyDeltaWriter;
 import java.util.*;
 import java.util.function.Supplier;
 
-/** a list of records that will respect privacy and sends state to client only on changes */
+/**
+ * Delta-tracking list for privacy-aware record synchronization to clients.
+ * Maintains cached delta state per client and computes minimal ordering diffs.
+ * Uses a Walk pattern to track which records are present in the current view,
+ * detects ordering changes by comparing against previous state, and emits
+ * compact range-based diffs when contiguous sequences move together.
+ * Records no longer visible are removed and null-ed out in the delta.
+ */
 public class DRecordList<dRecordTy extends DeltaNode> implements DeltaNode {
   public final HashMap<Integer, dRecordTy> cache;
   public final ArrayList<Integer> order;

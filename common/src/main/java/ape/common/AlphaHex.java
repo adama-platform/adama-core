@@ -23,7 +23,12 @@
  */
 package ape.common;
 
-/** hexidecimal encoding using A-P rather than 0-9A-F; This allows us to stable generate identifiers based on byte[] */
+/**
+ * Alphabetic hexadecimal encoding using letters A-P instead of 0-9A-F.
+ * Produces identifiers that are valid for contexts requiring alphabetic-only
+ * strings (like variable names or identifiers) while maintaining the full
+ * 4-bit-per-character encoding density.
+ */
 public class AlphaHex {
   private static final char[] HEX = "ABCDEFGHIJKLMNOP".toCharArray();
 

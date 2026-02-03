@@ -26,6 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
+/**
+ * ACL command that clears all data in the current form context.
+ * More aggressive than reset - removes all tracked state.
+ * Implements BulkCommand for batch execution. Syntax: nuke
+ */
 public class Nuke implements BulkCommand, Command {
   public Nuke() {
   }

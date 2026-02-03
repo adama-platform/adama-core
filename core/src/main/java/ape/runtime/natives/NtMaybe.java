@@ -27,7 +27,13 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/** a maybe for a boxed java type (i.e. Integer) */
+/**
+ * Optional/Maybe type for representing nullable values in Adama.
+ * Wraps a potentially absent value with chainable operations for assignment
+ * and deletion notifications. Supports functional transformations via unpack()
+ * and unpackTransfer(). Used extensively in the standard library to handle
+ * absence propagation (e.g., math operations on maybe<double>).
+ */
 public class NtMaybe<T> {
   private Consumer<T> assignChain;
   private Runnable deleteChain;

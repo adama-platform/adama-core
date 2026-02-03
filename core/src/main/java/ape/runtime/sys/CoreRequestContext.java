@@ -27,7 +27,12 @@ import ape.runtime.natives.NtPrincipal;
 
 import java.net.URL;
 
-/** wrap common data around a request for policies to exploit */
+/**
+ * Request context containing identity and transport metadata for policy evaluation.
+ * Captures the authenticated principal (who), request origin URL, client IP address,
+ * document key, and derived domain name. Used by document policies to make
+ * authorization decisions based on request context.
+ */
 public class CoreRequestContext {
   public final NtPrincipal who;
   public final String origin;

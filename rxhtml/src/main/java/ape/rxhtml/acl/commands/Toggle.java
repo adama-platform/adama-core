@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** Flip/flop (i.e. toggle) a boolean value between false and true */
+/**
+ * ACL command that toggles a boolean value between true and false.
+ * Useful for show/hide, enable/disable, and checkbox-like UI patterns.
+ * Defaults to view scope if no prefix specified. Syntax: toggle:path
+ */
 public class Toggle implements Command {
   public final String path;
 

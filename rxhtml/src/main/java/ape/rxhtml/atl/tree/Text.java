@@ -31,7 +31,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-/** Raw Text */
+/**
+ * ATL tree node representing static text content.
+ * Outputs a JavaScript string literal. For class attributes, tracks CSS
+ * class usage and normalizes whitespace for optimization.
+ */
 public class Text implements Tree {
   public final String text;
 

@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** Reload the form */
+/**
+ * ACL command that triggers a page/browser reload.
+ * Forces a full refresh of the current page.
+ * Syntax: reload
+ */
 public class Reload implements Command {
   public Reload() {
   }

@@ -27,6 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
+/**
+ * ACL command that transfers mouse coordinates into view state.
+ * Captures mouse position with optional x/y offsets for positioning UIs.
+ * Syntax: tm:path|offsetX|offsetY
+ */
 public class TransferMouse implements Command {
   private final String path;
   private final int offX;

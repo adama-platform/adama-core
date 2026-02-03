@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** finalize a set of choices */
+/**
+ * ACL command that finalizes a multi-selection workflow on a channel.
+ * Completes the selection process after choose/decide operations.
+ * Syntax: finalize:channelName
+ */
 public class Finalize implements Command {
   public final String channel;
 

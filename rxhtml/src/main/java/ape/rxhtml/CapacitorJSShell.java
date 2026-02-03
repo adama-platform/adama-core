@@ -32,6 +32,12 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
+/**
+ * Generates a complete HTML shell for Capacitor-based mobile applications.
+ * Compiles RxHTML templates into a single self-contained HTML file optimized
+ * for mobile app containers, handling domain configuration, dev mode settings,
+ * and multi-domain routing for beta/production environments.
+ */
 public class CapacitorJSShell {
   private String domainOverride;
   private boolean devmode;

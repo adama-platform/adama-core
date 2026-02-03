@@ -30,6 +30,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+/**
+ * Parses ATL (Attribute Template Language) expressions into an abstract syntax tree.
+ * Handles variable lookups, conditional blocks, text content, transformations,
+ * and comparison operations. The resulting Tree can generate JavaScript code.
+ */
 public class Parser {
 
   // handle transforms

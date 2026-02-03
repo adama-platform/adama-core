@@ -37,7 +37,13 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-/** represents both the server and the client conjoined together in a gossipy fate */
+/**
+ * Core gossip protocol engine for cluster membership discovery and health monitoring.
+ * Implements both client and server roles for peer-to-peer state synchronization.
+ * Uses hash-based comparison for efficient state reconciliation, supports
+ * role-based subscriptions for service discovery, and manages heartbeats
+ * for local application instances.
+ */
 public class Engine {
   private final String ip;
   private final GossipMetrics metrics;

@@ -31,7 +31,11 @@ import ape.rxhtml.template.sp.SwitchTo;
 import java.util.Map;
 import java.util.TreeMap;
 
-/** scope for constructing a view object based on inference */
+/**
+ * Hierarchical scope for inferring view state object structure from templates.
+ * Tracks variable types at each level of the state tree and builds a schema
+ * representing the expected shape of view state data.
+ */
 public class ViewScope {
   public final ViewScope parent;
   public final TreeMap<String, String> types;

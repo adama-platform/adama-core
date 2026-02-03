@@ -26,6 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
+/**
+ * ACL command that signs out the current user by clearing authentication.
+ * Removes stored credentials and redirects to unauthenticated state.
+ * Implements BulkCommand for batch execution. Syntax: sign-out
+ */
 public class SignOut implements BulkCommand, Command {
   @Override
   public void writeBulk(Environment env, String eVar, String appendTo) {

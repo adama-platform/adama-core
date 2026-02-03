@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** scroll the current item to the max */
+/**
+ * ACL command that scrolls an element to a specific position.
+ * Supports scrolling to top, bottom, or custom positions.
+ * Syntax: scroll:target
+ */
 public class Scroll implements Command  {
   private final String command;
   public Scroll(String command) {

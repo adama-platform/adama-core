@@ -25,7 +25,13 @@ package ape.runtime.data;
 
 import java.util.Objects;
 
-/** A document is identified by a key */
+/**
+ * Composite identifier for a document within the Adama platform.
+ * A key consists of a space name and document key, uniquely identifying
+ * a single living document instance. Keys are immutable with cached hash
+ * codes for efficient use in maps and sets. Comparison is lexicographic
+ * by space first, then by key.
+ */
 public class Key implements Comparable<Key> {
   public final String space;
   public final String key;

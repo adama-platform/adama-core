@@ -57,7 +57,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-/** The central class for a living document (i.e. a tiny VM) */
+/**
+ * Abstract base class for all compiled Adama documents - the core runtime VM.
+ * A living document manages reactive state, processes async messages, maintains
+ * client views with privacy filtering, handles web requests, executes cron jobs,
+ * and coordinates with remote services. Each document instance is identified by
+ * a space/key pair and persists state as JSON deltas. Subclasses are generated
+ * by the Adama compiler and provide document-specific fields and handlers.
+ */
 public abstract class LivingDocument implements RxParent, Caller {
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(LivingDocument.class);
   public final DocumentMonitor __monitor;

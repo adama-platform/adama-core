@@ -30,6 +30,12 @@ import ape.runtime.natives.*;
 
 import java.util.*;
 
+/**
+ * High-performance streaming JSON parser with token lookahead and string deduplication.
+ * Uses a pull-based tokenizer that lazily reads tokens as needed. Provides typed
+ * read methods for all Adama native types. Deduplicates strings and principals
+ * to reduce memory allocation when parsing large documents.
+ */
 public class JsonStreamReader {
   private final String json;
   private final int n;

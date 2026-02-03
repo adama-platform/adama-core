@@ -27,7 +27,11 @@ import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-/** a simple uri matcher */
+/**
+ * URI pattern matcher for routing requests to handlers.
+ * Matches URI paths segment-by-segment against a list of matchers,
+ * with optional trailing wildcard (*) support for prefix matching.
+ */
 public class UriMatcher {
   public final String name;
   private final ArrayList<Function<String, Boolean>> matchers;

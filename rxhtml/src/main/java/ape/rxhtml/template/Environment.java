@@ -36,6 +36,12 @@ import org.jsoup.nodes.TextNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Immutable context object passed through template processing.
+ * Carries state including the current element, parent variable, state variable,
+ * namespace, and configuration. Uses builder methods to create modified copies
+ * for different scopes without mutation.
+ */
 public class Environment {
   public final String section;
   public final Environment parent;

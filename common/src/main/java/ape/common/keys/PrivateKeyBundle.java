@@ -23,7 +23,12 @@
  */
 package ape.common.keys;
 
-/** a private key that has been bundled */
+/**
+ * Encapsulates a private key for decryption operations.
+ * Can be loaded from disk (encrypted with master key) or from network
+ * (plaintext). Uses X25519 elliptic curve key exchange for deriving
+ * shared secrets used in AES decryption.
+ */
 public class PrivateKeyBundle {
   private final String privateKey;
 

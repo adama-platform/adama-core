@@ -32,7 +32,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-/** a collection of instances */
+/**
+ * Immutable snapshot of cluster instances at a point in time.
+ * Computes a content hash from member IDs for efficient comparison
+ * during gossip protocol exchange. Supports counter synchronization,
+ * finding missing instances, and filtering by role for service discovery.
+ */
 public class InstanceSet {
   public final ArrayList<Instance> instances;
   public final TreeSet<String> ids;

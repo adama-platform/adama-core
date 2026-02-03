@@ -32,7 +32,13 @@ import ape.translator.reflect.UseName;
 
 import java.util.function.BiFunction;
 
-/** a very simple math library which extends some of the already exposed Math calls */
+/**
+ * Standard library of mathematical functions exposed to Adama code.
+ * Wraps Java Math functions with Adama-style signatures supporting Maybe types.
+ * Includes trigonometric, logarithmic, exponential, rounding, and comparison
+ * functions. All double functions have Maybe<Double> variants that propagate
+ * absence. Also provides complex number operations (sqrt, abs, conj, length).
+ */
 public class LibMath {
   public static double SQRT2 = 1.4142135623730950488016887242097;
   public static double E = Math.E;

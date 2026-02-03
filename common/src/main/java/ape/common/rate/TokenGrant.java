@@ -23,7 +23,12 @@
  */
 package ape.common.rate;
 
-/** a grant that operations can happen */
+/**
+ * Result of a rate limiter token request.
+ * Contains the number of tokens granted and the delay in milliseconds
+ * before the next request should be made. Callers should either delay
+ * or reject operations during the cooldown period.
+ */
 public class TokenGrant {
   /** this is how many tokens you have been granted */
   public final int tokens;

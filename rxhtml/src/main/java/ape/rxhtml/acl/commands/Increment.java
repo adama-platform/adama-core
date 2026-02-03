@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** Increment a number by 1 */
+/**
+ * ACL command that increments a numeric value in the view state by 1.
+ * Useful for counter UIs, pagination, and quantity adjustments.
+ * Defaults to view scope if no prefix specified. Syntax: inc:path or increment:path
+ */
 public class Increment implements Command {
   public final String path;
 

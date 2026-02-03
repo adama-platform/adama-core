@@ -27,7 +27,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
 
-/** helpers for making hashing easy */
+/**
+ * Factory methods for creating MessageDigest instances and encoding results.
+ * Wraps checked exceptions from MessageDigest.getInstance() for convenience.
+ * Provides Base64 and hex encoding of digest results.
+ */
 public class Hashing {
   public static MessageDigest md5() {
     return forKnownAlgorithm("MD5");

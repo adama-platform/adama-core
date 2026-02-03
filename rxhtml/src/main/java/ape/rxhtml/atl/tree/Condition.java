@@ -31,7 +31,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/** an if/then/else node */
+/**
+ * ATL tree node representing a conditional expression (if/then/else).
+ * Evaluates the guard expression and returns either the true or false branch.
+ * Used for conditional content like [visible]show this[#else]show that[/visible].
+ */
 public class Condition implements Tree {
   public final Tree guard;
   public Tree branchTrue;

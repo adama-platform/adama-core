@@ -36,6 +36,12 @@ import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
+/**
+ * Handlers for special RxHTML elements that require custom processing.
+ * Each public static method corresponds to a tag name (normalized to lowercase
+ * without hyphens). Includes handlers for connection, lookup, fragment, monitor,
+ * input syncing, file attachments, and other RxHTML-specific elements.
+ */
 public class Elements {
 
   private static boolean isElse(Node node) {

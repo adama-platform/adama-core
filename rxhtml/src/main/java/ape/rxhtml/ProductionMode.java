@@ -23,7 +23,11 @@
  */
 package ape.rxhtml;
 
-/** how to render the RxHTML */
+/**
+ * Specifies the target platform for RxHTML compilation.
+ * Affects preprocessing transformations and output format to optimize
+ * for either traditional web browsers or mobile app containers like Capacitor.
+ */
 public enum ProductionMode {
   Web,
   MobileApp

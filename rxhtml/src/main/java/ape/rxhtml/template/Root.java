@@ -33,6 +33,11 @@ import org.jsoup.nodes.Attribute;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Entry point for JavaScript code generation from RxHTML templates and pages.
+ * Provides static methods to start generation, process templates/pages, and
+ * finish the output. Wraps generated code in the RxHTML runtime closure.
+ */
 public class Root {
   public static void start(Environment env, String custom) {
     env.writer.append("(function($){").tabUp().newline();

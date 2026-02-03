@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** choose a value out of a set */
+/**
+ * ACL command that selects a value from an available set via a channel.
+ * Used for multi-select scenarios where a user picks from options.
+ * Syntax: choose:channel|key|path
+ */
 public class Choose implements Command {
   public final String channel;
   public final String key;

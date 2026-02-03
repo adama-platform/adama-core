@@ -25,7 +25,13 @@ package ape.runtime.contracts;
 
 import java.util.Set;
 
-/** the parent (or data owner) of a reactive data type */
+/**
+ * Interface for parent nodes in the reactive object tree.
+ * Parents receive dirty notifications from children, track computational costs,
+ * propagate invalidations upward, and coordinate settling of reactive state.
+ * The reactive tree structure enables efficient change tracking and delta
+ * computation by bubbling changes up to the document root.
+ */
 public interface RxParent {
   /** make this item dirty */
   void __raiseDirty();

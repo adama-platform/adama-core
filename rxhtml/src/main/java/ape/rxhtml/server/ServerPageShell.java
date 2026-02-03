@@ -35,7 +35,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/** the shell over a server generated page */
+/**
+ * Server-side HTML shell generator for server-rendered pages.
+ * Wraps dynamic content in a complete HTML document with proper headers,
+ * handles link/form action rewriting, and injects hidden form fields for routing.
+ */
 public class ServerPageShell {
   private Element shell;
   public final String endpoint;

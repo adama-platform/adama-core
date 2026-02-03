@@ -26,6 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
+/**
+ * ACL command that fires a message to a channel on the current connection.
+ * Triggers server-side message handlers without form data.
+ * Syntax: fire:channelName
+ */
 public class Fire implements Command {
   private final String channel;
 

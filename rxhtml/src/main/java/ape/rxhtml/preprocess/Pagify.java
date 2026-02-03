@@ -32,7 +32,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/** work across pages to stamp common properties, simplify page construction, and build useful indices */
+/**
+ * Preprocessor that applies common-page rules and template injection to pages.
+ * Stamps shared attributes from common-page elements onto matching pages,
+ * and optionally wraps page content in a specified template.
+ */
 public class Pagify {
   public static void pagify(Document document) {
     // Index all <common-page> elements and join the attributes that we can stamp out

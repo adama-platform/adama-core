@@ -33,7 +33,11 @@ import ape.rxhtml.typing.ViewScope;
 
 import java.util.Map;
 
-/** set the string value of the path to the given value */
+/**
+ * ACL command that sets a value at a state path to a specified value.
+ * Supports both constant values and dynamic expressions with variable interpolation.
+ * Implements BulkCommand for atomic batch operations. Syntax: set:path=value
+ */
 public class Set implements Command, BulkCommand {
   public final String path;
   public final String value;

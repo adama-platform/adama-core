@@ -25,7 +25,12 @@ package ape.common;
 
 import java.util.concurrent.*;
 
-/** wraps Java executor for time and simplifies for Adama */
+/**
+ * Simplified executor interface wrapping Java's ScheduledExecutorService.
+ * Provides immediate execution, delayed scheduling (in milliseconds or nanoseconds),
+ * and graceful shutdown. Executors use NamedRunnable for better debugging
+ * and monitoring of async task execution.
+ */
 public interface SimpleExecutor {
   /** a default instance for doing things NOW */
   SimpleExecutor NOW = new SimpleExecutor() {

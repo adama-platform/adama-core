@@ -28,7 +28,11 @@ import ape.rxhtml.template.config.ShellConfig;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-/** a class for pulling out the first and (hopefully) only shell */
+/**
+ * Manages the HTML shell/wrapper that surrounds generated RxHTML content.
+ * Extracts shell configuration from templates, generates the complete HTML
+ * document including head elements, scripts, styles, and body initialization.
+ */
 public class Shell {
   private final ShellConfig config;
   private Element shell;

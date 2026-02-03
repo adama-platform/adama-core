@@ -25,7 +25,12 @@ package ape.common.net;
 
 import io.netty.buffer.ByteBuf;
 
-/** contract for sending/getting bytes; this requires some reading as there are caveats */
+/**
+ * Bidirectional byte stream interface for network communication.
+ * Supports flow control via request(), buffer management via create()/next(),
+ * and stream lifecycle via completed()/error(). Buffers must be created
+ * via create() before calling next() to allow protocol framing.
+ */
 public interface ByteStream {
   /** request some bytes from the remote side. This is a hint for application level flow control. */
   void request(int bytes);

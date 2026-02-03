@@ -40,6 +40,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Netty-based DNS TXT record resolver for async DNS queries.
+ * Uses Netty's DNS resolver with platform default nameservers
+ * to lookup TXT records, commonly used for domain verification
+ * and configuration discovery.
+ */
 public class NettyDNSTxtResolver implements DNSTxtResolver {
   private final NioEventLoopGroup eventLoop;
 

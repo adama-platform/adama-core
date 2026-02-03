@@ -34,7 +34,12 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
-/** wrap a SyncCacheLRU */
+/**
+ * Async wrapper around SyncCacheLRU with request coalescing.
+ * Provides concurrent access via a dedicated executor, coalesces
+ * multiple requests for the same key into a single resolver call,
+ * and supports periodic background sweeping for cache cleanup.
+ */
 public class AsyncSharedLRUCache<D, R extends Measurable> {
   public final SimpleExecutor executor;
   public final SyncCacheLRU<D, R> cache;

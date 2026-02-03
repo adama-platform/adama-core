@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** Transfer the error message into the view state */
+/**
+ * ACL command that copies an error message from an operation into view state.
+ * Enables displaying server-side error messages in the UI.
+ * Syntax: te:path (transfer error to path)
+ */
 public class TransferError implements Command {
   private final String path;
 

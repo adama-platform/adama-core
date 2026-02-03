@@ -28,7 +28,11 @@ import ape.common.cache.Measurable;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-/** a simple table for routing a URI to a Target */
+/**
+ * URL routing table that maps URI patterns to response targets.
+ * Uses a trie-based Path structure for efficient prefix matching and
+ * parameter extraction. Supports both static paths and dynamic segments.
+ */
 public class Table implements Measurable {
   private final Path root;
   private long memoryCached;

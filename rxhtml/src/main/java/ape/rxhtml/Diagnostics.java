@@ -29,7 +29,11 @@ import ape.rxhtml.template.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** data from the RxHTML compiler to the tooling */
+/**
+ * Diagnostic information produced during RxHTML compilation.
+ * Contains metadata useful for tooling, optimization, and debugging including
+ * CSS class usage frequency, async tasks, inferred view schema, and output size metrics.
+ */
 public class Diagnostics {
   public final HashMap<String, Integer> cssFreq;
   public final ArrayList<Task> tasks;

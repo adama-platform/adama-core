@@ -30,6 +30,12 @@ import ape.rxhtml.template.config.Feedback;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+/**
+ * Parses and preprocesses RxHTML forest documents.
+ * Applies a pipeline of transformations including mobile optimization,
+ * page templating, and static object expansion to prepare the document
+ * for code generation.
+ */
 public class Loader {
   public static Document parseForest(String forest, Feedback feedback, ProductionMode mode) {
     Document document = Jsoup.parse(forest);

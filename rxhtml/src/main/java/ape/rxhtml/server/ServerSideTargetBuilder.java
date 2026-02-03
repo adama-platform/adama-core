@@ -69,6 +69,7 @@ public class ServerSideTargetBuilder {
       headers.put("content-type", "text/html; charset=utf-8");
       callback.success(new Target(200, headers, result.getBytes(StandardCharsets.UTF_8), null));
     } else {
+      AtomicReference<Integer> newStatus = new AtomicReference<>(200);
       AtomicReference<String> newTitle = new AtomicReference<>(null);
       AtomicReference<String> newContentType = new AtomicReference<>("text/html; charset=utf-8");
       AtomicReference<String> newLocation = new AtomicReference<>(null);
@@ -89,6 +90,7 @@ public class ServerSideTargetBuilder {
                 if (value.contentType != null) {
                   newContentType.set(value.contentType);
                   newBodyForAlternativeContentType.set(value.body);
+                  newStatus.set(value.status);
                 }
                 if (value.body != null) {
                   Element newBody = Jsoup.parse(value.body).body();
@@ -168,7 +170,7 @@ public class ServerSideTargetBuilder {
             String result = shell.wrap(newTitle.get(), extMeta.get(), toMunge);
             callback.success(new Target(200, headers, result.getBytes(StandardCharsets.UTF_8), null));
           } else {
-            callback.success(new Target(200, headers, newBodyForAlternativeContentType.get().getBytes(StandardCharsets.UTF_8), null));
+            callback.success(new Target(newStatus.get(), headers, newBodyForAlternativeContentType.get().getBytes(StandardCharsets.UTF_8), null));
           }
         }
       };

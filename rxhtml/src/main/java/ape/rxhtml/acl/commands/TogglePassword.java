@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** a simple command to toggle the type of an input box within a password-holder element */
+/**
+ * ACL command that toggles password field visibility between text and password types.
+ * Used with password-holder elements to implement show/hide password functionality.
+ * Syntax: toggle-password
+ */
 public class TogglePassword  implements Command {
   public TogglePassword() {
   }

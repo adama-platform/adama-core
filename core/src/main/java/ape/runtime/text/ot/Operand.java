@@ -25,7 +25,13 @@ package ape.runtime.text.ot;
 
 import ape.runtime.json.JsonStreamReader;
 
-/** An operand is a string that may have an inlight operation. We do this so operations can merge with minimal string manipulation until a final assembly. This allows many operations to build up */
+/**
+ * Interface for operational transformation (OT) operands in collaborative text editing.
+ * An operand represents text that may have pending operations. Operations compose
+ * lazily without immediate string manipulation, allowing efficient batching of
+ * multiple edits. The apply() method transforms an operand by parsing JSON-encoded
+ * changes (insert/retain sequences) and building a new composite operand.
+ */
 public interface Operand {
   /** the core algorithm of applying a OT (json encoded changes) to an operand returning another operand */
   static Operand apply(Operand start, String changes) {

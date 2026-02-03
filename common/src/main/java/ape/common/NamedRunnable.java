@@ -27,7 +27,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** for complex executor bouncing, this helps understand what is going on */
+/**
+ * Runnable wrapper with human-readable names for debugging and monitoring.
+ * Tracks creation time, queue delay, and execution time for performance analysis.
+ * Automatically logs exceptions while filtering noise from expected errors
+ * like RejectedExecutionException. Fatal errors trigger immediate shutdown.
+ */
 public abstract class NamedRunnable implements Runnable {
   private static final Logger PERF_LOG = LoggerFactory.getLogger("perf");
   private static final Logger RUNNABLE_LOGGER = LoggerFactory.getLogger("nrex");

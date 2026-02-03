@@ -23,7 +23,11 @@
  */
 package ape.common;
 
-/** an error happened related to an error code that we can present to the public */
+/**
+ * Exception carrying an integer error code for structured error handling.
+ * Error codes provide stable identifiers for error conditions that can be
+ * safely exposed to clients and used for programmatic error handling.
+ */
 public class ErrorCodeException extends Exception {
   public final int code;
 

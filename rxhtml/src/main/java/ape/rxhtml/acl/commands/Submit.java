@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** search for a parent form and then submit it */
+/**
+ * ACL command that submits the nearest ancestor form element.
+ * Searches up the DOM tree for a form and triggers its submission.
+ * Implements BulkCommand for batch execution. Syntax: submit
+ */
 public class Submit implements BulkCommand, Command {
   public Submit() {
   }

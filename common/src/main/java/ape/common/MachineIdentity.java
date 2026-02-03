@@ -30,7 +30,11 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-/** the identity of a machine; the ip, trust store, cert, and key */
+/**
+ * TLS identity bundle for a machine containing IP address, trust store,
+ * certificate, and private key. Loads from JSON containing PEM-encoded
+ * credentials, enabling secure inter-node communication in the cluster.
+ */
 public class MachineIdentity {
   public final String ip;
   private final String trust;

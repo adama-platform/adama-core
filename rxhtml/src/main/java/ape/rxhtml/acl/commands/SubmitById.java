@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** search for a parent form and then submit it */
+/**
+ * ACL command that submits a form by its DOM id attribute.
+ * Allows submitting forms that aren't ancestors of the trigger element.
+ * Syntax: submit:formId
+ */
 public class SubmitById implements Command {
   private final String id;
   public SubmitById(String id) {

@@ -26,6 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
+/**
+ * ACL command that unchecks/deselects the current checkbox or radio input.
+ * Clears the checked state of the triggering input element.
+ * Syntax: uncheck
+ */
 public class Uncheck implements Command {
   public Uncheck() {
   }

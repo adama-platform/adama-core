@@ -30,8 +30,11 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * This consolidates all the instances and provides a historical chain of history so updates can
- * flow reasonably
+ * Manages cluster membership state with historical snapshots for gossip reconciliation.
+ * Maintains the current InstanceSet, recent history for hash-based lookups,
+ * recently added instances for incremental sync, and recently deleted instances
+ * for deletion propagation. Handles instance ingestion, expiration scanning,
+ * and garbage collection.
  */
 public class InstanceSetChain {
   private final TimeSource time;

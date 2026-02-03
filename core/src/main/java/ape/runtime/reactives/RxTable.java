@@ -46,7 +46,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-/** a reactive table */
+/**
+ * Reactive table storage for Adama records with indexing and pub/sub capabilities.
+ * Manages a collection of rows identified by integer primary keys. Supports:
+ * - Reactive indices for efficient WHERE clause evaluation
+ * - Pub/sub subscriptions for table change notifications
+ * - Guard-based read tracking for incremental view updates
+ * - Differential edge tracking for graph relationships
+ * Tables commit/revert with the parent document and emit JSON deltas for persistence.
+ */
 public class RxTable<Ty extends RxRecordBase<Ty>> extends RxBase implements Iterable<Ty>, RxParent, RxChild, RxKillable {
   public final LivingDocument document;
   public final Function<RxParent, Ty> maker;

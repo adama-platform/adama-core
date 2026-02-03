@@ -33,7 +33,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/** a simple way of doing string equality */
+/**
+ * ATL tree node for comparison operations between two expressions.
+ * Supports equality (=), inequality (!=), and ordering (<, >, <=, >=).
+ * Used in conditionals: [count>0]has items[/count]
+ */
 public class Operate implements Tree {
   public static final String[] OPERATORS = new String[] { "<=", ">=", "!=", "<", ">", "=" };
 

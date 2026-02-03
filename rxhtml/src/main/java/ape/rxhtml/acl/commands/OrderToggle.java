@@ -27,7 +27,11 @@ import ape.rxhtml.template.Environment;
 import ape.rxhtml.template.StatePath;
 import ape.rxhtml.typing.ViewScope;
 
-/** Flip/flop (i.e. toggle) a boolean value between false and true */
+/**
+ * ACL command that toggles sort order for a column/field between ascending,
+ * descending, and none. Used to implement clickable column headers for sorting.
+ * Syntax: ot:path=fieldName or order-toggle:path=fieldName
+ */
 public class OrderToggle implements Command {
   public final String path;
   public final String value;

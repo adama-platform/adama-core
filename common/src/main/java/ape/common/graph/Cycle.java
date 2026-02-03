@@ -25,7 +25,11 @@ package ape.common.graph;
 
 import java.util.*;
 
-/* a cycle detector in a graph */
+/**
+ * Cycle detection utility for directed graphs using depth-first search.
+ * Detects cycles in dependency graphs and returns a string representation
+ * of the cycle path when found, useful for validating DAG constraints.
+ */
 public class Cycle {
   private final Map<String, Set<String>> graph;
   private final TreeSet<String> visited;

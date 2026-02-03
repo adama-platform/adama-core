@@ -28,7 +28,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 
-/** handy way of interacting with JSON config */
+/**
+ * Type-safe wrapper around Jackson ObjectNode for configuration access.
+ * Provides convenient accessors with default values for primitives, strings,
+ * and nested objects. Auto-populates missing values with defaults to enable
+ * configuration introspection.
+ */
 public class ConfigObject {
   public final ObjectNode node;
 

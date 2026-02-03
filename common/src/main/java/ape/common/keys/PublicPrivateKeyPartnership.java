@@ -38,7 +38,12 @@ import java.security.spec.XECPrivateKeySpec;
 import java.security.spec.XECPublicKeySpec;
 import java.util.Base64;
 
-/** Simplifies working with X25519 where keys are stored serialized form */
+/**
+ * X25519 elliptic curve Diffie-Hellman key exchange utilities.
+ * Generates key pairs, derives shared secrets from public/private key
+ * combinations, and provides AES-CBC encryption/decryption using
+ * the derived secrets. Keys are serialized as Base64 strings.
+ */
 public class PublicPrivateKeyPartnership {
   /** generate a new key-pair */
   public static KeyPair genKeyPair() throws Exception {

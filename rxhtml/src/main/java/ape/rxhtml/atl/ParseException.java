@@ -23,6 +23,11 @@
  */
 package ape.rxhtml.atl;
 
+/**
+ * Exception thrown when ATL expression parsing fails.
+ * Indicates malformed syntax such as unclosed brackets, invalid variable references,
+ * or other structural errors in template expressions.
+ */
 public class ParseException extends Exception {
   public ParseException(String message) {
     super(message);

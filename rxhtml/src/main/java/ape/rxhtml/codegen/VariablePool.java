@@ -26,6 +26,11 @@ package ape.rxhtml.codegen;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+/**
+ * Manages a pool of short JavaScript variable names for generated code.
+ * Generates compact variable names (a, b, c, ..., aa, ab, ...) and recycles
+ * names when they go out of scope to minimize output code size.
+ */
 public class VariablePool {
   private final char[] basis;
   private final TreeSet<String> pool;

@@ -27,7 +27,13 @@ import ape.runtime.contracts.Perspective;
 import ape.runtime.natives.NtPrincipal;
 import ape.runtime.sys.StreamHandle;
 
-/** a private view of the document where private lives; code is generated to use this */
+/**
+ * Per-client view of document state with privacy filtering.
+ * Generated subclasses hold delta-tracking state specific to what each client
+ * has received. Manages view lifecycle (alive/killed), deduplicates future/blocker
+ * updates, and streams incremental JSON deltas to the connected perspective.
+ * Supports view usurpation when clients switch between documents.
+ */
 public abstract class PrivateView {
   private static final String DEFAULT_FUTURES = "\"outstanding\":[],\"blockers\":[]";
   public final Perspective perspective;

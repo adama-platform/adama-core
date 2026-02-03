@@ -24,8 +24,10 @@
 package ape.common.metrics;
 
 /**
- * the front-door for all metrics; all metrics are known in the first few ms of the process starting
- * up
+ * Factory interface for creating monitoring and metrics infrastructure.
+ * All metrics are registered at startup. Provides monitors for request/response
+ * patterns, streaming operations, callbacks, counters, and in-flight tracking.
+ * Supports dashboard organization via pages and sections.
  */
 public interface MetricsFactory {
   /** produce a monitor for request response style operations */

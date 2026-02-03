@@ -33,7 +33,12 @@ import ape.common.gossip.Engine;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-/** a single connection for client side */
+/**
+ * Netty channel handler for client-side connections.
+ * Manages multiplexed byte streams over a single TCP connection,
+ * handles connection lifecycle events, supports gossip protocol
+ * exchanges, and routes incoming messages to appropriate stream handlers.
+ */
 public class ChannelClient extends ChannelCommon {
   public final String host;
   public final int port;

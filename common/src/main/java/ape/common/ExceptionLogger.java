@@ -26,7 +26,11 @@ package ape.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** allows exceptions to be monitored externally */
+/**
+ * Interface for logging exceptions that are converted to error codes.
+ * Provides visibility into unexpected exceptions that get wrapped in
+ * ErrorCodeException, enabling monitoring and debugging of error conversion.
+ */
 public interface ExceptionLogger {
   static ExceptionLogger FOR(Class<?> clazz) {
     Logger logger = LoggerFactory.getLogger(clazz);

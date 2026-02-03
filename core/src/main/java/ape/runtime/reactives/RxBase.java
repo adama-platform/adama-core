@@ -30,7 +30,13 @@ import ape.runtime.json.JsonStreamWriter;
 
 import java.util.ArrayList;
 
-/** the base class of any reactive object */
+/**
+ * Abstract base class for all reactive data types in the Adama runtime.
+ * Implements the core reactive pattern: tracks dirty state, propagates dirtiness
+ * up to parents, notifies subscribers on invalidation, and supports commit/revert
+ * for transactional state management. Reactive types form a tree where changes
+ * bubble up and invalidations propagate down to dependent computations.
+ */
 public abstract class RxBase {
   protected final RxParent __parent;
   private boolean __dirty;

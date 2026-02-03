@@ -33,7 +33,11 @@ import ape.rxhtml.typing.ViewScope;
 
 import java.util.Map;
 
-/** send the view to another page within the forest */
+/**
+ * ACL command that navigates to another page within the RxHTML forest.
+ * Supports both static paths and dynamic paths with variable interpolation.
+ * Syntax: goto:/path or goto:/path/{variable}
+ */
 public class Goto implements Command {
   public final String raw;
   public final Tree value;

@@ -23,11 +23,13 @@
  */
 package ape.api;
 
+import javax.annotation.processing.Generated;
 import ape.common.ErrorCodeException;
 import ape.web.io.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+@Generated("ape.apikit.Tool")
 public class SimpleResponder {
   public final JsonResponder responder;
 

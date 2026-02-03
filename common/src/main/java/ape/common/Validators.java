@@ -23,7 +23,11 @@
  */
 package ape.common;
 
-/** Validators used to protect users, enforce system limits, and keep things tidy */
+/**
+ * Input validation utilities for enforcing naming conventions and limits.
+ * Provides validation for identifier-like strings (alphanumeric plus
+ * dot, dash, underscore) with configurable length limits.
+ */
 public class Validators {
 
   /** Validate that the string is a identifier of sorts with few special characters */

@@ -28,6 +28,11 @@ import com.sun.management.OperatingSystemMXBean;
 import javax.management.MBeanServerConnection;
 import java.lang.management.ManagementFactory;
 
+/**
+ * JVM resource monitoring utilities for CPU and memory utilization.
+ * Provides CPU load percentage via OperatingSystemMXBean and memory
+ * usage ratio via Runtime. Used by LoadMonitor for capacity management.
+ */
 public class MachineHeat {
   private static MBeanServerConnection mbsc = null;
   private static OperatingSystemMXBean os = null;

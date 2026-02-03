@@ -26,7 +26,11 @@ package ape.common;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-/** block the thread waiting for a latch without the interrupt exception */
+/**
+ * Utility for blocking on CountDownLatch without checked InterruptedException.
+ * Simplifies synchronization code by returning false on interrupt rather
+ * than throwing, enabling cleaner control flow in callers.
+ */
 public class AwaitHelper {
   public static boolean block(CountDownLatch latch, int ms) {
     try {

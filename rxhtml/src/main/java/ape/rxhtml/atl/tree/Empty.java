@@ -30,6 +30,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * ATL tree node representing an empty expression.
+ * Returns an empty string and has no variables or dependencies.
+ * Used as a fallback for missing or optional content.
+ */
 public class Empty implements Tree {
 
   @Override

@@ -30,6 +30,13 @@ import ape.runtime.natives.NtDynamic;
 import ape.runtime.natives.NtMessageBase;
 import ape.runtime.sys.PredictiveInventory;
 
+/**
+ * Builder for HTTP responses from document web handlers.
+ * Supports various content types (HTML, JSON, CSS, JS, XML, CSV), redirects,
+ * asset responses, CORS headers, caching directives, and status codes.
+ * Responses track bandwidth usage for metering. Fluent API allows chaining:
+ * new WebResponse().html("<h1>Hi</h1>").cors(true).cache_ttl_seconds(60)
+ */
 public class WebResponse {
   public String contentType = null;
   public String body = null;

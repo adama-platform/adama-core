@@ -29,7 +29,11 @@ import ape.rxhtml.typing.ViewScope;
 import java.util.Map;
 import java.util.Set;
 
-/** Transform a node */
+/**
+ * ATL tree node that applies a named transformation function to a value.
+ * Transformations include formatting (date, number), encoding (uri, html),
+ * and text manipulation. Syntax: {value|transform}
+ */
 public class Transform implements Tree {
 
   public final Tree base;

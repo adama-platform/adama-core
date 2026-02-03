@@ -23,7 +23,11 @@
  */
 package ape.common;
 
-/** Hex encodings */
+/**
+ * Hexadecimal encoding and decoding utilities.
+ * Converts between byte arrays and hex strings with support for
+ * both lowercase and uppercase output formats.
+ */
 public class Hex {
   private static final char[] HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
   private static final char[] HEX_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};

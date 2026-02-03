@@ -23,7 +23,11 @@
  */
 package ape.common;
 
-/** time is not a function, so we make it a function */
+/**
+ * Abstraction for time to enable testing with controlled time.
+ * Production code uses REAL_TIME backed by System.currentTimeMillis();
+ * tests can inject mock implementations for deterministic behavior.
+ */
 public interface TimeSource {
   TimeSource REAL_TIME = System::currentTimeMillis;
 

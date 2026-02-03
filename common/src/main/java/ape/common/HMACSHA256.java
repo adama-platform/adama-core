@@ -30,7 +30,11 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
-/** HmacSHA256(key, data); https://en.wikipedia.org/wiki/HMAC */
+/**
+ * HMAC-SHA256 message authentication code implementation.
+ * Computes keyed hash for message integrity verification.
+ * See: https://en.wikipedia.org/wiki/HMAC
+ */
 public class HMACSHA256 {
   public static byte[] of(final byte[] key, final String data) {
     try {

@@ -25,6 +25,11 @@ package ape.rxhtml.atl;
 
 import java.util.HashMap;
 
+/**
+ * Provides context for ATL expression evaluation and code generation.
+ * Tracks CSS class usage frequency for optimization, and controls
+ * whether auto-variables are permitted in the current scope.
+ */
 public class Context {
   public static final Context DEFAULT = new Context(false, false);
   public final boolean is_class;

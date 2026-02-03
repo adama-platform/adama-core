@@ -34,6 +34,12 @@ import java.util.Locale;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
+/**
+ * Core element processing logic for RxHTML template compilation.
+ * Handles standard HTML elements with reactive attributes (rx:*),
+ * event binding, namespace management, and child element traversal.
+ * Delegates special elements to the Elements class via reflection.
+ */
 public class Base {
   public static final String[] EVENTS = new String[]{
     "click", // buttons

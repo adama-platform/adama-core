@@ -23,7 +23,14 @@
  */
 package ape.runtime.contracts;
 
-/** iterate where CLAUSE; this is the interface which defines how to select items from a list */
+/**
+ * Query predicate interface for filtering table rows.
+ * Generated from Adama WHERE clauses with three capabilities:
+ * 1. getPrimaryKey() - returns the exact primary key if the query is "id == X"
+ * 2. scopeByIndicies() - pushes index constraints to narrow the scan set
+ * 3. test() - evaluates the full predicate against a candidate row
+ * The query planner uses these to optimize table scans via index lookup.
+ */
 public interface WhereClause<T> {
   /**
    * does the where clause leverage the primary key (i.e. ID == VALUE). If not null, then return

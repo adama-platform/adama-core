@@ -23,6 +23,9 @@
  */
 package ape.web.service;
 
+import javax.annotation.processing.Generated;
+
+@Generated("ape.apikit.Tool")
 public class OnceFilter {
   public static boolean allowed(String method) {
     switch(method) {

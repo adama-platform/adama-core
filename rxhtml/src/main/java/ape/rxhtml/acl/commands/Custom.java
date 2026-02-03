@@ -26,7 +26,11 @@ package ape.rxhtml.acl.commands;
 import ape.rxhtml.template.Environment;
 import ape.rxhtml.typing.ViewScope;
 
-/** execute custom code */
+/**
+ * ACL command that executes user-defined custom JavaScript code.
+ * Allows templates to invoke application-specific behavior not covered
+ * by built-in commands. Syntax: custom:functionName
+ */
 public class Custom implements Command {
   public final String command;
 

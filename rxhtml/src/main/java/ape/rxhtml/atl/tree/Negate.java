@@ -29,7 +29,10 @@ import ape.rxhtml.typing.ViewScope;
 import java.util.Map;
 import java.util.Set;
 
-/** Negate a node (i.e. not for boolean) */
+/**
+ * ATL tree node that applies boolean negation to a child expression.
+ * Used in conditional guards with the ! prefix: [!visible]hidden content[/visible]
+ */
 public class Negate implements Tree {
   private final Tree value;
 
