@@ -31,6 +31,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.regex.Pattern;
 
+/**
+ * Image transformation processor supporting resize, crop, and color operations.
+ * Parses underscore-delimited arguments: w{width}, h{height}, resize algorithms
+ * (fc=fit-center, sq=squish, crop), interpolation hints (bl=bilinear, bc=bicubic,
+ * nn=nearest-neighbor), and grayscale conversion. Uses Java AWT for processing.
+ */
 public class ImageTransform implements Transform {
   private final String format;
   private Integer desiredWidth;

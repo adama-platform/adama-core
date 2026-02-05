@@ -30,7 +30,11 @@ import ape.common.LogTimestamp;
 import java.util.Map;
 import java.util.TreeSet;
 
-/** a simplified http request */
+/**
+ * Immutable HTTP request DTO for outbound client requests.
+ * Contains method, full URL, headers map, and body provider.
+ * Supports JSON logging with header filtering for sensitive values.
+ */
 public class SimpleHttpRequest {
   public final String method;
   public final String url;

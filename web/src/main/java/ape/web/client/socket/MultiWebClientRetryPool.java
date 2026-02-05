@@ -39,7 +39,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-/** a pool of clients connected to one endpoint; this manages the lifecycle of the connection and does retry */
+/**
+ * Resilient WebSocket connection pool with automatic reconnection and load balancing.
+ * Maintains multiple connections to a single endpoint with configurable connection count.
+ * Handles disconnections with exponential backoff retry, queues requests during reconnection,
+ * and supports both request-response and streaming communication patterns.
+ */
 public class MultiWebClientRetryPool {
   private static final Logger LOG = LoggerFactory.getLogger(MultiWebClientRetryPool.class);
   private final Random rng;

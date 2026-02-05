@@ -45,7 +45,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** a shared connection to a remote endpoint */
+/**
+ * Reusable HTTP/1.1 connection for pooled outbound requests.
+ * Handles single request at a time with streaming response delivery.
+ * Supports chunked transfer encoding for large request bodies (>32KB).
+ * Tracks connection health and metrics for pool management.
+ */
 public class WebClientSharedConnection implements Living {
   private static final Logger LOGGER = LoggerFactory.getLogger(WebClientSharedConnection.class);
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(LOGGER);

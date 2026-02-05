@@ -25,7 +25,12 @@ package ape.web.assets;
 
 import java.io.File;
 
-/** wrapper around the body of an assets */
+/**
+ * Abstraction for upload content that may exist as a file on disk or in-memory bytes.
+ * Allows AssetFact and storage operations to efficiently handle both multipart file
+ * uploads (which Netty may write to temp files) and in-memory byte arrays without
+ * unnecessary copying.
+ */
 public interface AssetUploadBody {
   public File getFileIfExists();
 

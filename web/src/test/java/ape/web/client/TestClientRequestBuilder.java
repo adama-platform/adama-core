@@ -32,16 +32,21 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import io.netty.util.CharsetUtil;
+import org.junit.Assert;
 
 import java.net.URI;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class TestClientRequestBuilder {
   private final DefaultHttpHeaders headers;
@@ -78,7 +83,7 @@ public class TestClientRequestBuilder {
     return channelToUse;
   }
 
-  public void execute(final TestClientCallback callback) {
+  public void execute(final TestClientCallback callback) throws Exception {
     final var b = new Bootstrap();
     b.group(workerGroup);
     b.channel(NioSocketChannel.class);
@@ -113,8 +118,24 @@ public class TestClientRequestBuilder {
                         }
 
                         @Override
+                        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+                          super.channelActive(ctx);
+                        }
+
+                        @Override
                         public void channelInactive(ChannelHandlerContext ctx) throws Exception {
                           callback.closed();
+                        }
+
+                        @Override
+                        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+                          super.userEventTriggered(ctx, evt);
+                          if (evt instanceof WebSocketClientProtocolHandler.ClientHandshakeStateEvent) {
+                            WebSocketClientProtocolHandler.ClientHandshakeStateEvent handshake = (WebSocketClientProtocolHandler.ClientHandshakeStateEvent) evt;
+                            if (evt == WebSocketClientProtocolHandler.ClientHandshakeStateEvent.HANDSHAKE_COMPLETE) {
+                              isActivatedAfterExecute.countDown();
+                            }
+                          }
                         }
 
                         @Override
@@ -194,7 +215,15 @@ public class TestClientRequestBuilder {
               callback.failedToConnect();
             }
           });
+    } else {
+      awaitActivation();
     }
+  }
+
+  private final CountDownLatch isActivatedAfterExecute = new CountDownLatch(1);
+
+  public void awaitActivation() throws InterruptedException {
+    Assert.assertTrue(isActivatedAfterExecute.await(5000, TimeUnit.MILLISECONDS));
   }
 
   public TestClientRequestBuilder junk() {

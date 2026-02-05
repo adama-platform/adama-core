@@ -21,18 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.web.assets;
+package ape.web.service;
+
+import ape.web.contracts.WebSocketHandlerRoute;
 
 /**
- * Chunked streaming interface for delivering large assets to clients.
- * Supports progressive delivery with headers(), body() chunks, and failure()
- * callbacks. Used by both asset storage retrieval and HTTP response streaming
- * to efficiently handle files without loading them entirely into memory.
+ * WebSocket routing table mapping URI paths to protocol handlers.
+ * Routes /~s to Adama document subscription handler and /~mcp to
+ * Model Context Protocol handler.
  */
-public interface AssetStream {
-  void headers(long length, String contentType, String contentMd5);
+public class WebSocketRouteTable {
+  public final WebSocketHandlerRoute adama;
+  public final WebSocketHandlerRoute mcp;
 
-  void body(byte[] chunk, int offset, int length, boolean last);
-
-  void failure(int code);
+  public WebSocketRouteTable(WebSocketHandlerRoute adama, WebSocketHandlerRoute mcp) {
+    this.adama = adama;
+    this.mcp = mcp;
+  }
 }

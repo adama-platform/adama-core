@@ -38,6 +38,12 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Disk-backed cache entry for larger assets (up to 16MB).
+ * Writes chunks to temp file as they arrive, supports concurrent readers
+ * via file seek and replay. Late-joining streams receive already-written
+ * data immediately then follow live writes. Cleans up temp file on eviction.
+ */
 public class FileCacheAsset implements CachedAsset {
   private static final Logger LOG = LoggerFactory.getLogger(FileCacheAsset.class);
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(LOG);

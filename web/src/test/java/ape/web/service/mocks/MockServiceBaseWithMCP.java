@@ -21,18 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.web.assets;
+package ape.web.service.mocks;
+
+import ape.web.contracts.MCPSession;
+import ape.web.io.ConnectionContext;
+
+import java.util.function.Function;
 
 /**
- * Chunked streaming interface for delivering large assets to clients.
- * Supports progressive delivery with headers(), body() chunks, and failure()
- * callbacks. Used by both asset storage retrieval and HTTP response streaming
- * to efficiently handle files without loading them entirely into memory.
+ * Mock ServiceBase that includes an MCPSession factory for MCP protocol testing.
+ * Extends MockServiceBase and adds MCP support.
  */
-public interface AssetStream {
-  void headers(long length, String contentType, String contentMd5);
+public class MockServiceBaseWithMCP extends MockServiceBase {
 
-  void body(byte[] chunk, int offset, int length, boolean last);
+  private final Function<ConnectionContext, MCPSession> mcpSessionFactory;
 
-  void failure(int code);
+  public MockServiceBaseWithMCP(Function<ConnectionContext, MCPSession> mcpSessionFactory) {
+    this.mcpSessionFactory = mcpSessionFactory;
+  }
+
+  public MockServiceBaseWithMCP(MockMCPHandler handler) {
+    this.mcpSessionFactory = handler::establish;
+  }
+
+  @Override
+  public MCPSession establishMCP(String path, ConnectionContext context) {
+    return mcpSessionFactory.apply(context);
+  }
 }

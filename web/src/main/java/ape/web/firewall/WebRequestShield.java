@@ -23,7 +23,12 @@
  */
 package ape.web.firewall;
 
-/** high level rules about dropping traffic before any logic */
+/**
+ * Static request filter blocking common attack vectors and scanner probes.
+ * Rejects requests targeting hidden files (except .well-known), WordPress admin,
+ * CGI-bin, actuator endpoints, and other commonly-targeted paths. Applied as
+ * first-pass filter in WebHandler before any business logic executes.
+ */
 public class WebRequestShield {
   public static boolean block(String x) {
     if (x.startsWith("/.well-known")) return false;

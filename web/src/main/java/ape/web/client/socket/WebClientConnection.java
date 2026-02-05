@@ -33,7 +33,11 @@ import ape.web.contracts.WebJsonStream;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-/** a single WebSocket connection */
+/**
+ * Active WebSocket connection wrapper for JSON-RPC style communication.
+ * Manages request ID generation, request registration for response routing,
+ * and supports both streaming (execute) and request-response patterns.
+ */
 public class WebClientConnection {
   private final ChannelHandlerContext ctx;
   private final AtomicInteger idgen;

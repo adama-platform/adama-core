@@ -9,3 +9,4 @@ distrib.sh
 .DS_Store
 log.scratch
 .claude
+.mcp.json

@@ -26,7 +26,11 @@ package ape.web.contracts;
 import io.netty.handler.ssl.SslContext;
 import ape.common.Callback;
 
-/** create the ssl context from a given domain */
+/**
+ * Dynamic SSL/TLS certificate resolver for SNI-based virtual hosting.
+ * Implementations fetch appropriate SslContext for each domain during
+ * TLS handshake, enabling multi-tenant HTTPS with per-domain certificates.
+ */
 public interface CertificateFinder {
   void fetch(String domain, Callback<SslContext> callback);
 }

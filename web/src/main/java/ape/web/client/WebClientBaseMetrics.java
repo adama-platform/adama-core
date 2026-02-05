@@ -27,6 +27,11 @@ import ape.common.metrics.CallbackMonitor;
 import ape.common.metrics.Inflight;
 import ape.common.metrics.MetricsFactory;
 
+/**
+ * Prometheus metrics collection for HTTP client operations.
+ * Tracks response codes (200/204, 400, 403, 404, 410, 500+), request lifecycle
+ * (start, send, fail), inflight requests, and connection pool performance.
+ */
 public class WebClientBaseMetrics {
   public final Inflight alarm_web_client_null_responder;
   public final Runnable web_client_instant_fail;

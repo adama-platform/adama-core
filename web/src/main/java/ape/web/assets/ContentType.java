@@ -26,7 +26,11 @@ package ape.web.assets;
 import java.util.Locale;
 import java.util.TreeMap;
 
-/** Get the content type of a file name */
+/**
+ * MIME content type resolver mapping file extensions to standard content types.
+ * Supports common web formats (HTML, CSS, JS, images, video, audio, fonts)
+ * with fallback to application/octet-stream for unknown types.
+ */
 public class ContentType {
   private static TreeMap<String, String> EXT_TO_CONTENT_TYPE = buildMap();
 

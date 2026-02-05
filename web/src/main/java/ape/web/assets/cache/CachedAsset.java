@@ -27,7 +27,12 @@ import ape.common.SimpleExecutor;
 import ape.common.cache.Measurable;
 import ape.web.assets.AssetStream;
 
-/** make the cache generic */
+/**
+ * Cache entry interface for stored assets supporting concurrent requestors.
+ * Implements Measurable for LRU cache size tracking. First requestor triggers
+ * actual fetch via returned AssetStream; subsequent requestors attach to the
+ * in-progress stream and receive data as it arrives.
+ */
 public interface CachedAsset extends Measurable {
   /** where the cached code is running */
   public SimpleExecutor executor();

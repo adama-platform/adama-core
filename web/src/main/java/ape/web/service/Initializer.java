@@ -23,6 +23,8 @@
  */
 package ape.web.service;
 
+import ape.web.service.routes.RouteAdama;
+import ape.web.service.routes.RouteMCP;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
@@ -45,6 +47,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Netty channel pipeline configurator for incoming connections.
+ * Builds the handler chain: read timeout, SNI-based TLS (when enabled),
+ * HTTP codec, content aggregation, WebSocket compression and protocol handling,
+ * HTTP compression, WebHandler for HTTP requests, and WebSocketHandler for
+ * upgraded WebSocket connections.
+ */
 public class Initializer extends ChannelInitializer<SocketChannel> {
   private final Logger logger;
   private final WebConfig webConfig;
@@ -97,8 +106,10 @@ public class Initializer extends ChannelInitializer<SocketChannel> {
     pipeline.addLast(new HttpObjectAggregator(webConfig.maxContentLengthSize));
     pipeline.addLast(new WebSocketServerCompressionHandler());
     pipeline.addLast(new WebSocketServerProtocolHandler("/~s", null, true, webConfig.maxWebSocketFrameSize, false, true, webConfig.timeoutWebsocketHandshake));
+    // the pipeline must reflect the various routes for the table
+    WebSocketRouteTable table = new WebSocketRouteTable(new RouteAdama(base), new RouteMCP(base));
     pipeline.addLast(new HttpContentCompressor());
     pipeline.addLast(new WebHandler(webConfig, metrics, base, cache, domainFinder, transformQueue));
-    pipeline.addLast(new WebSocketHandler(webConfig, metrics, base));
+    pipeline.addLast(new WebSocketHandler(webConfig, metrics, table));
   }
 }

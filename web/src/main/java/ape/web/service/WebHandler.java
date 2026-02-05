@@ -596,7 +596,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         String method = request.get("method").textValue();
         if (OnceFilter.allowed(method)) {
           final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers());
-          ServiceConnection connection = serviceBase.establish(context);
+          ServiceConnection connection = serviceBase.establishServiceConnection(context);
           connection.execute(new JsonRequest(request, context), new JsonResponder() {
             @Override
             public void stream(String json) {

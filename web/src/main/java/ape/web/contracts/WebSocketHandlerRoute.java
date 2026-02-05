@@ -21,18 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.web.assets;
+package ape.web.contracts;
+
+import ape.web.io.ConnectionContext;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Chunked streaming interface for delivering large assets to clients.
- * Supports progressive delivery with headers(), body() chunks, and failure()
- * callbacks. Used by both asset storage retrieval and HTTP response streaming
- * to efficiently handle files without loading them entirely into memory.
+ * Factory interface for creating WebSocket session handlers.
+ * Enables multiple JSON-RPC protocols on different URI paths by creating
+ * appropriate GenericWebSocketRouteSession for each connection.
  */
-public interface AssetStream {
-  void headers(long length, String contentType, String contentMd5);
+public interface WebSocketHandlerRoute {
 
-  void body(byte[] chunk, int offset, int length, boolean last);
-
-  void failure(int code);
+  public GenericWebSocketRouteSession establish(String path, AtomicLong latency, ConnectionContext context);
 }

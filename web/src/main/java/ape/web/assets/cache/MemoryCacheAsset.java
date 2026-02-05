@@ -32,7 +32,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/** A cache that is 100% in-memory */
+/**
+ * In-memory cache entry for small web assets (HTML, CSS, JS under 196KB).
+ * Buffers incoming chunks in ByteArrayOutputStream while forwarding to
+ * attached streams. Late-joining streams receive buffered data immediately
+ * then follow live writes. No cleanup needed on eviction.
+ */
 public class MemoryCacheAsset implements CachedAsset {
   private final NtAsset asset;
   private final SimpleExecutor executor;

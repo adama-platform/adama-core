@@ -43,7 +43,12 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** A queue for executing transforms */
+/**
+ * Async queue for executing and caching asset transformations with LRU eviction.
+ * Uses three dedicated executors: cache management, transform execution, and disk I/O.
+ * Caches transformed results keyed by (asset, instruction hash) with 30-minute TTL
+ * and 1GB size limit. Small assets (<1MB) captured in memory; larger ones spill to disk.
+ */
 public class TransformQueue {
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(TransformQueue.class);
   private final TimeSource time;

@@ -23,6 +23,11 @@
  */
 package ape.web.assets;
 
+/**
+ * Immutable request DTO identifying a specific asset within a document.
+ * Contains the space (namespace), key (document identifier), and id (asset UUID)
+ * needed to locate and retrieve the asset from storage.
+ */
 public class AssetRequest {
   public final String space;
   public final String key;

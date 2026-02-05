@@ -23,7 +23,11 @@
  */
 package ape.web.assets.transforms;
 
-/** a very simple way of going from content type and trannsform args to a Transform */
+/**
+ * Factory for creating Transform instances based on content type and arguments.
+ * Currently supports PNG and JPEG image transformations. Returns null for
+ * unsupported content types, allowing callers to fall back to direct streaming.
+ */
 public class TransformFactory {
   public static Transform make(String contentType, String args) {
     switch (contentType) {

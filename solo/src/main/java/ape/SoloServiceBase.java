@@ -33,6 +33,7 @@ import ape.web.assets.AssetStream;
 import ape.web.assets.AssetSystem;
 import ape.web.assets.AssetUploadBody;
 import ape.web.contracts.HttpHandler;
+import ape.web.contracts.MCPSession;
 import ape.web.contracts.ServiceBase;
 import ape.web.contracts.ServiceConnection;
 import ape.web.io.ConnectionContext;
@@ -56,7 +57,7 @@ public class SoloServiceBase implements ServiceBase {
   }
 
   @Override
-  public ServiceConnection establish(ConnectionContext context) {
+  public ServiceConnection establishServiceConnection(ConnectionContext context) {
     SoloResponder base = new SoloResponder(context, service);
     return new ServiceConnection() {
       @Override
@@ -117,5 +118,10 @@ public class SoloServiceBase implements ServiceBase {
         callback.failure(new ErrorCodeException(-1));
       }
     };
+  }
+
+  @Override
+  public MCPSession establishMCP(String path, ConnectionContext context) {
+    return MCPSession.NOOP;
   }
 }

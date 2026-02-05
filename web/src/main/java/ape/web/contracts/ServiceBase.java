@@ -31,10 +31,11 @@ import ape.web.io.JsonResponder;
 
 /**
  * Root service factory interface for the web server.
- * Provides three core capabilities:
- * - establish(): Create ServiceConnection for WebSocket clients
+ * Provides four core capabilities:
+ * - establish(): Create ServiceConnection for WebSocket clients (Adama protocol on /~s)
  * - http(): Access HttpHandler for HTTP request routing
  * - assets(): Access AssetSystem for file storage operations
+ * - establishMCP(): Create MCPSession for MCP clients (on /~mcp)
  * Implementations wire together the platform's request handling infrastructure.
  */
 public interface ServiceBase {
@@ -42,7 +43,7 @@ public interface ServiceBase {
   static ServiceBase JUST_HTTP(HttpHandler http) {
     return new ServiceBase() {
       @Override
-      public ServiceConnection establish(ConnectionContext context) {
+      public ServiceConnection establishServiceConnection(ConnectionContext context) {
         return new ServiceConnection() {
           @Override
           public void execute(JsonRequest request, JsonResponder responder) {
@@ -69,13 +70,21 @@ public interface ServiceBase {
       public AssetSystem assets() {
         return null;
       }
+
+      @Override
+      public MCPSession establishMCP(String path, ConnectionContext context) {
+        return MCPSession.NOOP;
+      }
     };
   }
 
-  /** a new connection has presented itself */
-  ServiceConnection establish(ConnectionContext context);
+  /** a new connection has presented itself for the Adama protocol (/~s) */
+  ServiceConnection establishServiceConnection(ConnectionContext context);
 
   HttpHandler http();
 
   AssetSystem assets();
+
+  /** a new MCP connection has presented itself (/~s/mcp) */
+  MCPSession establishMCP(String path, ConnectionContext context);
 }

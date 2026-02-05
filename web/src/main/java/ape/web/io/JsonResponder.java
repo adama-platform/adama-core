@@ -25,7 +25,12 @@ package ape.web.io;
 
 import ape.common.ErrorCodeException;
 
-/** a simple interface for responding to JsonRequest */
+/**
+ * Response interface for JSON-RPC style WebSocket communication.
+ * Supports three response patterns: stream() for incremental updates,
+ * finish() for successful terminal response, and error() for failures.
+ * All methods are terminal except stream() which may be called multiple times.
+ */
 public interface JsonResponder {
   /** stream an update */
   void stream(String json);

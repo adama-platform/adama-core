@@ -24,6 +24,6 @@
 package ape.common;
 
 public class Platform {
-  public static final String VERSION = "20260203132406";
+  public static final String VERSION = "20260205153836";
   public static final String JS_VERSION = "11bba41e182d13feddee3f8a6250911e";
 }

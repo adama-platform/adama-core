@@ -29,6 +29,12 @@ import ape.common.metrics.MetricsFactory;
 
 import java.util.TreeMap;
 
+/**
+ * Prometheus metrics collection for HTTP/WebSocket server operations.
+ * Tracks active connections, request counts by method/outcome, heartbeats,
+ * exceptions, asset operations, and client-reported metrics. Enables
+ * operational monitoring and alerting for the web tier.
+ */
 public class WebMetrics {
   public final Inflight websockets_active;
   public final Inflight websockets_active_child_connections;

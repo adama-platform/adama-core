@@ -23,20 +23,33 @@
  */
 package ape.web.contracts;
 
-import ape.web.client.socket.WebClientConnection;
+import ape.common.ErrorCodeException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
- * Callback interface for WebSocket client connection lifecycle events.
- * Notifies listeners of connection establishment, periodic ping latency,
- * failures, and disconnection. Used by WebClientBase.open() and
- * MultiWebClientRetryPool for connection state management.
+ * Per-connection WebSocket session interface for JSON-RPC style protocols.
+ * Supports configurable keepalive, ping/pong for latency measurement,
+ * graceful disconnect notification, and JSON message handling.
+ * Abstracts protocol specifics so WebSocketHandler can manage any JSON protocol.
  */
-public interface WebLifecycle {
-  void connected(WebClientConnection connection, String version);
+public interface GenericWebSocketRouteSession {
 
-  void ping(int latency);
+  /** should there be a keep-alive executed on the route */
+  public boolean enableKeepAlive();
 
-  void failure(Throwable t);
+  /** send a keep alive disconnect notice (if it is enabled and supported, return true -> emit metrics) */
+  public boolean sendKeepAliveDisconnect(ChannelHandlerContext ctx);
 
-  void disconnected();
+  /** send a ping to the route (return true -> emit metrics) */
+  public boolean sendPing(ChannelHandlerContext ctx);
+
+  /** kill the route */
+  public void kill();
+
+  /** execute a keepalive against the route to see if it died internally */
+  public boolean keepalive();
+
+  /** handle the JSON input and yield over to the context for glory and fun */
+  public void handle(ObjectNode requestNode, ChannelHandlerContext ctx) throws ErrorCodeException;
 }

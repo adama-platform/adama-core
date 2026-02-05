@@ -42,6 +42,12 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.TreeMap;
 
+/**
+ * URL preview generator extracting OpenGraph metadata for link unfurling.
+ * Fetches HTML content, parses title and og:* meta tags using Jsoup,
+ * and returns structured JSON with title, description, image, and URL details.
+ * Useful for generating rich link previews in chat or social applications.
+ */
 public class UrlSummaryGenerator {
 
   private static boolean shredUrl(String url, ObjectNode node) {

@@ -23,6 +23,7 @@
  */
 package ape.web.service;
 
+import ape.web.contracts.GenericWebSocketRouteSession;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -33,16 +34,11 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.timeout.ReadTimeoutException;
 import ape.ErrorCodes;
-import ape.ErrorTable;
 import ape.common.ErrorCodeException;
 import ape.common.ExceptionLogger;
 import ape.common.Json;
 import ape.common.Platform;
-import ape.web.contracts.ServiceBase;
-import ape.web.contracts.ServiceConnection;
 import ape.web.io.ConnectionContext;
-import ape.web.io.JsonRequest;
-import ape.web.io.JsonResponder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,27 +48,31 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Netty WebSocket frame handler for JSON-RPC style real-time communication.
+ * Manages connection lifecycle, periodic heartbeats for health checking,
+ * and routes incoming text frames to appropriate service handlers via
+ * WebSocketRouteTable. Only accepts text frames; binary frames are rejected.
+ */
 public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
   private static final ConnectionContext DEFAULT_CONTEXT = new ConnectionContext("unknown", "unknown", "unknown", null);
   private static final Logger LOG = LoggerFactory.getLogger(WebSocketHandler.class);
   private static final ExceptionLogger LOGGER = ExceptionLogger.FOR(LOG);
   private final WebConfig webConfig;
   private final WebMetrics metrics;
-  private final ServiceBase base;
-  private final long created;
   private final AtomicLong latency;
-  private ServiceConnection connection;
+  private GenericWebSocketRouteSession route;
   private ScheduledFuture<?> future;
   private boolean closed;
   private ConnectionContext context;
+  private final WebSocketRouteTable table;
 
-  public WebSocketHandler(final WebConfig webConfig, WebMetrics metrics, final ServiceBase base) {
+  public WebSocketHandler(final WebConfig webConfig, WebMetrics metrics, WebSocketRouteTable table) {
     this.webConfig = webConfig;
     this.metrics = metrics;
-    this.base = base;
-    this.connection = null;
+    this.table = table;
+    this.route = null;
     this.future = null;
-    this.created = System.currentTimeMillis();
     this.latency = new AtomicLong();
     this.closed = false;
     this.context = DEFAULT_CONTEXT;
@@ -103,10 +103,10 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         future.cancel(false);
         future = null;
       }
-      if (connection != null) {
+      if (route != null) {
         metrics.websockets_active_child_connections.down();
-        connection.kill();
-        connection = null;
+        route.kill();
+        route = null;
       }
       ctx.close();
     } catch (Exception ex) {
@@ -118,36 +118,44 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
   @Override
   public void userEventTriggered(final ChannelHandlerContext ctx, final Object evt) {
     if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete && !closed) {
-      HttpHeaders headers = ((WebSocketServerProtocolHandler.HandshakeComplete) evt).requestHeaders();
+      WebSocketServerProtocolHandler.HandshakeComplete complete = (WebSocketServerProtocolHandler.HandshakeComplete) evt;
+      HttpHeaders headers = complete.requestHeaders();
       context = ConnectionContextFactory.of(ctx, headers);
-      // tell client all is ok
-      ObjectNode connected = Json.newJsonObject();
-      connected.put("status", "connected");
-      connected.put("version", Platform.VERSION);
-      if (context.identities != null) {
-        ObjectNode idents = connected.putObject("identities");
-        for (String ident : context.identities.keySet()) {
-          idents.put(ident, true);
+      // establish the service by routing directly via the URI
+      if (complete.requestUri().startsWith("/~s/mcp")) {
+        route = table.mcp.establish(complete.requestUri().substring(7), latency, context);
+      } else {
+        // tell Adama client all is ok
+        ObjectNode connected = Json.newJsonObject();
+        connected.put("status", "connected");
+        connected.put("version", Platform.VERSION);
+        if (context.identities != null) {
+          ObjectNode idents = connected.putObject("identities");
+          for (String ident : context.identities.keySet()) {
+            idents.put(ident, true);
+          }
         }
+        ctx.writeAndFlush(new TextWebSocketFrame(connected.toString()));
+        route = table.adama.establish("/", latency, context);
       }
-      ctx.writeAndFlush(new TextWebSocketFrame(connected.toString()));
-      // establish the service
-      connection = base.establish(context);
       metrics.websockets_active_child_connections.up();
-      // start the heartbeat loop
-      Runnable heartbeatLoop = () -> {
-        if (connection != null && !connection.keepalive()) {
-          metrics.websockets_heartbeat_failure.run();
-          ctx.writeAndFlush(new TextWebSocketFrame("{\"status\":\"disconnected\",\"reason\":\"keepalive-failure\"}"));
-          end(ctx);
-        } else {
-          metrics.websockets_send_heartbeat.run();
-          ctx.writeAndFlush(new TextWebSocketFrame("{\"ping\":" + (System.currentTimeMillis() - created) + ",\"latency\":\"" + latency.get() + "\"}"));
-        }
-      };
+      if (route.enableKeepAlive()) {
+        // start the heartbeat loop
+        Runnable heartbeatLoop = () -> {
+          if (route != null && !route.keepalive()) {
+            metrics.websockets_heartbeat_failure.run();
+            route.sendKeepAliveDisconnect(ctx);
+            end(ctx);
+          } else {
+            if (route.sendPing(ctx)) {
+              metrics.websockets_send_heartbeat.run();
 
-      // schedule the heartbeat loop
-      future = ctx.executor().scheduleAtFixedRate(heartbeatLoop, webConfig.heartbeatTimeMilliseconds, webConfig.heartbeatTimeMilliseconds, TimeUnit.MILLISECONDS);
+            }
+          }
+        };
+        // schedule the heartbeat loop
+        future = ctx.executor().scheduleAtFixedRate(heartbeatLoop, webConfig.heartbeatTimeMilliseconds, webConfig.heartbeatTimeMilliseconds, TimeUnit.MILLISECONDS);
+      }
     }
   }
 
@@ -178,36 +186,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
       }
       // parse the request
       final var requestNode = Json.parseJsonObject(((TextWebSocketFrame) frame).text());
-      if (requestNode.has("pong")) {
-        latency.set(System.currentTimeMillis() - created - requestNode.get("ping").asLong());
-        return;
-      }
-      JsonRequest request = new JsonRequest(requestNode, context);
-      final var id = request.id();
-      // tie a responder to the request
-      final JsonResponder responder = new JsonResponder() {
-        @Override
-        public void stream(String json) {
-          ctx.writeAndFlush(new TextWebSocketFrame("{\"deliver\":" + id + ",\"done\":false,\"response\":" + json + "}"));
-        }
-
-        @Override
-        public void finish(String json) {
-          if (json == null) {
-            ctx.writeAndFlush(new TextWebSocketFrame("{\"deliver\":" + id + ",\"done\":true}"));
-          } else {
-            ctx.writeAndFlush(new TextWebSocketFrame("{\"deliver\":" + id + ",\"done\":true,\"response\":" + json + "}"));
-          }
-        }
-
-        @Override
-        public void error(ErrorCodeException ex) {
-          boolean retry = ErrorTable.INSTANCE.shouldRetry(ex.code);
-          ctx.writeAndFlush(new TextWebSocketFrame("{\"failure\":" + id + ",\"reason\":" + ex.code + ",\"retry\":" + (retry ? "true" : "false") + "}"));
-        }
-      };
-      // execute the request
-      connection.execute(request, responder);
+      route.handle(requestNode, ctx);
     } catch (Exception ex) {
       ErrorCodeException codedException = ErrorCodeException.detectOrWrap(ErrorCodes.UNCAUGHT_EXCEPTION_WEB_SOCKET, ex, LOGGER);
       ctx.writeAndFlush(new TextWebSocketFrame("{\"status\":\"disconnected\",\"reason\":" + codedException.code + "}"));

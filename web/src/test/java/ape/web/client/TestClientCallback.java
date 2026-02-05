@@ -43,7 +43,7 @@ public class TestClientCallback {
   private final CountDownLatch disconnectLatch;
   private String data;
   private Throwable exception;
-  private ArrayList<String> writes;
+  public ArrayList<String> writes;
   private HashMap<Integer, Mailbox> mailboxes;
   public final HashMap<String, String> headers;
 

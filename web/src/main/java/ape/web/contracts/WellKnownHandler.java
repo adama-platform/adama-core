@@ -25,6 +25,11 @@ package ape.web.contracts;
 
 import ape.common.Callback;
 
+/**
+ * Handler interface for .well-known URI paths (ACME challenges, asset links, etc).
+ * Implementations provide custom responses for standard discovery endpoints.
+ * Some paths like assetlinks.json bypass custom handling to allow document-defined responses.
+ */
 public interface WellKnownHandler {
   public void handle(String uri, Callback<String> callback);
 

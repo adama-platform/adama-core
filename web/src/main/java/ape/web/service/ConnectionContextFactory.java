@@ -33,7 +33,11 @@ import ape.web.io.ConnectionContext;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
-/** read headers and ip into a ConnectionContext */
+/**
+ * Factory for extracting ConnectionContext from HTTP request headers.
+ * Parses origin (or derives from host), client IP (with X-Forwarded-For support),
+ * user-agent, and identity cookies (id_* prefix with HttpOnly+Secure flags).
+ */
 public class ConnectionContextFactory {
   public static ConnectionContext of(final ChannelHandlerContext ctx, HttpHeaders headers) {
     String origin = headers.get("origin");

@@ -28,6 +28,12 @@ import ape.common.ConfigObject;
 import java.io.File;
 import java.util.TreeSet;
 
+/**
+ * Configuration container for HTTP/WebSocket server settings.
+ * Includes port bindings, content limits, timeouts, thread pool sizes,
+ * domain routing rules, connection pool parameters, and cache directories.
+ * Loaded from ConfigObject with sensible defaults for all values.
+ */
 public class WebConfig {
   public final String healthCheckPath;
   public final String deepHealthCheckPath;

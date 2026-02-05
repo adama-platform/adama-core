@@ -34,6 +34,12 @@ import ape.web.assets.AssetStream;
 import java.io.File;
 import java.io.FileInputStream;
 
+/**
+ * Cached transformed asset wrapper for serving processed images.
+ * Backed by disk file written by transformation pipeline. Streams content
+ * in 64KB chunks on serve request. Implements Measurable for LRU cache
+ * size tracking. Cleans up file on eviction.
+ */
 public class TransformAsset implements Measurable {
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(TransformAsset.class);
   private final SimpleExecutor executor;

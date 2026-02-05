@@ -79,7 +79,7 @@ public class ServiceBaseJustHtmlTests {
         callback.success("COVERAGE");
       }
     });
-    base.establish(null).execute(null, new JsonResponder() {
+    base.establishServiceConnection(null).execute(null, new JsonResponder() {
       @Override
       public void stream(String json) {
 
@@ -95,9 +95,10 @@ public class ServiceBaseJustHtmlTests {
 
       }
     });
-    base.establish(null).keepalive();
-    base.establish(null).kill();
+    base.establishServiceConnection(null).keepalive();
+    base.establishServiceConnection(null).kill();
     base.assets();
+    base.establishMCP(null, null);
     CountDownLatch latch = new CountDownLatch(4);
     ConnectionContext context = new ConnectionContext("origin", "ip", "ua", new TreeMap<>());
     base.http().handle(context, HttpHandler.Method.OPTIONS, null, "/opt=yes", new TreeMap<>(), "{}", null, new Callback<HttpHandler.HttpResult>() {

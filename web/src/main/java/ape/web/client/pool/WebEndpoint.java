@@ -26,7 +26,11 @@ package ape.web.client.pool;
 import java.net.URI;
 import java.util.Objects;
 
-/** and endpoint representing a single instance of a remote box */
+/**
+ * Immutable key identifying a remote HTTP endpoint for connection pooling.
+ * Extracts host, port, and TLS flag from URI. Used as pool key to share
+ * connections to the same server across requests.
+ */
 public class WebEndpoint {
   public final boolean secure;
   public final String host;

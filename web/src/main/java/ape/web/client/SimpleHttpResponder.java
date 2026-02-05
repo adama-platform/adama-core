@@ -25,7 +25,12 @@ package ape.web.client;
 
 import ape.common.ErrorCodeException;
 
-/** Simple http responder which receives */
+/**
+ * Streaming HTTP response callback interface for WebClientBase.
+ * Receives response in phases: start() with headers, bodyStart() with size,
+ * bodyFragment() chunks, and bodyEnd() on completion. Supports progressive
+ * processing of large responses without full buffering.
+ */
 public interface SimpleHttpResponder {
   /** the response has come in */
   void start(SimpleHttpResponseHeader header);

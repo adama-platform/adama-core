@@ -26,6 +26,11 @@ package ape.web.assets.transforms;
 import java.io.File;
 import java.io.InputStream;
 
+/**
+ * Asset transformation interface for processing files on-the-fly.
+ * Implementations read from input stream and write transformed result to output file.
+ * Currently supports image transformations (resize, crop, grayscale) via ImageTransform.
+ */
 public interface Transform {
   /** execute the transform */
   public void execute(InputStream input, File output) throws Exception;

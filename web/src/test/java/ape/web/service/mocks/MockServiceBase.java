@@ -24,6 +24,7 @@
 package ape.web.service.mocks;
 
 import ape.web.contracts.HttpHandler;
+import ape.web.contracts.MCPSession;
 import ape.web.contracts.ServiceBase;
 import ape.web.contracts.ServiceConnection;
 import ape.common.Callback;
@@ -43,7 +44,7 @@ import java.util.TreeMap;
 
 public class MockServiceBase implements ServiceBase {
   @Override
-  public ServiceConnection establish(ConnectionContext context) {
+  public ServiceConnection establishServiceConnection(ConnectionContext context) {
     return new ServiceConnection() {
       boolean alive = true;
 
@@ -280,5 +281,10 @@ public class MockServiceBase implements ServiceBase {
         }
       }
     };
+  }
+
+  @Override
+  public MCPSession establishMCP(String path, ConnectionContext context) {
+    return MCPSession.NOOP;
   }
 }

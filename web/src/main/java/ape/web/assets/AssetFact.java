@@ -30,7 +30,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 
-/** Facts about an asset which are computed */
+/**
+ * Computed metadata for uploaded assets including size and cryptographic hashes.
+ * Calculates MD5 (for HTTP Content-MD5 header) and SHA-384 (for integrity verification)
+ * from file or byte array content. Used during asset upload to populate NtAsset metadata.
+ */
 public class AssetFact {
   public final long size;
   public final String md5;

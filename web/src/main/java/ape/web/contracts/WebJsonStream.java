@@ -25,7 +25,12 @@ package ape.web.contracts;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-/** a very simple stream for the client to get a json stream from the web proxy */
+/**
+ * Streaming response interface for WebSocket client requests.
+ * Receives incremental JSON data with connection tracking, completion signal,
+ * and failure notification. Used by MultiWebClientRetryPool for streaming
+ * API calls that return multiple response objects.
+ */
 public interface WebJsonStream {
   void data(int connection, ObjectNode node);
 
