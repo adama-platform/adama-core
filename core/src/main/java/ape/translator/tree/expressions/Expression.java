@@ -25,6 +25,7 @@ package ape.translator.tree.expressions;
 
 import ape.translator.env.Environment;
 import ape.translator.env.FreeEnvironment;
+import ape.translator.env2.Scope;
 import ape.translator.parser.token.Token;
 import ape.translator.tree.common.DocumentPosition;
 import ape.translator.parser.Formatter;
@@ -35,6 +36,7 @@ import java.util.function.Consumer;
 
 public abstract class Expression extends DocumentPosition {
   protected TyType cachedType = null;
+  protected TyType cachedTypeAlt = null;
 
   public abstract void emit(Consumer<Token> yielder);
 
@@ -48,6 +50,7 @@ public abstract class Expression extends DocumentPosition {
     return cachedType != null;
   }
 
+  // TO BE DEPRECATED
   public TyType typing(final Environment environment, final TyType suggestion) {
     if (cachedType == null) {
       cachedType = typingInternal(environment, suggestion);
@@ -55,11 +58,23 @@ public abstract class Expression extends DocumentPosition {
     return cachedType;
   }
 
+  // TO BE DEPRECATED
   protected abstract TyType typingInternal(Environment environment, TyType suggestion);
 
   public Expression withPosition(final DocumentPosition position) {
     ingest(position);
     return this;
+  }
+
+  protected TyType typingInternalAlt(final Scope scope, TyType suggestion) {
+    throw new IllegalArgumentException("not yet implemented");
+  }
+
+  public final TyType typingAlt(final Scope scope, final TyType suggestion) {
+    if (cachedTypeAlt == null) {
+      cachedTypeAlt = typingInternalAlt(scope, suggestion);
+    }
+    return cachedTypeAlt;
   }
 
   public void writeJava(final StringBuilderWithTabs sb, final Environment environment) {

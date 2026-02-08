@@ -834,42 +834,6 @@ public class CoreService implements Deliverer, Queryable, KeyAlarm {
     }));
   }
 
-  public void authorize(String origin, String ip, Key key, String username, String password, String newPassword, Callback<String> callback) {
-    CoreRequestContext context = new CoreRequestContext(NtPrincipal.NO_ONE, origin, ip, key.key);
-    load(key, new Callback<>() {
-      @Override
-      public void success(DurableLivingDocument document) {
-        document.registerActivity();
-        String agent = document.document().__authorize(context, username, password);
-        if (agent != null) {
-          if (newPassword != null) {
-            CoreRequestContext newContext = new CoreRequestContext(new NtPrincipal(agent, "doc/" + key.space + "/" + key.key), origin, ip, key.key);
-            document.setPassword(newContext, newPassword, new Callback<Integer>() {
-              @Override
-              public void success(Integer value) {
-                callback.success(agent);
-              }
-
-              @Override
-              public void failure(ErrorCodeException ex) {
-                callback.failure(ex);
-              }
-            });
-          } else {
-            callback.success(agent);
-          }
-        } else {
-          callback.failure(new ErrorCodeException(ErrorCodes.DOCUMENT_AUTHORIIZE_FAILURE));
-        }
-      }
-
-      @Override
-      public void failure(ErrorCodeException ex) {
-        callback.failure(ex);
-      }
-    });
-  }
-
   public void authorization(String origin, String ip, Key key, String payload, Callback<AuthResponse> callback) {
     CoreRequestContext context = new CoreRequestContext(NtPrincipal.NO_ONE, origin, ip, key.key);
     load(key, new Callback<>() {

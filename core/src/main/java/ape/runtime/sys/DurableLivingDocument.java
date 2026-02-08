@@ -1113,25 +1113,6 @@ public class DurableLivingDocument implements Queryable {
     }), false, false);
   }
 
-  @Deprecated
-  public void setPassword(CoreRequestContext context, String password, Callback<Integer> callback) {
-    final var writer = forgeWithContext("password", context);
-    writer.writeObjectFieldIntro("password");
-    writer.writeString(password);
-    writer.endObject();
-    ingest(context.who, writer.toString(), base.metrics.document_password.wrap(new Callback<>() {
-      @Override
-      public void success(LivingDocumentChange value) {
-        callback.success(value.update.seqEnd);
-      }
-
-      @Override
-      public void failure(ErrorCodeException ex) {
-        callback.failure(ex);
-      }
-    }), false, false);
-  }
-
   private void executeRestoreWhileInExecutor() {
     final QueuedRestoreRequest queued = restoreRequest;
     base.service.recover(queued.key, queued.snapshot, new Callback<Void>() {

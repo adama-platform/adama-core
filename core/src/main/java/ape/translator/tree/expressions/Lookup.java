@@ -25,6 +25,7 @@ package ape.translator.tree.expressions;
 
 import ape.translator.env.Environment;
 import ape.translator.env.FreeEnvironment;
+import ape.translator.env2.Scope;
 import ape.translator.parser.token.Token;
 import ape.translator.parser.Formatter;
 import ape.translator.tree.types.TyType;
@@ -70,6 +71,28 @@ public class Lookup extends Expression {
     if (type != null && environment.state.isContextComputation() && type instanceof DetailComputeRequiresGet) {
       addGet = true;
       type = ((DetailComputeRequiresGet) type).typeAfterGet(environment);
+      if (type != null) {
+        type = type.makeCopyWithNewPosition(this, type.behavior);
+      }
+    }
+    return type;
+  }
+
+  @Override
+  protected TyType typingInternalAlt(Scope scope, TyType suggestion) {
+    var type = scope.lookup(variableToken.text, this);
+
+    if (type == null) {
+      scope.createError(this, String.format("The variable '%s' was not defined", variableToken.text));
+    }
+    if (type instanceof TyNativeGlobalObject) {
+      hide = true;
+      return type;
+    }
+    if (type != null && scope.isComputing() && type instanceof DetailComputeRequiresGet) {
+      addGet = true;
+      // TODO: This is going to be a big change.
+      // type = ((DetailComputeRequiresGet) type).typeAfterGet(environment);
       if (type != null) {
         type = type.makeCopyWithNewPosition(this, type.behavior);
       }

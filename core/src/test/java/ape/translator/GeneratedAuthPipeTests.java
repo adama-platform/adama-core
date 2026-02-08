@@ -780,10 +780,6 @@ public class GeneratedAuthPipeTests extends GeneratedBase {
     gold.append("\n  public boolean __open_channel(String name) {");
     gold.append("\n    return false;");
     gold.append("\n  }");
-    gold.append("\n  @Override");
-    gold.append("\n  public String __auth(CoreRequestContext __context, String username, String password) {");
-    gold.append("\n    return null;");
-    gold.append("\n  }");
     gold.append("\n  public AuthResponse __authpipe(CoreRequestContext __context, String __message) {");
     gold.append("\n    try {");
     gold.append("\n      if (__message == null) throw new AbortMessageException();");
@@ -798,8 +794,6 @@ public class GeneratedAuthPipeTests extends GeneratedBase {
     gold.append("\n      return null;");
     gold.append("\n    }");
     gold.append("\n  }");
-    gold.append("\n  @Override");
-    gold.append("\n  public void __password(CoreRequestContext __context, String __pw) {}");
     gold.append("\n  @Override");
     gold.append("\n  public void __make_cron_progress() {}");
     gold.append("\n  @Override");

@@ -164,16 +164,6 @@ public class FormatDocumentHandler implements TopLevelDocumentHandler{
   }
 
   @Override
-  public void add(DefineAuthorization da) {
-    da.format(formatter);
-  }
-
-  @Override
-  public void add(DefinePassword dp) {
-    dp.format(formatter);
-  }
-
-  @Override
   public void add(DefineAuthorizationPipe da) {
     da.format(formatter);
   }

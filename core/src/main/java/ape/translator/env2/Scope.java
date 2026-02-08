@@ -23,19 +23,30 @@
  */
 package ape.translator.env2;
 
+import ape.translator.tree.Document;
+import ape.translator.tree.common.DocumentError;
+import ape.translator.tree.common.DocumentPosition;
 import ape.translator.tree.definitions.DocumentEvent;
+import ape.translator.tree.types.TyType;
 import ape.translator.tree.types.natives.functions.FunctionPaint;
 
 /** Scope is a place for variables to be define */
 public class Scope {
+  private final LatentRoot root;
   private final Scope parent;
 
+  private Scope(LatentRoot root) {
+    this.root = root;
+    this.parent = null;
+  }
+
   private Scope(Scope parent) {
+    this.root = parent.root;
     this.parent = parent;
   }
 
   public static Scope makeRootDocument() {
-    return new Scope(null);
+    return new Scope(new LatentRoot());
   }
 
   public Scope makeWebHandler(String verb) {
@@ -51,10 +62,6 @@ public class Scope {
   }
 
   public Scope makeAuthorize() {
-    return new Scope(this);
-  }
-
-  public Scope makePassword() {
     return new Scope(this);
   }
 
@@ -144,5 +151,21 @@ public class Scope {
 
   public Scope makeCronTask() {
     return new Scope(this);
+  }
+
+  public Scope mustBeComputational() {
+    return this;
+  }
+
+  public TyType lookup(String variable, DocumentPosition position) {
+    return null;
+  }
+
+  public DocumentError createError(final DocumentPosition position, final String message) {
+    return null;
+  }
+
+  public boolean isComputing() {
+    return true;
   }
 }

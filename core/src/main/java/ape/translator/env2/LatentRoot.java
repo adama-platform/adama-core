@@ -21,24 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.web.service;
+package ape.translator.env2;
 
-import org.junit.Assert;
-import org.junit.Test;
+import ape.translator.tree.Document;
 
-import java.io.File;
+public class LatentRoot {
+  private Document document;
 
-public class BundleJavaScriptTests {
-  @Test
-  public void execute() throws Exception {
-    String root = "";
-    if (!new File("release").exists()) {
-      root = "../";
-    }
-    if (new File(root + "release/libadama.js").exists()) {
-      BundleJavaScript.bundle(root + "release/libadama.js", root + "release/libadama-worker.js");
-    } else {
-      Assert.fail("Could not find libadama.js");
-    }
+  public LatentRoot() {
+    this.document = new Document();
+  }
+
+  public void finishParsing(Document document) {
+    this.document = document;
   }
 }

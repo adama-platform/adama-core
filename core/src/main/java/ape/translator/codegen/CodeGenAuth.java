@@ -25,10 +25,8 @@ package ape.translator.codegen;
 
 import ape.translator.env.Environment;
 import ape.translator.tree.common.StringBuilderWithTabs;
-import ape.translator.tree.definitions.DefineAuthorization;
 import ape.translator.tree.definitions.DefineAuthorizationPipe;
 import ape.translator.tree.definitions.DefineHandler;
-import ape.translator.tree.definitions.DefinePassword;
 
 import java.util.ArrayList;
 
@@ -63,23 +61,6 @@ public class CodeGenAuth {
     }
     sb.append("}").writeNewline();
 
-    sb.append("@Override").writeNewline();
-    if (raw.document.auths.size() == 1) {
-      DefineAuthorization authorization = raw.document.auths.get(0);
-      Environment environment = authorization.next(raw);
-      sb.append("public String __auth(CoreRequestContext __context, String ").append(authorization.username.text).append(", String ").append(authorization.password.text).append(") {").tabUp().writeNewline();
-      sb.append("try {").tabUp().writeNewline();
-      sb.append("if (").append(authorization.username.text).append("== null && null == ").append(authorization.password.text).append(") throw new AbortMessageException();").writeNewline();
-      authorization.code.specialWriteJava(sb, environment, false, true);
-      sb.append("} catch (AbortMessageException ame) {").tabUp().writeNewline();
-      sb.append("return null;").tabDown().writeNewline();
-      sb.append("}").tabDown().writeNewline();
-    } else {
-      sb.append("public String __auth(CoreRequestContext __context, String username, String password) {").tabUp().writeNewline();
-      sb.append("return null;").tabDown().writeNewline();
-    }
-    sb.append("}").writeNewline();
-
     if (raw.document.authPipes.size() == 1) {
       sb.append("public AuthResponse __authpipe(CoreRequestContext __context, String __message) {").tabUp().writeNewline();
       DefineAuthorizationPipe pipe = raw.document.authPipes.get(0);
@@ -93,18 +74,6 @@ public class CodeGenAuth {
     } else {
       sb.append("public AuthResponse __authpipe(CoreRequestContext __context, String __message) {").tabUp().writeNewline();
       sb.append("return null;").tabDown().writeNewline();
-    }
-    sb.append("}").writeNewline();
-
-    sb.append("@Override").writeNewline();
-    if (raw.document.passwords.size() == 1) {
-      DefinePassword dp = raw.document.passwords.get(0);
-      Environment environment = dp.next(raw);
-      sb.append("public void __password(CoreRequestContext __context, String ").append(dp.passwordVar.text).append(") {").tabUp().writeNewline();
-      sb.append("NtPrincipal __who = __context.who;").writeNewline();
-      dp.code.specialWriteJava(sb, environment, false, true);
-    } else {
-      sb.append("public void __password(CoreRequestContext __context, String __pw) {");
     }
     sb.append("}").writeNewline();
   }

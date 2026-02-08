@@ -53,7 +53,9 @@ import java.util.regex.Pattern;
 /** the async compiler all unified into one big thing */
 public class AsyncCompiler {
   public static String normalizeSpaceNameForClass(String space) {
-    return space.replaceAll(Pattern.quote("-"), Matcher.quoteReplacement("_"));
+    String x = space.replaceAll(Pattern.quote("-"), Matcher.quoteReplacement("_"));
+    String y = x.replaceAll(Pattern.quote("."), Matcher.quoteReplacement("_"));
+    return y;
   }
 
   public static void forge(RuntimeEnvironment runtime, String name, DeploymentFactory prior, DeploymentPlan plan, Deliverer deliverer, TreeMap<Integer, PrivateKeyBundle> keys, AsyncByteCodeCache cache, Callback<DeploymentFactory> callback) {

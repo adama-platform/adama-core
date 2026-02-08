@@ -88,9 +88,7 @@ public class Document implements TopLevelDocumentHandler {
   private final ArrayList<LatentCodeSnippet> latentCodeSnippets;
   private final ArrayList<File> searchPaths;
   private final TypeCheckerRoot typeChecker;
-  public final ArrayList<DefineAuthorization> auths;
   public final ArrayList<DefineAuthorizationPipe> authPipes;
-  public final ArrayList<DefinePassword> passwords;
   private int autoClassId;
   private String className;
   public final UriTable webGet;
@@ -143,8 +141,6 @@ public class Document implements TopLevelDocumentHandler {
     clientServices = new LinkedHashMap<>();
     defined = new HashSet<>();
     viewDefined = new HashSet<>();
-    auths = new ArrayList<>();
-    passwords = new ArrayList<>();
     metrics = new LinkedHashMap<>();
     assocs = new LinkedHashMap<>();
     templates = new LinkedHashMap<>();
@@ -365,30 +361,12 @@ public class Document implements TopLevelDocumentHandler {
   }
 
   @Override
-  public void add(DefineAuthorization da) {
-    if (auths.size() >= 1) {
-      typeChecker.issueError(da, "Only one @authorize action allowed");
-    }
-    auths.add(da);
-    da.typing(typeChecker);
-  }
-
-  @Override
   public void add(DefineAuthorizationPipe da) {
    if (authPipes.size() >= 1) {
      typeChecker.issueError(da, "Only one @authorization action allowed");
    }
    authPipes.add(da);
    da.typing(typeChecker);
-  }
-
-  @Override
-  public void add(DefinePassword dp) {
-    if (passwords.size() >= 1) {
-      typeChecker.issueError(dp, "Only one @password action allowed");
-    }
-    passwords.add(dp);
-    dp.typing(typeChecker);
   }
 
   @Override

@@ -1201,18 +1201,6 @@ public abstract class LivingDocument implements RxParent, Caller {
   /** is the channel open */
   public abstract boolean __open_channel(String name);
 
-  @Deprecated
-  public String __authorize(CoreRequestContext __context, String username, String password) {
-    __time.set(System.currentTimeMillis());
-    String result = __auth(__context, username, password);
-    __execute__revert(true);
-    return result;
-  }
-
-  /** authenticate a user; return null to indicate forbidden, return an agent to sign for the document */
-  @Deprecated
-  public abstract String __auth(CoreRequestContext context, String username, String password);
-
   public AuthResponse __authorization(CoreRequestContext __context, String message) {
     __time.set(System.currentTimeMillis());
     try {
@@ -1236,9 +1224,6 @@ public abstract class LivingDocument implements RxParent, Caller {
   protected abstract void __reset_cron();
 
   public abstract String __traffic(CoreRequestContext __context);
-
-  @Deprecated
-  public abstract void __password(CoreRequestContext context, String password);
 
   private void __drive_webget_queue() {
     Iterator<EphemeralWebGet> it = __gets.iterator();
@@ -1717,14 +1702,6 @@ public abstract class LivingDocument implements RxParent, Caller {
               throw new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_TRANSACTION_CANT_SEND_NO_CONTEXT);
             }
             return __transaction_send(context, requestJson, viewId, marker, channel, timestamp, message, factory);
-          case "password":
-            if (context == null) {
-              throw new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_TRANSACTION_CANT_SET_PASSWORD_NO_CONTEXT);
-            }
-            if (password == null) {
-              throw new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_TRANSACTION_CANT_SET_PASSWORD_NO_PASSWORD);
-            }
-            return _transact_password(context, password);
           case "deliver":
             if (who == null) {
               throw new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_TRANSACTION_NO_CLIENT_AS_WHO);
@@ -1858,28 +1835,6 @@ public abstract class LivingDocument implements RxParent, Caller {
       reverse.endObject();
       RemoteDocumentUpdate update = new RemoteDocumentUpdate(__seq.get(), __seq.get(), who, request, forward.toString(), reverse.toString(), true, 0, 0L, UpdateType.AddUserData);
       return new LivingDocumentChange(update, null, null, false);
-    } finally {
-      if (exception) {
-        __execute__revert(true);
-      }
-      if (__monitor != null) {
-        __monitor.pop(System.nanoTime() - startedTime, exception);
-      }
-    }
-  }
-
-  private LivingDocumentChange _transact_password(CoreRequestContext context, String password) throws ErrorCodeException {
-    final var startedTime = System.nanoTime();
-    boolean exception = true;
-    if (__monitor != null) {
-      __monitor.push("TransactionPassword");
-    }
-    try {
-      __seq.bumpUpPre();
-      __randomizeOutOfBand();
-      __password(context, password);
-      exception = false;
-      return __simple_commit(context.who, "{\"password\":\"private\"}", null, 0L);
     } finally {
       if (exception) {
         __execute__revert(true);

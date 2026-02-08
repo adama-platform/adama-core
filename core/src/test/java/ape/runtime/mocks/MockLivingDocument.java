@@ -159,14 +159,6 @@ public class MockLivingDocument extends LivingDocument {
   }
 
   @Override
-  public String __auth(CoreRequestContext context, String username, String password) {
-    return null;
-  }
-
-  @Override
-  public void __password(CoreRequestContext context, String password) { }
-
-  @Override
   public WebResponse __get_internal(CoreRequestContext __context, WebGet __get) {
     return null;
   }

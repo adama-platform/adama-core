@@ -1031,12 +1031,8 @@ public class Parser {
           return execute_import(op);
         case "@link":
           return execute_link(op);
-        case "@authorize":
-          return define_authorize(op);
         case "@authorization":
           return define_authorization(op);
-        case "@password":
-          return define_password(op);
         case "enum":
           return define_enum_trailer(op);
         case "dispatch":
@@ -1267,17 +1263,6 @@ public class Parser {
     }
   }
 
-  @Deprecated
-  public Consumer<TopLevelDocumentHandler> define_authorize(final Token authorizeToken) throws AdamaLangException {
-    Token openParen = consumeExpectedSymbol("(");
-    Token username = id();
-    Token comma = consumeExpectedSymbol(",");
-    Token password = id();
-    Token closeParen = consumeExpectedSymbol(")");
-    Block code = block(rootScope.makeAuthorize());
-    return (doc) -> doc.add(new DefineAuthorization(authorizeToken, openParen, username, comma, password, closeParen, code));
-  }
-
   public Consumer<TopLevelDocumentHandler> define_authorization(final Token authorizeToken) throws AdamaLangException {
     Token openParen = consumeExpectedSymbol("(");
     Token messageType = id();
@@ -1286,14 +1271,6 @@ public class Parser {
     Token closeParen = consumeExpectedSymbol(")");
     Block code = block(rootScope.makeAuthorize());
     return (doc) -> doc.add(new DefineAuthorizationPipe(authorizeToken, openParen, messageType, messageValue, closeParen, code));
-  }
-
-  public Consumer<TopLevelDocumentHandler> define_password(final Token passwordToken) throws AdamaLangException {
-    Token openParen = consumeExpectedSymbol("(");
-    Token password = id();
-    Token closeParen = consumeExpectedSymbol(")");
-    Block code = block(rootScope.makePassword());
-    return (doc) -> doc.add(new DefinePassword(passwordToken, openParen, password, closeParen, code));
   }
 
   public Consumer<TopLevelDocumentHandler> define_document_event(final Token eventToken, final DocumentEvent which) throws AdamaLangException {

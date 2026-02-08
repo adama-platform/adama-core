@@ -21,24 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package ape.web.service;
+package ape.translator.env2;
 
-import org.junit.Assert;
-import org.junit.Test;
+/** a language concept is a reference to fetch documentation. This is a way for the error system to provide a set of concepts down such that an AI can get a fuller grasp concepts based on errors. */
+public enum LanguageConcept {
+  Looping("This is a control structure for looping and doing multiple things"),
+  ForLoop(Looping, "A generic C style for loop with initialization, condition, and progress"),
+  ForEachLoop(Looping, "A specialized Adama foreach that uses type inference for the variable name and then iterates a list or array"),
+  ;
 
-import java.io.File;
+  private final LanguageConcept parent;
+  public final String help;
 
-public class BundleJavaScriptTests {
-  @Test
-  public void execute() throws Exception {
-    String root = "";
-    if (!new File("release").exists()) {
-      root = "../";
-    }
-    if (new File(root + "release/libadama.js").exists()) {
-      BundleJavaScript.bundle(root + "release/libadama.js", root + "release/libadama-worker.js");
-    } else {
-      Assert.fail("Could not find libadama.js");
-    }
+  public LanguageConcept parent() {
+    return parent;
+  }
+
+  private LanguageConcept(final LanguageConcept parent, String help) {
+    this.parent = parent;
+    this.help = help;
+  }
+
+  LanguageConcept(String help) {
+    this.parent = null;
+    this.help = help;
   }
 }

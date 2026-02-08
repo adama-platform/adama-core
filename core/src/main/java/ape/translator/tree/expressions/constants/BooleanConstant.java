@@ -25,6 +25,7 @@ package ape.translator.tree.expressions.constants;
 
 import ape.translator.env.Environment;
 import ape.translator.env.FreeEnvironment;
+import ape.translator.env2.Scope;
 import ape.translator.parser.token.Token;
 import ape.translator.parser.Formatter;
 import ape.translator.tree.expressions.Expression;
@@ -67,6 +68,12 @@ public class BooleanConstant extends Expression {
     } else {
       sb.append("false");
     }
+  }
+
+  @Override
+  protected TyType typingInternalAlt(Scope scope, TyType suggestion) {
+    scope.mustBeComputational();
+    return new TyNativeBoolean(TypeBehavior.ReadOnlyNativeValue, null, token).withPosition(this);
   }
 
   @Override
