@@ -28,8 +28,10 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.ssl.SslContext;
 import ape.common.Callback;
 import ape.common.ErrorCodeException;
+import ape.web.contracts.CertificateFinder;
 import ape.web.contracts.WellKnownHandler;
 
 import java.nio.charset.StandardCharsets;
@@ -37,11 +39,15 @@ import java.nio.charset.StandardCharsets;
 public class RedirectHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
   private static final byte[] EMPTY_RESPONSE = new byte[0];
   private final WebConfig webConfig;
+  private final WebMetrics metrics;
   private final WellKnownHandler wellKnownHandler;
+  private final CertificateFinder certificateFinder;
 
-  public RedirectHandler(WebConfig webConfig, WellKnownHandler wellKnownHandler) {
+  public RedirectHandler(WebConfig webConfig, WebMetrics metrics, WellKnownHandler wellKnownHandler, CertificateFinder certificateFinder) {
     this.webConfig = webConfig;
+    this.metrics = metrics;
     this.wellKnownHandler = wellKnownHandler;
+    this.certificateFinder = certificateFinder;
   }
 
   @Override
@@ -68,8 +74,40 @@ public class RedirectHandler extends SimpleChannelInboundHandler<FullHttpRequest
       });
       return;
     }
+    String host = req.headers().get(HttpHeaderNames.HOST);
+    String domain = host;
+    if (domain != null && domain.contains(":")) {
+      domain = domain.substring(0, domain.indexOf(':'));
+    }
+    if (domain == null) {
+      sendImmediate(req, ctx, HttpResponseStatus.NOT_FOUND, EMPTY_RESPONSE, null, false);
+      return;
+    }
+    if (webConfig.specialDomains.contains(domain)) {
+      sendRedirect(req, ctx, host);
+      return;
+    }
+    final String domainToCheck = domain;
+    certificateFinder.fetch(domainToCheck, new Callback<SslContext>() {
+      @Override
+      public void success(SslContext value) {
+        ctx.executor().execute(() -> sendRedirect(req, ctx, host));
+      }
+
+      @Override
+      public void failure(ErrorCodeException ex) {
+        ctx.executor().execute(() -> {
+          metrics.redirect_no_cert.run();
+          sendImmediate(req, ctx, HttpResponseStatus.NOT_FOUND, EMPTY_RESPONSE, null, false);
+        });
+      }
+    });
+  }
+
+  private void sendRedirect(FullHttpRequest req, final ChannelHandlerContext ctx, String host) {
     final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), HttpResponseStatus.PERMANENT_REDIRECT, Unpooled.wrappedBuffer(EMPTY_RESPONSE));
-    res.headers().set(HttpHeaderNames.LOCATION, "https://" + req.headers().get(HttpHeaderNames.HOST) + req.uri());
+    res.headers().set(HttpHeaderNames.LOCATION, "https://" + host + req.uri());
+    WebHandler.addSecurityHeaders(res);
     final var responseStatus = res.status();
     final var keepAlive = HttpUtil.isKeepAlive(req) && responseStatus.code() == 200;
     HttpUtil.setKeepAlive(res, keepAlive);
@@ -86,6 +124,7 @@ public class RedirectHandler extends SimpleChannelInboundHandler<FullHttpRequest
     if (contentType != null) {
       res.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
     }
+    WebHandler.addSecurityHeaders(res);
     final var responseStatus = res.status();
     final var keepAlive = HttpUtil.isKeepAlive(req) && responseStatus.code() == 200;
     HttpUtil.setKeepAlive(res, keepAlive);

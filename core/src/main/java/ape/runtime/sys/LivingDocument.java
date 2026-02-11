@@ -24,9 +24,7 @@
 package ape.runtime.sys;
 
 import ape.ErrorCodes;
-import ape.common.Callback;
-import ape.common.ErrorCodeException;
-import ape.common.ExceptionLogger;
+import ape.common.*;
 import ape.runtime.async.*;
 import ape.runtime.contracts.*;
 import ape.runtime.exceptions.*;
@@ -124,6 +122,7 @@ public abstract class LivingDocument implements RxParent, Caller {
   protected long __graphMemory;
   private IdHistoryLog __currentLog;
   private IdHistoryLog __stateMachineLog;
+  private final LinkedList<RxExport<?>> __exports;
 
   public LivingDocument(final DocumentMonitor __monitor) {
     this.__monitor = __monitor;
@@ -195,6 +194,7 @@ public abstract class LivingDocument implements RxParent, Caller {
     __graphMemory = 0L;
     __currentLog = null;
     __stateMachineLog = null;
+    __exports = new LinkedList<>();
   }
 
   /** exposed: get the document's timestamp as a date */
@@ -353,6 +353,14 @@ public abstract class LivingDocument implements RxParent, Caller {
   protected abstract void __link(ServiceRegistry registry);
 
   public abstract String __metrics();
+
+  public abstract SimpleCancel __export(CoreRequestContext __context, String __name, String __viewerState, Stream<String> __stream);
+
+  protected SimpleCancel __register_export(RxExport<?> __export) {
+    __exports.add(__export);
+    __export.deliver();
+    return __export;
+  }
 
   /** for Caller */
   @Override
@@ -584,6 +592,7 @@ public abstract class LivingDocument implements RxParent, Caller {
   protected abstract void __construct_intern(CoreRequestContext context, NtMessageBase message);
 
   public void __usurp(LivingDocument usurpingDocument) {
+    __error_exports(new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_DEPLOYED_DISCONNECT_EXPORT));
     for (Map.Entry<NtPrincipal, ArrayList<PrivateView>> existing : __trackedViews.entrySet()) {
       for (PrivateView pv : existing.getValue()) {
         // create a new view within the usurping document
@@ -808,6 +817,23 @@ public abstract class LivingDocument implements RxParent, Caller {
     }
     perf.run();
     return broadcasts;
+  }
+
+  public void __swipe_exports() {
+    Iterator<RxExport<?>> it = __exports.iterator();
+    while (it.hasNext()) {
+      if (!it.next().__ping()) {
+        it.remove();
+      }
+    }
+  }
+
+  public void __error_exports(ErrorCodeException ex) {
+    Iterator<RxExport<?>> it = __exports.iterator();
+    while (it.hasNext()) {
+      it.next().error(ex);
+      it.remove();
+    }
   }
 
   private ArrayList<LivingDocumentChange.Broadcast> __buildBroadcastListGameMode() {

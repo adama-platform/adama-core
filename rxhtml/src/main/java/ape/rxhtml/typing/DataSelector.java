@@ -86,19 +86,62 @@ public class DataSelector {
     }
   }
 
+  private String resolveValueType() {
+    if (type == null) {
+      return null;
+    }
+    ObjectNode typeToCheck = type;
+    String nature = typeToCheck.get("nature").textValue();
+    if (nature.equals("native_maybe") || nature.equals("reactive_maybe")) {
+      typeToCheck = (ObjectNode) typeToCheck.get("type");
+      nature = typeToCheck.get("nature").textValue();
+    }
+    if (nature.equals("reactive_value") || nature.equals("native_value")) {
+      return typeToCheck.get("type").textValue();
+    }
+    if (nature.equals("reactive_enum") || nature.equals("native_enum")) {
+      return "enum";
+    }
+    return null;
+  }
+
   public void validateAttribute(Consumer<String> errors) {
-    // TODO: validate as finite string
+    String valueType = resolveValueType();
+    if (valueType == null && type != null) {
+      errors.accept("expected a displayable value, but got: " + type);
+    }
   }
 
   public void validateIntegral(Consumer<String> errors) {
-    // TODO: validate INT, LONG
+    String valueType = resolveValueType();
+    if (valueType != null) {
+      if (!valueType.equals("int") && !valueType.equals("long")) {
+        errors.accept("expected integral type (int or long), but got: " + valueType);
+      }
+    } else if (type != null) {
+      errors.accept("expected integral type, but got: " + type);
+    }
   }
 
   public void validateBoolean(Consumer<String> errors) {
-    // TODO: validate INT, LONG
+    String valueType = resolveValueType();
+    if (valueType != null) {
+      if (!valueType.equals("bool")) {
+        errors.accept("expected boolean type, but got: " + valueType);
+      }
+    } else if (type != null) {
+      errors.accept("expected boolean type, but got: " + type);
+    }
   }
 
   public void validateSwitchable(Consumer<String> errors) {
-    // TODO: validate INT, LONG, ENUM, STRING, BOOL
+    String valueType = resolveValueType();
+    if (valueType != null) {
+      if (!valueType.equals("int") && !valueType.equals("long") && !valueType.equals("string") && !valueType.equals("bool") && !valueType.equals("enum")) {
+        errors.accept("expected switchable type (int, long, string, bool, or enum), but got: " + valueType);
+      }
+    } else if (type != null) {
+      errors.accept("expected switchable type, but got: " + type);
+    }
   }
 }

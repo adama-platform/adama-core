@@ -23,6 +23,7 @@
  */
 package ape.rxhtml.typing;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import ape.rxhtml.template.sp.PathVisitor;
 
@@ -48,7 +49,11 @@ public class DataScope {
   }
 
   public boolean hasChannel(String channel) {
-    return forest.get("channels").has(channel);
+    JsonNode channels = forest.get("channels");
+    if (channels == null) {
+      return false;
+    }
+    return channels.has(channel);
   }
 
   public static DataScope root(ObjectNode forest) {

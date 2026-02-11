@@ -34,4 +34,7 @@ import java.io.InputStream;
 public interface Transform {
   /** execute the transform */
   public void execute(InputStream input, File output) throws Exception;
+
+  /** return the output content type after transformation (may differ from input due to format conversion) */
+  public String outputContentType();
 }

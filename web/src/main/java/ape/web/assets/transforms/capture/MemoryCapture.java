@@ -45,7 +45,7 @@ public class MemoryCapture implements AssetStream {
 
   @Override
   public void headers(long length, String contentType, String contentMd5) {
-    this.output = new ByteArrayOutputStream((int) length);
+    this.output = new ByteArrayOutputStream(length > 0 && length <= 1024 * 1024 ? (int) length : 8192);
   }
 
   @Override

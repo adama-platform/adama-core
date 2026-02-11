@@ -94,6 +94,7 @@ public class DurableLivingDocument implements Queryable {
   private boolean invalidationScheduled;
   private boolean failedLastSnapshot;
   private QueuedRestoreRequest restoreRequest;
+  private boolean exportSweepScheduled;
 
   private DurableLivingDocument(final Key key, final LivingDocument document, final LivingDocumentFactory currentFactory, final DocumentThreadBase base) {
     this.key = key;
@@ -116,6 +117,7 @@ public class DurableLivingDocument implements Queryable {
     this.invalidationScheduled = false;
     this.failedLastSnapshot = false;
     this.restoreRequest = null;
+    this.exportSweepScheduled = true;
   }
 
   public static void fresh(final Key key, final LivingDocumentFactory factory, final CoreRequestContext context, final String arg, final String entropy, final DocumentMonitor monitor, final DocumentThreadBase base, final Callback<DurableLivingDocument> callback) {
@@ -497,6 +499,7 @@ public class DurableLivingDocument implements Queryable {
   }
 
   private void issueCloseWhileInExecutor(int errorCode, boolean shed) {
+    document.__error_exports(new ErrorCodeException(errorCode));
     document.__nukeViews();
     document.__nukeWebGetQueue();
     ErrorCodeException ex = new ErrorCodeException(errorCode);
@@ -517,6 +520,7 @@ public class DurableLivingDocument implements Queryable {
   public void cleanupWhileInExecutor(boolean shed) {
     DurableLivingDocument removed = base.map.remove(key);
     if (removed != null) {
+      removed.document.__error_exports(new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_CLOSING_DOCUMENT_EXPORT_LOST));
       removed.document.__removed();
       base.metrics.inflight_documents.down();
       if (getCurrentFactory().delete_on_close) {
@@ -608,6 +612,26 @@ public class DurableLivingDocument implements Queryable {
       return false;
     }
     return document.__canRemoveFromMemory();
+  }
+
+
+  private void scheduleExportSweep() {
+    base.executor.execute(new NamedRunnable("check-to-sweep") {
+      @Override
+      public void execute() throws Exception {
+        if (exportSweepScheduled) {
+          return;
+        }
+        exportSweepScheduled = true;
+        base.executor.schedule(new NamedRunnable("execute-sweep") {
+          @Override
+          public void execute() throws Exception {
+            document.__swipe_exports();
+            exportSweepScheduled = false;
+          }
+        }, (long) (currentFactory.sweep_export_delay * (1 + 0.25 * Math.random())));
+      }
+    });
   }
 
   private void executeNow(IngestRequest[] requests) {
@@ -725,6 +749,7 @@ public class DurableLivingDocument implements Queryable {
                     request.callback.success(request.change);
                   }
                 }
+                document.__swipe_exports();
                 for (final LivingDocumentChange change : changes) {
                   change.complete();
                 }
@@ -733,6 +758,7 @@ public class DurableLivingDocument implements Queryable {
                 }
                 testQueueSizeAndThenMaybeCompactWhileInExecutor(CompactSource.PostPatch);
                 document.__replication.signalDurableAndExecute(base.executor);
+                scheduleExportSweep();
               } finally {
                 finishSuccessDataServicePatchWhileInExecutor(true);
               }

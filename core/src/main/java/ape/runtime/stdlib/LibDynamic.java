@@ -28,10 +28,17 @@ import ape.runtime.json.JsonStreamWriter;
 import ape.runtime.natives.NtDate;
 import ape.runtime.natives.NtDateTime;
 import ape.runtime.natives.NtDynamic;
+import ape.runtime.natives.NtList;
 import ape.runtime.natives.NtMaybe;
+import ape.runtime.natives.lists.ArrayNtList;
 import ape.translator.reflect.Extension;
 import ape.translator.reflect.HiddenType;
+import ape.translator.reflect.HiddenTypes2;
+import ape.translator.reflect.UseName;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LibDynamic {
@@ -416,5 +423,165 @@ public class LibDynamic {
       return new NtMaybe<>(dyn);
     }
     return new NtMaybe<>();
+  }
+
+  /** Return the number of entries: array length or object key count. Empty if not array/object. */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> size(NtDynamic dyn) {
+    Object o = dyn.cached();
+    if (o instanceof List) {
+      return new NtMaybe<>(((List<?>) o).size());
+    }
+    if (o instanceof Map) {
+      return new NtMaybe<>(((Map<?, ?>) o).size());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Return the number of entries (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> size(@HiddenType(clazz = NtDynamic.class) NtMaybe<NtDynamic> dyn) {
+    if (dyn.has()) {
+      return size(dyn.get());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Return true if the dynamic value is a JSON array. */
+  @Extension
+  public static boolean is_array(NtDynamic dyn) {
+    return dyn.cached() instanceof List;
+  }
+
+  /** Return true if the dynamic value is a JSON object. */
+  @Extension
+  public static boolean is_object(NtDynamic dyn) {
+    return dyn.cached() instanceof Map;
+  }
+
+  /** Return true if the dynamic value is a JSON string. */
+  @Extension
+  public static boolean is_string(NtDynamic dyn) {
+    return dyn.cached() instanceof String;
+  }
+
+  /** Return true if the dynamic value is a JSON number. */
+  @Extension
+  public static boolean is_number(NtDynamic dyn) {
+    Object o = dyn.cached();
+    return o instanceof Integer || o instanceof Long || o instanceof Double;
+  }
+
+  /** Return true if the dynamic value is a JSON boolean. */
+  @Extension
+  public static boolean is_bool(NtDynamic dyn) {
+    return dyn.cached() instanceof Boolean;
+  }
+
+  /** Return true if the dynamic value is a JSON object that contains the given field. */
+  @Extension
+  public static boolean has(NtDynamic dyn, String field) {
+    Object o = dyn.cached();
+    if (o instanceof Map) {
+      return ((Map<?, ?>) o).containsKey(field);
+    }
+    return false;
+  }
+
+  /** Return the list of keys from a JSON object. Returns empty list if not an object. */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtList<String> keys(NtDynamic dyn) {
+    Object o = dyn.cached();
+    if (o instanceof Map) {
+      ArrayList<String> result = new ArrayList<>();
+      for (Object key : ((Map<?, ?>) o).keySet()) {
+        result.add(key.toString());
+      }
+      return new ArrayNtList<>(result);
+    }
+    return new ArrayNtList<>(new ArrayList<>());
+  }
+
+  /** Access an element from a JSON array by index. Returns null dynamic if not an array or out of bounds. */
+  @Extension
+  @UseName(name = "at")
+  public static NtDynamic atIndex(NtDynamic dyn, int index) {
+    Object o = dyn.cached();
+    if (o instanceof List) {
+      List<?> list = (List<?>) o;
+      if (index >= 0 && index < list.size()) {
+        JsonStreamWriter writer = new JsonStreamWriter();
+        writer.writeTree(list.get(index));
+        return new NtDynamic(writer.toString());
+      }
+    }
+    return NtDynamic.NULL;
+  }
+
+  /** Access a field from a JSON object by name. Returns null dynamic if not an object or field not found. */
+  @Extension
+  @UseName(name = "at")
+  public static NtDynamic atField(NtDynamic dyn, String field) {
+    Object o = dyn.cached();
+    if (o instanceof Map) {
+      Object value = ((Map<?, ?>) o).get(field);
+      if (value != null) {
+        JsonStreamWriter writer = new JsonStreamWriter();
+        writer.writeTree(value);
+        return new NtDynamic(writer.toString());
+      }
+    }
+    return NtDynamic.NULL;
+  }
+
+  /** Deep merge two JSON objects per RFC 7396 (JSON Merge Patch). */
+  @Extension
+  public static NtDynamic merge(NtDynamic target, NtDynamic patch) {
+    Object t = target.cached();
+    Object p = patch.cached();
+    if (!(p instanceof Map)) {
+      return patch;
+    }
+    Map<String, Object> result;
+    if (t instanceof Map) {
+      result = new HashMap<>((Map<String, Object>) t);
+    } else {
+      result = new HashMap<>();
+    }
+    Map<String, Object> patchMap = (Map<String, Object>) p;
+    for (Map.Entry<String, Object> entry : patchMap.entrySet()) {
+      if (entry.getValue() == null) {
+        result.remove(entry.getKey());
+      } else {
+        Object existing = result.get(entry.getKey());
+        if (existing != null) {
+          JsonStreamWriter ew = new JsonStreamWriter();
+          ew.writeTree(existing);
+          NtDynamic existingDyn = new NtDynamic(ew.toString());
+          JsonStreamWriter pw = new JsonStreamWriter();
+          pw.writeTree(entry.getValue());
+          NtDynamic patchDyn = new NtDynamic(pw.toString());
+          NtDynamic merged = merge(existingDyn, patchDyn);
+          result.put(entry.getKey(), merged.cached());
+        } else {
+          result.put(entry.getKey(), entry.getValue());
+        }
+      }
+    }
+    JsonStreamWriter writer = new JsonStreamWriter();
+    writer.writeTree(result);
+    return new NtDynamic(writer.toString());
+  }
+
+  /** Build a JSON array from a list of dynamics. */
+  @Extension
+  public static NtDynamic arr(@HiddenType(clazz = NtDynamic.class) NtList<NtDynamic> items) {
+    JsonStreamWriter writer = new JsonStreamWriter();
+    writer.beginArray();
+    for (NtDynamic item : items) {
+      writer.injectJson(item.json);
+    }
+    writer.endArray();
+    return new NtDynamic(writer.toString());
   }
 }

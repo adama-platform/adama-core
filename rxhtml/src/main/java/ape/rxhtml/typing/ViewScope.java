@@ -64,6 +64,9 @@ public class ViewScope {
         current = instruction.next(current);
       }
     }
+    if (current == null) {
+      return null;
+    }
     return current.child(sp.name);
   }
 

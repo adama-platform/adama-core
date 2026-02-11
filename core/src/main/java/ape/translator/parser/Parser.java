@@ -648,7 +648,7 @@ public class Parser {
 
     var nextOrClose = tokens.pop();
     while (!nextOrClose.isSymbolWithTextEq("}")) {
-      if (!nextOrClose.isIdentifier("create", "invent", "send", "maximum_history", "delete_on_close", "temporal_resolution_ms", "frequency", "readonly")) {
+      if (!nextOrClose.isIdentifier("create", "invent", "send", "maximum_history", "delete_on_close", "temporal_resolution_ms", "sweep_export_delay", "frequency", "readonly")) {
         throw new ParseException("Parser was expecting a static definition. Candidates are create, invent, send, maximum_history, delete_on_close, frequency", tokens.getLastTokenIfAvailable());
       }
       switch (nextOrClose.text) {
@@ -665,6 +665,7 @@ public class Parser {
         case "delete_on_close":
         case "frequency":
         case "temporal_resolution_ms":
+        case "sweep_export_delay":
         case "readonly":
           definitions.add(define_config(staticScope, nextOrClose));
           break;
@@ -711,6 +712,15 @@ public class Parser {
       return new WebGuard(requires, guard);
     }
     return null;
+  }
+
+  public Consumer<TopLevelDocumentHandler> define_export(Token portToken) throws AdamaLangException {
+    Token name = id();
+    Token eq = consumeExpectedSymbol("=");
+    Expression expression = expression(rootScope.makeExport());
+    Token semi = consumeExpectedSymbol(";");
+    DefineExport export = new DefineExport(portToken, name, eq, expression, semi);
+    return (doc) -> doc.add(export);
   }
 
   public Consumer<TopLevelDocumentHandler> define_web(Token webToken) throws AdamaLangException {
@@ -1020,7 +1030,7 @@ public class Parser {
       final var dst = new DefineStateTransition(op, block(rootScope.makeStateMachineTransition()));
       return doc -> doc.add(dst);
     }
-    op = tokens.popIf(t -> t.isKeyword("enum", "@construct", "@connected", "@authorization", "@authorize", "@password", "@disconnected", "@delete", "@attached", "@static", "@can_attach", "@web", "@include", "@import", "@link", "@load", "@cron", "@traffic"));
+    op = tokens.popIf(t -> t.isKeyword("enum", "@construct", "@connected", "@authorization", "@authorize", "@password", "@disconnected", "@delete", "@attached", "@static", "@can_attach", "@web", "@export", "@include", "@import", "@link", "@load", "@cron", "@traffic"));
     if (op == null) {
       op = tokens.popIf(t -> t.isIdentifier("record", "message", "channel", "rpc", "function", "procedure", "test", "import", "view", "policy", "filter", "bubble", "dispatch", "service", "client", "replication", "metric", "assoc", "join", "template"));
     }
@@ -1069,6 +1079,8 @@ public class Parser {
           return define_static(op);
         case "@web":
           return define_web(op);
+        case "@export":
+          return define_export(op);
         case "@cron":
           return define_cron(op);
         case "@traffic":
@@ -2342,6 +2354,15 @@ public class Parser {
         Token field = typesafe_id();
         final var close = consumeExpectedIdentifier(">");
         return new TyReactiveProjectionMap(token, open, tableVar, dot, field, close, readonly, has_policy);
+      }
+      case "list": {
+        final var open = consumeExpectedSymbol("<");
+        final var rangeType = reactive_type(readonly, false);
+        final var close = consumeExpectedSymbol(">");
+        TokenizedItem<TyType> tokenized = new TokenizedItem<>(rangeType);
+        tokenized.before(open);
+        tokenized.after(close);
+        return new TyReactiveList(readonly, token, tokenized);
       }
       case "map":
         return reactive_map(readonly, token);

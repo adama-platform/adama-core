@@ -351,6 +351,7 @@ public class LibMath {
     return new NtMaybe<>();
   }
 
+  @Extension
   public static int gcd(int x, int y) {
     if (x < 0 || y < 0) {
       return gcd(Math.abs(x), Math.abs(y));
@@ -1298,5 +1299,202 @@ public class LibMath {
 
   public static boolean dRangeEE(double low, double x, double high) {
     return low < x && x < high;
+  }
+
+  /** Compute base-2 logarithm of x. */
+  @Extension
+  public static double log2(final double x) {
+    return Math.log(x) / Math.log(2.0);
+  }
+
+  /** Compute base-2 logarithm (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> log2(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(log2(mx.get()));
+    }
+    return mx;
+  }
+
+  /** Clamp x to the range [lo, hi]. */
+  @Extension
+  public static double clamp(final double x, final double lo, final double hi) {
+    return Math.max(lo, Math.min(hi, x));
+  }
+
+  /** Clamp x to the range (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> clamp(@HiddenType(clazz = Double.class) NtMaybe<Double> mx, double lo, double hi) {
+    if (mx.has()) {
+      return new NtMaybe<>(clamp(mx.get(), lo, hi));
+    }
+    return mx;
+  }
+
+  /** Clamp an integer x to the range [lo, hi]. */
+  @Extension
+  @UseName(name = "clamp")
+  public static int clamp_i(final int x, final int lo, final int hi) {
+    return Math.max(lo, Math.min(hi, x));
+  }
+
+  /** Clamp an integer (Maybe variant). */
+  @Extension
+  @UseName(name = "clamp")
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> clamp_i(@HiddenType(clazz = Integer.class) NtMaybe<Integer> mx, int lo, int hi) {
+    if (mx.has()) {
+      return new NtMaybe<>(clamp_i(mx.get(), lo, hi));
+    }
+    return mx;
+  }
+
+  /** Clamp a long x to the range [lo, hi]. */
+  @Extension
+  @UseName(name = "clamp")
+  public static long clamp_l(final long x, final long lo, final long hi) {
+    return Math.max(lo, Math.min(hi, x));
+  }
+
+  /** Clamp a long (Maybe variant). */
+  @Extension
+  @UseName(name = "clamp")
+  public static @HiddenType(clazz = Long.class) NtMaybe<Long> clamp_l(@HiddenType(clazz = Long.class) NtMaybe<Long> mx, long lo, long hi) {
+    if (mx.has()) {
+      return new NtMaybe<>(clamp_l(mx.get(), lo, hi));
+    }
+    return mx;
+  }
+
+  /** Linear interpolation between a and b by factor t (0..1). */
+  @Extension
+  public static double lerp(final double a, final double b, final double t) {
+    return a + (b - a) * t;
+  }
+
+  /** Linear interpolation (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> lerp(@HiddenType(clazz = Double.class) NtMaybe<Double> ma, double b, double t) {
+    if (ma.has()) {
+      return new NtMaybe<>(lerp(ma.get(), b, t));
+    }
+    return ma;
+  }
+
+  /** Compute the least common multiple of x and y. */
+  @Extension
+  public static int lcm(final int x, final int y) {
+    if (x == 0 || y == 0) {
+      return 0;
+    }
+    return Math.abs(x / gcd(x, y) * y);
+  }
+
+  /** Compute the least common multiple (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> lcm(@HiddenType(clazz = Integer.class) NtMaybe<Integer> mx, int y) {
+    if (mx.has()) {
+      return new NtMaybe<>(lcm(mx.get(), y));
+    }
+    return mx;
+  }
+
+  /** Compute the least common multiple for longs. */
+  @Extension
+  @UseName(name = "lcm")
+  public static long lcm_l(final long x, final long y) {
+    if (x == 0 || y == 0) {
+      return 0;
+    }
+    return Math.abs(x / gcd((int) x, (int) y) * y);
+  }
+
+  /** Inverse hyperbolic sine. */
+  @Extension
+  public static double asinh(final double x) {
+    return Math.log(x + Math.sqrt(x * x + 1));
+  }
+
+  /** Inverse hyperbolic sine (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> asinh(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(asinh(mx.get()));
+    }
+    return mx;
+  }
+
+  /** Inverse hyperbolic cosine. */
+  @Extension
+  public static double acosh(final double x) {
+    return Math.log(x + Math.sqrt(x * x - 1));
+  }
+
+  /** Inverse hyperbolic cosine (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> acosh(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(acosh(mx.get()));
+    }
+    return mx;
+  }
+
+  /** Inverse hyperbolic tangent. */
+  @Extension
+  public static double atanh(final double x) {
+    return 0.5 * Math.log((1 + x) / (1 - x));
+  }
+
+  /** Inverse hyperbolic tangent (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> atanh(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(atanh(mx.get()));
+    }
+    return mx;
+  }
+
+  /** Secant: 1 / cos(x). */
+  @Extension
+  public static double sec(final double x) {
+    return 1.0 / Math.cos(x);
+  }
+
+  /** Secant (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> sec(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(sec(mx.get()));
+    }
+    return mx;
+  }
+
+  /** Cosecant: 1 / sin(x). */
+  @Extension
+  public static double csc(final double x) {
+    return 1.0 / Math.sin(x);
+  }
+
+  /** Cosecant (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> csc(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(csc(mx.get()));
+    }
+    return mx;
+  }
+
+  /** Cotangent: 1 / tan(x). */
+  @Extension
+  public static double cot(final double x) {
+    return 1.0 / Math.tan(x);
+  }
+
+  /** Cotangent (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> cot(@HiddenType(clazz = Double.class) NtMaybe<Double> mx) {
+    if (mx.has()) {
+      return new NtMaybe<>(cot(mx.get()));
+    }
+    return mx;
   }
 }

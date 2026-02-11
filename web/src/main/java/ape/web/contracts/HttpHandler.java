@@ -62,6 +62,40 @@ public interface HttpHandler {
 
   void handleDeepHealth(Callback<String> callback);
 
+  class HttpResultBuilder {
+    public int status;
+    public String contentType;
+    public byte[] body;
+    public String space;
+    public String key;
+    public NtAsset asset;
+    public String transform;
+    public boolean cors;
+    public boolean redirect;
+    public String location;
+    public Integer cacheTimeSeconds;
+    public TreeMap<String, String> headers;
+    public String identity;
+    public int size;
+
+    public HttpResultBuilder() {
+      this.status = 500;
+      this.contentType = null;
+      this.body = null;
+      this.space = null;
+      this.key = null;
+      this.asset = null;
+      this.transform = null;
+      this.cors = false;
+      this.redirect = false;
+      this.location = null;
+      this.cacheTimeSeconds = null;
+      this.headers = null;
+      this.identity = null;
+      this.size = -1;
+    }
+  }
+
   /** The concrete result of handling a request; */
   class HttpResult {
     public final int status;
@@ -77,6 +111,24 @@ public interface HttpHandler {
     public final Integer cacheTimeSeconds;
     public final TreeMap<String, String> headers;
     public final String identity;
+    public final int size;
+
+    public HttpResult(HttpResultBuilder builder) {
+      this.status = builder.status;
+      this.contentType = builder.contentType;
+      this.body = builder.body;
+      this.space = builder.space;
+      this.key = builder.key;
+      this.asset = builder.asset;
+      this.transform = builder.transform;
+      this.cors = builder.cors;
+      this.redirect = builder.redirect;
+      this.location = builder.location;
+      this.cacheTimeSeconds = builder.cacheTimeSeconds;
+      this.headers = builder.headers;
+      this.identity = builder.identity;
+      this.size = builder.size;
+    }
 
     public HttpResult(int status, String contentType, byte[] body, boolean cors) {
       this.status = status;
@@ -92,6 +144,7 @@ public interface HttpHandler {
       this.cacheTimeSeconds = null;
       this.headers = null;
       this.identity = null;
+      this.size = -1;
     }
 
     public HttpResult(int status, String contentType, byte[] body, boolean cors, TreeMap<String, String> headers) {
@@ -108,6 +161,7 @@ public interface HttpHandler {
       this.cacheTimeSeconds = null;
       this.headers = headers;
       this.identity = null;
+      this.size = -1;
     }
 
     public HttpResult(int status, String contentType, byte[] body, boolean cors, TreeMap<String, String> headers, String identity) {
@@ -124,6 +178,7 @@ public interface HttpHandler {
       this.cacheTimeSeconds = null;
       this.headers = headers;
       this.identity = identity;
+      this.size = -1;
     }
 
     public HttpResult(int status, String space, String key, NtAsset asset, String transform, boolean cors, int cts) {
@@ -140,38 +195,33 @@ public interface HttpHandler {
       this.cacheTimeSeconds = cts > 0 ? cts : null;
       this.headers = null;
       this.identity = null;
+      this.size = -1;
     }
 
-    public HttpResult(String location, int code) {
-      this.status = code;
-      this.contentType = null;
-      this.body = null;
-      this.space = null;
-      this.key = null;
-      this.asset = null;
-      this.transform = null;
-      this.cors = true;
-      this.redirect = true;
-      this.location = location;
-      this.cacheTimeSeconds = null;
-      this.headers = null;
-      this.identity = null;
+    public static HttpResult REDIRECT(String location, int code) {
+      HttpResultBuilder builder = new HttpResultBuilder();
+      builder.status = code;
+      builder.location = location;
+      builder.redirect = true;
+      return new HttpResult(builder);
     }
 
-    public HttpResult(String location, int code, String identity) {
-      this.status = code;
-      this.contentType = null;
-      this.body = null;
-      this.space = null;
-      this.key = null;
-      this.asset = null;
-      this.transform = null;
-      this.cors = true;
-      this.redirect = true;
-      this.location = location;
-      this.cacheTimeSeconds = null;
-      this.headers = null;
-      this.identity = identity;
+    public static HttpResult REDIRECT(String location, int code, String identity) {
+      HttpResultBuilder builder = new HttpResultBuilder();
+      builder.status = code;
+      builder.location = location;
+      builder.identity = identity;
+      builder.redirect = true;
+      return new HttpResult(builder);
+    }
+
+    public static HttpResult QRCODE(String url, int size) {
+      HttpResultBuilder builder = new HttpResultBuilder();
+      builder.status = 200;
+      builder.contentType = "internal/qr-code";
+      builder.location = url;
+      builder.size = size;
+      return new HttpResult(builder);
     }
 
     public void logInto(ObjectNode logItem) {
@@ -182,5 +232,6 @@ public interface HttpHandler {
         logItem.put("content-type", contentType);
       }
     }
+
   }
 }

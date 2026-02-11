@@ -52,4 +52,37 @@ public class PoolTests {
     Assert.assertEquals("z", p.next());
     Assert.assertNull(p.next());
   }
+
+  @Test
+  public void iterator() {
+    Pool<String> p = new Pool<>();
+    p.add("a");
+    p.add("b");
+    p.add("c");
+    java.util.Iterator<String> it = p.iterator();
+    Assert.assertTrue(it.hasNext());
+    Assert.assertEquals("a", it.next());
+    Assert.assertTrue(it.hasNext());
+    Assert.assertEquals("b", it.next());
+    Assert.assertTrue(it.hasNext());
+    Assert.assertEquals("c", it.next());
+    Assert.assertFalse(it.hasNext());
+  }
+
+  @Test
+  public void emptyIterator() {
+    Pool<String> p = new Pool<>();
+    java.util.Iterator<String> it = p.iterator();
+    Assert.assertFalse(it.hasNext());
+  }
+
+  @Test
+  public void bumpDownBelowZero() {
+    Pool<String> p = new Pool<>();
+    Assert.assertEquals(0, p.size());
+    p.bumpDown();
+    Assert.assertEquals(-1, p.size());
+    p.bumpDown();
+    Assert.assertEquals(-2, p.size());
+  }
 }

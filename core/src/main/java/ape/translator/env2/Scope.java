@@ -53,6 +53,10 @@ public class Scope {
     return new Scope(this);
   }
 
+  public Scope makeExport() {
+    return new Scope(this);
+  }
+
   public Scope makeStateMachineTransition() {
     return new Scope(this);
   }

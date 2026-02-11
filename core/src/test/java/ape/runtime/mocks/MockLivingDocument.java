@@ -23,9 +23,14 @@
  */
 package ape.runtime.mocks;
 
+import ape.ErrorCodes;
+import ape.common.ErrorCodeException;
+import ape.common.SimpleCancel;
+import ape.common.Stream;
 import ape.runtime.async.AsyncTask;
 import ape.runtime.contracts.DocumentMonitor;
 import ape.runtime.contracts.Perspective;
+import ape.runtime.data.Key;
 import ape.runtime.exceptions.AbortMessageException;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
@@ -247,5 +252,11 @@ public class MockLivingDocument extends LivingDocument {
 
   @Override
   public void __settle(Set<Integer> viewers) {
+  }
+
+  @Override
+  public SimpleCancel __export(CoreRequestContext __context, String __name, String __viewerState, Stream<String> __stream) {
+    __stream.failure(new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_NO_EXPORT_BY_NAME));
+    return SimpleCancel.NOTHING_TO_CANCEL;
   }
 }

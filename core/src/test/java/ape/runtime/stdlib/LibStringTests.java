@@ -555,4 +555,144 @@ public class LibStringTests {
     Assert.assertEquals("yespleasede", LibString.bulkReplaceAll("!!!x1!!!de", "!!!", pairs("x1", "yesplease")));
     Assert.assertEquals("truncate", LibString.bulkReplaceAll("truncate!!!x", "!!!", pairs("x", "y")));
   }
+
+  @Test
+  public void multiplyNegative() {
+    Assert.assertEquals("", LibString.multiply("x", -1));
+    Assert.assertEquals("", LibString.multiply("x", -100));
+    Assert.assertEquals("", LibString.multiply("x", 0));
+  }
+
+  @Test
+  public void testLength() {
+    Assert.assertEquals(5, LibString.length("hello"));
+    Assert.assertEquals(0, LibString.length(""));
+    Assert.assertEquals(5, (int) LibString.length(new NtMaybe<>("hello")).get());
+    Assert.assertFalse(LibString.length(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testIsEmpty() {
+    Assert.assertTrue(LibString.isEmpty(""));
+    Assert.assertFalse(LibString.isEmpty("x"));
+    Assert.assertTrue(LibString.isEmpty(new NtMaybe<>("")).get());
+    Assert.assertFalse(LibString.isEmpty(new NtMaybe<>("x")).get());
+    Assert.assertFalse(LibString.isEmpty(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testIsBlank() {
+    Assert.assertTrue(LibString.isBlank(""));
+    Assert.assertTrue(LibString.isBlank("   "));
+    Assert.assertTrue(LibString.isBlank(" \t\n "));
+    Assert.assertFalse(LibString.isBlank("x"));
+    Assert.assertTrue(LibString.isBlank(new NtMaybe<>("  ")).get());
+    Assert.assertFalse(LibString.isBlank(new NtMaybe<>("x")).get());
+    Assert.assertFalse(LibString.isBlank(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testCharAt() {
+    Assert.assertEquals("h", LibString.charAt("hello", 0).get());
+    Assert.assertEquals("o", LibString.charAt("hello", 4).get());
+    Assert.assertFalse(LibString.charAt("hello", -1).has());
+    Assert.assertFalse(LibString.charAt("hello", 5).has());
+    Assert.assertEquals("h", LibString.charAt(new NtMaybe<>("hello"), 0).get());
+    Assert.assertFalse(LibString.charAt(new NtMaybe<>(), 0).has());
+  }
+
+  @Test
+  public void testLastIndexOf() {
+    Assert.assertEquals(6, (int) LibString.lastIndexOf("hello hello", "hello").get());
+    Assert.assertFalse(LibString.lastIndexOf("hello", "xyz").has());
+    Assert.assertEquals(6, (int) LibString.lastIndexOf(new NtMaybe<>("hello hello"), "hello").get());
+    Assert.assertFalse(LibString.lastIndexOf(new NtMaybe<>(), "hello").has());
+    Assert.assertEquals(6, (int) LibString.lastIndexOf("hello hello", new NtMaybe<>("hello")).get());
+    Assert.assertFalse(LibString.lastIndexOf("hello", new NtMaybe<>()).has());
+    Assert.assertEquals(6, (int) LibString.lastIndexOf(new NtMaybe<>("hello hello"), new NtMaybe<>("hello")).get());
+    Assert.assertFalse(LibString.lastIndexOf(new NtMaybe<>(), new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testPadLeft() {
+    Assert.assertEquals("00042", LibString.padLeft("42", 5, "0"));
+    Assert.assertEquals("42", LibString.padLeft("42", 2, "0"));
+    Assert.assertEquals("42", LibString.padLeft("42", 1, "0"));
+    Assert.assertEquals("42", LibString.padLeft("42", 5, ""));
+    Assert.assertEquals("00042", LibString.padLeft(new NtMaybe<>("42"), 5, "0").get());
+    Assert.assertFalse(LibString.padLeft(new NtMaybe<>(), 5, "0").has());
+  }
+
+  @Test
+  public void testPadRight() {
+    Assert.assertEquals("42000", LibString.padRight("42", 5, "0"));
+    Assert.assertEquals("42", LibString.padRight("42", 2, "0"));
+    Assert.assertEquals("42", LibString.padRight("42", 1, "0"));
+    Assert.assertEquals("42", LibString.padRight("42", 5, ""));
+    Assert.assertEquals("42000", LibString.padRight(new NtMaybe<>("42"), 5, "0").get());
+    Assert.assertFalse(LibString.padRight(new NtMaybe<>(), 5, "0").has());
+  }
+
+  @Test
+  public void testCountOccurrences() {
+    Assert.assertEquals(3, LibString.countOccurrences("abcabcabc", "abc"));
+    Assert.assertEquals(0, LibString.countOccurrences("hello", "xyz"));
+    Assert.assertEquals(0, LibString.countOccurrences("hello", ""));
+    Assert.assertEquals(3, (int) LibString.countOccurrences(new NtMaybe<>("abcabcabc"), "abc").get());
+    Assert.assertFalse(LibString.countOccurrences(new NtMaybe<>(), "abc").has());
+  }
+
+  @Test
+  public void testReplaceFirst() {
+    Assert.assertEquals("xbcabc", LibString.replaceFirst("abcabc", "a", "x"));
+    Assert.assertEquals("hello", LibString.replaceFirst("hello", "xyz", "w"));
+    Assert.assertEquals("xbcabc", LibString.replaceFirst(new NtMaybe<>("abcabc"), "a", "x").get());
+    Assert.assertFalse(LibString.replaceFirst(new NtMaybe<>(), "a", "x").has());
+  }
+
+  @Test
+  public void testMatches() {
+    Assert.assertTrue(LibString.matches("hello123", "hello\\d+"));
+    Assert.assertFalse(LibString.matches("hello", "\\d+"));
+    Assert.assertFalse(LibString.matches("hello", "[invalid"));
+    Assert.assertTrue(LibString.matches(new NtMaybe<>("hello123"), "hello\\d+").get());
+    Assert.assertFalse(LibString.matches(new NtMaybe<>(), "\\d+").has());
+  }
+
+  @Test
+  public void testNormalizeWhitespace() {
+    Assert.assertEquals("hello world", LibString.normalizeWhitespace("  hello   world  "));
+    Assert.assertEquals("a b c", LibString.normalizeWhitespace("a\t\nb\r\nc"));
+    Assert.assertEquals("a b c", LibString.normalizeWhitespace(new NtMaybe<>("  a  b  c  ")).get());
+    Assert.assertFalse(LibString.normalizeWhitespace(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testBase64Encode() {
+    Assert.assertEquals("aGVsbG8=", LibString.base64Encode("hello"));
+    Assert.assertEquals("aGVsbG8=", LibString.base64Encode(new NtMaybe<>("hello")).get());
+    Assert.assertFalse(LibString.base64Encode(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testBase64Decode() {
+    Assert.assertEquals("hello", LibString.base64Decode("aGVsbG8=").get());
+    Assert.assertFalse(LibString.base64Decode("!!!invalid!!!").has());
+    Assert.assertEquals("hello", LibString.base64Decode(new NtMaybe<>("aGVsbG8=")).get());
+    Assert.assertFalse(LibString.base64Decode(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testUrlEncode() {
+    Assert.assertEquals("hello+world", LibString.urlEncode("hello world"));
+    Assert.assertEquals("hello+world", LibString.urlEncode(new NtMaybe<>("hello world")).get());
+    Assert.assertFalse(LibString.urlEncode(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void testUrlDecode() {
+    Assert.assertEquals("hello world", LibString.urlDecode("hello+world").get());
+    Assert.assertEquals("hello world", LibString.urlDecode(new NtMaybe<>("hello+world")).get());
+    Assert.assertFalse(LibString.urlDecode(new NtMaybe<>()).has());
+  }
 }

@@ -32,12 +32,16 @@ import ape.runtime.natives.NtTemplate;
 import ape.translator.reflect.Extension;
 import ape.translator.reflect.HiddenType;
 
-/** library for NtTemplate */
+/**
+ * Standard library for template rendering in Adama documents.
+ * Provides HTML-safe and raw rendering of NtTemplate objects with dynamic JSON inputs.
+ */
 public class LibTemplate {
 
   private static final Settings HTML = new Settings(true);
   private static final Settings RAW = new Settings(false);
 
+  /** Render a template with HTML escaping applied to interpolated values. Returns empty on error. */
   @Extension
   public static @HiddenType(clazz = String.class) NtMaybe<String> html(NtTemplate template, NtDynamic inputs) {
     try {
@@ -50,6 +54,7 @@ public class LibTemplate {
     }
   }
 
+  /** Render a template without HTML escaping (raw output). Returns empty on error. */
   @Extension
   public static @HiddenType(clazz = String.class) NtMaybe<String> raw(NtTemplate template, NtDynamic inputs) {
     try {

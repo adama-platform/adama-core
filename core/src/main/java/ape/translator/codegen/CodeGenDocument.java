@@ -29,7 +29,11 @@ import ape.translator.tree.common.StringBuilderWithTabs;
 /** responsible for parts of the document which are common */
 public class CodeGenDocument {
   public static void writePrelude(final StringBuilderWithTabs sb, final Environment environment) {
+    sb.append("import ape.common.ErrorCodeException;").writeNewline();
     sb.append("import ape.common.Pair;").writeNewline();
+    sb.append("import ape.common.SimpleCancel;").writeNewline();
+    sb.append("import ape.common.Stream;").writeNewline();
+    sb.append("import ape.ErrorCodes;").writeNewline();
     sb.append("import ape.runtime.async.*;").writeNewline();
     sb.append("import ape.runtime.contracts.*;").writeNewline();
     sb.append("import ape.runtime.delta.*;").writeNewline();

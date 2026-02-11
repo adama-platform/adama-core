@@ -552,4 +552,107 @@ public class LibMathTests {
     Assert.assertFalse(LibMath.floorMod_l(new NtMaybe<>(), new NtMaybe<>(2L)).has());
     Assert.assertFalse(LibMath.floorMod_l(new NtMaybe<>(), new NtMaybe<>()).has());
   }
+
+  @Test
+  public void test_log2() {
+    Assert.assertEquals(3.0, LibMath.log2(8.0), 0.01);
+    Assert.assertEquals(0.0, LibMath.log2(1.0), 0.01);
+    Assert.assertEquals(3.0, LibMath.log2(new NtMaybe<>(8.0)).get(), 0.01);
+    Assert.assertFalse(LibMath.log2(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void test_clamp() {
+    Assert.assertEquals(5.0, LibMath.clamp(5.0, 0.0, 10.0), 0.01);
+    Assert.assertEquals(0.0, LibMath.clamp(-5.0, 0.0, 10.0), 0.01);
+    Assert.assertEquals(10.0, LibMath.clamp(15.0, 0.0, 10.0), 0.01);
+    Assert.assertEquals(5.0, LibMath.clamp(new NtMaybe<>(5.0), 0.0, 10.0).get(), 0.01);
+    Assert.assertFalse(LibMath.clamp(new NtMaybe<>(), 0.0, 10.0).has());
+  }
+
+  @Test
+  public void test_clamp_i() {
+    Assert.assertEquals(5, LibMath.clamp_i(5, 0, 10));
+    Assert.assertEquals(0, LibMath.clamp_i(-5, 0, 10));
+    Assert.assertEquals(10, LibMath.clamp_i(15, 0, 10));
+    Assert.assertEquals(5, (int) LibMath.clamp_i(new NtMaybe<>(5), 0, 10).get());
+    Assert.assertFalse(LibMath.clamp_i(new NtMaybe<>(), 0, 10).has());
+  }
+
+  @Test
+  public void test_clamp_l() {
+    Assert.assertEquals(5L, LibMath.clamp_l(5L, 0L, 10L));
+    Assert.assertEquals(0L, LibMath.clamp_l(-5L, 0L, 10L));
+    Assert.assertEquals(10L, LibMath.clamp_l(15L, 0L, 10L));
+    Assert.assertEquals(5L, (long) LibMath.clamp_l(new NtMaybe<>(5L), 0L, 10L).get());
+    Assert.assertFalse(LibMath.clamp_l(new NtMaybe<>(), 0L, 10L).has());
+  }
+
+  @Test
+  public void test_lerp() {
+    Assert.assertEquals(5.0, LibMath.lerp(0.0, 10.0, 0.5), 0.01);
+    Assert.assertEquals(0.0, LibMath.lerp(0.0, 10.0, 0.0), 0.01);
+    Assert.assertEquals(10.0, LibMath.lerp(0.0, 10.0, 1.0), 0.01);
+    Assert.assertEquals(5.0, LibMath.lerp(new NtMaybe<>(0.0), 10.0, 0.5).get(), 0.01);
+    Assert.assertFalse(LibMath.lerp(new NtMaybe<>(), 10.0, 0.5).has());
+  }
+
+  @Test
+  public void test_lcm() {
+    Assert.assertEquals(12, LibMath.lcm(4, 6));
+    Assert.assertEquals(0, LibMath.lcm(0, 5));
+    Assert.assertEquals(0, LibMath.lcm(5, 0));
+    Assert.assertEquals(12, (int) LibMath.lcm(new NtMaybe<>(4), 6).get());
+    Assert.assertFalse(LibMath.lcm(new NtMaybe<>(), 6).has());
+    Assert.assertEquals(12L, LibMath.lcm_l(4L, 6L));
+    Assert.assertEquals(0L, LibMath.lcm_l(0L, 5L));
+  }
+
+  @Test
+  public void test_gcd_extension() {
+    // gcd should now be accessible as an extension method
+    Assert.assertEquals(5, LibMath.gcd(10, 15));
+  }
+
+  @Test
+  public void test_asinh() {
+    Assert.assertEquals(0.8813736198135787, LibMath.asinh(1.0), 0.01);
+    Assert.assertEquals(0.8813736198135787, LibMath.asinh(new NtMaybe<>(1.0)).get(), 0.01);
+    Assert.assertFalse(LibMath.asinh(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void test_acosh() {
+    Assert.assertEquals(1.3169578969248166, LibMath.acosh(2.0), 0.01);
+    Assert.assertEquals(1.3169578969248166, LibMath.acosh(new NtMaybe<>(2.0)).get(), 0.01);
+    Assert.assertFalse(LibMath.acosh(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void test_atanh() {
+    Assert.assertEquals(0.5493061443340548, LibMath.atanh(0.5), 0.01);
+    Assert.assertEquals(0.5493061443340548, LibMath.atanh(new NtMaybe<>(0.5)).get(), 0.01);
+    Assert.assertFalse(LibMath.atanh(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void test_sec() {
+    Assert.assertEquals(1.8508157176809255, LibMath.sec(1.0), 0.01);
+    Assert.assertEquals(1.8508157176809255, LibMath.sec(new NtMaybe<>(1.0)).get(), 0.01);
+    Assert.assertFalse(LibMath.sec(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void test_csc() {
+    Assert.assertEquals(1.1883951057781212, LibMath.csc(1.0), 0.01);
+    Assert.assertEquals(1.1883951057781212, LibMath.csc(new NtMaybe<>(1.0)).get(), 0.01);
+    Assert.assertFalse(LibMath.csc(new NtMaybe<>()).has());
+  }
+
+  @Test
+  public void test_cot() {
+    Assert.assertEquals(0.6420926159343306, LibMath.cot(1.0), 0.01);
+    Assert.assertEquals(0.6420926159343306, LibMath.cot(new NtMaybe<>(1.0)).get(), 0.01);
+    Assert.assertFalse(LibMath.cot(new NtMaybe<>()).has());
+  }
 }

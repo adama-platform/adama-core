@@ -25,6 +25,8 @@ package ape.web.service;
 
 import ape.common.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import ape.ErrorCodes;
@@ -39,6 +41,11 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Having a certificate for a domain means the domain is owned by the Adama server.
+ * The certificate proves domain ownership because only the domain owner can provision
+ * a valid TLS certificate for it. This is used for CORS origin validation and SNI routing.
+ */
 public class CertificateBoot {
   private static final ExceptionLogger EXLOGGER = ExceptionLogger.FOR(CertificateBoot.class);
 
@@ -66,7 +73,14 @@ public class CertificateBoot {
               ObjectNode certificate = Json.parseJsonObject(lookup.certificate);
               ByteArrayInputStream keyInput = new ByteArrayInputStream(certificate.get("key").textValue().getBytes(StandardCharsets.UTF_8));
               ByteArrayInputStream certInput = new ByteArrayInputStream(certificate.get("cert").textValue().getBytes(StandardCharsets.UTF_8));
-              SslContext contextToUse = SslContextBuilder.forServer(certInput, keyInput).build();
+              SslContext contextToUse = SslContextBuilder.forServer(certInput, keyInput)
+                  .applicationProtocolConfig(new ApplicationProtocolConfig(
+                      ApplicationProtocolConfig.Protocol.ALPN,
+                      ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                      ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                      ApplicationProtocolNames.HTTP_2,
+                      ApplicationProtocolNames.HTTP_1_1))
+                  .build();
               callback.success(new MeasuredSslContext(contextToUse));
             } else {
               callback.failure(new ErrorCodeException(ErrorCodes.DOMAIN_TRANSLATE_FAILURE));

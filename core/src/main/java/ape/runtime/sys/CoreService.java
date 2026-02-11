@@ -26,7 +26,6 @@ package ape.runtime.sys;
 import ape.common.*;
 import ape.ErrorCodes;
 import ape.runtime.contracts.*;
-import ape.runtime.contracts.*;
 import ape.runtime.data.DataObserver;
 import ape.runtime.data.DataService;
 import ape.runtime.data.DocumentRestore;
@@ -134,6 +133,22 @@ public class CoreService implements Deliverer, Queryable, KeyAlarm {
       @Override
       public void failure(ErrorCodeException ex) {}
     }));
+  }
+
+  public SimpleCancel export(CoreRequestContext context, Key key, String name, String viewerState, Stream<String> stream) {
+    AtomicSimpleCancel cancel = new AtomicSimpleCancel();
+    load(key, metrics.document_export.wrap(new Callback<DurableLivingDocument>() {
+      @Override
+      public void success(DurableLivingDocument value) {
+        cancel.set(value.document().__export(context, name, viewerState, stream));
+      }
+
+      @Override
+      public void failure(ErrorCodeException ex) {
+        stream.failure(ex);
+      }
+    }));
+    return cancel;
   }
 
   /** this state machine will execute a drain over all the threads one at a time and signal each thread is being drained */

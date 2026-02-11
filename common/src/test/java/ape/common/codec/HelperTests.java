@@ -45,4 +45,137 @@ public class HelperTests {
     Helper.writeIntArray(buf, null);
     Assert.assertNull(Helper.readIntArray(buf));
   }
+
+  @Test
+  public void stringRoundTrip() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeString(buf, "hello world");
+    Assert.assertEquals("hello world", Helper.readString(buf));
+  }
+
+  @Test
+  public void stringNull() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeString(buf, null);
+    Assert.assertNull(Helper.readString(buf));
+  }
+
+  @Test
+  public void stringEmpty() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeString(buf, "");
+    Assert.assertEquals("", Helper.readString(buf));
+  }
+
+  @Test
+  public void stringArrayRoundTrip() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeStringArray(buf, new String[]{"a", "b", "c"});
+    String[] arr = Helper.readStringArray(buf);
+    Assert.assertEquals(3, arr.length);
+    Assert.assertEquals("a", arr[0]);
+    Assert.assertEquals("b", arr[1]);
+    Assert.assertEquals("c", arr[2]);
+  }
+
+  @Test
+  public void stringArrayNull() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeStringArray(buf, null);
+    Assert.assertNull(Helper.readStringArray(buf));
+  }
+
+  @Test
+  public void stringArrayWithNullElement() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeStringArray(buf, new String[]{"a", null, "c"});
+    String[] arr = Helper.readStringArray(buf);
+    Assert.assertEquals(3, arr.length);
+    Assert.assertEquals("a", arr[0]);
+    Assert.assertNull(arr[1]);
+    Assert.assertEquals("c", arr[2]);
+  }
+
+  @Test
+  public void stringArrayEmpty() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeStringArray(buf, new String[]{});
+    String[] arr = Helper.readStringArray(buf);
+    Assert.assertEquals(0, arr.length);
+  }
+
+  @Test
+  public void genericArrayRoundTrip() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeArray(buf, new String[]{"x", "y"}, s -> Helper.writeString(buf, s));
+    String[] arr = Helper.readArray(buf, String[]::new, () -> Helper.readString(buf));
+    Assert.assertEquals(2, arr.length);
+    Assert.assertEquals("x", arr[0]);
+    Assert.assertEquals("y", arr[1]);
+  }
+
+  @Test
+  public void genericArrayNull() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeArray(buf, null, s -> {});
+    Assert.assertNull(Helper.readArray(buf, String[]::new, () -> null));
+  }
+
+  @Test
+  public void genericArrayEmpty() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeArray(buf, new String[]{}, s -> Helper.writeString(buf, s));
+    String[] arr = Helper.readArray(buf, String[]::new, () -> Helper.readString(buf));
+    Assert.assertEquals(0, arr.length);
+  }
+
+  @Test
+  public void intArrayEmpty() {
+    ByteBuf buf = Unpooled.buffer();
+    Helper.writeIntArray(buf, new int[]{});
+    int[] arr = Helper.readIntArray(buf);
+    Assert.assertEquals(0, arr.length);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void readArrayOversizedCount() {
+    ByteBuf buf = Unpooled.buffer();
+    buf.writeIntLE(Helper.MAX_ARRAY_SIZE + 2); // count = MAX_ARRAY_SIZE + 1 after -1
+    Helper.readArray(buf, String[]::new, () -> "");
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void readStringArrayOversizedCount() {
+    ByteBuf buf = Unpooled.buffer();
+    buf.writeIntLE(Helper.MAX_ARRAY_SIZE + 2);
+    Helper.readStringArray(buf);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void readIntArrayOversizedCount() {
+    ByteBuf buf = Unpooled.buffer();
+    buf.writeIntLE(Helper.MAX_ARRAY_SIZE + 2);
+    Helper.readIntArray(buf);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void readStringOversizedLength() {
+    ByteBuf buf = Unpooled.buffer();
+    buf.writeIntLE(Helper.MAX_STRING_SIZE + 2);
+    Helper.readString(buf);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void readArrayNegativeCount() {
+    ByteBuf buf = Unpooled.buffer();
+    buf.writeIntLE(-1); // count - 1 = -2, negative
+    Helper.readArray(buf, String[]::new, () -> "");
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void readStringNegativeLength() {
+    ByteBuf buf = Unpooled.buffer();
+    buf.writeIntLE(-1);
+    Helper.readString(buf);
+  }
 }

@@ -73,7 +73,9 @@ public class ViewSchemaBuilder {
     }
     for (Element child : children) {
       if ("fragment".equalsIgnoreCase(child.tagName())) {
-        buildSchema(fragments.peek(), schema);
+        if (!fragments.isEmpty()) {
+          buildSchema(fragments.peek(), schema);
+        }
         continue;
       }
       if ("lookup".equalsIgnoreCase(child.tagName())) {
@@ -85,11 +87,17 @@ public class ViewSchemaBuilder {
       if (expand) {
         if (child.hasAttr("rx:scope")) {
           current.write(child.attr("rx:scope"), "object", false);
-          current = current.eval(child.attr("rx:scope"));
+          ViewScope evaled = current.eval(child.attr("rx:scope"));
+          if (evaled != null) {
+            current = evaled;
+          }
         }
         if (child.hasAttr("rx:iterate")) {
           current.write(child.attr("rx:iterate"), "list", false);
-          current = current.eval(child.attr("rx:iterate")).child("#items");
+          ViewScope evaled = current.eval(child.attr("rx:iterate"));
+          if (evaled != null) {
+            current = evaled.child("#items");
+          }
         }
       }
       for (String ifvariant : new String[] { "rx:if", "rx:ifnot" }) {

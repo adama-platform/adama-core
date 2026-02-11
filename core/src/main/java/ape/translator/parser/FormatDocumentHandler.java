@@ -207,4 +207,9 @@ public class FormatDocumentHandler implements TopLevelDocumentHandler{
   public void add(DefineClientService dhttp) {
     dhttp.format(formatter);
   }
+
+  @Override
+  public void add(DefineExport de) {
+    de.format(formatter);
+  }
 }

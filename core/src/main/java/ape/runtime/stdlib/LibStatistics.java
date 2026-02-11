@@ -294,4 +294,133 @@ public class LibStatistics {
     }
     return new NtMaybe<>();
   }
+
+  /** Compute the population variance of a list of doubles. Returns empty for empty lists. */
+  @UseName(name = "variance")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> varianceDoubles(@HiddenType(clazz = Double.class) final NtList<Double> list) {
+    if (list.size() > 0) {
+      double sum = 0;
+      for (final Double x : list) {
+        sum += x;
+      }
+      double mean = sum / list.size();
+      double variance = 0;
+      for (final Double x : list) {
+        double diff = x - mean;
+        variance += diff * diff;
+      }
+      return new NtMaybe<>(variance / list.size());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the population variance of a list of integers. Returns empty for empty lists. */
+  @UseName(name = "variance")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> varianceInts(@HiddenType(clazz = Integer.class) final NtList<Integer> list) {
+    if (list.size() > 0) {
+      double sum = 0;
+      for (final Integer x : list) {
+        sum += x;
+      }
+      double mean = sum / list.size();
+      double variance = 0;
+      for (final Integer x : list) {
+        double diff = x - mean;
+        variance += diff * diff;
+      }
+      return new NtMaybe<>(variance / list.size());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the population variance of a list of longs. Returns empty for empty lists. */
+  @UseName(name = "variance")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> varianceLongs(@HiddenType(clazz = Long.class) final NtList<Long> list) {
+    if (list.size() > 0) {
+      double sum = 0;
+      for (final Long x : list) {
+        sum += x;
+      }
+      double mean = sum / list.size();
+      double variance = 0;
+      for (final Long x : list) {
+        double diff = x - mean;
+        variance += diff * diff;
+      }
+      return new NtMaybe<>(variance / list.size());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the population standard deviation of a list of doubles. Returns empty for empty lists. */
+  @UseName(name = "stddev")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> stddevDoubles(@HiddenType(clazz = Double.class) final NtList<Double> list) {
+    NtMaybe<Double> v = varianceDoubles(list);
+    if (v.has()) {
+      return new NtMaybe<>(Math.sqrt(v.get()));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the population standard deviation of a list of integers. Returns empty for empty lists. */
+  @UseName(name = "stddev")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> stddevInts(@HiddenType(clazz = Integer.class) final NtList<Integer> list) {
+    NtMaybe<Double> v = varianceInts(list);
+    if (v.has()) {
+      return new NtMaybe<>(Math.sqrt(v.get()));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the population standard deviation of a list of longs. Returns empty for empty lists. */
+  @UseName(name = "stddev")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> stddevLongs(@HiddenType(clazz = Long.class) final NtList<Long> list) {
+    NtMaybe<Double> v = varianceLongs(list);
+    if (v.has()) {
+      return new NtMaybe<>(Math.sqrt(v.get()));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the range (maximum minus minimum) of a list of doubles. Returns empty for empty lists. */
+  @UseName(name = "range")
+  @Extension
+  public static @HiddenType(clazz = Double.class) NtMaybe<Double> rangeDoubles(@HiddenType(clazz = Double.class) final NtList<Double> list) {
+    NtMaybe<Double> minVal = minDoubles(list);
+    NtMaybe<Double> maxVal = maxDoubles(list);
+    if (minVal.has() && maxVal.has()) {
+      return new NtMaybe<>(maxVal.get() - minVal.get());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the range (maximum minus minimum) of a list of integers. Returns empty for empty lists. */
+  @UseName(name = "range")
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> rangeInts(@HiddenType(clazz = Integer.class) final NtList<Integer> list) {
+    NtMaybe<Integer> minVal = minInts(list);
+    NtMaybe<Integer> maxVal = maxInts(list);
+    if (minVal.has() && maxVal.has()) {
+      return new NtMaybe<>(maxVal.get() - minVal.get());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Compute the range (maximum minus minimum) of a list of longs. Returns empty for empty lists. */
+  @UseName(name = "range")
+  @Extension
+  public static @HiddenType(clazz = Long.class) NtMaybe<Long> rangeLongs(@HiddenType(clazz = Long.class) final NtList<Long> list) {
+    NtMaybe<Long> minVal = minLongs(list);
+    NtMaybe<Long> maxVal = maxLongs(list);
+    if (minVal.has() && maxVal.has()) {
+      return new NtMaybe<>(maxVal.get() - minVal.get());
+    }
+    return new NtMaybe<>();
+  }
 }

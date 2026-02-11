@@ -37,7 +37,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.PrimitiveIterator;
 
-/** Add HTML <- / -> JSON capability */
+/**
+ * Standard library for HTML/JSON bidirectional conversion in Adama documents.
+ * Converts HTML fragments to a JSON tree representation (tag/attributes/children)
+ * and back. Also provides HTML attribute value escaping for safe output.
+ */
 public class LibHTML {
 
   // support: which HTML5 tags self close
@@ -103,6 +107,7 @@ public class LibHTML {
     writer.endObject();
   }
 
+  /** Convert an HTML string to a JSON tree by extracting the element matching rootTag. Returns empty if zero or multiple matches. */
   @Extension
   public static @HiddenType(clazz = NtDynamic.class) NtMaybe<NtDynamic> convertHTMLtoJSON(String html, String rootTag) {
     Document doc = Jsoup.parse(html);
@@ -115,6 +120,7 @@ public class LibHTML {
     return new NtMaybe<>();
   }
 
+  /** Escape special characters in a string for safe use as an HTML attribute value. Escapes &lt; &gt; &amp; &quot; &apos;. */
   @Extension
   public static String escapeHTMLAttributeValue(String value) {
     StringBuilder result = new StringBuilder();
@@ -185,6 +191,7 @@ public class LibHTML {
     }
   }
 
+  /** Convert a JSON tree (NtDynamic with tag/attributes/children structure) back into an HTML string. */
   @Extension
   public static String convertJSONtoHTML(NtDynamic json) {
     StringBuilder html = new StringBuilder();

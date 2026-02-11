@@ -23,19 +23,38 @@
  */
 package ape.web.assets.transforms;
 
+import ape.web.service.WebConfig;
+
 /**
  * Factory for creating Transform instances based on content type and arguments.
  * Currently supports PNG and JPEG image transformations. Returns null for
  * unsupported content types, allowing callers to fall back to direct streaming.
  */
 public class TransformFactory {
-  public static Transform make(String contentType, String args) {
+  public static Transform make(WebConfig config, String contentType, String args) {
+    if (args == null || args.isEmpty()) {
+      return null;
+    }
+    if (args.length() > config.maxTransformInstructionLength) {
+      return null;
+    }
+    ImageTransform transform;
     switch (contentType) {
       case "image/png":
-        return new ImageTransform("png", args);
+        transform = new ImageTransform(config, "png", args);
+        break;
       case "image/jpeg":
-        return new ImageTransform("jpg", args);
+        transform = new ImageTransform(config, "jpg", args);
+        break;
+      case "image/gif":
+        transform = new ImageTransform(config, "gif", args);
+        break;
+      default:
+        return null;
     }
-    return null;
+    if (!transform.isValid()) {
+      return null;
+    }
+    return transform;
   }
 }

@@ -66,6 +66,7 @@ public class LivingDocumentFactory {
   public final int appDelay;
   public final int temporalResolutionMilliseconds;
   public boolean readonly;
+  public final long sweep_export_delay;
 
   public LivingDocumentFactory(CachedByteCode code, Deliverer deliverer, TreeMap<Integer, PrivateKeyBundle> keys) throws ErrorCodeException {
     try {
@@ -88,6 +89,7 @@ public class LivingDocumentFactory {
       delete_on_close = extractDeleteOnClose(config);
       readonly = extractReadOnlyMode(config);
       int freq = extractFrequency(config);
+      sweep_export_delay = extractSweepExportDelay(config);
       appMode = freq > 0;
       appDelay = freq;
       this.reflection = code.reflection;
@@ -164,6 +166,16 @@ public class LivingDocumentFactory {
     Object value = config.get("frequency");
     if (value != null && value instanceof Integer) {
       return ((Integer) value).intValue();
+    } else {
+      return 0;
+    }
+  }
+  private static long extractSweepExportDelay(HashMap<String, Object> config) {
+    Object value = config.get("sweep_export_delay");
+    if (value != null && value instanceof Integer) {
+      return ((Integer) value).intValue();
+    } else if (value != null && value instanceof Long) {
+        return ((Integer) value).longValue();
     } else {
       return 0;
     }

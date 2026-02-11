@@ -67,22 +67,26 @@ public class NettyDNSTxtResolver implements DNSTxtResolver {
         .build();
 
     resolver.resolveAll(question).addListener((Future<List<DnsRecord>> future) -> {
-      if (future.isDone()) {
-        if (future.isSuccess()) {
-          ArrayList<String> txt = new ArrayList<>();
-          for (DnsRecord record : future.get()) {
-            if (record.type() == DnsRecordType.TXT && record instanceof DefaultDnsRawRecord) {
-              ByteBuf buf = ((DefaultDnsRawRecord) record).content();
-              int sz = buf.readableBytes();
-              byte[] bytes = new byte[sz];
-              buf.readBytes(bytes);
-              txt.add(new String(bytes, StandardCharsets.UTF_8));
+      try {
+        if (future.isDone()) {
+          if (future.isSuccess()) {
+            ArrayList<String> txt = new ArrayList<>();
+            for (DnsRecord record : future.get()) {
+              if (record.type() == DnsRecordType.TXT && record instanceof DefaultDnsRawRecord) {
+                ByteBuf buf = ((DefaultDnsRawRecord) record).content();
+                int sz = buf.readableBytes();
+                byte[] bytes = new byte[sz];
+                buf.readBytes(bytes);
+                txt.add(new String(bytes, StandardCharsets.UTF_8));
+              }
             }
+            callback.success(txt.toArray(new String[txt.size()]));
+          } else {
+            callback.failure(new ErrorCodeException(ErrorCodes.DNS_RESOLVE_FAILED));
           }
-          callback.success(txt.toArray(new String[txt.size()]));
-        } else {
-          callback.failure(new ErrorCodeException(ErrorCodes.DNS_RESOLVE_FAILED));
         }
+      } finally {
+        resolver.close();
       }
     });
   }

@@ -91,6 +91,7 @@ public class Document implements TopLevelDocumentHandler {
   public final ArrayList<DefineAuthorizationPipe> authPipes;
   private int autoClassId;
   private String className;
+  public final TreeMap<String, DefineExport> exports;
   public final UriTable webGet;
   public final UriTable webPut;
   public final UriTable webOptions;
@@ -130,6 +131,7 @@ public class Document implements TopLevelDocumentHandler {
     functionsDefines = new HashSet<>();
     pureFunctions = new HashMap<>();
     configs = new HashMap<>();
+    exports = new TreeMap<>();
     viewerType = new TyNativeMessage(TypeBehavior.ReadOnlyNativeValue, null, Token.WRAP("__ViewerType"), new StructureStorage(Token.WRAP("__ViewerType"), StorageSpecialization.Message, true, false, null));
     types.put("__ViewerType", viewerType);
     webGet = new UriTable();
@@ -482,6 +484,15 @@ public class Document implements TopLevelDocumentHandler {
   }
 
   @Override
+  public void add(DefineExport de) {
+    de.typing(typeChecker);
+    if (exports.containsKey(de.name.text)) {
+      createError(de, String.format("Export Already Defined", de.name));
+    }
+    exports.put(de.name.text, de);
+  }
+
+  @Override
   public void add(DefineWebGet dwg) {
     dwg.typing(typeChecker);
     if (!webGet.map(dwg.uri, dwg)) {
@@ -737,6 +748,7 @@ public class Document implements TopLevelDocumentHandler {
     CodeGenServices.writeServices(sb, environment);
     CodeGenViewStateFilter.writeViewStateFilter(sb, environment);
     CodeGenMessageHandling.writeMessageHandlers(sb, environment);
+    CodeGenExports.writeExports(sb, environment);
     CodeGenMetrics.writeMetricsDump(sb, environment);
     CodeGenTraffic.writeTrafficHint(sb, environment);
     CodeGenDebug.writeDebugInfo(sb, environment);

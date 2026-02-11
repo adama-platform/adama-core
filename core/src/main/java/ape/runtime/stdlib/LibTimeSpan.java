@@ -28,43 +28,56 @@ import ape.runtime.natives.NtTimeSpan;
 import ape.translator.reflect.Extension;
 import ape.translator.reflect.HiddenType;
 
-/** timespan */
+/**
+ * Standard library for time span (duration) operations in Adama documents.
+ * Provides construction from seconds/minutes, arithmetic (add, multiply),
+ * and conversion to seconds/minutes/hours. NtTimeSpan stores duration as
+ * a double number of seconds internally.
+ */
 public class LibTimeSpan {
+  /** Add two time spans together, returning a new span whose duration is the sum. */
   @Extension
   public static NtTimeSpan add(NtTimeSpan a, NtTimeSpan b) {
     return new NtTimeSpan(a.seconds + b.seconds);
   }
 
+  /** Multiply a time span by a scalar factor. */
   @Extension
   public static NtTimeSpan multiply(NtTimeSpan y, double x) {
     return new NtTimeSpan(x * y.seconds);
   }
 
+  /** Construct a time span from a number of seconds (double precision). */
   @Extension
   public static NtTimeSpan makeFromSeconds(double x) {
     return new NtTimeSpan(x);
   }
 
+  /** Construct a time span from a number of seconds (integer). */
   @Extension
   public static NtTimeSpan makeFromSeconds(int x) {
     return new NtTimeSpan(x);
   }
 
+  /** Construct a time span from a number of minutes (double precision). */
   @Extension
   public static NtTimeSpan makeFromMinutes(double x) {
     return new NtTimeSpan(x * 60);
   }
 
+  /** Construct a time span from a number of minutes (integer). */
   @Extension
   public static NtTimeSpan makeFromMinutes(int x) {
     return new NtTimeSpan(x * 60);
   }
 
+  /** Extract the duration of a time span in seconds. */
   @Extension
   public static double seconds(NtTimeSpan x) {
     return x.seconds;
   }
 
+  /** Extract seconds from a Maybe time span, returning empty if absent. */
   @Extension
   public static @HiddenType(clazz = Double.class) NtMaybe<Double> seconds(@HiddenType(clazz = NtTimeSpan.class) NtMaybe<NtTimeSpan> mt) {
     if (mt.has()) {
@@ -73,11 +86,13 @@ public class LibTimeSpan {
     return new NtMaybe<>();
   }
 
+  /** Extract the duration of a time span in minutes. */
   @Extension
   public static double minutes(NtTimeSpan x) {
     return x.seconds / 60.0;
   }
 
+  /** Extract minutes from a Maybe time span, returning empty if absent. */
   @Extension
   public static @HiddenType(clazz = Double.class) NtMaybe<Double> minutes(@HiddenType(clazz = NtTimeSpan.class) NtMaybe<NtTimeSpan> mt) {
     if (mt.has()) {
@@ -86,11 +101,13 @@ public class LibTimeSpan {
     return new NtMaybe<>();
   }
 
+  /** Extract the duration of a time span in hours. */
   @Extension
   public static double hours(NtTimeSpan x) {
     return x.seconds / 3600.0;
   }
 
+  /** Extract hours from a Maybe time span, returning empty if absent. */
   @Extension
   public static @HiddenType(clazz = Double.class) NtMaybe<Double> hours(@HiddenType(clazz = NtTimeSpan.class) NtMaybe<NtTimeSpan> mt) {
     if (mt.has()) {

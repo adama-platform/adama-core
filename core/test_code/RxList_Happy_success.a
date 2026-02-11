@@ -1,0 +1,10 @@
+public list<string> names;
+
+@construct {
+  names.prepend() = "x";
+  names.append() = "y";
+  names.prepend() = "1";
+  names.append() = "2";
+  names.prepend() = "a";
+  names.append() = "b";
+}

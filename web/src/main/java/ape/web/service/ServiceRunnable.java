@@ -28,6 +28,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.concurrent.ScheduledFuture;
@@ -79,7 +81,7 @@ public class ServiceRunnable implements Runnable {
     ready = new CountDownLatch(1);
     this.heartbeat = heartbeat;
     this.cache = new WebHandlerAssetCache(TimeSource.REAL_TIME, webConfig.cacheRoot);
-    this.transformQueue = new TransformQueue(TimeSource.REAL_TIME, webConfig.transformRoot, base.assets());
+    this.transformQueue = new TransformQueue(TimeSource.REAL_TIME, webConfig.transformRoot, base.assets(), webConfig);
   }
 
   public synchronized boolean isAccepting() {
@@ -101,7 +103,14 @@ public class ServiceRunnable implements Runnable {
           File certificate = new File("cert.pem");
           File privateKey = new File("key.pem");
           if (certificate.exists() && privateKey.exists()) {
-            context = SslContextBuilder.forServer(certificate, privateKey).build();
+            context = SslContextBuilder.forServer(certificate, privateKey)
+                .applicationProtocolConfig(new ApplicationProtocolConfig(
+                    ApplicationProtocolConfig.Protocol.ALPN,
+                    ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                    ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                    ApplicationProtocolNames.HTTP_2,
+                    ApplicationProtocolNames.HTTP_1_1))
+                .build();
             LOGGER.info("found-certificate-and-key");
           }
           final EventLoopGroup bossGroup = new NioEventLoopGroup(1);

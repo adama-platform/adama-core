@@ -29,8 +29,13 @@ import ape.translator.reflect.HiddenType;
 
 import java.util.ArrayList;
 
-/** generic methods for normalized tokens */
+/**
+ * Standard library for token normalization and set intersection in Adama documents.
+ * Provides sorting, deduplication, and intersection of integer and string token arrays.
+ * Used to support search indexing and matching operations.
+ */
 public class LibToken {
+  /** Sort a list of integers and remove duplicates, returning a primitive int array for use as a search token set. */
   @Extension
   public static final int[] sortAndUniqueAsIntTokens(@HiddenType(clazz = Integer.class) NtList<Integer> vals) {
     ArrayList<Integer> sorted = new ArrayList<>();
@@ -53,6 +58,7 @@ public class LibToken {
     return result;
   }
 
+  /** Normalize (trim + lowercase), sort, and deduplicate a list of strings into a string array for use as a search token set. */
   @Extension
   public static final String[] normalizeSortAndUniqueAsStringTokens(@HiddenType(clazz = String.class) NtList<String> vals) {
     ArrayList<String> sorted = new ArrayList<>();
@@ -75,6 +81,7 @@ public class LibToken {
     return result;
   }
 
+  /** Compute the intersection of two sorted integer token arrays using a merge-join. */
   @Extension
   public static final int[] intersect(int[] a, int[] b) {
     ArrayList<Integer> result = new ArrayList<>();
@@ -98,6 +105,7 @@ public class LibToken {
     return f;
   }
 
+  /** Compute the intersection of two sorted string token arrays using a merge-join. */
   @Extension
   public static final String[] intersect(String[] a, String[] b) {
     ArrayList<String> result = new ArrayList<>();

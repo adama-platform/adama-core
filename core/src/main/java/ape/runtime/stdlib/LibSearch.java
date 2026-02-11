@@ -29,7 +29,11 @@ import ape.translator.reflect.Skip;
 import java.util.Locale;
 import java.util.TreeSet;
 
-/** simple search related functions */
+/**
+ * Standard library for search operations in Adama documents.
+ * Provides fuzzy search matching for the =? operator: matches if the needle
+ * is empty, is a substring of the haystack, or shares tokenized words with it.
+ */
 public class LibSearch {
   /** operator for searching operator =?
 

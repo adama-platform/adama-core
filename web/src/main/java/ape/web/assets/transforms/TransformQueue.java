@@ -25,6 +25,7 @@ package ape.web.assets.transforms;
 
 import ape.common.*;
 import ape.ErrorCodes;
+import ape.common.ConcurrentCallbackWrapper;
 import ape.common.cache.AsyncSharedLRUCache;
 import ape.common.cache.SyncCacheLRU;
 import ape.runtime.data.Key;
@@ -35,13 +36,15 @@ import ape.web.assets.AssetSystem;
 import ape.web.assets.transforms.capture.DiskCapture;
 import ape.web.assets.transforms.capture.InflightAsset;
 import ape.web.assets.transforms.capture.MemoryCapture;
+import ape.web.service.WebConfig;
 
 import java.io.File;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Async queue for executing and caching asset transformations with LRU eviction.
@@ -55,20 +58,28 @@ public class TransformQueue {
   private final File transformRoot;
   private final SimpleExecutor executorCache;
   private final SimpleExecutor executorTransform;
+  private final SimpleExecutor executorTimeout;
   private final SimpleExecutor executorDisk;
   private final AtomicBoolean alive;
   private final SyncCacheLRU<TransformTask, TransformAsset> cache;
   private final AsyncSharedLRUCache<TransformTask, TransformAsset> async;
   private final AssetSystem assets;
+  private final int transformTimeoutMs;
+  private final AtomicInteger inflight;
+  private final int maxInflight;
 
-  public TransformQueue(TimeSource time,  File transformRoot, AssetSystem assets) {
+  public TransformQueue(TimeSource time, File transformRoot, AssetSystem assets, WebConfig config) {
     this.time = time;
     this.transformRoot = transformRoot;
+    this.transformTimeoutMs = config.transformTimeoutMs;
     this.executorCache = SimpleExecutor.create("transforms-cache");
     this.executorTransform = SimpleExecutor.create("transforms-transform");
+    this.executorTimeout = SimpleExecutor.create("transforms-timeout");
     this.executorDisk = SimpleExecutor.create("transforms-disk");
     this.alive = new AtomicBoolean(true);
     this.assets = assets;
+    this.inflight = new AtomicInteger(0);
+    this.maxInflight = config.maxTransformInflight;
     this.cache = new SyncCacheLRU<>(time, 10, 10000, 1024L * 1024L * 1024L, 30 * 60000, (key, item) -> {
       item.evict();
     });
@@ -123,11 +134,33 @@ public class TransformQueue {
               try {
                 InputStream input = inflight.open();
                 try {
-                  transform.execute(input, output);
-                  callback.success(new TransformAsset(executorDisk, output, asset.contentType));
+                  Future<?> future = executorTimeout.submit(new NamedRunnable("execute-transform") {
+                    @Override
+                    public void execute() throws Exception {
+                      transform.execute(input, output);
+                    }
+                  });
+                  try {
+                    future.get(transformTimeoutMs, TimeUnit.MILLISECONDS);
+                  } catch (TimeoutException tex) {
+                    future.cancel(true);
+                    throw new ErrorCodeException(ErrorCodes.ASSET_TRANSFORM_TIMEOUT);
+                  } catch (ExecutionException eex) {
+                    Throwable cause = eex.getCause();
+                    if (cause instanceof ErrorCodeException) {
+                      throw (ErrorCodeException) cause;
+                    }
+                    if (cause instanceof Exception) {
+                      throw (Exception) cause;
+                    }
+                    throw new Exception(cause);
+                  }
+                  callback.success(new TransformAsset(executorDisk, output, transform.outputContentType()));
                 } finally {
                   input.close();
                 }
+              } catch (ErrorCodeException ecex) {
+                callback.failure(ecex);
               } catch (Exception ex) {
                 callback.failure(ErrorCodeException.detectOrWrap(ErrorCodes.ASSET_TRANSFORM_FAILED_TRANSFORM, ex, EXLOGGER));
               }
@@ -161,7 +194,7 @@ public class TransformQueue {
 
     TransformTask task = new TransformTask(key, instruction, transform, asset, hash);
 
-    async.get(task, new Callback<TransformAsset>() {
+    Callback<TransformAsset> original = new Callback<TransformAsset>() {
       @Override
       public void success(TransformAsset result) {
         result.serve(response);
@@ -171,7 +204,12 @@ public class TransformQueue {
       public void failure(ErrorCodeException ex) {
         response.failure(ex.code);
       }
-    });
+    };
+    Callback<TransformAsset> guarded = ConcurrentCallbackWrapper.wrap(inflight, maxInflight, ErrorCodes.ASSET_TRANSFORM_TOO_MANY_INFLIGHT, original);
+    if (guarded == null) {
+      return;
+    }
+    async.get(task, guarded);
   }
 
   public void shutdown() {
@@ -182,6 +220,10 @@ public class TransformQueue {
     }
     try {
       this.executorTransform.shutdown().await(1000, TimeUnit.MILLISECONDS);
+    } catch (Exception ex) {
+    }
+    try {
+      this.executorTimeout.shutdown().await(1000, TimeUnit.MILLISECONDS);
     } catch (Exception ex) {
     }
     try {

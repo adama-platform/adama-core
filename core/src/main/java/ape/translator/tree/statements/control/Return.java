@@ -147,6 +147,10 @@ public class Return extends Statement {
         if (consider("js", webReturnType, (ty) -> environment.rules.IsString(ty, false), webFields)) {
           body++;
         }
+        if (consider("qrcode", webReturnType, (ty) -> environment.rules.IsString(ty, false), webFields)) {
+          consider("size", webReturnType, (ty) -> environment.rules.IsInteger(ty, false), webFields);
+          body++;
+        }
         if (consider("css", webReturnType, (ty) -> environment.rules.IsString(ty, false), webFields)) {
           body++;
         }

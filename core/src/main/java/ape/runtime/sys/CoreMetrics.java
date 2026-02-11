@@ -77,6 +77,7 @@ public class CoreMetrics {
 
   public final CallbackMonitor document_backup;
   public final CallbackMonitor document_wake;
+  public final CallbackMonitor document_export;
 
   public CoreMetrics(MetricsFactory metricsFactory) {
     serviceCreate = metricsFactory.makeCallbackMonitor("core_service_create");
@@ -127,5 +128,6 @@ public class CoreMetrics {
 
     document_backup = metricsFactory.makeCallbackMonitor("core_document_backup");
     document_wake = metricsFactory.makeCallbackMonitor("core_document_wake");
+    document_export = metricsFactory.makeCallbackMonitor("core_document_export");
   }
 }

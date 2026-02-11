@@ -48,15 +48,21 @@ public class AdamaWebRequest {
   public final String identity;
 
   public AdamaWebRequest(final FullHttpRequest req, ChannelHandlerContext ctx) {
+    this(req, ctx, false);
+  }
+
+  public AdamaWebRequest(final FullHttpRequest req, ChannelHandlerContext ctx, boolean useXForwardedFor) {
     headers = new TreeMap<>();
     String cookieIdentity = null;
     String bearerIdentity = null;
     for (Map.Entry<String, String> entry : req.headers()) {
       String headerName = entry.getKey().toLowerCase(Locale.ROOT);
       if (headerName.equals("cookie")) {
-        for (Cookie cookie : ServerCookieDecoder.STRICT.decodeAll(entry.getValue())) {
-          if ("id_default".equals(cookie.name())) {
-            cookieIdentity = cookie.value();
+        if (entry.getValue().length() <= 8192) {
+          for (Cookie cookie : ServerCookieDecoder.STRICT.decodeAll(entry.getValue())) {
+            if ("id_default".equals(cookie.name()) && cookie.value().length() <= 1024) {
+              cookieIdentity = cookie.value();
+            }
           }
         }
         continue;
@@ -69,9 +75,7 @@ public class AdamaWebRequest {
       headers.put(headerName, entry.getValue());
     }
 
-    String getIdentity = null;
-
-    ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers());
+    ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers(), useXForwardedFor);
     headers.put("origin", context.origin + "");
     headers.put("remote-ip", context.remoteIp + "");
     QueryStringDecoder qsd = new QueryStringDecoder(req.uri());
@@ -81,11 +85,6 @@ public class AdamaWebRequest {
       for (Map.Entry<String, List<String>> param : qsd.parameters().entrySet()) {
         String key = param.getKey();
         List<String> values = param.getValue();
-        if ("__IDENTITY_TOKEN".equals(key)) {
-          if (values.size() == 1) {
-            getIdentity = values.get(0);
-          }
-        } else {
           if (values.size() == 0) {
             parametersJson.put(key, "");
           } else {
@@ -97,9 +96,8 @@ public class AdamaWebRequest {
               }
             }
           }
-        }
       }
-      this.identity = getIdentity != null ? getIdentity : (bearerIdentity != null ? bearerIdentity :  cookieIdentity);
+      this.identity = (bearerIdentity != null ? bearerIdentity :  cookieIdentity);
       this.parameters = parametersJson.toString();
     }
 

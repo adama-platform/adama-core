@@ -45,6 +45,7 @@ public class WebResponse {
   public int cache_ttl_seconds = 0;
   public String asset_transform = null;
   public int status;
+  public int size = 0;
 
   public WebResponse() {
     this.status = 200;
@@ -75,6 +76,9 @@ public class WebResponse {
             break;
           case "status":
             response.status = reader.readInteger();
+            break;
+          case "size":
+            response.size = reader.readInteger();
             break;
           default:
             reader.skipValue();
@@ -117,6 +121,10 @@ public class WebResponse {
       writer.writeObjectFieldIntro("status");
       writer.writeInteger(status);
     }
+    if (size != 0) {
+      writer.writeObjectFieldIntro("size");
+      writer.writeInteger(size);
+    }
     writer.endObject();
   }
 
@@ -141,6 +149,17 @@ public class WebResponse {
   public WebResponse forward(String location) {
     this.contentType = "redirection/302";
     this.body = location;
+    return this;
+  }
+
+  public WebResponse qrcode(String location) {
+    this.contentType = "internal/qr-code";
+    this.body = location;
+    return this;
+  }
+
+  public WebResponse size(int size) {
+    this.size = size;
     return this;
   }
 

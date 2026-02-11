@@ -86,4 +86,109 @@ public class DataScopeTests {
     Assert.assertTrue(reportA.set.contains("__Root::projects"));
     Assert.assertFalse(reportB.set.contains("__Root::projects"));
   }
+
+  @Test
+  public void hasChannel_with_no_channels_key() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}}}}");
+    DataScope scope = DataScope.root(forest);
+    Assert.assertFalse(scope.hasChannel("anything"));
+  }
+
+  @Test
+  public void hasChannel_with_channels() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{}}},\"channels\":{\"foo\":{}}}");
+    DataScope scope = DataScope.root(forest);
+    Assert.assertTrue(scope.hasChannel("foo"));
+    Assert.assertFalse(scope.hasChannel("bar"));
+  }
+
+  @Test
+  public void validate_attribute_on_value_type() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{" +
+        "\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"privacy\":\"public\"}," +
+        "\"count\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"privacy\":\"public\"}," +
+        "\"items\":{\"type\":{\"nature\":\"native_list\",\"type\":{\"nature\":\"reactive_ref\",\"ref\":\"Item\"}},\"privacy\":\"public\"}" +
+        "}}},\"channels\":{}}");
+    DataScope scope = DataScope.root(forest);
+    PrivacyFilter privacy = new PrivacyFilter();
+    ErrorAccum ea = new ErrorAccum();
+
+    DataSelector nameDs = scope.select(privacy, "name", ea);
+    Assert.assertEquals(0, ea.log.size());
+    nameDs.validateAttribute(ea);
+    Assert.assertEquals(0, ea.log.size());
+
+    DataSelector countDs = scope.select(privacy, "count", ea);
+    countDs.validateAttribute(ea);
+    Assert.assertEquals(0, ea.log.size());
+  }
+
+  @Test
+  public void validate_integral_on_int() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{" +
+        "\"count\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"privacy\":\"public\"}," +
+        "\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"privacy\":\"public\"}" +
+        "}}},\"channels\":{}}");
+    DataScope scope = DataScope.root(forest);
+    PrivacyFilter privacy = new PrivacyFilter();
+    ErrorAccum ea = new ErrorAccum();
+
+    DataSelector countDs = scope.select(privacy, "count", ea);
+    countDs.validateIntegral(ea);
+    Assert.assertEquals(0, ea.log.size());
+
+    DataSelector nameDs = scope.select(privacy, "name", ea);
+    nameDs.validateIntegral(ea);
+    Assert.assertEquals(1, ea.log.size());
+    Assert.assertTrue(ea.log.get(0).contains("expected integral type"));
+  }
+
+  @Test
+  public void validate_boolean_type() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{" +
+        "\"flag\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"privacy\":\"public\"}," +
+        "\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"privacy\":\"public\"}" +
+        "}}},\"channels\":{}}");
+    DataScope scope = DataScope.root(forest);
+    PrivacyFilter privacy = new PrivacyFilter();
+    ErrorAccum ea = new ErrorAccum();
+
+    DataSelector flagDs = scope.select(privacy, "flag", ea);
+    flagDs.validateBoolean(ea);
+    Assert.assertEquals(0, ea.log.size());
+
+    DataSelector nameDs = scope.select(privacy, "name", ea);
+    nameDs.validateBoolean(ea);
+    Assert.assertEquals(1, ea.log.size());
+    Assert.assertTrue(ea.log.get(0).contains("expected boolean type"));
+  }
+
+  @Test
+  public void validate_switchable_types() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__Root\":{\"nature\":\"reactive_record\",\"name\":\"Root\",\"fields\":{" +
+        "\"count\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"int\"},\"privacy\":\"public\"}," +
+        "\"name\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"string\"},\"privacy\":\"public\"}," +
+        "\"flag\":{\"type\":{\"nature\":\"reactive_value\",\"type\":\"bool\"},\"privacy\":\"public\"}" +
+        "}}},\"channels\":{}}");
+    DataScope scope = DataScope.root(forest);
+    PrivacyFilter privacy = new PrivacyFilter();
+    ErrorAccum ea = new ErrorAccum();
+
+    scope.select(privacy, "count", ea).validateSwitchable(ea);
+    Assert.assertEquals(0, ea.log.size());
+
+    scope.select(privacy, "name", ea).validateSwitchable(ea);
+    Assert.assertEquals(0, ea.log.size());
+
+    scope.select(privacy, "flag", ea).validateSwitchable(ea);
+    Assert.assertEquals(0, ea.log.size());
+  }
+
+  @Test
+  public void unused_report_handles_missing_fields() {
+    ObjectNode forest = Json.parseJsonObject("{\"types\":{\"__ViewerType\":{\"nature\":\"native_message\",\"name\":\"__ViewerType\",\"anonymous\":true}}}");
+    UsedAccum report = new UsedAccum();
+    UnusedReport.drive(forest, report);
+    Assert.assertEquals(0, report.set.size());
+  }
 }

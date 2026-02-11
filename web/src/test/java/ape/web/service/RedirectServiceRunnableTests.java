@@ -25,6 +25,7 @@ package ape.web.service;
 
 import ape.common.metrics.NoOpMetricsFactory;
 import ape.web.service.mocks.MockWellKnownHandler;
+import ape.web.service.mocks.NullCertificateFinder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class RedirectServiceRunnableTests {
   @Test
   public void test_interrupt() throws Exception {
     WebConfig webConfig = WebConfigTests.mockConfig(WebConfigTests.Scenario.Mock1);
-    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), () -> {});
+    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), new NullCertificateFinder(), () -> {});
     final var thread = new Thread(runnable);
     thread.start();
     Assert.assertTrue(runnable.waitForReady(2500));
@@ -46,7 +47,7 @@ public class RedirectServiceRunnableTests {
   @Test
   public void test_shutdown() throws Exception {
     WebConfig webConfig = WebConfigTests.mockConfig(WebConfigTests.Scenario.Mock2);
-    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), () -> {});
+    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), new NullCertificateFinder(), () -> {});
     final var thread = new Thread(runnable);
     thread.start();
     Assert.assertTrue(runnable.waitForReady(10000));
@@ -59,7 +60,7 @@ public class RedirectServiceRunnableTests {
   @Test
   public void test_tight_shutdown() throws Exception {
     WebConfig webConfig = WebConfigTests.mockConfig(WebConfigTests.Scenario.Mock3);
-    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), () -> {});
+    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), new NullCertificateFinder(), () -> {});
     runnable.shutdown();
     final var thread = new Thread(runnable);
     thread.start();

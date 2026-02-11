@@ -29,6 +29,7 @@ import ape.common.metrics.NoOpMetricsFactory;
 import ape.web.client.TestClientCallback;
 import ape.web.client.TestClientRequestBuilder;
 import ape.web.service.mocks.MockWellKnownHandler;
+import ape.web.service.mocks.NullCertificateFinder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class RedirectHandlerTests {
   public void flow() throws Exception {
     EventLoopGroup group = new NioEventLoopGroup();
     WebConfig webConfig = WebConfigTests.mockConfig(WebConfigTests.Scenario.ProdScope);
-    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), () -> {});
+    final var runnable = new RedirectAndWellknownServiceRunnable(webConfig, new WebMetrics(new NoOpMetricsFactory()), new MockWellKnownHandler(), new NullCertificateFinder(), () -> {});
     final var thread = new Thread(runnable);
     thread.start();
     runnable.waitForReady(1000);

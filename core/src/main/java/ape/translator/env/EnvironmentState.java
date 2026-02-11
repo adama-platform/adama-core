@@ -44,6 +44,7 @@ public class EnvironmentState {
   private boolean isFilter;
   private boolean isBubble;
   private boolean isWeb;
+  private boolean exports;
   private boolean isTrafficHint;
   private boolean isConstructor;
   private boolean isDocumentEvent;
@@ -85,6 +86,7 @@ public class EnvironmentState {
     inRecord = prior.inRecord;
     isFilter = prior.isFilter;
     runtime = prior.runtime;
+    exports = prior.exports;
   }
 
   public EnvironmentState(final GlobalObjectPool globals, final CompilerOptions options, RuntimeEnvironment runtime) {
@@ -114,6 +116,7 @@ public class EnvironmentState {
     viewer = false;
     inRecord = null;
     isFilter = false;
+    exports = false;
     this.runtime = runtime;
   }
 
@@ -270,6 +273,12 @@ public class EnvironmentState {
     next.isWeb = true;
     next.webMethod = method;
     next.define = true;
+    return next;
+  }
+
+  public EnvironmentState scopeExport() {
+    final var next = new EnvironmentState(this);
+    next.exports = true;
     return next;
   }
 

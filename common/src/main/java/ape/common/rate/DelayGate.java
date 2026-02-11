@@ -44,5 +44,4 @@ public class DelayGate {
     }
     return false;
   }
-
 }

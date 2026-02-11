@@ -34,6 +34,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.concurrent.ScheduledFuture;
+import ape.web.contracts.CertificateFinder;
 import ape.web.contracts.WellKnownHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,11 +53,13 @@ public class RedirectAndWellknownServiceRunnable implements Runnable {
   private Channel channel;
   private boolean stopped;
   private final WellKnownHandler wellKnownHandler;
+  private final CertificateFinder certificateFinder;
 
-  public RedirectAndWellknownServiceRunnable(final WebConfig webConfig, final WebMetrics metrics, WellKnownHandler wellKnownHandler, Runnable heartbeat) {
+  public RedirectAndWellknownServiceRunnable(final WebConfig webConfig, final WebMetrics metrics, WellKnownHandler wellKnownHandler, CertificateFinder certificateFinder, Runnable heartbeat) {
     this.webConfig = webConfig;
     this.metrics = metrics;
     this.wellKnownHandler = wellKnownHandler;
+    this.certificateFinder = certificateFinder;
     started = new AtomicBoolean();
     channel = null;
     stopped = false;
@@ -90,7 +93,7 @@ public class RedirectAndWellknownServiceRunnable implements Runnable {
                 pipeline.addLast(new ReadTimeoutHandler(webConfig.idleReadSeconds, TimeUnit.SECONDS));
                 pipeline.addLast(new HttpServerCodec());
                 pipeline.addLast(new HttpObjectAggregator(webConfig.maxContentLengthSize));
-                pipeline.addLast(new RedirectHandler(webConfig, wellKnownHandler));
+                pipeline.addLast(new RedirectHandler(webConfig, metrics, wellKnownHandler, certificateFinder));
               }
             });
             final var ch = b.bind(webConfig.redirectPort).sync().channel();

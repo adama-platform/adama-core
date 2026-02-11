@@ -253,7 +253,7 @@ public class RxRootEnvironment {
     }
     String toIfNotCheck = findScopable.apply(next, "rx:ifnot");
     if (toIfNotCheck != null) {
-      checkCondition(toIfNotCheck, env, reportError);
+      checkCondition(toIfNotCheck, next, reportError);
     }
     String toSwitch = findScopable.apply(next, "rx:switch");
     if (toSwitch != null) {
@@ -275,7 +275,7 @@ public class RxRootEnvironment {
 
     for (Attribute attr : element.attributes()) {
       if (attr.hasDeclaredValue()) {
-        _checkExpression(element, env, attr.getKey());
+        _checkExpression(element, next, attr.getKey());
       }
     }
     children(element, next);

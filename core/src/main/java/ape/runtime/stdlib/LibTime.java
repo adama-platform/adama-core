@@ -36,11 +36,13 @@ import ape.translator.reflect.HiddenType;
  * and conversion to integer encoding. Works with NtTime at minute precision.
  */
 public class LibTime {
+  /** Convert a time-of-day to its integer encoding (hour * 60 + minute). */
   @Extension
   public static int toInt(NtTime t) {
     return t.toInt();
   }
 
+  /** Extend a time by a span, clamping the result to stay within the same day (00:00..23:59). */
   @Extension
   public static NtTime extendWithinDay(NtTime t, NtTimeSpan s) {
     int end = ((int) (t.toInt() * 60 + s.seconds)) / 60;
@@ -49,6 +51,7 @@ public class LibTime {
     return new NtTime(end / 60, end % 60);
   }
 
+  /** Add a time span to a time-of-day with wrap-around at midnight (cyclic addition). */
   @Extension
   public static NtTime cyclicAdd(NtTime t, NtTimeSpan s) {
     int next = ((int) (t.toInt() * 60 + s.seconds)) / 60;
@@ -59,6 +62,7 @@ public class LibTime {
     return new NtTime(next / 60, next % 60);
   }
 
+  /** Construct a time-of-day from hour (0-23) and minute (0-59). Returns empty for invalid values. */
   public static @HiddenType(clazz = NtTime.class) NtMaybe<NtTime> make(int hr, int min) {
     if (0 <= hr && hr <= 23 && 0 <= min && min <= 59) {
       return new NtMaybe<>(new NtTime(hr, min));
@@ -67,6 +71,7 @@ public class LibTime {
     }
   }
 
+  /** Return true if the time range [aStart, aEnd] overlaps with [bStart, bEnd]. */
   public static boolean overlaps(NtTime aStart, NtTime aEnd, NtTime bStart, NtTime bEnd) {
     return LibMath.intersects(aStart.toInt(), aEnd.toInt(), bStart.toInt(), bEnd.toInt());
   }

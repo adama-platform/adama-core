@@ -23,9 +23,9 @@
  */
 package ape.common.rate;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import ape.common.Json;
 import ape.common.TimeSource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /** a simple rate limiter using a token bucket that fills up */
 public class TokenRateLimiter {
@@ -33,32 +33,58 @@ public class TokenRateLimiter {
   private final int windowMilliseconds;
   private final int maxGrant;
   private final TimeSource time;
-  private double tokens;
-  private long at;
   private final double refreshGuard;
   private final int minimumWait;
+  private double tokens;
+  private long at;
 
-  public TokenRateLimiter(ObjectNode config, TimeSource time) {
-    this.maxTokensInWindow = Json.readInteger(config, "max-tokens", 30);
-    this.windowMilliseconds = Json.readInteger(config, "window-ms", 60000);
-    this.maxGrant = Json.readInteger(config, "max-grant", 5);
-    this.minimumWait = Json.readInteger(config, "minimum-wait", 250);
+  public TokenRateLimiter(int maxTokensInWindow, int windowMilliseconds, int maxGrant, int minimumWait, TimeSource time) {
+    this.maxTokensInWindow = maxTokensInWindow;
+    this.windowMilliseconds = windowMilliseconds;
+    this.maxGrant = maxGrant;
+    this.minimumWait = minimumWait;
     this.time = time;
     this.tokens = maxTokensInWindow;
     this.at = time.nowMilliseconds();
-    this.refreshGuard = windowMilliseconds / maxTokensInWindow;
+    this.refreshGuard = (double) windowMilliseconds / maxTokensInWindow;
+  }
+
+  public static TokenRateLimiter create(ObjectNode config, TimeSource time) {
+    int maxTokensInWindow = Json.readInteger(config, "max-tokens", 30);
+    int windowMilliseconds = Json.readInteger(config, "window-ms", 60000);
+    int maxGrant = Json.readInteger(config, "max-grant", 5);
+    int minimumWait = Json.readInteger(config, "minimum-wait", 250);
+    return new TokenRateLimiter(maxTokensInWindow, windowMilliseconds, maxGrant, minimumWait, time);
   }
 
   public synchronized TokenGrant ask() {
     long now = time.nowMilliseconds();
     long delta = now - at;
     if (delta >= refreshGuard) { // threshold for numerical significance
-      tokens += delta * maxTokensInWindow / windowMilliseconds;
+      tokens += (double) (delta * maxTokensInWindow) / windowMilliseconds;
       tokens = Math.min(maxTokensInWindow, Math.ceil(tokens));
       at = now;
     }
     if (tokens >= 1) {
       int tokensToTake = (int) Math.min(maxGrant, tokens);
+      tokens -= tokensToTake;
+      return new TokenGrant(tokensToTake, Math.max(minimumWait, (int) ((maxGrant - tokensToTake) * refreshGuard)));
+    } else {
+      return new TokenGrant(0, (int) Math.max(refreshGuard, minimumWait));
+    }
+  }
+
+  public synchronized TokenGrant ask(int tokensToTake) {
+    long now = time.nowMilliseconds();
+    long delta = now - at;
+    if (delta >= refreshGuard) { // threshold for numerical significance
+      tokens += (double) (delta * maxTokensInWindow) / windowMilliseconds;
+      tokens = Math.min(maxTokensInWindow, Math.ceil(tokens));
+      at = now;
+    }
+    // clamp to [1, maxGrant] to prevent bypass via oversized or non-positive requests
+    tokensToTake = Math.max(1, Math.min(tokensToTake, maxGrant));
+    if (tokens >= 1) {
       tokens -= tokensToTake;
       return new TokenGrant(tokensToTake, Math.max(minimumWait, (int) ((maxGrant - tokensToTake) * refreshGuard)));
     } else {

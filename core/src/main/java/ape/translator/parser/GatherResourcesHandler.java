@@ -212,4 +212,8 @@ public class GatherResourcesHandler implements TopLevelDocumentHandler {
   @Override
   public void add(DefineClientService dhttp) {
   }
+
+  @Override
+  public void add(DefineExport de) {
+  }
 }

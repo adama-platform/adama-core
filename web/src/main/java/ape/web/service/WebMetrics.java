@@ -81,11 +81,24 @@ public class WebMetrics {
   public final Runnable websockets_end;
   public final Runnable webclient_pushack;
   public final CallbackMonitor web_asset_upload;
+  public final Runnable webhandler_put_asset;
+  public final Runnable webhandler_put_asset_failure;
+  public final Runnable webhandler_put_asset_md5_mismatch;
   public final Runnable websockets_timed_out;
   public final Runnable websockets_socket_exception;
   public final Runnable websockets_decode_exception;
 
   public final TreeMap<String, Runnable> client_metrics;
+
+  public final Runnable web_qr_code_creation_failure;
+
+  public final Runnable webhandler_cors_origin_blocked;
+  public final Runnable websockets_origin_rejected;
+  public final Runnable websockets_rate_limited;
+  public final Runnable websockets_message_rate_limited;
+  public final Runnable redirect_no_cert;
+
+  public final Runnable webhandler_failed_once_rate_limited;
 
   public WebMetrics(MetricsFactory factory) {
     this.websockets_active = factory.inflight("websockets_active");
@@ -133,6 +146,20 @@ public class WebMetrics {
     this.webhandler_options = factory.counter("webhandler_options");
     this.webhandler_options_failure = factory.counter("webhandler_options_failure");
     this.web_asset_upload = factory.makeCallbackMonitor("web_asset_upload");
+    this.webhandler_put_asset = factory.counter("webhandler_put_asset");
+    this.webhandler_put_asset_failure = factory.counter("webhandler_put_asset_failure");
+    this.webhandler_put_asset_md5_mismatch = factory.counter("webhandler_put_asset_md5_mismatch");
+    
+    this.webhandler_cors_origin_blocked = factory.counter("webhandler_cors_origin_blocked");
+    this.websockets_origin_rejected = factory.counter("websockets_origin_rejected");
+    this.websockets_rate_limited = factory.counter("websockets_rate_limited");
+    this.websockets_message_rate_limited = factory.counter("websockets_message_rate_limited");
+    this.redirect_no_cert = factory.counter("redirect_no_cert");
+    this.webhandler_failed_once_rate_limited = factory.counter("webhandler_failed_once_rate_limited");
+
+    factory.section("transforms");
+    this.web_qr_code_creation_failure = factory.counter("web_qr_code_creation_failure");
+
     factory.section("public web client");
     client_metrics = new TreeMap<>();
     client_metrics.put("r", factory.counter("webclient_retry"));

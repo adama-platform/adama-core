@@ -89,7 +89,7 @@ public class MemoryCacheAsset implements CachedAsset {
 
         @Override
         public void body(byte[] chunk, int offset, int length, boolean last) {
-          byte[] clone = Arrays.copyOfRange(chunk, offset, length); // TODO: this signature of byte[] chunk is... bad
+          byte[] clone = Arrays.copyOfRange(chunk, offset, offset + length);
 
           // forward the body to all connected streams
           executor.execute(new NamedRunnable("mc-body") {

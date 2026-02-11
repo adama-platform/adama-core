@@ -58,6 +58,7 @@ public class CodeGenRecords {
         fieldType instanceof TyReactiveRecord || //
             fieldType instanceof TyReactiveMap || //
             fieldType instanceof TyReactiveGrid || //
+            fieldType instanceof TyReactiveList || //
         fieldType instanceof TyReactiveText || //
         fieldType instanceof TyReactiveReplicationStatus || //
         fieldType instanceof TyReactiveHolder;
@@ -212,6 +213,13 @@ public class CodeGenRecords {
       result.append(range).append(" make(RxParent __parent) { return ");
       result.append(make("__parent", range, rangeType, null, environment, true));
       result.append(";}").append(" })");
+    } else if (fieldType instanceof TyReactiveList) {
+      var rangeType = environment.rules.Resolve(((TyReactiveList) fieldType).getRangeType(environment), true);
+      String range = rangeType.getJavaBoxType(environment);
+      result.append("new ").append(fieldType.getJavaConcreteType(environment))
+        .append("(").append(parent).append(", (RxParent __parent) -> ");
+      result.append(make("__parent", range, rangeType, null, environment, true));
+      result.append(")");
     } else if (fieldType instanceof IsReactiveValue) {
       final var javaConcreteType = fieldType.getJavaConcreteType(environment);
       if (fieldType instanceof DetailInventDefaultValueExpression) {
@@ -331,7 +339,7 @@ public class CodeGenRecords {
       }
       final var javaConcreteType = fieldType.getJavaConcreteType(environment);
       classFields.append("private final ").append(javaConcreteType).append(" ").append(fieldName).append(";").writeNewline();
-      if (fieldType instanceof TyReactiveTable || fieldType instanceof TyReactiveText || fieldType instanceof TyReactiveMap || fieldType instanceof TyReactiveGrid || fieldType instanceof TyReactiveRecord || fieldType instanceof TyReactiveHolder) {
+      if (fieldType instanceof TyReactiveTable || fieldType instanceof TyReactiveText || fieldType instanceof TyReactiveMap || fieldType instanceof TyReactiveGrid || fieldType instanceof TyReactiveList || fieldType instanceof TyReactiveRecord || fieldType instanceof TyReactiveHolder) {
         classConstructorX.append(fieldName).append(" = ").append(make("this", fieldName, fieldType, null, environment, false)).append(";").writeNewline();
         if (fieldType instanceof TyReactiveRecord) {
           classLinker.append(fieldName + ".__link();").writeNewline();

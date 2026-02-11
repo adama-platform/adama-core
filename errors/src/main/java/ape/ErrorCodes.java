@@ -74,8 +74,8 @@ public class ErrorCodes {
   @Description("The user was not connected nor was the message handler not open.")
   public static final int LIVING_DOCUMENT_TRANSACTION_CANT_SEND_NOT_CONNECTED = 143373;
   public static final int LIVING_DOCUMENT_TRANSACTION_CANT_ATTACH_NOT_CONNECTED = 125966;
-  public static final int LIVING_DOCUMENT_TRANSACTION_CANT_SET_PASSWORD_NO_CONTEXT = 197852;
-  public static final int LIVING_DOCUMENT_TRANSACTION_CANT_SET_PASSWORD_NO_PASSWORD = 199907;
+
+  public static final int OVERLOADED_RATE_LIMITED = 197852;
 
   @User
   @Description("The document rejected the connection due to the @connected handler returning false.")
@@ -200,6 +200,8 @@ public class ErrorCodes {
   public static final int DOCUMENT_NOT_READY = 194752;
   public static final int UNCAUGHT_EXCEPTION_WEB_SOCKET = 295116;
   public static final int ONLY_ACCEPTS_TEXT_FRAMES = 213711;
+  public static final int WEBSOCKET_MESSAGE_RATE_LIMITED = 214711;
+  public static final int WEB_COOKIE_TOO_LARGE = 215711;
   public static final int USERLAND_REQUEST_NO_METHOD_PROPERTY = 213708;
   public static final int USERLAND_REQUEST_NO_ID_PROPERTY = 233120;
 
@@ -322,12 +324,16 @@ public class ErrorCodes {
   public static final int CACHED_BYTE_CODE_FAILED_PACK = 162036;
   public static final int CACHED_BYTE_CODE_FAILED_UNPACK = 127732;
 
-
   public static final int RESTORE_ALREADY_IN_FLIGHT = 197872;
   public static final int RESTORE_COMPLETED = 193264;
 
+  public static final int LIVING_DOCUMENT_NO_EXPORT_BY_NAME = 111347;
+
+  public static final int LIVING_DOCUMENT_DEPLOYED_DISCONNECT_EXPORT = 193267;
+  public static final int LIVING_DOCUMENT_CLOSING_DOCUMENT_EXPORT_LOST = 127736;
+
   /**
-   * 111347 127736 193267
+   *
    * 184063 125180 123644 130303 136444 165117 127745 182531 149251 148736 130819 100100 118020
    * 135940 131845 195851 131855 134927 122124 101135 135948 196876 130833 197905 195871 131356
    * 198434 144161 127780 131879 180004 134954 118573 134958 182578 101680 195891 103219 199472
@@ -351,9 +357,15 @@ public class ErrorCodes {
   public static final int DOMAIN_LOOKUP_WEB_NULL_FAILURE = 642079;
   public static final int DOMAIN_LOOKUP_WEB_NO_KEY_FAILURE = 647199;
   public static final int WEB_FAILED_ASSET_UPLOAD_ALL = 695327;
+  public static final int WEB_PUT_ASSET_NO_IDENTITY = 634900;
+  public static final int WEB_PUT_ASSET_MISSING_SPACE = 643095;
+  public static final int WEB_PUT_ASSET_MISSING_KEY = 605227;
+  public static final int WEB_PUT_ASSET_MISSING_FILENAME = 639018;
+  public static final int WEB_PUT_ASSET_MD5_MISMATCH = 668719;
+  public static final int URL_SUMMARY_INVALID_URL = 684079;
 
   /**
-   * 634900 643095 605227 639018 668719 684079 602158 642094 622624 605216 618532 605223 687163
+   * 602158 642094 622624 605216 618532 605223 687163
    * 640056 654392 656443 639034 654394 684089 662591 603196 650300 666687 629822 691261 652350
    * 684082 620592 601136 658483 605235 678960 688176 635955 605234 651316 625716 688180 647244
    * 649292 606284 638028 691279 639052 655436 630851 605251 658500 639059 629868 639072 654459
@@ -744,6 +756,9 @@ public class ErrorCodes {
   public static final int ADAMA_NET_OBSERVE_DOCUMENT_TIMEOUT = 718909;
   public static final int ADAMA_NET_OBSERVE_DOCUMENT_REJECTED = 702525;
 
+  public static final int ADAMA_NET_EXPORT_TIMEOUT = 718910;
+  public static final int ADAMA_NET_EXPORT_REJECTED = 702526;
+
   public static final int ADAMA_NET_PROBE_TIMEOUT = 756928;
   public static final int ADAMA_NET_PROBE_REJECTED = 740544;
 
@@ -787,6 +802,10 @@ public class ErrorCodes {
 
   public static final int ASSET_TRANSFORM_DISK_CAPTURE_EXCEPTION = 736347;
   public static final int ASSET_TRANSFORM_FAILED_TRANSFORM = 799836;
+  public static final int ASSET_TRANSFORM_SOURCE_TOO_LARGE = 799840;
+  public static final int ASSET_TRANSFORM_INVALID_INSTRUCTION = 799844;
+  public static final int ASSET_TRANSFORM_TIMEOUT = 799848;
+  public static final int ASSET_TRANSFORM_TOO_MANY_INFLIGHT = 799852;
 
   public static final int MANAGED_STORAGE_WRONG_MACHINE = 735344;
   public static final int MANAGED_STORAGE_NULL_ARCHIVE = 778433;

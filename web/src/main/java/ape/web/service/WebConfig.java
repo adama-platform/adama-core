@@ -24,8 +24,11 @@
 package ape.web.service;
 
 import ape.common.ConfigObject;
+import ape.common.TimeSource;
+import ape.common.rate.TokenRateLimiter;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.TreeSet;
 
 /**
@@ -35,6 +38,15 @@ import java.util.TreeSet;
  * Loaded from ConfigObject with sensible defaults for all values.
  */
 public class WebConfig {
+  /** Controls when the MCP (Model Context Protocol) endpoint is available. */
+  public enum MCPMode {
+    /** MCP is completely disabled */
+    off,
+    /** MCP is only available in devbox mode (localhost / 127.0.0.1) -- the default */
+    devbox,
+    /** MCP is available to all connections */
+    live
+  }
   public final String healthCheckPath;
   public final String deepHealthCheckPath;
   public final int maxContentLengthSize;
@@ -59,6 +71,24 @@ public class WebConfig {
   public final int maxDomainAge;
   public final boolean beta;
   public final File transformRoot;
+  public final int maxTransformDimension;
+  public final long maxSourcePixels;
+  public final int maxTransformInstructionLength;
+  public final int transformTimeoutMs;
+  public final int maxTransformInflight;
+  public final TokenRateLimiter websocketRateLimiter;
+  public final int websocketRateLimitMaxAttempts;
+  public final int websocketRateLimitDelay;
+  public final int websocketRateLimitJitter;
+  public final TokenRateLimiter onceRateLimiter;
+  public final int onceRateLimitMaxAttempts;
+  public final int onceRateLimitDelay;
+  public final int onceRateLimitJitter;
+  public final int messageRateLimitPerSecond;
+  public final int messageRateLimitMaxErrors;
+  public final boolean useXForwardedFor;
+  public final TreeSet<String> headerBlacklist;
+  public final MCPMode mcpMode;
 
   public WebConfig(ConfigObject config) {
     // HTTP properties
@@ -91,6 +121,61 @@ public class WebConfig {
     this.minDomainsToHoldTo = config.intOf("cert-cache-min-domains", 64);
     this.maxDomainsToHoldTo = config.intOf("cert-cache-max-domains", 2048);
     this.maxDomainAge = config.intOf("cert-cache-max-age", 5 * 60 * 1000);
+    this.maxTransformDimension = config.intOf("max-transform-dimension", 2048);
+    this.maxSourcePixels = (long) config.intOf("max-source-pixels", 25_000_000);
+    this.maxTransformInstructionLength = config.intOf("max-transform-instruction-length", 256);
+    this.transformTimeoutMs = config.intOf("transform-timeout-ms", 30000);
+    this.maxTransformInflight = config.intOf("max-transform-inflight", 64);
+    // WebSocket rate limit (stricter - expensive connections)
+    ConfigObject wsRateConfig = config.child("websocket-rate-limit");
+    this.websocketRateLimiter = new TokenRateLimiter(
+        wsRateConfig.intOf("max-tokens", 200),
+        wsRateConfig.intOf("window-ms", 60000),
+        wsRateConfig.intOf("max-grant", 10),
+        wsRateConfig.intOf("minimum-wait", 100),
+        TimeSource.REAL_TIME);
+    this.websocketRateLimitMaxAttempts = wsRateConfig.intOf("max-attempts", 5);
+    this.websocketRateLimitDelay = wsRateConfig.intOf("delay", 25);
+    this.websocketRateLimitJitter = wsRateConfig.intOf("jitter", 10);
+    // Once rate limit (more generous - lighter operations)
+    ConfigObject onceRateConfig = config.child("once-rate-limit");
+    this.onceRateLimiter = new TokenRateLimiter(
+        onceRateConfig.intOf("max-tokens", 500),
+        onceRateConfig.intOf("window-ms", 60000),
+        onceRateConfig.intOf("max-grant", 20),
+        onceRateConfig.intOf("minimum-wait", 50),
+        TimeSource.REAL_TIME);
+    this.onceRateLimitMaxAttempts = onceRateConfig.intOf("max-attempts", 5);
+    this.onceRateLimitDelay = onceRateConfig.intOf("delay", 25);
+    this.onceRateLimitJitter = onceRateConfig.intOf("jitter", 10);
+    // Per-connection WebSocket message rate limit (synchronous)
+    ConfigObject msgRateConfig = config.child("websocket-message-rate-limit");
+    this.messageRateLimitPerSecond = msgRateConfig.intOf("per-second", 1000);
+    this.messageRateLimitMaxErrors = msgRateConfig.intOf("max-errors", 10);
+    // X-Forwarded-For: only enable behind a trusted reverse proxy / load balancer
+    this.useXForwardedFor = config.boolOf("use-x-forwarded-for", false);
+    // Headers that documents are not allowed to override in HTTP responses
+    this.headerBlacklist = new TreeSet<>();
+    for (String h : config.stringsOf("header-blacklist", new String[] {
+        "set-cookie", "x-content-type-options", "strict-transport-security",
+        "referrer-policy", "x-frame-options", "content-security-policy",
+        "access-control-allow-origin", "access-control-allow-methods",
+        "access-control-allow-credentials", "access-control-allow-headers",
+        "transfer-encoding", "content-length", "content-encoding",
+        "connection", "keep-alive", "host",
+        "location", "refresh", "content-disposition"
+    })) {
+      headerBlacklist.add(h.toLowerCase(Locale.ROOT));
+    }
+    // MCP mode: off, devbox (default), or live
+    String mcpModeStr = config.strOf("mcp-mode", "devbox");
+    MCPMode parsedMode;
+    try {
+      parsedMode = MCPMode.valueOf(mcpModeStr);
+    } catch (IllegalArgumentException ex) {
+      parsedMode = MCPMode.devbox;
+    }
+    this.mcpMode = parsedMode;
   }
 
   public void validateForServerUse() throws Exception {

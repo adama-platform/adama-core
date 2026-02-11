@@ -28,14 +28,14 @@ import ape.translator.tree.common.StringBuilderWithTabs;
 import ape.translator.tree.privacy.PrivatePolicy;
 import ape.translator.tree.types.TySimpleNative;
 import ape.translator.tree.types.TyType;
-import ape.translator.tree.types.natives.*;
-import ape.translator.tree.types.reactive.*;
+import ape.translator.tree.types.TypeBehavior;
 import ape.translator.tree.types.natives.*;
 import ape.translator.tree.types.reactive.*;
 import ape.translator.tree.types.structures.BubbleDefinition;
 import ape.translator.tree.types.structures.FieldDefinition;
 import ape.translator.tree.types.structures.StructureStorage;
 import ape.translator.tree.types.traits.IsGrid;
+import ape.translator.tree.types.traits.IsFauxList;
 import ape.translator.tree.types.traits.IsMap;
 import ape.translator.tree.types.traits.details.DetailComputeRequiresGet;
 import ape.translator.tree.types.traits.details.DetailContainsAnEmbeddedType;
@@ -305,6 +305,16 @@ public class CodeGenDeltaClass {
         rangeType = ((DetailComputeRequiresGet) walkRangeType).typeAfterGet(environment);
       }
       writeShowDMapRx(sb, deltaObject, sourceData, ((IsMap) sourceType).getDomainType(environment), walkRangeType, rangeType, addGet, targetObjectWriter, environment, tabDown);
+    } else if (sourceType instanceof IsFauxList) {
+      boolean addGet = false;
+      var walkRangeType = ((IsFauxList) sourceType).getRangeType(environment);
+      var rangeType = walkRangeType;
+      if (walkRangeType instanceof DetailComputeRequiresGet) {
+        addGet = true;
+        rangeType = ((DetailComputeRequiresGet) walkRangeType).typeAfterGet(environment);
+      }
+      TyType doubleDomain = new TyNativeDouble(TypeBehavior.ReadOnlyNativeValue, null, null);
+      writeShowDMapRx(sb, deltaObject, sourceData, doubleDomain, walkRangeType, rangeType, addGet, targetObjectWriter, environment, tabDown);
     } else if (sourceType instanceof IsGrid) {
       boolean addGet = false;
       var walkRangeType = ((IsGrid) sourceType).getRangeType(environment);

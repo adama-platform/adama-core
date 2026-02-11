@@ -26,6 +26,7 @@ package ape.web.service;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.codec.http.*;
 import ape.common.Json;
 import ape.common.metrics.NoOpMetricsFactory;
 import ape.web.client.TestClientCallback;
@@ -92,16 +93,6 @@ public class WebHandlerTests {
         TestClientCallback callback = new TestClientCallback();
         TestClientRequestBuilder.start(group)
             .server("localhost", webConfig.port)
-            .get("/~set/key/value")
-            .execute(callback);
-        callback.awaitFirst();
-        callback.assertData("OK");
-      }
-
-      {
-        TestClientCallback callback = new TestClientCallback();
-        TestClientRequestBuilder.start(group)
-            .server("localhost", webConfig.port)
             .put("/~stash/fooyo", "{\"name\":\"def\",\"identity\":\"id\",\"max-age\":100000}")
             .execute(callback);
         callback.awaitFirst();
@@ -118,16 +109,6 @@ public class WebHandlerTests {
             .execute(callback);
         callback.awaitFirst();
         callback.assertData("{\"auth\":true}");
-      }
-
-      { // validate identity token is stripped out
-        TestClientCallback callback = new TestClientCallback();
-        TestClientRequestBuilder.start(group)
-            .server("localhost", webConfig.port)
-            .get("/inject?__IDENTITY_TOKEN=anonymous:person")
-            .execute(callback);
-        callback.awaitFirst();
-        callback.assertData("anonymous:person:{}");
       }
 
       { // validate identity token from Authorization header
@@ -268,5 +249,22 @@ public class WebHandlerTests {
       thread.join();
       group.shutdownGracefully();
     }
+  }
+
+  @Test
+  public void svgSecurityHeaders() {
+    DefaultHttpResponse svgResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+    svgResponse.headers().set(HttpHeaderNames.CONTENT_TYPE, "image/svg+xml");
+    WebHandler.addSecurityHeaders(svgResponse);
+    Assert.assertEquals("script-src 'none'; frame-ancestors 'self'", svgResponse.headers().get("Content-Security-Policy"));
+
+    DefaultHttpResponse htmlResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+    htmlResponse.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");
+    WebHandler.addSecurityHeaders(htmlResponse);
+    Assert.assertEquals("frame-ancestors 'self'", htmlResponse.headers().get("Content-Security-Policy"));
+
+    DefaultHttpResponse noTypeResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+    WebHandler.addSecurityHeaders(noTypeResponse);
+    Assert.assertEquals("frame-ancestors 'self'", noTypeResponse.headers().get("Content-Security-Policy"));
   }
 }

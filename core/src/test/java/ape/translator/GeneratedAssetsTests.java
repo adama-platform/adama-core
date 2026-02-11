@@ -92,7 +92,11 @@ public class GeneratedAssetsTests extends GeneratedBase {
     gold.append("\n==========================================================");
     gold.append("\n--ISSUES-------------------------------------------");
     gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.ErrorCodeException;");
     gold.append("\nimport ape.common.Pair;");
+    gold.append("\nimport ape.common.SimpleCancel;");
+    gold.append("\nimport ape.common.Stream;");
+    gold.append("\nimport ape.ErrorCodes;");
     gold.append("\nimport ape.runtime.async.*;");
     gold.append("\nimport ape.runtime.contracts.*;");
     gold.append("\nimport ape.runtime.delta.*;");
@@ -672,6 +676,11 @@ public class GeneratedAssetsTests extends GeneratedBase {
     gold.append("\n  protected void __reset_future_queues() {");
     gold.append("\n  }");
     gold.append("\n  @Override");
+    gold.append("\n  public SimpleCancel __export(CoreRequestContext __context, String __name, String __viewerState, Stream<String> __stream) {");
+    gold.append("\n    __stream.failure(new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_NO_EXPORT_BY_NAME));");
+    gold.append("\n    return SimpleCancel.NOTHING_TO_CANCEL;");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
     gold.append("\n  public String __metrics() { return \"{}\"; }");
     gold.append("\n  @Override");
     gold.append("\n  public String __traffic(CoreRequestContext __context) { return \"\"; }");
@@ -956,7 +965,11 @@ public class GeneratedAssetsTests extends GeneratedBase {
     gold.append("\n==========================================================");
     gold.append("\n--ISSUES-------------------------------------------");
     gold.append("\n[]\"--JAVA---------------------------------------------");
+    gold.append("\nimport ape.common.ErrorCodeException;");
     gold.append("\nimport ape.common.Pair;");
+    gold.append("\nimport ape.common.SimpleCancel;");
+    gold.append("\nimport ape.common.Stream;");
+    gold.append("\nimport ape.ErrorCodes;");
     gold.append("\nimport ape.runtime.async.*;");
     gold.append("\nimport ape.runtime.contracts.*;");
     gold.append("\nimport ape.runtime.delta.*;");
@@ -1537,6 +1550,11 @@ public class GeneratedAssetsTests extends GeneratedBase {
     gold.append("\n  }");
     gold.append("\n  @Override");
     gold.append("\n  protected void __reset_future_queues() {");
+    gold.append("\n  }");
+    gold.append("\n  @Override");
+    gold.append("\n  public SimpleCancel __export(CoreRequestContext __context, String __name, String __viewerState, Stream<String> __stream) {");
+    gold.append("\n    __stream.failure(new ErrorCodeException(ErrorCodes.LIVING_DOCUMENT_NO_EXPORT_BY_NAME));");
+    gold.append("\n    return SimpleCancel.NOTHING_TO_CANCEL;");
     gold.append("\n  }");
     gold.append("\n  @Override");
     gold.append("\n  public String __metrics() { return \"{}\"; }");

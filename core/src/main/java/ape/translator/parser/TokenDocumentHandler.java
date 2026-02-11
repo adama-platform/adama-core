@@ -23,16 +23,20 @@
  */
 package ape.translator.parser;
 
+import ape.translator.env.Environment;
+import ape.translator.env.FreeEnvironment;
 import ape.translator.env2.Scope;
 import ape.translator.parser.token.Token;
 import ape.translator.tree.definitions.*;
 import ape.translator.tree.definitions.config.DefineDocumentEvent;
 import ape.translator.tree.privacy.DefineCustomPolicy;
+import ape.translator.tree.statements.ControlFlow;
 import ape.translator.tree.types.natives.TyNativeEnum;
 import ape.translator.tree.types.structures.BubbleDefinition;
 import ape.translator.tree.types.structures.FieldDefinition;
 import ape.translator.tree.types.structures.JoinAssoc;
 import ape.translator.tree.types.structures.ReplicationDefinition;
+import ape.translator.tree.types.topo.TypeCheckerRoot;
 import ape.translator.tree.types.traits.IsEnum;
 import ape.translator.tree.types.traits.IsStructure;
 
@@ -203,4 +207,7 @@ public abstract class TokenDocumentHandler implements Consumer<Token>, TopLevelD
   public void add(DefineClientService dhttp) {
     dhttp.emit(this);
   }
+
+  @Override
+  public void add(DefineExport de) { de.emit(this); }
 }

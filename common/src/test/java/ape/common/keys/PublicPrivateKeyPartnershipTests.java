@@ -51,7 +51,67 @@ public class PublicPrivateKeyPartnershipTests {
     KeyPair x = PublicPrivateKeyPartnership.genKeyPair();
     byte[] secret = PublicPrivateKeyPartnership.secretFrom(x);
     String encrypted = PublicPrivateKeyPartnership.encrypt(secret, "This is a secret, yo");
-    System.err.println(encrypted);
-    System.err.println(PublicPrivateKeyPartnership.decrypt(secret, encrypted));
+    String decrypted = PublicPrivateKeyPartnership.decrypt(secret, encrypted);
+    Assert.assertEquals("This is a secret, yo", decrypted);
+  }
+
+  @Test
+  public void cipherEmptyString() throws Exception {
+    KeyPair x = PublicPrivateKeyPartnership.genKeyPair();
+    byte[] secret = PublicPrivateKeyPartnership.secretFrom(x);
+    String encrypted = PublicPrivateKeyPartnership.encrypt(secret, "");
+    String decrypted = PublicPrivateKeyPartnership.decrypt(secret, encrypted);
+    Assert.assertEquals("", decrypted);
+  }
+
+  @Test
+  public void cipherLongString() throws Exception {
+    KeyPair x = PublicPrivateKeyPartnership.genKeyPair();
+    byte[] secret = PublicPrivateKeyPartnership.secretFrom(x);
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 5000; i++) {
+      sb.append("test data ");
+    }
+    String longStr = sb.toString();
+    String encrypted = PublicPrivateKeyPartnership.encrypt(secret, longStr);
+    String decrypted = PublicPrivateKeyPartnership.decrypt(secret, encrypted);
+    Assert.assertEquals(longStr, decrypted);
+  }
+
+  @Test
+  public void distinctEncryptionsDifferentIV() throws Exception {
+    KeyPair x = PublicPrivateKeyPartnership.genKeyPair();
+    byte[] secret = PublicPrivateKeyPartnership.secretFrom(x);
+    String enc1 = PublicPrivateKeyPartnership.encrypt(secret, "same");
+    String enc2 = PublicPrivateKeyPartnership.encrypt(secret, "same");
+    Assert.assertNotEquals(enc1, enc2);
+    Assert.assertEquals(PublicPrivateKeyPartnership.decrypt(secret, enc1),
+        PublicPrivateKeyPartnership.decrypt(secret, enc2));
+  }
+
+  @Test
+  public void decryptTruncatedCiphertext() {
+    try {
+      KeyPair x = PublicPrivateKeyPartnership.genKeyPair();
+      byte[] secret = PublicPrivateKeyPartnership.secretFrom(x);
+      // Base64 of less than 17 bytes
+      String tooShort = Base64.getEncoder().encodeToString(new byte[10]);
+      PublicPrivateKeyPartnership.decrypt(secret, tooShort);
+      Assert.fail();
+    } catch (Exception e) {
+      Assert.assertTrue(e.getMessage().contains("too short"));
+    }
+  }
+
+  @Test
+  public void serializeDeserializeKeyPair() throws Exception {
+    KeyPair original = PublicPrivateKeyPartnership.genKeyPair();
+    String pub = PublicPrivateKeyPartnership.publicKeyOf(original);
+    String priv = PublicPrivateKeyPartnership.privateKeyOf(original);
+    KeyPair restored = PublicPrivateKeyPartnership.keyPairFrom(pub, priv);
+    // Verify the restored pair can derive the same secret
+    byte[] secret1 = PublicPrivateKeyPartnership.secretFrom(original);
+    byte[] secret2 = PublicPrivateKeyPartnership.secretFrom(restored);
+    Assert.assertArrayEquals(secret1, secret2);
   }
 }

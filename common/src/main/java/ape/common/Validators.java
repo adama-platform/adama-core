@@ -32,6 +32,9 @@ public class Validators {
 
   /** Validate that the string is a identifier of sorts with few special characters */
   public static boolean simple(String str, int max) {
+    if (str == null || str.isEmpty()) {
+      return false;
+    }
     if (str.length() > max) {
       return false;
     }

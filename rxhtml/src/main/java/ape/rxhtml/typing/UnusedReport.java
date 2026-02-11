@@ -38,7 +38,11 @@ public interface UnusedReport {
     Iterator<Map.Entry<String, JsonNode>> itTypes = forest.get("types").fields();
     while (itTypes.hasNext()) {
       Map.Entry<String, JsonNode> struct = itTypes.next();
-      Iterator<Map.Entry<String, JsonNode>> fieldTypes = struct.getValue().get("fields").fields();
+      JsonNode fieldsNode = struct.getValue().get("fields");
+      if (fieldsNode == null) {
+        continue;
+      }
+      Iterator<Map.Entry<String, JsonNode>> fieldTypes = fieldsNode.fields();
       while (fieldTypes.hasNext()) {
         Map.Entry<String, JsonNode> field = fieldTypes.next();
         if (!field.getValue().has("used")) {

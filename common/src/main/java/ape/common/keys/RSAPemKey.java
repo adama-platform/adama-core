@@ -38,7 +38,7 @@ public class RSAPemKey {
   public static RSAPrivateKey privateFrom(String pem) throws Exception {
     String simple = pem
         .replaceAll("[\r\n]", "")
-        .replaceAll("-----[BEGIND]* PRIVATE KEY-----", "");
+        .replaceAll("-----(BEGIN|END) PRIVATE KEY-----", "");
     byte[] encoded = Base64.getDecoder().decode(simple.getBytes(StandardCharsets.UTF_8));
     KeyFactory keyFactory = KeyFactory.getInstance("RSA");
     PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
@@ -49,7 +49,7 @@ public class RSAPemKey {
   public static RSAPublicKey publicFrom(String pem) throws Exception {
     String simple = pem
         .replaceAll("[\r\n]", "")
-        .replaceAll("-----[BEGIND]* PUBLIC KEY-----", "");
+        .replaceAll("-----(BEGIN|END) PUBLIC KEY-----", "");
     byte[] encoded = Base64.getDecoder().decode(simple.getBytes(StandardCharsets.UTF_8));
     KeyFactory keyFactory = KeyFactory.getInstance("RSA");
     X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);

@@ -33,6 +33,7 @@ import ape.runtime.deploy.SyncCompiler;
 import ape.runtime.exceptions.GoodwillExhaustedException;
 import ape.runtime.json.JsonStreamReader;
 import ape.runtime.json.JsonStreamWriter;
+import ape.runtime.mocks.MockExportStream;
 import ape.runtime.mocks.MockTime;
 import ape.runtime.natives.NtAsset;
 import ape.runtime.natives.NtDynamic;
@@ -1928,6 +1929,25 @@ public class LivingDocumentTests {
             .get("t")
             .toString();
     Assert.assertEquals("10", t);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void export() throws Exception {
+    final var setup =
+            new RealDocumentSetup(
+                    "string str = \"world\"; @export foo = {hi:str}; @connected { return true; }  message N {} channel foo(N n) { str = \"chan\"; } ");
+    setup.document.invalidate(Callback.DONT_CARE_INTEGER);
+    MockExportStream stream = new MockExportStream();
+    CountDownLatch first = stream.latch(1);
+    CountDownLatch second = stream.latch(2);
+    setup.document.document().__export(ContextSupport.WRAP(NtPrincipal.NO_ONE), "foo", "{}", stream);
+    Assert.assertTrue(first.await(1500, TimeUnit.MILLISECONDS));
+    stream.assertAt(0, "{\"hi\":\"world\"}");
+    setup.document.connect(ContextSupport.WRAP(A), new RealDocumentSetup.AssertInt(3));
+    setup.document.send(ContextSupport.WRAP(A), null, null, "foo", "{}", new RealDocumentSetup.AssertInt(5));
+    Assert.assertTrue(second.await(1500, TimeUnit.MILLISECONDS));
+    stream.assertAt(1, "{\"hi\":\"chan\"}");
   }
 
   @Test

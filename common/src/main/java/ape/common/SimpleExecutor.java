@@ -84,6 +84,15 @@ public interface SimpleExecutor {
       }
 
       @Override
+      public Future<?> submit(NamedRunnable command) {
+        command.bind(name);
+        return realExecutor.submit(() -> {
+          command.execute();
+          return null;
+        });
+      }
+
+      @Override
       public CountDownLatch shutdown() {
         CountDownLatch latch = new CountDownLatch(1);
         realExecutor.execute(() -> {
@@ -102,6 +111,18 @@ public interface SimpleExecutor {
   Runnable schedule(NamedRunnable command, long milliseconds);
 
   Runnable scheduleNano(NamedRunnable command, long nanoseconds);
+
+  /** submit the given command for execution, returning a Future that captures exceptions from execute() */
+  default Future<?> submit(NamedRunnable command) {
+    CompletableFuture<Void> future = new CompletableFuture<>();
+    try {
+      command.execute();
+      future.complete(null);
+    } catch (Exception ex) {
+      future.completeExceptionally(ex);
+    }
+    return future;
+  }
 
   /** shutdown the executor */
   CountDownLatch shutdown();

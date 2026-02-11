@@ -32,7 +32,6 @@ package ape.common.rate;
 public class TokenGrant {
   /** this is how many tokens you have been granted */
   public final int tokens;
-
   /** Don't call back until this time frame. If you try, then either reject or delay */
   public final int millseconds;
 

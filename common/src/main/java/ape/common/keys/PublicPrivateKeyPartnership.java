@@ -99,6 +99,9 @@ public class PublicPrivateKeyPartnership {
     Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
     SecretKeySpec key = new SecretKeySpec(secret, "AES");
     byte[] memory = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
+    if (memory.length < 17) {
+      throw new Exception("ciphertext too short; must contain IV (16 bytes) and at least 1 byte of data");
+    }
     byte[] iv = new byte[16];
     System.arraycopy(memory, 0, iv, 0, 16);
     cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));

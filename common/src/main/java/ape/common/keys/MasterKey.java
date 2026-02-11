@@ -46,6 +46,9 @@ public class MasterKey {
 
   public static String encrypt(String masterKey, String value) throws Exception {
     byte[] key = Base64.getDecoder().decode(masterKey);
+    if (key.length != 32) {
+      throw new Exception("master key must be 256 bits (32 bytes)");
+    }
     Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
     SecureRandom secureRandom = new SecureRandom();
     byte[] nonce = new byte[96 / 8];
@@ -61,9 +64,18 @@ public class MasterKey {
 
   public static String decrypt(String masterKey, String value) throws Exception {
     byte[] key = Base64.getDecoder().decode(masterKey);
+    if (key.length != 32) {
+      throw new Exception("master key must be 256 bits (32 bytes)");
+    }
     Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
-    String[] parts = value.split(";");
+    String[] parts = value.split(";", -1);
+    if (parts.length != 2) {
+      throw new Exception("encrypted value must be in format 'nonce;ciphertext'");
+    }
     byte[] nonce = Base64.getDecoder().decode(parts[0]);
+    if (nonce.length != 12) {
+      throw new Exception("nonce must be 96 bits (12 bytes), got " + nonce.length);
+    }
     byte[] encrypted = Base64.getDecoder().decode(parts[1]);
     byte[] iv = new byte[128 / 8];
     System.arraycopy(nonce, 0, iv, 0, nonce.length);

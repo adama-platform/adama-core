@@ -23,5 +23,63 @@
  */
 package ape.web.assets.transforms;
 
+import ape.common.ConfigObject;
+import ape.common.Json;
+import ape.web.service.WebConfig;
+import org.junit.Assert;
+import org.junit.Test;
+
 public class TransformFactoryTests {
+  private static WebConfig defaultConfig() {
+    return new WebConfig(new ConfigObject(Json.newJsonObject()));
+  }
+
+  @Test
+  public void make_png() {
+    Transform t = TransformFactory.make(defaultConfig(), "image/png", "w100");
+    Assert.assertNotNull(t);
+    Assert.assertEquals("image/png", t.outputContentType());
+  }
+
+  @Test
+  public void make_jpeg() {
+    Transform t = TransformFactory.make(defaultConfig(), "image/jpeg", "w100");
+    Assert.assertNotNull(t);
+    Assert.assertEquals("image/jpeg", t.outputContentType());
+  }
+
+  @Test
+  public void make_gif() {
+    Transform t = TransformFactory.make(defaultConfig(), "image/gif", "w100");
+    Assert.assertNotNull(t);
+    Assert.assertEquals("image/gif", t.outputContentType());
+  }
+
+  @Test
+  public void make_unsupported_returns_null() {
+    Assert.assertNull(TransformFactory.make(defaultConfig(), "application/pdf", "w100"));
+    Assert.assertNull(TransformFactory.make(defaultConfig(), "text/plain", "w100"));
+    Assert.assertNull(TransformFactory.make(defaultConfig(), "video/mp4", "w100"));
+  }
+
+  @Test
+  public void make_png_with_format_conversion() {
+    Transform t = TransformFactory.make(defaultConfig(), "image/png", "tojpg");
+    Assert.assertNotNull(t);
+    Assert.assertEquals("image/jpeg", t.outputContentType());
+  }
+
+  @Test
+  public void make_jpeg_with_format_conversion() {
+    Transform t = TransformFactory.make(defaultConfig(), "image/jpeg", "topng");
+    Assert.assertNotNull(t);
+    Assert.assertEquals("image/png", t.outputContentType());
+  }
+
+  @Test
+  public void make_gif_with_format_conversion() {
+    Transform t = TransformFactory.make(defaultConfig(), "image/gif", "tojpg");
+    Assert.assertNotNull(t);
+    Assert.assertEquals("image/jpeg", t.outputContentType());
+  }
 }

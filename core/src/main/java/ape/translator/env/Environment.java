@@ -349,6 +349,12 @@ public class Environment {
     return new Environment(document, state.scopeWeb(method), this);
   }
 
+
+  /** create a new environment for web calls */
+  public Environment scopeAsExport() {
+    return new Environment(document, state.scopeExport(), this);
+  }
+
   /** create a new environment which is for unit tests */
   public Environment scopeAsUnitTest() {
     return new Environment(document, state.scopeTesting(), this);

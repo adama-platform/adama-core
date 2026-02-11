@@ -28,7 +28,12 @@ import ape.runtime.natives.NtJson;
 import ape.runtime.natives.NtMaybe;
 import ape.translator.reflect.HiddenType;
 
+/**
+ * Standard library for JSON parsing in Adama documents.
+ * Provides safe JSON string parsing into NtJson trees for programmatic traversal.
+ */
 public class LibJson {
+  /** Parse a JSON string into an NtJson tree. Returns empty if the string is not valid JSON. */
   public static @HiddenType(clazz = NtJson.class) NtMaybe<NtJson> parse(String str) {
     try {
       JsonStreamReader reader = new JsonStreamReader(str);
@@ -38,6 +43,7 @@ public class LibJson {
     }
   }
 
+  /** Parse a JSON string into an NtJson tree, returning a null NtJson node on failure (non-Maybe variant). */
   public static NtJson parsen(String str) {
     try {
       JsonStreamReader reader = new JsonStreamReader(str);

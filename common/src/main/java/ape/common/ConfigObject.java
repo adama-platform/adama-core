@@ -99,7 +99,7 @@ public class ConfigObject {
 
   public String[] stringsOf(String key, String errorMessage) {
     JsonNode vs = node.get(key);
-    if (vs.isArray()) {
+    if (vs != null && vs.isArray()) {
       ArrayList<String> strings = new ArrayList<>();
       for (int k = 0; k < vs.size(); k++) {
         if (vs.get(k).isTextual()) {

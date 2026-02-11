@@ -35,4 +35,58 @@ public class ValidatorsTests {
     Assert.assertTrue(Validators.simple("1234", 1000));
     Assert.assertTrue(Validators.simple("ninja-cake", 1000));
   }
+
+  @Test
+  public void nullInput() {
+    Assert.assertFalse(Validators.simple(null, 100));
+  }
+
+  @Test
+  public void emptyString() {
+    Assert.assertFalse(Validators.simple("", 100));
+  }
+
+  @Test
+  public void exactMaxLength() {
+    Assert.assertTrue(Validators.simple("abc", 3));
+    Assert.assertFalse(Validators.simple("abcd", 3));
+  }
+
+  @Test
+  public void allowedSpecialChars() {
+    Assert.assertTrue(Validators.simple("a.b", 100));
+    Assert.assertTrue(Validators.simple("a-b", 100));
+    Assert.assertTrue(Validators.simple("a_b", 100));
+    Assert.assertTrue(Validators.simple("A.B-C_D", 100));
+  }
+
+  @Test
+  public void disallowedChars() {
+    Assert.assertFalse(Validators.simple("a b", 100));
+    Assert.assertFalse(Validators.simple("a/b", 100));
+    Assert.assertFalse(Validators.simple("a@b", 100));
+    Assert.assertFalse(Validators.simple("a#b", 100));
+    Assert.assertFalse(Validators.simple("a&b", 100));
+    Assert.assertFalse(Validators.simple("a+b", 100));
+    Assert.assertFalse(Validators.simple("a=b", 100));
+    Assert.assertFalse(Validators.simple("a<b", 100));
+    Assert.assertFalse(Validators.simple("a>b", 100));
+    Assert.assertFalse(Validators.simple("a;b", 100));
+    Assert.assertFalse(Validators.simple("a:b", 100));
+  }
+
+  @Test
+  public void allDigits() {
+    Assert.assertTrue(Validators.simple("0123456789", 100));
+  }
+
+  @Test
+  public void allUpperCase() {
+    Assert.assertTrue(Validators.simple("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 100));
+  }
+
+  @Test
+  public void allLowerCase() {
+    Assert.assertTrue(Validators.simple("abcdefghijklmnopqrstuvwxyz", 100));
+  }
 }

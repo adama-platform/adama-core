@@ -24,16 +24,19 @@
 package ape.web.service;
 
 import ape.common.*;
+import ape.common.rate.AsyncTokenLimiter;
 import ape.web.assets.AssetFact;
 import ape.web.assets.AssetStream;
 import ape.web.assets.AssetSystem;
 import ape.web.assets.AssetUploadBody;
+import ape.web.assets.generate.QRCodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.handler.codec.http.cookie.*;
@@ -52,6 +55,7 @@ import ape.web.assets.cache.WebHandlerAssetCache;
 import ape.web.assets.transforms.Transform;
 import ape.web.assets.transforms.TransformFactory;
 import ape.web.assets.transforms.TransformQueue;
+import ape.web.contracts.CertificateFinder;
 import ape.web.contracts.HttpHandler;
 import ape.web.contracts.ServiceBase;
 import ape.web.contracts.ServiceConnection;
@@ -62,9 +66,12 @@ import ape.web.io.JsonResponder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.netty.handler.ssl.SslContext;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
@@ -81,6 +88,7 @@ import java.util.regex.Pattern;
  */
 public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
   private static final Logger LOG = LoggerFactory.getLogger(WebHandler.class);
+  private static final Logger CLIENT_LOG = LoggerFactory.getLogger("client");
 
   private static final byte[] EMPTY_RESPONSE = new byte[0];
   private static final byte[] OK_RESPONSE = "OK".getBytes(StandardCharsets.UTF_8);
@@ -88,11 +96,21 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
   private static final byte[] ASSET_UPLOAD_FAILURE = "<html><head><title>Bad Request; Internal Error Uploading</title></head><body>Sorry, the upload failed.</body></html>".getBytes(StandardCharsets.UTF_8);
   private static final byte[] ASSET_TRANSFORM_FAILURE = "<html><head><title>Bad Request; asset content type not understood</title></head><body>Sorry.</body></html>".getBytes(StandardCharsets.UTF_8);
   private static final byte[] ASSET_UPLOAD_INCOMPLETE_FIELDS = "<html><head><title>Bad Request; Incomplete</title></head><body>Sorry, the post request was incomplete.</body></html>".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] ASSET_PUT_NO_IDENTITY = "missing bearer token".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] ASSET_PUT_MISSING_SPACE = "missing 'space' query parameter".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] ASSET_PUT_MISSING_KEY = "missing 'key' query parameter".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] ASSET_PUT_MISSING_FILENAME = "missing 'filename' query parameter".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] ASSET_PUT_MD5_MISMATCH = "content-md5 mismatch".getBytes(StandardCharsets.UTF_8);
   private static final byte[] COOKIE_SET_FAILURE = "<html><head><title>Bad Request; Failed to set cookie</title></head><body>Sorry, the request was incomplete.</body></html>".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] COOKIE_TOO_LARGE = "cookie value too large".getBytes(StandardCharsets.UTF_8);
+
+  private static final int MAX_COOKIE_VALUE_LENGTH = 1024;
+  private static final int MAX_TOTAL_COOKIE_SIZE = 8192;
   private static final byte[] JAR_FAILURE = "<html><head><title>Bad Request; Internal Error Access Jar</title></head><body>Sorry, the download failed.</body></html>".getBytes(StandardCharsets.UTF_8);
 
   private static final byte[] BAD_REQUEST = "bad request".getBytes(StandardCharsets.UTF_8);
   private static final byte[] METHOD_NOT_ALLOWED = "method not allowed".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] RATE_LIMITED = "rate limited".getBytes(StandardCharsets.UTF_8);
 
   private final WebConfig webConfig;
   private final WebMetrics metrics;
@@ -100,11 +118,13 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
   private final HttpHandler httpHandler;
   private final AssetSystem assets;
   private final WebHandlerAssetCache cache;
-  private final ExecutorService jarThread;
+  private static final ExecutorService jarThread = Executors.newSingleThreadExecutor();
   private final DomainFinder domainFinder;
   private final TransformQueue transformQueue;
+  private final CertificateFinder certificateFinder;
+  private final AsyncTokenLimiter onceRateLimiter;
 
-  public WebHandler(WebConfig webConfig, WebMetrics metrics, ServiceBase serviceBase, WebHandlerAssetCache cache, DomainFinder incomingDomainFinder, TransformQueue transformQueue) {
+  public WebHandler(WebConfig webConfig, WebMetrics metrics, ServiceBase serviceBase, WebHandlerAssetCache cache, DomainFinder incomingDomainFinder, TransformQueue transformQueue, CertificateFinder certificateFinder, AsyncTokenLimiter onceRateLimiter) {
     this.webConfig = webConfig;
     this.metrics = metrics;
     this.serviceBase = serviceBase;
@@ -112,7 +132,8 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     this.assets = serviceBase.assets();
     this.cache = cache;
     this.transformQueue = transformQueue;
-    this.jarThread = Executors.newSingleThreadExecutor();
+    this.certificateFinder = certificateFinder;
+    this.onceRateLimiter = onceRateLimiter;
     this.domainFinder = (domain, callback) -> {
       for (String suffix : webConfig.globalDomains) {
         if (domain.endsWith("." + suffix)) {
@@ -125,7 +146,22 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     };
   }
 
+  /** apply standard security headers to every HTTP response */
+  static void addSecurityHeaders(HttpResponse res) {
+    res.headers().set("X-Content-Type-Options", "nosniff");
+    res.headers().set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.headers().set("Referrer-Policy", "no-referrer");
+    res.headers().set("X-Frame-Options", "SAMEORIGIN");
+    String contentType = res.headers().get(HttpHeaderNames.CONTENT_TYPE);
+    if ("image/svg+xml".equals(contentType)) {
+      res.headers().set("Content-Security-Policy", "script-src 'none'; frame-ancestors 'self'");
+    } else {
+      res.headers().set("Content-Security-Policy", "frame-ancestors 'self'");
+    }
+  }
+
   private static void sendWithKeepAlive(final WebConfig webConfig, final ChannelHandlerContext ctx, final FullHttpRequest req, final FullHttpResponse res) {
+    addSecurityHeaders(res);
     final var responseStatus = res.status();
     final var keepAlive = HttpUtil.isKeepAlive(req) && responseStatus.code() == 200;
     HttpUtil.setKeepAlive(res, keepAlive);
@@ -235,6 +271,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
 
         response.headers().set(HttpHeaderNames.ACCEPT_RANGES, "none");
+        addSecurityHeaders(response);
         transferCors(response, req, cors);
       }
 
@@ -254,7 +291,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     AssetStream response = streamOf(req, ctx, cors, cacheTimeSeconds);
 
     if (transform != null) {
-      Transform how = TransformFactory.make(asset.contentType, transform);
+      Transform how = TransformFactory.make(webConfig, asset.contentType, transform);
       if (how == null) {
         sendImmediate(metrics.webhandler_transform_failure_none_available, req, ctx, HttpResponseStatus.BAD_REQUEST, ASSET_TRANSFORM_FAILURE, "text/html; charset=UTF-8", true);
       } else {
@@ -352,7 +389,7 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
       }
       final String channel = _channel;
-      final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers());
+      final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers(), webConfig.useXForwardedFor);
       final String identity = context.identityOf(_identity);
       if (identity != null && domain != null) {
         domainFinder.find(domain, new Callback<Domain>() {
@@ -473,6 +510,127 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
   }
 
+  private void handleAssetPut(final ChannelHandlerContext ctx, final FullHttpRequest req) {
+    try {
+      // extract Bearer token identity
+      final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers(), webConfig.useXForwardedFor);
+      String bearerIdentity = null;
+      String authHeader = req.headers().get(HttpHeaderNames.AUTHORIZATION);
+      if (authHeader != null) {
+        String stripped = authHeader.stripLeading();
+        if (stripped.startsWith("Bearer ")) {
+          bearerIdentity = stripped.substring(7).trim();
+        }
+      }
+      if (bearerIdentity == null || bearerIdentity.isEmpty()) {
+        sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.UNAUTHORIZED, ASSET_PUT_NO_IDENTITY, "text/plain", true);
+        return;
+      }
+      final String identity = bearerIdentity;
+
+      // parse query parameters
+      QueryStringDecoder qsd = new QueryStringDecoder(req.uri());
+      String space = getQueryParam(qsd, "space");
+      String key = getQueryParam(qsd, "key");
+      String filename = getQueryParam(qsd, "filename");
+      String contentType = req.headers().get(HttpHeaderNames.CONTENT_TYPE);
+      String channel = getQueryParam(qsd, "channel");
+      HashMap<String, String> message_parts = new HashMap<>();
+      for (Map.Entry<String, java.util.List<String>> entry : qsd.parameters().entrySet()) {
+        if (entry.getKey().startsWith("message_") || entry.getKey().startsWith("message.")) {
+          message_parts.put(entry.getKey().substring(8), entry.getValue().get(0));
+        }
+      }
+
+      if (space == null || space.isEmpty()) {
+        sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.BAD_REQUEST, ASSET_PUT_MISSING_SPACE, "text/plain", true);
+        return;
+      }
+      if (key == null || key.isEmpty()) {
+        sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.BAD_REQUEST, ASSET_PUT_MISSING_KEY, "text/plain", true);
+        return;
+      }
+      if (filename == null || filename.isEmpty()) {
+        sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.BAD_REQUEST, ASSET_PUT_MISSING_FILENAME, "text/plain", true);
+        return;
+      }
+      if (contentType == null || contentType.isEmpty()) {
+        contentType = "application/octet-stream";
+      }
+
+      // read body bytes
+      byte[] bodyBytes = new byte[req.content().readableBytes()];
+      req.content().readBytes(bodyBytes);
+
+      // compute asset facts
+      AssetUploadBody body = AssetUploadBody.WRAP(bodyBytes);
+      AssetFact fact = AssetFact.of(body);
+
+      // optional Content-MD5 verification
+      String clientMd5 = req.headers().get(HttpHeaderNames.CONTENT_MD5);
+      if (clientMd5 != null && !clientMd5.isEmpty()) {
+        if (!clientMd5.equals(fact.md5)) {
+          metrics.webhandler_put_asset_md5_mismatch.run();
+          sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.BAD_REQUEST, ASSET_PUT_MD5_MISMATCH, "text/plain", true);
+          return;
+        }
+      }
+
+      NtAsset asset = new NtAsset(ProtectedUUID.generate(), filename, contentType, fact.size, fact.md5, fact.sha384);
+      Key uploadKey = new Key(space, key);
+
+      // build channel message
+      final String message;
+      if (channel != null && !channel.isEmpty()) {
+        ObjectNode messageNode = Json.newJsonObject();
+        messageNode.put("asset_id", asset.id);
+        for (Map.Entry<String, String> entry : message_parts.entrySet()) {
+          messageNode.put(entry.getKey(), entry.getValue());
+        }
+        message = messageNode.toString();
+      } else {
+        message = null;
+      }
+      final String channelFinal = (channel != null && !channel.isEmpty()) ? channel : null;
+
+      metrics.webhandler_put_asset.run();
+      assets.upload(uploadKey, asset, body, new Callback<>() {
+        @Override
+        public void success(Void value) {
+          assets.attach(identity, context, uploadKey, asset, channelFinal, message, new Callback<Integer>() {
+            @Override
+            public void success(Integer value) {
+              sendImmediate(metrics.webhandler_put_asset, req, ctx, HttpResponseStatus.OK, EMPTY_RESPONSE, "text/plain", true);
+            }
+
+            @Override
+            public void failure(ErrorCodeException ex) {
+              LOG.error("failed-put-asset-attach:" + ex.code);
+              sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR, ASSET_UPLOAD_FAILURE, "text/html; charset=UTF-8", true);
+            }
+          });
+        }
+
+        @Override
+        public void failure(ErrorCodeException ex) {
+          LOG.error("failed-put-asset-upload:" + ex.code);
+          sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR, ASSET_UPLOAD_FAILURE, "text/html; charset=UTF-8", true);
+        }
+      });
+    } catch (Exception ex) {
+      LOG.error("failed-put-asset", ex);
+      sendImmediate(metrics.webhandler_put_asset_failure, req, ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR, ASSET_UPLOAD_FAILURE, "text/html; charset=UTF-8", true);
+    }
+  }
+
+  private static String getQueryParam(QueryStringDecoder qsd, String name) {
+    java.util.List<String> values = qsd.parameters().get(name);
+    if (values != null && !values.isEmpty()) {
+      return values.get(0);
+    }
+    return null;
+  }
+
   private static final String CACHED_ADAMA_JAR_MD5 = hashAdamaJar();
 
   private static String hashAdamaJar() {
@@ -540,30 +698,75 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
   private void okOpen(final ChannelHandlerContext ctx, final FullHttpRequest req) {
     final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), HttpResponseStatus.OK, Unpooled.wrappedBuffer(EMPTY_RESPONSE));
     HttpUtil.setContentLength(res, 0);
-    res.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-    res.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_METHODS, "*");
-    res.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_CREDENTIALS, true);
+    transferCors(res, req, true);
     res.headers().set(HttpHeaderNames.CACHE_CONTROL, "no-cache");
-    res.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_HEADERS, "content-type");
     sendWithKeepAlive(webConfig, ctx, req, res);
   }
 
-  private static String logSanitize(String x) {
+  /**
+   * Sanitize a string for safe logging. Balances reasonableness (allowing enough characters for
+   * useful log messages including URLs, JSON fragments, stack traces) with security (stripping
+   * control characters, null bytes, and other injection vectors). Newlines are converted to spaces.
+   */
+  static String logSanitize(String x) {
+    if (x == null) {
+      return "";
+    }
+    // cap length to prevent unbounded log entries
+    if (x.length() > 4096) {
+      x = x.substring(0, 4096);
+    }
     PrimitiveIterator.OfInt it = x.codePoints().iterator();
     StringBuilder result = new StringBuilder();
     while (it.hasNext()) {
       int codepoint = it.nextInt();
-      if (Character.isLetterOrDigit(codepoint) || Character.isWhitespace(codepoint) || codepoint == ':' || codepoint == '.' || codepoint == '/') {
+      if (codepoint == '\n' || codepoint == '\r') {
+        result.append(' ');
+      } else if (Character.isLetterOrDigit(codepoint) || Character.isWhitespace(codepoint)
+          || ":./\\-_=,;()[]@#+!?&~\"'{}".indexOf(codepoint) >= 0) {
         result.append(Character.toString(codepoint));
       }
     }
     return result.toString();
   }
 
-  private static boolean computeIsDevBox(String host) {
+  /** Sanitize the log name: only allow lowercase alphanumeric, dashes, and dots. Cap length. */
+  static String sanitizeLogName(String name) {
+    if (name == null || name.isEmpty()) {
+      return "unknown";
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < name.length() && sb.length() < 64; i++) {
+      char c = name.charAt(i);
+      if (Character.isLetterOrDigit(c) || c == '-' || c == '.') {
+        sb.append(Character.toLowerCase(c));
+      }
+    }
+    if (sb.length() == 0) {
+      return "unknown";
+    }
+    return sb.toString();
+  }
+
+  /**
+   * Devbox mode is intended for personal development machines that are isolated from real traffic.
+   * It relaxes several security controls (cookie Secure flag, CORS origin validation, SameSite policy)
+   * to simplify local development. It should NEVER be reachable from the public internet.
+   */
+  static boolean computeIsDevBox(String host) {
     boolean isLocalHost = "localhost".equals(host) || host.startsWith("localhost:");
     boolean is127 = "127.0.0.1".equals(host) || host.startsWith("127.0.0.1:");
     return isLocalHost || is127;
+  }
+
+  /** extract hostname from a URL like "https://example.com" or "http://example.com:8080"; returns null for relative URLs or unparseable input */
+  static String extractHostname(String url) {
+    try {
+      URI uri = new URI(url);
+      return uri.getHost();
+    } catch (Exception ex) {
+      return null;
+    }
   }
 
   private boolean handleInternal(final String host, boolean isDevBox, final ChannelHandlerContext ctx, final FullHttpRequest req) {
@@ -595,25 +798,40 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         request.put("id", 0); // inject a faux-id
         String method = request.get("method").textValue();
         if (OnceFilter.allowed(method)) {
-          final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers());
-          ServiceConnection connection = serviceBase.establishServiceConnection(context);
-          connection.execute(new JsonRequest(request, context), new JsonResponder() {
+          onceRateLimiter.execute(webConfig.onceRateLimitMaxAttempts, webConfig.onceRateLimitDelay, webConfig.onceRateLimitJitter, new Callback<Void>() {
             @Override
-            public void stream(String json) {
-              // we don't hold it open as we don't allow streams
-              finish(json);
+            public void success(Void value) {
+              ctx.executor().execute(() -> {
+                final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers(), webConfig.useXForwardedFor);
+                ServiceConnection connection = serviceBase.establishServiceConnection(context);
+                connection.execute(new JsonRequest(request, context), new JsonResponder() {
+                  @Override
+                  public void stream(String json) {
+                    // we don't hold it open as we don't allow streams
+                    finish(json);
+                  }
+
+                  @Override
+                  public void finish(String json) {
+                    sendImmediate(metrics.webhandler_success_once, req, ctx, HttpResponseStatus.OK, json.getBytes(StandardCharsets.UTF_8), "application/json", true);
+                    connection.kill();
+                  }
+
+                  @Override
+                  public void error(ErrorCodeException ex) {
+                    sendImmediate(metrics.webhandler_failed_once_exception, req, ctx, HttpResponseStatus.BAD_REQUEST, ("" + ex.code).getBytes(StandardCharsets.UTF_8), "text/plain", true);
+                    connection.kill();
+                  }
+                });
+              });
             }
 
             @Override
-            public void finish(String json) {
-              sendImmediate(metrics.webhandler_success_once, req, ctx, HttpResponseStatus.OK, json.getBytes(StandardCharsets.UTF_8), "application/json", true);
-              connection.kill();
-            }
-
-            @Override
-            public void error(ErrorCodeException ex) {
-              sendImmediate(metrics.webhandler_failed_once_exception, req, ctx, HttpResponseStatus.BAD_REQUEST, ("" + ex.code).getBytes(StandardCharsets.UTF_8), "text/plain", true);
-              connection.kill();
+            public void failure(ErrorCodeException ex) {
+              ctx.executor().execute(() -> {
+                metrics.webhandler_failed_once_rate_limited.run();
+                sendImmediate(metrics.webhandler_failed_once_rate_limited, req, ctx, HttpResponseStatus.TOO_MANY_REQUESTS, RATE_LIMITED, "text/plain", true);
+              });
             }
           });
         } else {
@@ -625,6 +843,12 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
       return true;
     } else if (req.uri().startsWith("/~upload") && req.method() == HttpMethod.POST) {
       handleAssetUpload(ctx, req);
+      return true;
+    } else if (req.uri().startsWith("/~put") && req.method() == HttpMethod.PUT) {
+      handleAssetPut(ctx, req);
+      return true;
+    } else if (req.uri().startsWith("/~put") && req.method() == HttpMethod.OPTIONS) {
+      okOpen(ctx, req);
       return true;
     } else if (req.uri().equalsIgnoreCase("/adama.jar") && host.endsWith(webConfig.adamaJarDomain)) {
       sendJar(ctx, req);
@@ -646,22 +870,17 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         sendImmediate(metrics.webhandler_worker_download, req, ctx, HttpResponseStatus.OK, JavaScriptClient.ADAMA_WORKER_JS_CLIENT_BYTES, "text/javascript; charset=UTF-8", true);
       }
       return true;
-    } else if ((req.uri().startsWith("/~lg/") || req.uri().startsWith("/~pt/") || req.uri().startsWith("/~bm/")) && req.method() == HttpMethod.OPTIONS) {
+    } else if ((req.uri().startsWith("/~lg/") || req.uri().startsWith("/~bm/")) && req.method() == HttpMethod.OPTIONS) {
       okOpen(ctx, req);
       return true;
     } else if (req.uri().startsWith("/~lg/") && req.method() == HttpMethod.PUT) {
-      String logName = req.uri().substring(5);
+      // This handler is for logs from the web client or other clients.
+      // Log data is untrusted, so both the log name and content are sanitized.
+      String logName = sanitizeLogName(req.uri().substring(5));
       byte[] memory = new byte[req.content().readableBytes()];
       req.content().readBytes(memory);
       String result = new String(memory, StandardCharsets.UTF_8);
-      LOG.error(logName + ":{} %s", logSanitize(result));
-      okOpen(ctx, req);
-      return true;
-    } else if (req.uri().startsWith("/~pt/") && req.uri().length() >= 10 && req.method() == HttpMethod.PUT) {
-      metrics.webclient_pushack.run();
-      String pushToken = req.uri().substring(5);
-      LOG.error("push-token-ack:" + logSanitize(pushToken));
-      // TODO: route to real logger
+      CLIENT_LOG.debug(logName + ":" + logSanitize(result));
       okOpen(ctx, req);
       return true;
     } else if (req.uri().startsWith("/~bm/") && req.uri().length() >= 6) { // bump a metric
@@ -671,31 +890,6 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         counter.run();
       }
       okOpen(ctx, req);
-      return true;
-    } else if (req.uri().startsWith("/~set/")) { // set a secure cookie
-      String[] fragments = req.uri().split(Pattern.quote("/"));
-      if (fragments.length == 4) {
-        final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), HttpResponseStatus.OK, Unpooled.wrappedBuffer(OK_RESPONSE));
-        String name = fragments[2];
-        String value = fragments[3];
-        String origin = req.headers().get(HttpHeaderNames.ORIGIN);
-        if (origin != null) { // CORS support directly
-          res.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
-          res.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_CREDENTIALS, true);
-        }
-        res.headers().set(HttpHeaderNames.CACHE_CONTROL, "no-cache");
-        DefaultCookie cookie = new DefaultCookie("skvp_" + name, value);
-        cookie.setSameSite(CookieHeaderNames.SameSite.Lax);
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        res.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-        res.headers().set(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookie));
-        sendWithKeepAlive(webConfig, ctx, req, res);
-      } else {
-        sendImmediate(metrics.webhandler_failed_cookie_set, req, ctx, HttpResponseStatus.BAD_REQUEST, COOKIE_SET_FAILURE, "text/html; charset=UTF-8", true);
-      }
       return true;
     } else if (req.uri().startsWith("/~stash/") && (req.method() == HttpMethod.OPTIONS)) {
       String origin = req.headers().get(HttpHeaderNames.ORIGIN);
@@ -718,6 +912,10 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         String name = body.get("name").textValue();
         String value = body.get("identity").textValue();
         int maxAge = body.get("max-age").intValue();
+        if (value != null && value.length() > MAX_COOKIE_VALUE_LENGTH) {
+          sendImmediate(metrics.webhandler_failed_cookie_set, req, ctx, HttpResponseStatus.BAD_REQUEST, COOKIE_TOO_LARGE, "text/plain", true);
+          return true;
+        }
         String origin = req.headers().get(HttpHeaderNames.ORIGIN);
         if (origin == null) { // CORS support directly
           sendImmediate(metrics.webhandler_failed_cookie_set, req, ctx, HttpResponseStatus.BAD_REQUEST, COOKIE_SET_FAILURE, "text/html; charset=UTF-8", true);
@@ -746,6 +944,28 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     return false;
   }
 
+  private void handleQRJsonTransform(HttpHandler.HttpResult httpResult, final ChannelHandlerContext ctx, final FullHttpRequest req, boolean isDevBox) {
+    byte[] body = null;
+    try {
+      body = QRCodeFactory.generate(httpResult.location, httpResult.size);
+    } catch (Exception e) {
+      metrics.web_qr_code_creation_failure.run();
+    }
+    if (body != null) {
+      final HttpResponseStatus status = HttpResponseStatus.valueOf(200);
+      final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), status, Unpooled.wrappedBuffer(body));
+      HttpUtil.setContentLength(res, body.length);
+      res.headers().set(HttpHeaderNames.CONTENT_TYPE, "image/png");
+      fullTransferSend(httpResult, ctx, req, res, isDevBox);
+    } else {
+      body = "Unable to produce QR code".getBytes(StandardCharsets.UTF_8);
+      final HttpResponseStatus status = HttpResponseStatus.valueOf(400);
+      final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), status, Unpooled.wrappedBuffer(body));
+      HttpUtil.setContentLength(res, body.length);
+      res.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+    }
+  }
+
   private void handleHttpResult(final String host, final boolean isDevBox, HttpHandler.HttpResult httpResultIncoming, final ChannelHandlerContext ctx, final FullHttpRequest req) {
     HttpHandler.HttpResult httpResult = httpResultIncoming;
     if (httpResult == null) { // no response found
@@ -765,6 +985,12 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     // otherwise, send the body
     metrics.webhandler_found.run();
+
+    if (httpResult.contentType != null && httpResult.contentType.equals("internal/qr-code")) {
+      handleQRJsonTransform(httpResult, ctx, req, isDevBox);
+      return;
+    }
+
     byte[] body = httpResult.body != null ? httpResult.body : EMPTY_RESPONSE;
     final HttpResponseStatus status = HttpResponseStatus.valueOf(httpResult.status);
     final FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), status, Unpooled.wrappedBuffer(body));
@@ -772,12 +998,18 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     if (httpResult.contentType.length() > 0) {
       res.headers().set(HttpHeaderNames.CONTENT_TYPE, httpResult.contentType);
     }
+    fullTransferSend(httpResult, ctx, req, res, isDevBox);
+  }
+
+  private void fullTransferSend(HttpHandler.HttpResult httpResult, final ChannelHandlerContext ctx, final FullHttpRequest req, final FullHttpResponse res, boolean isDevBox) {
     if (httpResult.cacheTimeSeconds != null && httpResult.cacheTimeSeconds > 0) {
       res.headers().set(HttpHeaderNames.CACHE_CONTROL, "max-age=" + httpResult.cacheTimeSeconds);
     }
     if (httpResult.headers != null) {
       for (Map.Entry<String, String> header : httpResult.headers.entrySet()) {
-        res.headers().set(header.getKey(), header.getValue());
+        if (!webConfig.headerBlacklist.contains(header.getKey().toLowerCase(Locale.ROOT))) {
+          res.headers().set(header.getKey(), header.getValue());
+        }
       }
     }
     injectIdentity(httpResult.identity, isDevBox, res);
@@ -787,7 +1019,9 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
   private void injectIdentity(String identity, boolean isDevBox, FullHttpResponse res) {
     if (identity != null) {
-      // TODO: introduce an identity name? expiry?
+      if (identity.length() > MAX_COOKIE_VALUE_LENGTH && !identity.equalsIgnoreCase("clear")) {
+        return;
+      }
       DefaultCookie cookie;
       if (identity.equalsIgnoreCase("clear")) {
         cookie = new DefaultCookie("id_default", "");
@@ -821,12 +1055,47 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     final String host = hostTemp;
     final boolean isDevBox = computeIsDevBox(host);
 
-    // Step 2: Handle internal routing for Adama only stuff
+    // Step 2: Validate CORS origin via CertificateFinder
+    String origin = req.headers().get(HttpHeaderNames.ORIGIN);
+    if (origin != null && !isDevBox) {
+      String hostname = extractHostname(origin);
+      if (hostname == null) {
+        req.headers().remove(HttpHeaderNames.ORIGIN);
+        metrics.webhandler_cors_origin_blocked.run();
+        processRequest(host, isDevBox, ctx, req);
+        return;
+      }
+      if (webConfig.specialDomains.contains(hostname)) {
+        processRequest(host, isDevBox, ctx, req);
+        return;
+      }
+      certificateFinder.fetch(hostname, new Callback<SslContext>() {
+        @Override
+        public void success(SslContext value) {
+          ctx.executor().execute(() -> processRequest(host, isDevBox, ctx, req));
+        }
+
+        @Override
+        public void failure(ErrorCodeException ex) {
+          ctx.executor().execute(() -> {
+            req.headers().remove(HttpHeaderNames.ORIGIN);
+            metrics.webhandler_cors_origin_blocked.run();
+            processRequest(host, isDevBox, ctx, req);
+          });
+        }
+      });
+    } else {
+      processRequest(host, isDevBox, ctx, req);
+    }
+  }
+
+  private void processRequest(final String host, final boolean isDevBox, final ChannelHandlerContext ctx, final FullHttpRequest req) {
+    // Handle internal routing for Adama only stuff
     if (handleInternal(host, isDevBox, ctx, req)) {
       return;
     }
 
-    // Step 4: Handle the result from the web request
+    // Handle the result from the web request
     Callback<HttpHandler.HttpResult> callback = new Callback<>() {
       @Override
       public void success(HttpHandler.HttpResult value) {
@@ -846,11 +1115,11 @@ public class WebHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
       }
     };
 
-    // Step 3: Parse the request and then route to the appropriate handler
+    // Parse the request and then route to the appropriate handler
     try {
-      AdamaWebRequest wta = new AdamaWebRequest(req, ctx);
+      AdamaWebRequest wta = new AdamaWebRequest(req, ctx, webConfig.useXForwardedFor);
       HttpHandler.Method hhmethod = HttpHandler.Method.GET;
-      final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers());
+      final ConnectionContext context = ConnectionContextFactory.of(ctx, req.headers(), webConfig.useXForwardedFor);
       if (req.method() == HttpMethod.OPTIONS) {
         metrics.webhandler_options.run();
         hhmethod = HttpHandler.Method.OPTIONS;

@@ -28,6 +28,7 @@ import ape.web.client.SimpleHttpRequestBody;
 import ape.web.client.StringCallbackHttpResponder;
 import ape.web.client.WebClientBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import ape.ErrorCodes;
 import ape.common.Callback;
 import ape.common.ErrorCodeException;
 import ape.common.Json;
@@ -38,6 +39,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.helpers.NOPLogger;
 
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.Locale;
 import java.util.TreeMap;
@@ -61,7 +63,46 @@ public class UrlSummaryGenerator {
     }
   }
 
+  /** Validate that the URL uses https, has a proper hostname (not localhost or an IP address) */
+  static boolean isValidUrl(String url) {
+    try {
+      URL parsed = new URL(url);
+      if (!"https".equalsIgnoreCase(parsed.getProtocol())) {
+        return false;
+      }
+      String host = parsed.getHost();
+      if (host == null || host.isEmpty()) {
+        return false;
+      }
+      // reject localhost
+      if ("localhost".equalsIgnoreCase(host)) {
+        return false;
+      }
+      // reject IP addresses (both IPv4 and IPv6)
+      try {
+        InetAddress addr = InetAddress.getByName(host);
+        // if getByName succeeds and the string form matches the host, it's an IP literal
+        if (addr.getHostAddress().equals(host) || host.startsWith("[")) {
+          return false;
+        }
+      } catch (Exception ex) {
+        // not an IP literal - this is good, means it's a hostname
+      }
+      // must contain at least one dot (a real domain, not a bare name)
+      if (!host.contains(".")) {
+        return false;
+      }
+      return true;
+    } catch (Exception ex) {
+      return false;
+    }
+  }
+
   public static void summarize(WebClientBase base, String url, Callback<ObjectNode> callback) {
+    if (!isValidUrl(url)) {
+      callback.failure(new ErrorCodeException(ErrorCodes.URL_SUMMARY_INVALID_URL));
+      return;
+    }
     SimpleHttpRequest request = new SimpleHttpRequest("GET", url, new TreeMap<>(), SimpleHttpRequestBody.EMPTY);
     base.executeShared(request, new StringCallbackHttpResponder(NOPLogger.NOP_LOGGER, RequestResponseMonitor.UNMONITORED, new Callback<String>() {
       @Override

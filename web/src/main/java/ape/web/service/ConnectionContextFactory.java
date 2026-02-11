@@ -40,23 +40,29 @@ import java.util.regex.Pattern;
  */
 public class ConnectionContextFactory {
   public static ConnectionContext of(final ChannelHandlerContext ctx, HttpHeaders headers) {
+    return of(ctx, headers, false);
+  }
+
+  public static ConnectionContext of(final ChannelHandlerContext ctx, HttpHeaders headers, boolean useXForwardedFor) {
     String origin = headers.get("origin");
     if (origin == null) {
       origin = "https://" + headers.get("host");
     }
     String ip = ctx.channel().remoteAddress().toString().replaceAll(Pattern.quote("/"), "");
-    String xForwardedFor = headers.get("x-forwarded-for");
-    if (xForwardedFor != null && !("".equals(xForwardedFor))) {
-      ip = xForwardedFor;
+    if (useXForwardedFor) {
+      String xForwardedFor = headers.get("x-forwarded-for");
+      if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+        // Use the rightmost IP: this is the one added by the trusted load balancer/proxy.
+        // Left-side entries can be spoofed by clients, but the rightmost is from our infrastructure.
+        String[] parts = xForwardedFor.split(",");
+        ip = parts[parts.length - 1].trim();
+      }
     }
     String cookieHeader = headers.get(HttpHeaderNames.COOKIE);
     TreeMap<String, String> identites = new TreeMap<>();
-    if (cookieHeader != null) {
+    if (cookieHeader != null && cookieHeader.length() <= 8192) {
       for (Cookie cookie : ServerCookieDecoder.STRICT.decode(cookieHeader)) {
-        if (cookie.name().startsWith("id_") && cookie.isHttpOnly() && cookie.isSecure()) {
-          if (identites == null) {
-            identites = new TreeMap<>();
-          }
+        if (cookie.name().startsWith("id_") && cookie.value().length() <= 1024) {
           identites.put(cookie.name().substring(3), cookie.value());
         }
       }

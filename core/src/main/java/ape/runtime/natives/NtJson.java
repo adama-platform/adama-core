@@ -24,7 +24,9 @@
 package ape.runtime.natives;
 
 import ape.runtime.json.JsonStreamWriter;
+import ape.runtime.natives.lists.ArrayNtList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -141,6 +143,71 @@ public class NtJson {
       return new NtMaybe<>(((long) tree) != 0);
     }
     return new NtMaybe<>();
+  }
+
+  /** Return the number of entries in this node: array length or object key count. */
+  public NtMaybe<Integer> size() {
+    if (tree instanceof List) {
+      return new NtMaybe<>(((List<?>) tree).size());
+    }
+    if (tree instanceof Map) {
+      return new NtMaybe<>(((Map<?, ?>) tree).size());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Return the keys of this JSON object. Returns empty list if not an object. */
+  public NtList<String> keys() {
+    if (tree instanceof Map) {
+      ArrayList<String> result = new ArrayList<>();
+      for (Object key : ((Map<?, ?>) tree).keySet()) {
+        result.add(key.toString());
+      }
+      return new ArrayNtList<>(result);
+    }
+    return new ArrayNtList<>(new ArrayList<>());
+  }
+
+  /** Return true if this node is a JSON array. */
+  public boolean is_array() {
+    return tree instanceof List;
+  }
+
+  /** Return true if this node is a JSON object. */
+  public boolean is_object() {
+    return tree instanceof Map;
+  }
+
+  /** Return true if this node is a JSON string. */
+  public boolean is_string() {
+    return tree instanceof String;
+  }
+
+  /** Return true if this node is a JSON number. */
+  public boolean is_number() {
+    return tree instanceof Integer || tree instanceof Long || tree instanceof Double;
+  }
+
+  /** Return true if this node is a JSON boolean. */
+  public boolean is_bool() {
+    return tree instanceof Boolean;
+  }
+
+  /** Return true if this node is JSON null. */
+  public boolean is_null() {
+    return tree == null;
+  }
+
+  /** Convert a JSON array to an iterable list of NtJson nodes. Returns empty list if not an array. */
+  public NtList<NtJson> to_list() {
+    if (tree instanceof List) {
+      ArrayList<NtJson> result = new ArrayList<>();
+      for (Object item : (List<?>) tree) {
+        result.add(new NtJson(item));
+      }
+      return new ArrayNtList<>(result);
+    }
+    return new ArrayNtList<>(new ArrayList<>());
   }
 
   private static final NtJson NULL_VALUE = new NtJson(null);

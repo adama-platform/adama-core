@@ -46,7 +46,7 @@ public class TemplateScrollCommandMaxTests extends BaseRxHtmlTest {
     gold.append("\n    // <button rx:click=\"scroll:parent-max\">");
     gold.append("\n    var d=$.E('button');");
     gold.append("\n    $.oSCR(d,'click',a,'parent-max');");
-    gold.append("\n    d.append($.T(' Do a scroll '));");
+    gold.append("\n    d.append($.T('Do a scroll'));");
     gold.append("\n    b.append(d);");
     gold.append("\n  });");
     gold.append("\n})(RxHTML);");
@@ -64,7 +64,7 @@ public class TemplateScrollCommandMaxTests extends BaseRxHtmlTest {
     gold.append("\n    // <button rx:click=\"scroll:parent-max\">");
     gold.append("\n    var d=$.E('button');");
     gold.append("\n    $.oSCR(d,'click',a,'parent-max');");
-    gold.append("\n    d.append($.T(' Do a scroll '));");
+    gold.append("\n    d.append($.T('Do a scroll'));");
     gold.append("\n    b.append(d);");
     gold.append("\n  });");
     gold.append("\n})(RxHTML);");

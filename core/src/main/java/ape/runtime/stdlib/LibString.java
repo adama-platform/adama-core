@@ -34,7 +34,12 @@ import ape.runtime.natives.NtMaybe;
 import ape.runtime.natives.lists.ArrayNtList;
 import ape.translator.reflect.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.PrimitiveIterator;
 import java.util.regex.Matcher;
@@ -445,6 +450,9 @@ public class LibString {
 
   @Extension
   public static String multiply(final String input, final int count) {
+    if (count <= 0) {
+      return "";
+    }
     final var sb = new StringBuilder();
     for (var k = 0; k < count; k++) {
       sb.append(input);
@@ -832,5 +840,295 @@ public class LibString {
   @Extension
   public static int compareInsensitive(String x, String y) {
     return x.compareToIgnoreCase(y);
+  }
+
+  /** Return the number of characters in the string. */
+  @Extension
+  public static int length(String s) {
+    return s.length();
+  }
+
+  /** Return the number of characters in the string, or empty if input is absent. */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> length(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return new NtMaybe<>(s.get().length());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Return true if the string has zero length. */
+  @Extension
+  public static boolean isEmpty(String s) {
+    return s.isEmpty();
+  }
+
+  /** Return true if the string has zero length, or empty if input is absent. */
+  @Extension
+  public static @HiddenType(clazz = Boolean.class) NtMaybe<Boolean> isEmpty(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return new NtMaybe<>(s.get().isEmpty());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Return true if the string is empty or contains only whitespace. */
+  @Extension
+  public static boolean isBlank(String s) {
+    return s.isBlank();
+  }
+
+  /** Return true if the string is empty or contains only whitespace, or empty if input is absent. */
+  @Extension
+  public static @HiddenType(clazz = Boolean.class) NtMaybe<Boolean> isBlank(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return new NtMaybe<>(s.get().isBlank());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Return the character at the given 0-based index as a single-character string, or empty if out of bounds. */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> charAt(String s, int index) {
+    if (index < 0 || index >= s.length()) {
+      return new NtMaybe<>();
+    }
+    return new NtMaybe<>(String.valueOf(s.charAt(index)));
+  }
+
+  /** Return the character at the given 0-based index, or empty if input is absent or index out of bounds. */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> charAt(final @HiddenType(clazz = String.class) NtMaybe<String> s, int index) {
+    if (s.has()) {
+      return charAt(s.get(), index);
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Find the last position of needle in haystack, or empty if not found. */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> lastIndexOf(final String haystack, String needle) {
+    int value = haystack.lastIndexOf(needle);
+    if (value < 0) {
+      return new NtMaybe<>();
+    }
+    return new NtMaybe<>(value);
+  }
+
+  /** Find the last position of needle in haystack (Maybe haystack variant). */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> lastIndexOf(final @HiddenType(clazz = String.class) NtMaybe<String> haystack, String needle) {
+    if (haystack.has()) {
+      return lastIndexOf(haystack.get(), needle);
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Find the last position of needle in haystack (Maybe needle variant). */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> lastIndexOf(final String haystack, final @HiddenType(clazz = String.class) NtMaybe<String> needle) {
+    if (needle.has()) {
+      return lastIndexOf(haystack, needle.get());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Find the last position of needle in haystack (both Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> lastIndexOf(final @HiddenType(clazz = String.class) NtMaybe<String> haystack, final @HiddenType(clazz = String.class) NtMaybe<String> needle) {
+    if (haystack.has() && needle.has()) {
+      return lastIndexOf(haystack.get(), needle.get());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Left-pad the string to the given length using the specified padding character. */
+  @Extension
+  public static String padLeft(String s, int len, String ch) {
+    if (ch.isEmpty() || s.length() >= len) {
+      return s;
+    }
+    StringBuilder sb = new StringBuilder();
+    while (sb.length() + s.length() < len) {
+      sb.append(ch);
+    }
+    sb.append(s);
+    return sb.toString();
+  }
+
+  /** Left-pad the string (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> padLeft(final @HiddenType(clazz = String.class) NtMaybe<String> s, int len, String ch) {
+    if (s.has()) {
+      return new NtMaybe<>(padLeft(s.get(), len, ch));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Right-pad the string to the given length using the specified padding character. */
+  @Extension
+  public static String padRight(String s, int len, String ch) {
+    if (ch.isEmpty() || s.length() >= len) {
+      return s;
+    }
+    StringBuilder sb = new StringBuilder(s);
+    while (sb.length() < len) {
+      sb.append(ch);
+    }
+    return sb.toString();
+  }
+
+  /** Right-pad the string (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> padRight(final @HiddenType(clazz = String.class) NtMaybe<String> s, int len, String ch) {
+    if (s.has()) {
+      return new NtMaybe<>(padRight(s.get(), len, ch));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Count the number of non-overlapping occurrences of needle in haystack. */
+  @Extension
+  public static int countOccurrences(String haystack, String needle) {
+    if (needle.isEmpty()) {
+      return 0;
+    }
+    int count = 0;
+    int idx = 0;
+    while ((idx = haystack.indexOf(needle, idx)) >= 0) {
+      count++;
+      idx += needle.length();
+    }
+    return count;
+  }
+
+  /** Count occurrences (Maybe haystack variant). */
+  @Extension
+  public static @HiddenType(clazz = Integer.class) NtMaybe<Integer> countOccurrences(final @HiddenType(clazz = String.class) NtMaybe<String> haystack, String needle) {
+    if (haystack.has()) {
+      return new NtMaybe<>(countOccurrences(haystack.get(), needle));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Replace only the first occurrence of oldNeedle with newNeedle. Uses literal matching (not regex). */
+  @Extension
+  public static String replaceFirst(String haystack, String oldNeedle, String newNeedle) {
+    int idx = haystack.indexOf(oldNeedle);
+    if (idx < 0) {
+      return haystack;
+    }
+    return haystack.substring(0, idx) + newNeedle + haystack.substring(idx + oldNeedle.length());
+  }
+
+  /** Replace only the first occurrence (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> replaceFirst(final @HiddenType(clazz = String.class) NtMaybe<String> haystack, String oldNeedle, String newNeedle) {
+    if (haystack.has()) {
+      return new NtMaybe<>(replaceFirst(haystack.get(), oldNeedle, newNeedle));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Test if the string fully matches the given regular expression. Returns false for invalid regex. */
+  @Extension
+  public static boolean matches(String s, String regex) {
+    try {
+      return s.matches(regex);
+    } catch (Exception ex) {
+      return false;
+    }
+  }
+
+  /** Test if the string fully matches the given regular expression (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = Boolean.class) NtMaybe<Boolean> matches(final @HiddenType(clazz = String.class) NtMaybe<String> s, String regex) {
+    if (s.has()) {
+      return new NtMaybe<>(matches(s.get(), regex));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Collapse runs of whitespace into a single space and trim leading/trailing whitespace. */
+  @Extension
+  public static String normalizeWhitespace(String s) {
+    return s.strip().replaceAll("\\s+", " ");
+  }
+
+  /** Collapse whitespace (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> normalizeWhitespace(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return new NtMaybe<>(normalizeWhitespace(s.get()));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Encode the string as Base64 using UTF-8 encoding. */
+  @Extension
+  public static String base64Encode(String s) {
+    return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8));
+  }
+
+  /** Encode the string as Base64 (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> base64Encode(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return new NtMaybe<>(base64Encode(s.get()));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** Decode a Base64 string back to UTF-8 text. Returns empty if the input is not valid Base64. */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> base64Decode(String s) {
+    try {
+      return new NtMaybe<>(new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8));
+    } catch (Exception ex) {
+      return new NtMaybe<>();
+    }
+  }
+
+  /** Decode a Base64 string (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> base64Decode(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return base64Decode(s.get());
+    }
+    return new NtMaybe<>();
+  }
+
+  /** URL-encode the string using UTF-8 percent-encoding. */
+  @Extension
+  public static String urlEncode(String s) {
+    return URLEncoder.encode(s, StandardCharsets.UTF_8);
+  }
+
+  /** URL-encode the string (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> urlEncode(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return new NtMaybe<>(urlEncode(s.get()));
+    }
+    return new NtMaybe<>();
+  }
+
+  /** URL-decode the string from percent-encoding. Returns empty if the input is malformed. */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> urlDecode(String s) {
+    try {
+      return new NtMaybe<>(URLDecoder.decode(s, StandardCharsets.UTF_8));
+    } catch (Exception ex) {
+      return new NtMaybe<>();
+    }
+  }
+
+  /** URL-decode the string (Maybe variant). */
+  @Extension
+  public static @HiddenType(clazz = String.class) NtMaybe<String> urlDecode(final @HiddenType(clazz = String.class) NtMaybe<String> s) {
+    if (s.has()) {
+      return urlDecode(s.get());
+    }
+    return new NtMaybe<>();
   }
 }

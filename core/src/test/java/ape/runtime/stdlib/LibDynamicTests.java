@@ -24,9 +24,14 @@
 package ape.runtime.stdlib;
 
 import ape.runtime.natives.NtDynamic;
+import ape.runtime.natives.NtJson;
+import ape.runtime.natives.NtList;
 import ape.runtime.natives.NtMaybe;
+import ape.runtime.natives.lists.ArrayNtList;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class LibDynamicTests {
 
@@ -247,5 +252,120 @@ public class LibDynamicTests {
   public void parse() {
     Assert.assertTrue(LibDynamic.parse("{}").has());
     Assert.assertFalse(LibDynamic.parse("xyz").has());
+  }
+
+  @Test
+  public void coverage_size() {
+    Assert.assertEquals(3, (int) LibDynamic.size(new NtDynamic("[1,2,3]")).get());
+    Assert.assertEquals(2, (int) LibDynamic.size(new NtDynamic("{\"a\":1,\"b\":2}")).get());
+    Assert.assertFalse(LibDynamic.size(new NtDynamic("42")).has());
+    Assert.assertFalse(LibDynamic.size(new NtDynamic("\"str\"")).has());
+    Assert.assertEquals(3, (int) LibDynamic.size(new NtMaybe<>(new NtDynamic("[1,2,3]"))).get());
+    Assert.assertFalse(LibDynamic.size(new NtMaybe<NtDynamic>()).has());
+  }
+
+  @Test
+  public void coverage_type_checks() {
+    Assert.assertTrue(LibDynamic.is_array(new NtDynamic("[1,2]")));
+    Assert.assertFalse(LibDynamic.is_array(new NtDynamic("{}")));
+    Assert.assertTrue(LibDynamic.is_object(new NtDynamic("{}")));
+    Assert.assertFalse(LibDynamic.is_object(new NtDynamic("[1]")));
+    Assert.assertTrue(LibDynamic.is_string(new NtDynamic("\"hello\"")));
+    Assert.assertFalse(LibDynamic.is_string(new NtDynamic("42")));
+    Assert.assertTrue(LibDynamic.is_number(new NtDynamic("42")));
+    Assert.assertTrue(LibDynamic.is_number(new NtDynamic("3.14")));
+    Assert.assertFalse(LibDynamic.is_number(new NtDynamic("\"str\"")));
+    Assert.assertTrue(LibDynamic.is_bool(new NtDynamic("true")));
+    Assert.assertFalse(LibDynamic.is_bool(new NtDynamic("42")));
+  }
+
+  @Test
+  public void coverage_has() {
+    Assert.assertTrue(LibDynamic.has(new NtDynamic("{\"x\":1}"), "x"));
+    Assert.assertFalse(LibDynamic.has(new NtDynamic("{\"x\":1}"), "y"));
+    Assert.assertFalse(LibDynamic.has(new NtDynamic("[1,2]"), "x"));
+  }
+
+  @Test
+  public void coverage_keys() {
+    NtList<String> keys = LibDynamic.keys(new NtDynamic("{\"a\":1,\"b\":2}"));
+    Assert.assertEquals(2, keys.size());
+    NtList<String> emptyKeys = LibDynamic.keys(new NtDynamic("[1,2]"));
+    Assert.assertEquals(0, emptyKeys.size());
+  }
+
+  @Test
+  public void coverage_at() {
+    Assert.assertEquals("2", LibDynamic.atIndex(new NtDynamic("[1,2,3]"), 1).json);
+    Assert.assertEquals("null", LibDynamic.atIndex(new NtDynamic("[1,2,3]"), 5).json);
+    Assert.assertEquals("null", LibDynamic.atIndex(new NtDynamic("42"), 0).json);
+    Assert.assertEquals("1", LibDynamic.atField(new NtDynamic("{\"x\":1}"), "x").json);
+    Assert.assertEquals("null", LibDynamic.atField(new NtDynamic("{\"x\":1}"), "y").json);
+    Assert.assertEquals("null", LibDynamic.atField(new NtDynamic("[1,2]"), "x").json);
+  }
+
+  @Test
+  public void coverage_merge() {
+    NtDynamic target = new NtDynamic("{\"a\":1,\"b\":2}");
+    NtDynamic patch = new NtDynamic("{\"b\":3,\"c\":4}");
+    NtDynamic merged = LibDynamic.merge(target, patch);
+    // merged should have a=1, b=3, c=4
+    Assert.assertEquals(1, (int) LibDynamic.i(merged, "a").get());
+    Assert.assertEquals(3, (int) LibDynamic.i(merged, "b").get());
+    Assert.assertEquals(4, (int) LibDynamic.i(merged, "c").get());
+
+    // merge with non-object patch returns patch
+    NtDynamic patchScalar = new NtDynamic("42");
+    Assert.assertEquals("42", LibDynamic.merge(target, patchScalar).json);
+
+    // merge null removal
+    NtDynamic removePatch = new NtDynamic("{\"a\":null}");
+    NtDynamic afterRemove = LibDynamic.merge(target, removePatch);
+    Assert.assertFalse(LibDynamic.i(afterRemove, "a").has());
+    Assert.assertEquals(2, (int) LibDynamic.i(afterRemove, "b").get());
+  }
+
+  @Test
+  public void coverage_arr() {
+    ArrayList<NtDynamic> items = new ArrayList<>();
+    items.add(new NtDynamic("1"));
+    items.add(new NtDynamic("2"));
+    items.add(new NtDynamic("3"));
+    NtDynamic result = LibDynamic.arr(new ArrayNtList<>(items));
+    Assert.assertTrue(LibDynamic.is_array(result));
+    Assert.assertEquals(3, (int) LibDynamic.size(result).get());
+  }
+
+  @Test
+  public void ntjson_type_checks() {
+    NtJson arr = new NtJson(new ArrayList<>());
+    Assert.assertTrue(arr.is_array());
+    Assert.assertFalse(arr.is_object());
+    Assert.assertFalse(arr.is_string());
+    Assert.assertFalse(arr.is_number());
+    Assert.assertFalse(arr.is_bool());
+    Assert.assertFalse(arr.is_null());
+
+    NtJson nullJson = new NtJson(null);
+    Assert.assertTrue(nullJson.is_null());
+
+    NtDynamic dyn = new NtDynamic("{\"a\":[1,2,3]}");
+    NtJson json = dyn.to_json();
+    Assert.assertTrue(json.is_object());
+    Assert.assertEquals(1, (int) json.size().get());
+    NtList<String> keys = json.keys();
+    Assert.assertEquals(1, keys.size());
+  }
+
+  @Test
+  public void ntjson_to_list() {
+    NtDynamic dyn = new NtDynamic("[1,2,3]");
+    NtJson json = dyn.to_json();
+    NtList<NtJson> list = json.to_list();
+    Assert.assertEquals(3, list.size());
+
+    // non-array returns empty list
+    NtJson obj = new NtDynamic("{\"a\":1}").to_json();
+    Assert.assertEquals(0, obj.to_list().size());
   }
 }

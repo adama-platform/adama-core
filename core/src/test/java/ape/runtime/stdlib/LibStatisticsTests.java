@@ -284,4 +284,145 @@ public class LibStatisticsTests {
     final var list = new ArrayNtList<>(longs);
     Assert.assertEquals(400L, (long) LibStatistics.percentileLongs(list, 0.95).get());
   }
+
+  @Test
+  public void varianceEmpties() {
+    Assert.assertFalse(LibStatistics.varianceDoubles(new EmptyNtList<>()).has());
+    Assert.assertFalse(LibStatistics.varianceInts(new EmptyNtList<>()).has());
+    Assert.assertFalse(LibStatistics.varianceLongs(new EmptyNtList<>()).has());
+  }
+
+  @Test
+  public void varianceDoubles() {
+    final var vals = new ArrayList<Double>();
+    vals.add(2.0);
+    vals.add(4.0);
+    vals.add(4.0);
+    vals.add(4.0);
+    vals.add(5.0);
+    vals.add(5.0);
+    vals.add(7.0);
+    vals.add(9.0);
+    final var list = new ArrayNtList<>(vals);
+    Assert.assertEquals(4.0, LibStatistics.varianceDoubles(list).get(), 0.01);
+  }
+
+  @Test
+  public void varianceIntegers() {
+    final var ints = new ArrayList<Integer>();
+    ints.add(2);
+    ints.add(4);
+    ints.add(4);
+    ints.add(4);
+    ints.add(5);
+    ints.add(5);
+    ints.add(7);
+    ints.add(9);
+    final var list = new ArrayNtList<>(ints);
+    Assert.assertEquals(4.0, LibStatistics.varianceInts(list).get(), 0.01);
+  }
+
+  @Test
+  public void varianceLongs() {
+    final var longs = new ArrayList<Long>();
+    longs.add(2L);
+    longs.add(4L);
+    longs.add(4L);
+    longs.add(4L);
+    longs.add(5L);
+    longs.add(5L);
+    longs.add(7L);
+    longs.add(9L);
+    final var list = new ArrayNtList<>(longs);
+    Assert.assertEquals(4.0, LibStatistics.varianceLongs(list).get(), 0.01);
+  }
+
+  @Test
+  public void stddevEmpties() {
+    Assert.assertFalse(LibStatistics.stddevDoubles(new EmptyNtList<>()).has());
+    Assert.assertFalse(LibStatistics.stddevInts(new EmptyNtList<>()).has());
+    Assert.assertFalse(LibStatistics.stddevLongs(new EmptyNtList<>()).has());
+  }
+
+  @Test
+  public void stddevDoubles() {
+    final var vals = new ArrayList<Double>();
+    vals.add(2.0);
+    vals.add(4.0);
+    vals.add(4.0);
+    vals.add(4.0);
+    vals.add(5.0);
+    vals.add(5.0);
+    vals.add(7.0);
+    vals.add(9.0);
+    final var list = new ArrayNtList<>(vals);
+    Assert.assertEquals(2.0, LibStatistics.stddevDoubles(list).get(), 0.01);
+  }
+
+  @Test
+  public void stddevIntegers() {
+    final var ints = new ArrayList<Integer>();
+    ints.add(2);
+    ints.add(4);
+    ints.add(4);
+    ints.add(4);
+    ints.add(5);
+    ints.add(5);
+    ints.add(7);
+    ints.add(9);
+    final var list = new ArrayNtList<>(ints);
+    Assert.assertEquals(2.0, LibStatistics.stddevInts(list).get(), 0.01);
+  }
+
+  @Test
+  public void stddevLongs() {
+    final var longs = new ArrayList<Long>();
+    longs.add(2L);
+    longs.add(4L);
+    longs.add(4L);
+    longs.add(4L);
+    longs.add(5L);
+    longs.add(5L);
+    longs.add(7L);
+    longs.add(9L);
+    final var list = new ArrayNtList<>(longs);
+    Assert.assertEquals(2.0, LibStatistics.stddevLongs(list).get(), 0.01);
+  }
+
+  @Test
+  public void rangeEmpties() {
+    Assert.assertFalse(LibStatistics.rangeDoubles(new EmptyNtList<>()).has());
+    Assert.assertFalse(LibStatistics.rangeInts(new EmptyNtList<>()).has());
+    Assert.assertFalse(LibStatistics.rangeLongs(new EmptyNtList<>()).has());
+  }
+
+  @Test
+  public void rangeDoubles() {
+    final var vals = new ArrayList<Double>();
+    vals.add(1.5);
+    vals.add(20.5);
+    vals.add(300.75);
+    final var list = new ArrayNtList<>(vals);
+    Assert.assertEquals(299.25, LibStatistics.rangeDoubles(list).get(), 0.01);
+  }
+
+  @Test
+  public void rangeIntegers() {
+    final var ints = new ArrayList<Integer>();
+    ints.add(1);
+    ints.add(20);
+    ints.add(300);
+    final var list = new ArrayNtList<>(ints);
+    Assert.assertEquals(299, (int) LibStatistics.rangeInts(list).get());
+  }
+
+  @Test
+  public void rangeLongs() {
+    final var longs = new ArrayList<Long>();
+    longs.add(1L);
+    longs.add(200000L);
+    longs.add(30000000000L);
+    final var list = new ArrayNtList<>(longs);
+    Assert.assertEquals(29999999999L, (long) LibStatistics.rangeLongs(list).get());
+  }
 }

@@ -172,11 +172,11 @@ public class MockServiceBase implements ServiceBase {
           return;
         }
         if ("/301".equals(uri)) {
-          callback.success(new HttpResult("/loc1", 301));
+          callback.success(HttpResult.REDIRECT("/loc1", 301));
           return;
         }
         if ("/302".equals(uri)) {
-          callback.success(new HttpResult("/loc2", 302));
+          callback.success(HttpResult.REDIRECT("/loc2", 302));
           return;
         }
         if ("/timeout".equals(uri)) {
@@ -269,7 +269,11 @@ public class MockServiceBase implements ServiceBase {
 
       @Override
       public void attach(String identity, ConnectionContext context, Key key, NtAsset asset, String channel, String message, Callback<Integer> callback) {
-        callback.failure(new ErrorCodeException(-123));
+        if ("attach-ok".equals(key.key)) {
+          callback.success(1);
+        } else {
+          callback.failure(new ErrorCodeException(-123));
+        }
       }
 
       @Override

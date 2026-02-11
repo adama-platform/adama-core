@@ -77,6 +77,8 @@ public interface TopLevelDocumentHandler {
 
   void add(DefineWebOptions dwo);
 
+  void add(DefineExport de);
+
   void add(DefineWebDelete dwd);
 
   void add(Include in, Scope rootScope);
